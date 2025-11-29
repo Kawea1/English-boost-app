@@ -1,21 +1,30 @@
-MIT License
+Copyright (c) 2025 Jiawei Huang. All Rights Reserved.
 
-Copyright (c) 2025 Jiawei Huang
+本软件及其相关文档（以下简称"软件"）的所有权利均归 Jiawei Huang 所有。
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+未经版权所有者明确书面许可，任何人不得：
+- 复制、修改、合并、出版、分发本软件的任何部分
+- 将本软件用于商业目的
+- 对本软件进行逆向工程、反编译或反汇编
+- 移除或修改本软件中的任何版权声明
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+本软件按"原样"提供，不提供任何明示或暗示的保证。
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+如需获取使用许可，请联系版权所有者。
+
+---
+
+Copyright (c) 2025 Jiawei Huang. All Rights Reserved.
+
+All rights in this software and related documentation (the "Software") are 
+reserved by Jiawei Huang.
+
+Without the express written permission of the copyright owner, no person may:
+- Copy, modify, merge, publish, or distribute any part of this Software
+- Use this Software for commercial purposes
+- Reverse engineer, decompile, or disassemble this Software
+- Remove or modify any copyright notices in this Software
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+
+For licensing inquiries, please contact the copyright owner.
