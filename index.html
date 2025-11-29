@@ -1,0 +1,1758 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>学术英语精进</title>
+    
+    <!-- PWA & 移动端优化 -->
+    <link rel="stylesheet" href="styles.css?v=41">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#6366f1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="学术英语精进">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    
+    <!-- iOS Safari 安全区域 -->
+    <meta name="supported-color-schemes" content="light">
+    
+    <!-- 预连接优化 -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div id="loginPage" class="login-page">
+        <div class="login-container">
+            <div class="login-logo">
+                <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                    <defs>
+                        <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" stop-color="#6366f1"/>
+                            <stop offset="100%" stop-color="#a855f7"/>
+                        </linearGradient>
+                    </defs>
+                    <rect x="4" y="12" width="50" height="60" rx="4" fill="url(#logoGrad)" opacity="0.9"/>
+                    <rect x="14" y="8" width="50" height="60" rx="4" fill="url(#logoGrad)" opacity="0.95"/>
+                    <rect x="24" y="4" width="50" height="60" rx="4" fill="url(#logoGrad)"/>
+                    <path d="M34 24h30M34 36h24M34 48h20" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h1>学术英语精进</h1>
+            <p class="login-subtitle">GRE · 托福 · 学术英语</p>
+            <div class="login-form">
+                <div class="input-wrapper">
+                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <input type="text" id="activationKey" placeholder="请输入激活密钥" class="login-input">
+                </div>
+                <button onclick="login()" class="login-btn">
+                    <span>立即激活</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+            </div>
+            <p class="login-hint">联系管理员获取激活密钥</p>
+        </div>
+        
+        <!-- 激活结果弹窗 -->
+        <div class="activation-result-modal" id="activationResultModal">
+            <div class="activation-result-content">
+                <!-- 成功状态 -->
+                <div class="activation-success" id="activationSuccess">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2"/>
+                            <path d="M7 12.5l3 3 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <div class="success-ring"></div>
+                        <div class="success-particles">
+                            <span></span><span></span><span></span><span></span>
+                            <span></span><span></span><span></span><span></span>
+                        </div>
+                    </div>
+                    <h2>激活成功！</h2>
+                    <p class="success-subtitle">🎉 欢迎使用学术英语精进</p>
+                    <div class="success-features">
+                        <div class="feature-item">
+                            <span class="feature-icon">📚</span>
+                            <span>词汇训练</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">🎧</span>
+                            <span>听力提升</span>
+                        </div>
+                        <div class="feature-item">
+                            <span class="feature-icon">📖</span>
+                            <span>阅读精讲</span>
+                        </div>
+                    </div>
+                    <button class="start-btn" onclick="enterApp()">
+                        <span>开始学习</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <!-- 失败状态 -->
+                <div class="activation-failure" id="activationFailure">
+                    <div class="failure-icon">
+                        <svg viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="11" stroke="currentColor" stroke-width="2"/>
+                            <path d="M8 8l8 8M16 8l-8 8" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/>
+                        </svg>
+                        <div class="failure-ring"></div>
+                    </div>
+                    <h2 id="failureTitle">激活失败</h2>
+                    <p class="failure-message" id="failureMessage">密钥无效或已过期</p>
+                    <div class="failure-tips">
+                        <p>💡 请检查以下内容：</p>
+                        <ul>
+                            <li>确认密钥拼写正确</li>
+                            <li>检查密钥是否已过期</li>
+                            <li>联系管理员获取帮助</li>
+                        </ul>
+                    </div>
+                    <button class="retry-btn" onclick="closeActivationResult()">
+                        <span>重新输入</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主应用 -->
+    <div id="mainApp" class="container hidden">
+        <!-- 高级首页头部 - 动态时段场景 -->
+        <header class="home-header" id="homeHeader" data-time-period="morning">
+            <!-- 动态场景背景 -->
+            <div class="header-scene">
+                <!-- 天空渐变层 -->
+                <div class="sky-layer"></div>
+                <!-- 天体（太阳/月亮） -->
+                <div class="celestial-body" id="celestialBody"></div>
+                <!-- 云朵/星星装饰 -->
+                <div class="sky-decorations" id="skyDecorations"></div>
+                <!-- 远景山脉 -->
+                <div class="mountain-layer">
+                    <svg class="mountains" viewBox="0 0 400 100" preserveAspectRatio="xMidYMax slice">
+                        <path class="mountain-far" d="M0,100 L0,70 Q50,45 100,55 Q150,65 200,40 Q250,55 300,50 Q350,60 400,45 L400,100 Z"/>
+                        <path class="mountain-near" d="M0,100 L0,80 Q40,60 80,70 Q130,55 180,65 Q230,50 280,60 Q340,55 400,65 L400,100 Z"/>
+                    </svg>
+                </div>
+                <!-- 地面层 -->
+                <div class="ground-layer"></div>
+            </div>
+            <div class="header-bg"></div>
+            <div class="header-content">
+                <div class="greeting-section">
+                    <div class="scene-icon-ring" id="sceneIconRing" onclick="openAvatarPicker()" title="点击更换头像">
+                        <!-- 动态场景图标或自定义头像 -->
+                        <div class="scene-icon" id="sceneIcon"></div>
+                    </div>
+                    <div class="greeting-text">
+                        <h1 id="greetingText">早上好</h1>
+                        <p class="date-text" id="dateText">今天是学习的好日子</p>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <!-- 时间显示 - 可切换时区 -->
+                    <div class="time-display" id="timeDisplay" onclick="toggleTimezone()" title="点击切换时区">
+                        <div class="time-main" id="timeMain">00:00</div>
+                        <div class="time-zone" id="timeZone">北京时间</div>
+                    </div>
+                    <div class="streak-badge" id="streakBadge">
+                        <div class="streak-icon-wrap">
+                            <svg class="streak-flame" width="18" height="18" viewBox="0 0 24 24" fill="url(#flameGrad)">
+                                <defs>
+                                    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+                                        <stop offset="0%" stop-color="#f97316"/>
+                                        <stop offset="100%" stop-color="#fbbf24"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M12 2c.5 2.5 2.5 4 3.5 5.5 1 1.5 1.5 3 1.5 4.5 0 3.5-2.5 6-5.5 6S6 15.5 6 12c0-2 1-4 2-5.5.5-.8 1-1.5 1.5-2.5.3-.6.6-1.2 1-2 .3.5.5 1 1.5 2z"/>
+                            </svg>
+                        </div>
+                        <span class="streak-count" id="streakCount">0</span>
+                        <span class="streak-label">天连续</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 名人名言区域 -->
+            <div class="quote-card" onclick="refreshQuote()" title="点击刷新名言">
+                <div class="quote-icon">💡</div>
+                <p class="quote-text" id="quoteText">"学而不思则罔，思而不学则殆。"</p>
+                <span class="quote-author" id="quoteAuthor">—— 孔子</span>
+            </div>
+        </header>
+
+        <main class="main-content">
+            <!-- 今日学习目标卡片 - 高级版 -->
+            <div id="dailyGoalsSection" class="daily-goals-card">
+                <div class="goals-card-header">
+                    <div class="goals-title-row">
+                        <div class="goals-title-left">
+                            <div class="goals-icon-wrapper">
+                                <svg class="goals-icon-svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <circle cx="12" cy="12" r="10" stroke="url(#targetGrad)" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="6" stroke="url(#targetGrad)" stroke-width="2"/>
+                                    <circle cx="12" cy="12" r="2" fill="url(#targetGrad)"/>
+                                    <defs>
+                                        <linearGradient id="targetGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#6366f1"/>
+                                            <stop offset="100%" stop-color="#a855f7"/>
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <div class="goals-title-text">
+                                <h3>今日目标</h3>
+                                <p id="goalsSubtitle">完成目标，保持学习动力</p>
+                            </div>
+                        </div>
+                        <button class="goals-settings-btn" onclick="openGoalSettings()" aria-label="设置目标">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                <line x1="4" y1="21" x2="4" y2="14"/>
+                                <line x1="4" y1="10" x2="4" y2="3"/>
+                                <line x1="12" y1="21" x2="12" y2="12"/>
+                                <line x1="12" y1="8" x2="12" y2="3"/>
+                                <line x1="20" y1="21" x2="20" y2="16"/>
+                                <line x1="20" y1="12" x2="20" y2="3"/>
+                                <line x1="1" y1="14" x2="7" y2="14"/>
+                                <line x1="9" y1="8" x2="15" y2="8"/>
+                                <line x1="17" y1="16" x2="23" y2="16"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <!-- 总进度环 -->
+                    <div class="goals-total-progress">
+                        <div class="progress-ring-container">
+                            <svg class="progress-ring" width="80" height="80">
+                                <circle class="progress-ring-bg" cx="40" cy="40" r="34" fill="none" stroke="#e5e7eb" stroke-width="6"/>
+                                <circle class="progress-ring-fill" id="progressRingFill" cx="40" cy="40" r="34" fill="none" stroke="url(#progressGradient)" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" transform="rotate(-90 40 40)"/>
+                                <defs>
+                                    <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#6366f1"/>
+                                        <stop offset="100%" stop-color="#a855f7"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="progress-ring-text">
+                                <span id="goalsTotalProgress">0%</span>
+                            </div>
+                        </div>
+                        <div class="progress-summary">
+                            <span class="completed-text" id="goalsCompletedText">已完成 0/0 项</span>
+                            <span class="encourage-text" id="encourageText">开始今天的学习吧！</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="goals-progress-container" id="goalsProgressContainer">
+                    <!-- 进度条会由JS动态生成 -->
+                </div>
+            </div>
+
+            <!-- 快捷学习入口 -->
+            <div class="quick-start-section">
+                <div class="section-header">
+                    <h3 class="section-title">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                        开始学习
+                    </h3>
+                </div>
+                <div class="module-grid">
+                    <div class="module-card" onclick="openModule('vocabulary')">
+                        <div class="module-icon-wrapper vocab-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                <line x1="8" y1="7" x2="16" y2="7"/>
+                                <line x1="8" y1="11" x2="14" y2="11"/>
+                            </svg>
+                        </div>
+                        <h3>核心词汇</h3>
+                        <p>10000+ 高频必背词</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                    <div class="module-card" onclick="openModule('listening')">
+                        <div class="module-icon-wrapper listen-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                            </svg>
+                        </div>
+                        <h3>精听训练</h3>
+                        <p>沉浸式听力提升</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                    <div class="module-card" onclick="openModule('speaking')">
+                        <div class="module-icon-wrapper speak-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                <line x1="12" y1="19" x2="12" y2="23"/>
+                                <line x1="8" y1="23" x2="16" y2="23"/>
+                            </svg>
+                        </div>
+                        <h3>口语跟读</h3>
+                        <p>AI 语音评测</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                    <div class="module-card" onclick="openModule('reading')">
+                        <div class="module-icon-wrapper read-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
+                        </div>
+                        <h3>阅读精讲</h3>
+                        <p>100篇学术精选</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                    <div class="module-card" onclick="openModule('review')">
+                        <div class="module-icon-wrapper review-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <h3>复习巩固</h3>
+                        <p>艾宾浩斯记忆法</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                    <div class="module-card" onclick="openModule('resources')">
+                        <div class="module-icon-wrapper resource-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                                <polyline points="15 3 21 3 21 9"/>
+                                <line x1="10" y1="14" x2="21" y2="3"/>
+                            </svg>
+                        </div>
+                        <h3>学习资源</h3>
+                        <p>真题库 + 备考网站</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- 词汇模块 -->
+        <div class="modal" id="vocabularyModal">
+            <div class="modal-header modal-header-vocab">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge vocab">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <h2>核心词汇</h2>
+                </div>
+                <div class="vocab-progress-badge" id="vocabProgress">1/50</div>
+            </div>
+            <div class="vocab-module-content">
+                <div class="word-card" id="wordCard" onclick="speakWord()">
+                    <div class="word-card-inner">
+                        <div class="word-speaker-hint">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            点击播放发音
+                        </div>
+                        <div class="word-main" id="wordMain">Loading...</div>
+                        <div class="word-phonetic" id="wordPhonetic">/ˈləʊdɪŋ/</div>
+                    </div>
+                    <div class="word-meaning hidden" id="wordMeaning">
+                        <div id="dictContainer"></div>
+                        <div class="meaning-cn" id="meaningCn"></div>
+                        <div class="meaning-en" id="meaningEn"></div>
+                        <div class="word-example" id="wordExample"></div>
+                    </div>
+                </div>
+                <div class="word-actions">
+                    <button class="show-btn" id="showMeaningBtn" onclick="showMeaning()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        显示释义
+                    </button>
+                    <div class="rate-buttons hidden" id="rateButtons">
+                        <button class="rate-btn hard" onclick="rateWord('hard')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            困难
+                        </button>
+                        <button class="rate-btn medium" onclick="rateWord('medium')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            一般
+                        </button>
+                        <button class="rate-btn easy" onclick="rateWord('easy')">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            简单
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 听力模块 -->
+        <div class="modal" id="listeningModal">
+            <div class="modal-header modal-header-listen">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge listen">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/></svg>
+                    </div>
+                    <h2>精听训练</h2>
+                </div>
+            </div>
+            
+            <!-- 统计栏 -->
+            <div class="module-stats-bar-new">
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap blue">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="listeningTotalCount">20</div>
+                        <div class="stat-label">总练习</div>
+                    </div>
+                </div>
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="listeningCompletedCount">0</div>
+                        <div class="stat-label">已完成</div>
+                    </div>
+                </div>
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap orange">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="listeningAccuracy">--%</div>
+                        <div class="stat-label">正确率</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="listening-content">
+                <!-- 当前练习区域 -->
+                <div id="listeningExercise">
+                    <!-- 音频控制卡片 -->
+                    <div class="audio-player-card-new">
+                        <div class="audio-header">
+                            <div class="audio-icon-wrap">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+                            </div>
+                            <div class="audio-info">
+                                <h3 id="audioTitle" class="audio-title">听音填词</h3>
+                                <p id="audioDesc" class="audio-desc">点击播放按钮开始练习</p>
+                            </div>
+                        </div>
+                        <div class="audio-controls-new">
+                            <button onclick="adjustSpeed(-0.1)" class="speed-btn-new" aria-label="减速">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/></svg>
+                            </button>
+                            <button id="playBtn" onclick="togglePlayEnhanced()" class="play-btn-new">
+                                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            </button>
+                            <button onclick="adjustSpeed(0.1)" class="speed-btn-new" aria-label="加速">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            </button>
+                        </div>
+                        <div class="speed-display-new">
+                            <span class="speed-badge-new"><span id="speedDisplay">1.0</span>x</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 听写练习区域 -->
+                    <div class="dictation-card-new">
+                        <div class="dictation-header">
+                            <div class="dictation-icon">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+                            </div>
+                            <div>
+                                <h4 class="dictation-title">听写练习</h4>
+                                <p class="dictation-subtitle">仔细聆听音频，填写空白处的单词</p>
+                            </div>
+                        </div>
+                        <div id="blankArea" class="blank-area-new"></div>
+                        <div style="display:flex;gap:10px;margin-top:16px;">
+                            <button onclick="checkAnswerEnhanced()" class="btn-check-answer" style="flex:1;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                                检查答案
+                            </button>
+                            <button onclick="refreshListening()" class="btn-check-answer" style="flex:1;background:linear-gradient(135deg, #6b7280 0%, #4b5563 100%);">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                                换一题
+                            </button>
+                        </div>
+                        <div id="answerFeedback" class="hidden feedback-new"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 口语模块 -->
+        <div class="modal" id="speakingModal">
+            <div class="modal-header modal-header-speak">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge speak">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                    </div>
+                    <h2>口语跟读</h2>
+                </div>
+            </div>
+            <div class="speaking-module-content">
+                <!-- 句子卡片 -->
+                <div class="sentence-card-new">
+                    <div class="sentence-header">
+                        <div class="sentence-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        </div>
+                        <span>跟读句子</span>
+                    </div>
+                    <p id="targetSentence" class="target-sentence">点击下方按钮开始练习</p>
+                    <div class="sentence-actions">
+                        <button onclick="speakSentence()" class="btn-listen">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                            听原音
+                        </button>
+                        <button onclick="nextSentence()" class="btn-next">
+                            下一句
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 录音区域 -->
+                <div class="record-section">
+                    <button id="recordBtn" 
+                        onmousedown="startHoldRecording(event)" 
+                        onmouseup="stopHoldRecording(event)" 
+                        onmouseleave="stopHoldRecording(event)"
+                        ontouchstart="startHoldRecording(event)" 
+                        ontouchend="stopHoldRecording(event)"
+                        ontouchcancel="stopHoldRecording(event)"
+                        class="record-btn-new">
+                        <div class="record-btn-inner">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                        </div>
+                        <span id="recordText">按住录音</span>
+                    </button>
+                    <p class="record-hint">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        按住按钮说话，松开结束录音
+                    </p>
+                    <div id="recordingIndicator" class="hidden recording-indicator-new">
+                        <span class="recording-dot"></span>
+                        <span>正在录音...</span>
+                    </div>
+                </div>
+                
+                <!-- 结果卡片 -->
+                <div id="resultCard" class="hidden result-card-new">
+                    <div class="result-header">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        <h4>识别结果</h4>
+                    </div>
+                    <p id="recognizedText" class="recognized-text"></p>
+                    <div class="score-section">
+                        <div id="scoreCircle" class="score-circle">
+                            <svg class="score-ring" width="120" height="120" viewBox="0 0 120 120">
+                                <circle cx="60" cy="60" r="52" fill="none" stroke="#e5e7eb" stroke-width="8"/>
+                                <circle id="scoreRingFill" cx="60" cy="60" r="52" fill="none" stroke="url(#scoreGrad)" stroke-width="8" stroke-linecap="round" stroke-dasharray="326.7" stroke-dashoffset="326.7" transform="rotate(-90 60 60)"/>
+                                <defs>
+                                    <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#10b981"/>
+                                        <stop offset="100%" stop-color="#059669"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="score-value-wrap">
+                                <span id="scoreValue" class="score-value">0</span>
+                                <span class="score-unit">分</span>
+                            </div>
+                        </div>
+                        <p class="score-label">相似度评分</p>
+                    </div>
+                    <div id="speakingFeedback" class="speaking-feedback-new"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 阅读模块 -->
+        <div class="modal" id="readingModal">
+            <div class="modal-header modal-header-read">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge read">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                    </div>
+                    <h2>阅读精讲</h2>
+                </div>
+            </div>
+            <div class="reading-content">
+                <!-- 进度和统计 -->
+                <div class="module-stats-bar-new">
+                    <div class="stat-item-new">
+                        <div class="stat-icon-wrap green">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="readCount">0</div>
+                            <div class="stat-label">已读文章</div>
+                        </div>
+                    </div>
+                    <div class="stat-item-new">
+                        <div class="stat-icon-wrap blue">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="totalArticles">100</div>
+                            <div class="stat-label">总文章数</div>
+                        </div>
+                    </div>
+                    <div class="stat-item-new">
+                        <div class="stat-icon-wrap orange">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-value" id="avgScore">--%</div>
+                            <div class="stat-label">正确率</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 文章切换控制 -->
+                <div id="readingList" class="card reading-list"></div>
+                
+                <!-- 当前文章展示区 -->
+                <div id="passageArea" class="hidden passage-area">
+                    <!-- 文章卡片 -->
+                    <article class="passage-card-new">
+                        <div class="passage-tags-new">
+                            <span id="passageCategory" class="tag-badge primary">GRE</span>
+                            <span id="passageDifficulty" class="tag-badge warning">难度</span>
+                            <span id="passageTopic" class="tag-badge success">话题</span>
+                        </div>
+                        <h3 id="passageTitle" class="passage-title-new"></h3>
+                        <div id="passageMeta" class="passage-meta-new">
+                            <span class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                <span id="wordCount">0</span> 词
+                            </span>
+                            <span class="meta-item">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                约 <span id="readTime">0</span> 分钟
+                            </span>
+                        </div>
+                        <div id="passageText" class="passage-text-new"></div>
+                        
+                        <!-- 核心词汇 -->
+                        <div id="vocabSection" class="vocab-section-new">
+                            <div class="section-head">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                <h4>核心词汇</h4>
+                            </div>
+                            <div id="vocabList" class="vocab-list-new"></div>
+                        </div>
+                    </article>
+                    
+                    <!-- 题目区域 -->
+                    <div class="questions-card-new">
+                        <div class="questions-header">
+                            <div class="questions-icon-wrap">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            </div>
+                            <div>
+                                <h4>阅读理解题目</h4>
+                                <p>请根据文章内容选择正确答案</p>
+                            </div>
+                        </div>
+                        <div id="questionsList" class="questions-list-new"></div>
+                        <button id="submitBtn" onclick="checkReadingAnswers()" class="btn-submit-answer">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            提交答案
+                        </button>
+                        <div id="readingResult" class="hidden feedback-new"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 复习模块 -->
+        <div class="modal" id="reviewModal">
+            <div class="modal-header modal-header-review">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge review">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </div>
+                    <h2>复习巩固</h2>
+                </div>
+            </div>
+            
+            <!-- 统计栏 -->
+            <div class="module-stats-bar-new">
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap green">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="totalLearned">0</div>
+                        <div class="stat-label">已学单词</div>
+                    </div>
+                </div>
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap orange">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="needReview">0</div>
+                        <div class="stat-label">待复习</div>
+                    </div>
+                </div>
+                <div class="stat-item-new">
+                    <div class="stat-icon-wrap purple">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    </div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="mastered">0</div>
+                        <div class="stat-label">已掌握</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="review-content-new">
+                <div class="review-plan-card">
+                    <div class="plan-header">
+                        <div class="plan-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        </div>
+                        <div>
+                            <h4>艾宾浩斯复习计划</h4>
+                            <p>按科学规律安排复习，事半功倍</p>
+                        </div>
+                    </div>
+                    <div id="scheduleList" class="schedule-list-new">
+                        <div class="schedule-item-new today">
+                            <div class="schedule-date-wrap">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                <span>今天</span>
+                            </div>
+                            <span class="schedule-count-badge">0 词</span>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="startReview()" class="btn-start-review">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    开始复习
+                </button>
+            </div>
+        </div>
+
+        <!-- 资源模块 -->
+        <div class="modal" id="resourcesModal">
+            <div class="modal-header modal-header-resource">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                </button>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge resource">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                    </div>
+                    <h2>学习资源</h2>
+                </div>
+            </div>
+            <div class="resources-content-new">
+                <div class="tab-group-new">
+                    <button onclick="showResourceTab('parsed')" id="tabParsed" class="tab-btn-new active">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                        真题资源
+                    </button>
+                    <button onclick="showResourceTab('online')" id="tabOnline" class="tab-btn-new">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                        学习网站
+                    </button>
+                </div>
+                <div id="parsedResources" class="resources-list-new"></div>
+                <div id="onlineResources" class="hidden resources-list-new"></div>
+            </div>
+        </div>
+
+            <!-- 简洁头像选择弹窗 -->
+            <div class="avatar-picker-modal" id="avatarPickerModal">
+                <div class="avatar-picker-overlay" onclick="closeAvatarPicker()"></div>
+                <div class="avatar-picker-simple">
+                    <div class="avatar-picker-title">
+                        <span>选择头像</span>
+                        <button class="avatar-close-btn" onclick="closeAvatarPicker()">✕</button>
+                    </div>
+                    <div class="avatar-options-grid">
+                        <!-- 使用动态场景图标 -->
+                        <button class="avatar-option" onclick="selectAvatarOption('scene')" data-type="scene" title="动态场景">
+                            <span class="avatar-scene-icon">🌤️</span>
+                        </button>
+                        <!-- Emoji 选项 -->
+                        <button class="avatar-option" onclick="selectAvatarOption('😊')">😊</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('😎')">😎</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🥰')">🥰</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🤗')">🤗</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐱')">🐱</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐶')">🐶</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐰')">🐰</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🦊')">🦊</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐼')">🐼</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🦁')">🦁</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🦄')">🦄</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐸')">🐸</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🐧')">🐧</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🦋')">🦋</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🌟')">🌟</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🌈')">🌈</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🌸')">🌸</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('💎')">💎</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🎀')">🎀</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🚀')">🚀</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('💫')">💫</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🎯')">🎯</button>
+                        <button class="avatar-option" onclick="selectAvatarOption('🏆')">🏆</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 新版底部导航 -->
+            <nav class="bottom-nav" id="bottomNav">
+                <div class="nav-indicator"></div>
+                <button class="nav-item active" data-tab="home" onclick="switchTab('home')">
+                    <div class="nav-icon-wrapper">
+                        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">首页</span>
+                </button>
+                <button class="nav-item" data-tab="stats" onclick="switchTab('stats')">
+                    <div class="nav-icon-wrapper">
+                        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="20" x2="18" y2="10"/>
+                            <line x1="12" y1="20" x2="12" y2="4"/>
+                            <line x1="6" y1="20" x2="6" y2="14"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">统计</span>
+                </button>
+                <button class="nav-item" data-tab="settings" onclick="switchTab('settings')">
+                    <div class="nav-icon-wrapper">
+                        <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="3"/>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                        </svg>
+                    </div>
+                    <span class="nav-label">设置</span>
+                </button>
+            </nav>
+
+            <!-- 统计模态 - 重新设计 -->
+            <div class="modal" id="statsModal">
+                <div class="modal-header modal-header-stats">
+                    <button class="back-btn" onclick="closeModule()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    </button>
+                    <div class="modal-title-group">
+                        <div class="modal-icon-badge stats">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                        </div>
+                        <h2>学习统计</h2>
+                    </div>
+                </div>
+                <div class="stats-content-new">
+                    <!-- 总览卡片 -->
+                    <div class="stats-overview-card">
+                        <div class="stats-overview-header">
+                            <div class="stats-avatar">
+                                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                    <path d="M2 17l10 5 10-5"/>
+                                    <path d="M2 12l10 5 10-5"/>
+                                </svg>
+                            </div>
+                            <div class="stats-overview-info">
+                                <h3>学习成就</h3>
+                                <p>继续加油，保持学习热情！</p>
+                            </div>
+                        </div>
+                        <div class="stats-overview-numbers">
+                            <div class="overview-stat">
+                                <span class="overview-value" id="stat_total_days">0</span>
+                                <span class="overview-label">学习天数</span>
+                            </div>
+                            <div class="overview-divider"></div>
+                            <div class="overview-stat">
+                                <span class="overview-value" id="stat_streak_days">0</span>
+                                <span class="overview-label">连续打卡</span>
+                            </div>
+                            <div class="overview-divider"></div>
+                            <div class="overview-stat">
+                                <span class="overview-value" id="stat_total_mins">0</span>
+                                <span class="overview-label">总时长(分)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 分类统计卡片 -->
+                    <div class="stats-section-title">
+                        <span class="section-icon">📈</span>
+                        <span>分项统计</span>
+                    </div>
+                    
+                    <div class="stats-cards-grid">
+                        <div class="stat-card-new vocabulary">
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                </svg>
+                            </div>
+                            <div class="stat-card-content">
+                                <span class="stat-card-value" id="stat_words">0</span>
+                                <span class="stat-card-label">已学单词</span>
+                            </div>
+                            <div class="stat-card-trend up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-new listening">
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                                </svg>
+                            </div>
+                            <div class="stat-card-content">
+                                <span class="stat-card-value" id="stat_listen">0</span>
+                                <span class="stat-card-label">听力练习</span>
+                            </div>
+                            <div class="stat-card-trend up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-new speaking">
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                    <line x1="12" y1="19" x2="12" y2="23"/>
+                                    <line x1="8" y1="23" x2="16" y2="23"/>
+                                </svg>
+                            </div>
+                            <div class="stat-card-content">
+                                <span class="stat-card-value" id="stat_speaking">0</span>
+                                <span class="stat-card-label">口语跟读</span>
+                            </div>
+                            <div class="stat-card-trend up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card-new reading">
+                            <div class="stat-card-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                </svg>
+                            </div>
+                            <div class="stat-card-content">
+                                <span class="stat-card-value" id="stat_reading">0</span>
+                                <span class="stat-card-label">阅读完成</span>
+                            </div>
+                            <div class="stat-card-trend up">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+                                    <polyline points="17 6 23 6 23 12"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 复习统计 -->
+                    <div class="stats-section-title">
+                        <span class="section-icon">🧠</span>
+                        <span>复习进度</span>
+                    </div>
+                    
+                    <div class="review-stats-card">
+                        <div class="review-stat-row">
+                            <div class="review-stat-item">
+                                <span class="review-stat-icon mastered">✅</span>
+                                <div class="review-stat-info">
+                                    <span class="review-stat-value" id="stat_mastered">0</span>
+                                    <span class="review-stat-label">已掌握</span>
+                                </div>
+                            </div>
+                            <div class="review-stat-item">
+                                <span class="review-stat-icon reviewing">🔄</span>
+                                <div class="review-stat-info">
+                                    <span class="review-stat-value" id="stat_reviewing">0</span>
+                                    <span class="review-stat-label">复习中</span>
+                                </div>
+                            </div>
+                            <div class="review-stat-item">
+                                <span class="review-stat-icon pending">⏳</span>
+                                <div class="review-stat-info">
+                                    <span class="review-stat-value" id="stat_pending">0</span>
+                                    <span class="review-stat-label">待复习</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="review-progress-bar">
+                            <div class="review-progress-fill" id="reviewProgressFill" style="width: 0%"></div>
+                        </div>
+                        <div class="review-progress-text">
+                            <span>掌握进度</span>
+                            <span id="reviewProgressPercent">0%</span>
+                        </div>
+                    </div>
+
+                    <!-- 操作按钮 -->
+                    <div class="stats-actions">
+                        <button class="stats-action-btn export" onclick="exportStats()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                <polyline points="17 8 12 3 7 8"/>
+                                <line x1="12" y1="3" x2="12" y2="15"/>
+                            </svg>
+                            <span>导出数据</span>
+                        </button>
+                        <button class="stats-action-btn reset" onclick="confirmResetStats()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                            </svg>
+                            <span>重置统计</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 设置模态 -->
+            <div class="modal" id="settingsModal">
+                <div class="settings-header-simple">
+                    <button class="back-btn-simple" onclick="closeModule()">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                    </button>
+                </div>
+                <div class="settings-content">
+                    <!-- 设置分组导航 - 移到顶部 -->
+                    <div class="settings-tabs-top">
+                        <button class="settings-tab-new active" onclick="switchSettingsTab('general')">
+                            <div class="settings-tab-icon general">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="3"/>
+                                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                                </svg>
+                            </div>
+                            <span>常规</span>
+                        </button>
+                        <button class="settings-tab-new" onclick="switchSettingsTab('audio')">
+                            <div class="settings-tab-icon audio">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                                </svg>
+                            </div>
+                            <span>音频</span>
+                        </button>
+                        <button class="settings-tab-new" onclick="switchSettingsTab('data')">
+                            <div class="settings-tab-icon data">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <ellipse cx="12" cy="5" rx="9" ry="3"/>
+                                    <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+                                    <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+                                </svg>
+                            </div>
+                            <span>数据</span>
+                        </button>
+                        <button class="settings-tab-new" onclick="switchSettingsTab('about')">
+                            <div class="settings-tab-icon about">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <line x1="12" y1="16" x2="12" y2="12"/>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"/>
+                                </svg>
+                            </div>
+                            <span>关于</span>
+                        </button>
+                    </div>
+
+                    <!-- 常规设置面板 -->
+                    <div class="settings-panel active" id="settingsPanel-general">
+                        <!-- 头像设置卡片 -->
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new avatar">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                                        <circle cx="12" cy="7" r="4"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>个人头像</h4>
+                                    <p>自定义您的专属头像</p>
+                                </div>
+                            </div>
+                            <div class="avatar-setting-row">
+                                <div class="current-avatar-preview" id="currentAvatarPreview" onclick="openAvatarPicker()">
+                                    <div class="avatar-preview-inner" id="avatarPreviewInner">
+                                        <span class="avatar-emoji">🌟</span>
+                                    </div>
+                                    <div class="avatar-edit-badge">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="avatar-setting-info">
+                                    <span class="avatar-setting-title">点击更换头像</span>
+                                    <span class="avatar-setting-desc">选择可爱图标或上传照片</span>
+                                </div>
+                                <button class="avatar-change-btn" onclick="openAvatarPicker()">
+                                    更换
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 主题设置卡片 -->
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new theme">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="5"/>
+                                        <line x1="12" y1="1" x2="12" y2="3"/>
+                                        <line x1="12" y1="21" x2="12" y2="23"/>
+                                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                                        <line x1="1" y1="12" x2="3" y2="12"/>
+                                        <line x1="21" y1="12" x2="23" y2="12"/>
+                                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>界面主题</h4>
+                                    <p>选择您喜欢的视觉风格</p>
+                                </div>
+                            </div>
+                            <div class="theme-selector">
+                                <label class="theme-option" data-theme="default">
+                                    <input type="radio" name="theme" value="default" checked>
+                                    <div class="theme-preview default-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">极光紫</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="ocean">
+                                    <input type="radio" name="theme" value="ocean">
+                                    <div class="theme-preview ocean-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">深海蓝</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="forest">
+                                    <input type="radio" name="theme" value="forest">
+                                    <div class="theme-preview forest-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">森林绿</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="sunset">
+                                    <input type="radio" name="theme" value="sunset">
+                                    <div class="theme-preview sunset-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">落日橙</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="rose">
+                                    <input type="radio" name="theme" value="rose">
+                                    <div class="theme-preview rose-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">玫瑰粉</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="dark">
+                                    <input type="radio" name="theme" value="dark">
+                                    <div class="theme-preview dark-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">暗夜黑</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="mint">
+                                    <input type="radio" name="theme" value="mint">
+                                    <div class="theme-preview mint-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">薄荷青</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="coffee">
+                                    <input type="radio" name="theme" value="coffee">
+                                    <div class="theme-preview coffee-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">咖啡棕</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                                <label class="theme-option" data-theme="lavender">
+                                    <input type="radio" name="theme" value="lavender">
+                                    <div class="theme-preview lavender-theme">
+                                        <div class="theme-preview-header"></div>
+                                        <div class="theme-preview-content"></div>
+                                    </div>
+                                    <span class="theme-name">薰衣紫</span>
+                                    <span class="theme-check">✓</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- 学习偏好设置 -->
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new study">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>学习偏好</h4>
+                                    <p>自定义您的学习体验</p>
+                                </div>
+                            </div>
+                            <div class="settings-list">
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">自动播放发音</span>
+                                        <span class="setting-desc">查看单词时自动播放</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="autoPlayPronunciation" checked>
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">显示例句</span>
+                                        <span class="setting-desc">单词卡片中显示例句</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="showExampleSentences" checked>
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">复习提醒</span>
+                                        <span class="setting-desc">到达复习时间时通知</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="reviewReminder">
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 音频设置面板 -->
+                    <div class="settings-panel" id="settingsPanel-audio">
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new audio">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                        <line x1="12" y1="19" x2="12" y2="23"/>
+                                        <line x1="8" y1="23" x2="16" y2="23"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>语音引擎</h4>
+                                    <p>配置TTS发音设置</p>
+                                </div>
+                            </div>
+                            <div class="settings-list">
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">云端高质量TTS</span>
+                                        <span class="setting-desc">使用云端API获得更好音质</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="useCloudTTS">
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-form-group" id="cloudTTSSettings">
+                                <div class="input-modern">
+                                    <label for="cloudTTSUrl">API接口地址</label>
+                                    <div class="input-wrapper">
+                                        <span class="input-icon-svg">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+                                                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+                                            </svg>
+                                        </span>
+                                        <input type="text" id="cloudTTSUrl" placeholder="https://api.example.com/tts">
+                                    </div>
+                                </div>
+                                <div class="input-modern">
+                                    <label for="cloudTTSKey">API密钥</label>
+                                    <div class="input-wrapper">
+                                        <span class="input-icon-svg">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
+                                            </svg>
+                                        </span>
+                                        <input type="password" id="cloudTTSKey" placeholder="输入您的API密钥">
+                                        <button class="input-action-svg" onclick="togglePasswordVisibility('cloudTTSKey')" type="button">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                                <circle cx="12" cy="12" r="3"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <button class="btn-modern primary" onclick="previewTTS()">
+                                <svg class="btn-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                </svg>
+                                试听发音效果
+                            </button>
+                        </div>
+
+                        <!-- 语速设置 -->
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new speed">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <polyline points="12 6 12 12 16 14"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>播放速度</h4>
+                                    <p>调整音频播放速度</p>
+                                </div>
+                            </div>
+                            <div class="slider-modern">
+                                <div class="slider-labels">
+                                    <span>慢速</span>
+                                    <span class="slider-value" id="speedValue">1.0x</span>
+                                    <span>快速</span>
+                                </div>
+                                <input type="range" id="playbackSpeed" min="0.5" max="2" step="0.1" value="1" oninput="updateSpeedValue(this.value)">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 数据管理面板 -->
+                    <div class="settings-panel" id="settingsPanel-data">
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new backup">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                        <polyline points="17 8 12 3 7 8"/>
+                                        <line x1="12" y1="3" x2="12" y2="15"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>数据备份</h4>
+                                    <p>导出或导入您的学习数据</p>
+                                </div>
+                            </div>
+                            <div class="data-actions-simple">
+                                <button class="data-btn export" onclick="exportAllData()">
+                                    <div class="data-btn-icon-wrap export">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="17 8 12 3 7 8"/>
+                                            <line x1="12" y1="3" x2="12" y2="15"/>
+                                        </svg>
+                                    </div>
+                                    <span class="data-btn-text">导出数据</span>
+                                </button>
+                                <button class="data-btn import" onclick="importDataTrigger()">
+                                    <div class="data-btn-icon-wrap import">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="7 10 12 15 17 10"/>
+                                            <line x1="12" y1="15" x2="12" y2="3"/>
+                                        </svg>
+                                    </div>
+                                    <span class="data-btn-text">导入数据</span>
+                                </button>
+                                <input type="file" id="importDataFile" accept=".json" style="display:none" onchange="importData(event)">
+                            </div>
+                        </div>
+
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new storage">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"/>
+                                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"/>
+                                        <line x1="6" y1="6" x2="6.01" y2="6"/>
+                                        <line x1="6" y1="18" x2="6.01" y2="18"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>存储空间</h4>
+                                    <p>管理本地存储数据</p>
+                                </div>
+                            </div>
+                            <div class="storage-info">
+                                <div class="storage-bar">
+                                    <div class="storage-used" id="storageUsed" style="width: 30%"></div>
+                                </div>
+                                <div class="storage-details">
+                                    <span id="storageText">已使用 1.2MB / 5MB</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card-modern danger-card">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new danger">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                        <line x1="12" y1="9" x2="12" y2="13"/>
+                                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>危险操作</h4>
+                                    <p>请谨慎操作，数据无法恢复</p>
+                                </div>
+                            </div>
+                            <div class="data-actions-simple">
+                                <button class="data-btn danger" onclick="confirmClearCache()">
+                                    <div class="data-btn-icon-wrap danger">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="3 6 5 6 21 6"/>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                                        </svg>
+                                    </div>
+                                    <span class="data-btn-text">清除缓存</span>
+                                </button>
+                                <button class="data-btn danger-full" onclick="confirmResetAll()">
+                                    <div class="data-btn-icon-wrap danger-full">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <line x1="15" y1="9" x2="9" y2="15"/>
+                                            <line x1="9" y1="9" x2="15" y2="15"/>
+                                        </svg>
+                                    </div>
+                                    <span class="data-btn-text">重置数据</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 关于面板 -->
+                    <div class="settings-panel" id="settingsPanel-about">
+                        <div class="settings-card-modern about-card">
+                            <div class="about-header">
+                                <div class="about-logo-new">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="url(#aboutGradient)" stroke-width="1.5">
+                                        <defs>
+                                            <linearGradient id="aboutGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#6366f1"/>
+                                                <stop offset="100%" stop-color="#a855f7"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        <path d="M8 7h8M8 11h6M8 15h4" stroke-linecap="round"/>
+                                    </svg>
+                                </div>
+                                <h3 class="about-app-name">学术英语精进</h3>
+                                <span class="about-version">版本 1.0.0</span>
+                            </div>
+                            <p class="about-description">
+                                一款专为研究生和学术英语学习者设计的综合学习应用，集成精听训练、口语练习、学术阅读和高阶词汇学习等功能，采用科学的艾宾浩斯遗忘曲线帮助您高效记忆。
+                            </p>
+                            <div class="about-features">
+                                <div class="about-feature-new">
+                                    <div class="feature-icon-wrap listening">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                                        </svg>
+                                    </div>
+                                    <span>精听训练</span>
+                                </div>
+                                <div class="about-feature-new">
+                                    <div class="feature-icon-wrap speaking">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                            <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                            <line x1="12" y1="19" x2="12" y2="23"/>
+                                            <line x1="8" y1="23" x2="16" y2="23"/>
+                                        </svg>
+                                    </div>
+                                    <span>口语练习</span>
+                                </div>
+                                <div class="about-feature-new">
+                                    <div class="feature-icon-wrap reading">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                        </svg>
+                                    </div>
+                                    <span>阅读理解</span>
+                                </div>
+                                <div class="about-feature-new">
+                                    <div class="feature-icon-wrap vocabulary">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                                        </svg>
+                                    </div>
+                                    <span>词汇学习</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new link">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="18" cy="5" r="3"/>
+                                        <circle cx="6" cy="12" r="3"/>
+                                        <circle cx="18" cy="19" r="3"/>
+                                        <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+                                        <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>相关链接</h4>
+                                    <p>获取帮助和更新</p>
+                                </div>
+                            </div>
+                            <div class="about-links">
+                                <a href="#" class="about-link-new" onclick="showHelp()">
+                                    <div class="link-icon-wrap">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                                            <line x1="12" y1="17" x2="12.01" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <span>使用指南</span>
+                                    <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
+                                <a href="#" class="about-link-new" onclick="checkForUpdates()">
+                                    <div class="link-icon-wrap">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <polyline points="23 4 23 10 17 10"/>
+                                            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+                                        </svg>
+                                    </div>
+                                    <span>检查更新</span>
+                                    <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
+                                <a href="#" class="about-link-new" onclick="showFeedback()">
+                                    <div class="link-icon-wrap">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                                        </svg>
+                                    </div>
+                                    <span>反馈建议</span>
+                                    <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="about-footer">
+                            <p>Made with ❤️ for English Learners</p>
+                            <p class="copyright">© 2025 Jiawei Huang. All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 底部固定操作栏 -->
+                <div class="settings-bottom-bar">
+                    <button class="settings-action-btn reset" onclick="resetAppSettings()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        <span>重置</span>
+                    </button>
+                    <button class="settings-action-btn save" onclick="saveAppSettings()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        <span>保存设置</span>
+                    </button>
+                </div>
+            </div>
+    </div>
+
+    <!-- 目标设置弹窗 -->
+    <div id="goalSettingsModal" class="goal-settings-modal">
+        <div class="goal-settings-content">
+            <div class="goal-settings-header">
+                <h3>设置今日目标</h3>
+                <button class="goal-close-btn" onclick="closeGoalSettings()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                </button>
+            </div>
+            <div class="goal-settings-body">
+                <p class="goal-settings-tip">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -3px; margin-right: 6px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                    设置为 0 表示不设置该项目标
+                </p>
+                
+                <div class="goal-item">
+                    <div class="goal-item-info">
+                        <div class="goal-item-icon vocab">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
+                        <span class="goal-item-name">单词学习</span>
+                    </div>
+                    <div class="goal-item-input">
+                        <input type="number" id="goalVocabulary" min="0" max="500" value="50">
+                        <span class="goal-item-unit">个</span>
+                    </div>
+                </div>
+                
+                <div class="goal-item">
+                    <div class="goal-item-info">
+                        <div class="goal-item-icon listen">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/></svg>
+                        </div>
+                        <span class="goal-item-name">听力练习</span>
+                    </div>
+                    <div class="goal-item-input">
+                        <input type="number" id="goalListening" min="0" max="50" value="5">
+                        <span class="goal-item-unit">篇</span>
+                    </div>
+                </div>
+                
+                <div class="goal-item">
+                    <div class="goal-item-info">
+                        <div class="goal-item-icon speak">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+                        </div>
+                        <span class="goal-item-name">口语跟读</span>
+                    </div>
+                    <div class="goal-item-input">
+                        <input type="number" id="goalSpeaking" min="0" max="50" value="10">
+                        <span class="goal-item-unit">句</span>
+                    </div>
+                </div>
+                
+                <div class="goal-item">
+                    <div class="goal-item-info">
+                        <div class="goal-item-icon read">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                        </div>
+                        <span class="goal-item-name">阅读理解</span>
+                    </div>
+                    <div class="goal-item-input">
+                        <input type="number" id="goalReading" min="0" max="20" value="2">
+                        <span class="goal-item-unit">篇</span>
+                    </div>
+                </div>
+            </div>
+            <div class="goal-settings-footer">
+                <button class="goal-save-btn" onclick="saveGoalSettings()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-right:6px;"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                    保存目标
+                </button>
+                <button class="goal-reset-btn" onclick="resetGoalSettings()">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="auth.js?v=40"></script>
+    <script src="vocabulary.js?v=39"></script>
+    <script src="dictionary.js?v=39"></script>
+    <script src="listening-data.js?v=39"></script>
+    <script src="listening-module.js?v=39"></script>
+    <script src="reading-data.js?v=39"></script>
+    <script src="sources.js?v=39"></script>
+    <script src="online_sources.js?v=39"></script>
+    <script src="modules.js?v=39"></script>
+    <script src="quotes.js?v=32"></script>
+    <script src="app.js?v=41"></script>
+</body>
+</html>

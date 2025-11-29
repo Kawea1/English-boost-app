@@ -1,0 +1,61 @@
+# 依赖目录
+node_modules/
+__pycache__/
+*.pyc
+.pyo
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# 编辑器配置
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 备份文件
+*.backup
+*.bak
+*.old
+
+# 日志文件
+*.log
+npm-debug.log*
+
+# 本地开发服务器
+server.py
+server.js
+
+# 测试文件
+test*.html
+debug*.html
+simple-test.html
+verify.html
+clear-cache.html
+
+# 脚本目录（仅开发用）
+scripts/
+
+# 原始数据目录
+official_inputs/
+official_parsed/
+public_parsed/
+
+# 原始词汇文件
+*.txt
+!words.txt
+
+# 备份的 JSON 文件
+words_backup*.json
+
+# 环境配置
+.env
+.env.local
+.env.*.local
