@@ -1716,6 +1716,7 @@ svg {
     background: var(--gray-200);
     border-radius: 4px;
     overflow: hidden;
+    width: 100%;
 }
 
 .goal-progress-fill {

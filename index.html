@@ -7,7 +7,7 @@
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=50">
+    <link rel="stylesheet" href="styles.css?v=20251130235757">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=50" as="style">
-    <link rel="preload" href="app.js?v=44" as="script">
+    <link rel="preload" href="styles.css?v=20251130235757" as="style">
+    <link rel="preload" href="app.js?v=20251130235757" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -535,6 +535,7 @@
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
                         </div>
                         <span>跟读句子</span>
+                        <div id="sentenceInfo" style="margin-left:auto;display:flex;gap:4px;"></div>
                     </div>
                     <p id="targetSentence" class="target-sentence">点击下方按钮开始练习</p>
                     <div class="sentence-actions">
@@ -543,8 +544,8 @@
                             听原音
                         </button>
                         <button onclick="nextSentence()" class="btn-next">
-                            下一句
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            换一句
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                         </button>
                     </div>
                 </div>
@@ -1707,15 +1708,15 @@
     </div>
 
     <script src="auth.js?v=48"></script>
-    <script src="vocabulary.js?v=49"></script>
-    <script src="dictionary.js?v=40"></script>
-    <script src="listening-data.js?v=47"></script>
-    <script src="listening-module.js?v=49"></script>
-    <script src="reading-data.js?v=40"></script>
-    <script src="sources.js?v=40"></script>
-    <script src="online_sources.js?v=40"></script>
-    <script src="modules.js?v=49"></script>
+    <script src="vocabulary.js?v=20251130235757"></script>
+    <script src="dictionary.js?v=20251130235757"></script>
+    <script src="listening-data.js?v=20251130235757"></script>
+    <script src="listening-module.js?v=20251130235757"></script>
+    <script src="reading-data.js?v=20251130235757"></script>
+    <script src="sources.js?v=20251130235757"></script>
+    <script src="online_sources.js?v=20251130235757"></script>
+    <script src="modules.js?v=20251130235757"></script>
     <script src="quotes.js?v=32"></script>
-    <script src="app.js?v=47"></script>
+    <script src="app.js?v=20251130235757"></script>
 </body>
 </html>

@@ -120,10 +120,15 @@ var speakingSentences = [
     "Knowledge empowers individuals and communities."
 ];
 
+// 已练习句子记录（避免重复）
+var practicedSentences = [];
+var maxPracticedHistory = 20; // 记住最近20条，避免连续重复
+
 function initSpeakingModule() {
-    currentSpeakingIndex = 0;
+    // 随机选择一个句子
+    currentSpeakingIndex = getRandomSentenceIndex();
     var el = document.getElementById("targetSentence");
-    if (el) el.textContent = speakingSentences[0];
+    if (el) el.textContent = speakingSentences[currentSpeakingIndex];
     
     // 初始化语音识别
     initSpeechRecognition();
@@ -131,6 +136,70 @@ function initSpeakingModule() {
     // 隐藏结果卡片
     var resultCard = document.getElementById("resultCard");
     if (resultCard) resultCard.classList.add("hidden");
+    
+    // 显示句子难度和类别
+    updateSentenceInfo();
+}
+
+// 获取随机句子索引（避免重复）
+function getRandomSentenceIndex() {
+    var available = [];
+    for (var i = 0; i < speakingSentences.length; i++) {
+        if (practicedSentences.indexOf(i) === -1) {
+            available.push(i);
+        }
+    }
+    
+    // 如果所有句子都练习过了，清空记录重新开始
+    if (available.length === 0) {
+        practicedSentences = [];
+        available = [];
+        for (var i = 0; i < speakingSentences.length; i++) {
+            available.push(i);
+        }
+    }
+    
+    var randomIndex = available[Math.floor(Math.random() * available.length)];
+    
+    // 记录已练习
+    practicedSentences.push(randomIndex);
+    if (practicedSentences.length > maxPracticedHistory) {
+        practicedSentences.shift();
+    }
+    
+    return randomIndex;
+}
+
+// 获取句子类别
+function getSentenceCategory(index) {
+    if (index < 20) return { name: '日常对话', icon: '💬', color: '#3b82f6' };
+    if (index < 40) return { name: '学术表达', icon: '📚', color: '#8b5cf6' };
+    if (index < 60) return { name: '环境与社会', icon: '🌍', color: '#10b981' };
+    if (index < 80) return { name: '科技与创新', icon: '🔬', color: '#f59e0b' };
+    return { name: '商务与职场', icon: '💼', color: '#ef4444' };
+}
+
+// 获取句子难度
+function getSentenceDifficulty(sentence) {
+    var words = sentence.split(/\s+/).length;
+    if (words <= 8) return { level: '简单', stars: 1, color: '#10b981' };
+    if (words <= 15) return { level: '中等', stars: 2, color: '#f59e0b' };
+    return { level: '困难', stars: 3, color: '#ef4444' };
+}
+
+// 更新句子信息显示
+function updateSentenceInfo() {
+    var category = getSentenceCategory(currentSpeakingIndex);
+    var difficulty = getSentenceDifficulty(speakingSentences[currentSpeakingIndex]);
+    
+    var infoEl = document.getElementById('sentenceInfo');
+    if (infoEl) {
+        infoEl.innerHTML = 
+            '<span style="background:' + category.color + '20;color:' + category.color + ';padding:3px 8px;border-radius:12px;font-size:12px;">' + 
+            category.icon + ' ' + category.name + '</span>' +
+            '<span style="background:' + difficulty.color + '20;color:' + difficulty.color + ';padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' +
+            '⭐'.repeat(difficulty.stars) + ' ' + difficulty.level + '</span>';
+    }
 }
 
 // 录音计时器
@@ -245,9 +314,13 @@ function selectBestUSVoice(voices) {
 }
 
 function nextSentence() {
-    currentSpeakingIndex = (currentSpeakingIndex + 1) % speakingSentences.length;
+    // 随机选择下一个句子（而不是顺序）
+    currentSpeakingIndex = getRandomSentenceIndex();
     var el = document.getElementById("targetSentence");
     if (el) el.textContent = speakingSentences[currentSpeakingIndex];
+    
+    // 更新句子信息
+    updateSentenceInfo();
     
     // 隐藏上次结果
     var resultCard = document.getElementById("resultCard");
@@ -408,14 +481,15 @@ function stopRecordingUI() {
 function showSpeakingResult(transcript) {
     var targetText = speakingSentences[currentSpeakingIndex];
     
+    // 获取DOM元素
+    var resultCard = document.getElementById("resultCard");
+    var recognizedEl = document.getElementById("recognizedText");
+    var scoreValue = document.getElementById("scoreValue");
+    var scoreCircle = document.getElementById("scoreCircle");
+    var feedbackEl = document.getElementById("speakingFeedback");
+    
     // 如果没有识别到任何内容
     if (!transcript || transcript.trim() === '') {
-        var resultCard = document.getElementById("resultCard");
-        var recognizedEl = document.getElementById("recognizedText");
-        var scoreValue = document.getElementById("scoreValue");
-        var scoreCircle = document.getElementById("scoreCircle");
-        var feedbackEl = document.getElementById("speakingFeedback");
-        
         if (resultCard) resultCard.classList.remove("hidden");
         if (recognizedEl) recognizedEl.textContent = '(未识别到语音，请重试)';
         if (scoreValue) scoreValue.textContent = '0';
@@ -426,38 +500,52 @@ function showSpeakingResult(transcript) {
             feedbackEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">' +
                 '<span style="font-size:28px;">🎤</span>' +
                 '<div><div style="font-weight:700;color:#6b7280;">未检测到语音</div>' +
-                '<div style="font-size:13px;color:#9ca3af;">请确保麦克风正常工作，按住按钮说话</div></div></div>';
+                '<div style="font-size:13px;color:#9ca3af;">请确保麦克风正常工作，按住按钮清晰说话</div></div></div>';
         }
         return;
     }
     
-    var score = calculateSimilarity(transcript.toLowerCase(), targetText.toLowerCase());
+    // 使用升级版评分系统
+    var result = calculateSimilarity(transcript, targetText);
+    var score = result.score;
+    var details = result.details;
     
-    // 显示结果卡片
-    var resultCard = document.getElementById("resultCard");
-    var recognizedEl = document.getElementById("recognizedText");
-    var scoreValue = document.getElementById("scoreValue");
-    var scoreCircle = document.getElementById("scoreCircle");
-    var feedbackEl = document.getElementById("speakingFeedback");
+    // 显示结果卡片（带动画）
+    if (resultCard) {
+        resultCard.classList.remove("hidden");
+        resultCard.style.animation = 'slideUp 0.3s ease';
+    }
     
-    if (resultCard) resultCard.classList.remove("hidden");
-    if (recognizedEl) recognizedEl.textContent = transcript || '(未识别到语音)';
-    if (scoreValue) scoreValue.textContent = score;
+    // 显示识别文本（高亮匹配/不匹配的词）
+    if (recognizedEl) {
+        recognizedEl.innerHTML = highlightMatches(transcript, targetText);
+    }
     
-    // 根据分数调整颜色
+    // 分数动画
+    if (scoreValue) {
+        animateScore(scoreValue, score);
+    }
+    
+    // 根据分数调整颜色和效果
     if (scoreCircle) {
-        if (score >= 80) {
+        if (score >= 85) {
             scoreCircle.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-        } else if (score >= 60) {
+            scoreCircle.style.boxShadow = '0 0 30px rgba(16,185,129,0.5)';
+        } else if (score >= 70) {
+            scoreCircle.style.background = 'linear-gradient(135deg,#3b82f6,#2563eb)';
+            scoreCircle.style.boxShadow = '0 0 30px rgba(59,130,246,0.5)';
+        } else if (score >= 50) {
             scoreCircle.style.background = 'linear-gradient(135deg,#f59e0b,#d97706)';
+            scoreCircle.style.boxShadow = '0 0 30px rgba(245,158,11,0.5)';
         } else {
             scoreCircle.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+            scoreCircle.style.boxShadow = '0 0 30px rgba(239,68,68,0.5)';
         }
     }
     
-    // 生成反馈
+    // 生成详细反馈
     if (feedbackEl) {
-        var feedback = generateSpeakingFeedback(score, transcript, targetText);
+        var feedback = generateDetailedFeedback(score, details, transcript, targetText);
         feedbackEl.innerHTML = feedback;
     }
     
@@ -465,49 +553,203 @@ function showSpeakingResult(transcript) {
     var count = parseInt(localStorage.getItem('stat_speaking') || '0');
     localStorage.setItem('stat_speaking', (count + 1).toString());
     
+    // 保存最佳成绩
+    saveBestScore(currentSpeakingIndex, score);
+    
     // 更新今日目标进度
     if (typeof updateDailyProgress === 'function') {
         updateDailyProgress('speaking', 1);
     }
 }
 
+// 分数动画效果
+function animateScore(element, targetScore) {
+    var current = 0;
+    var duration = 800;
+    var startTime = null;
+    
+    function animate(timestamp) {
+        if (!startTime) startTime = timestamp;
+        var progress = Math.min((timestamp - startTime) / duration, 1);
+        
+        // 使用easeOut效果
+        var easeProgress = 1 - Math.pow(1 - progress, 3);
+        current = Math.round(easeProgress * targetScore);
+        element.textContent = current;
+        
+        if (progress < 1) {
+            requestAnimationFrame(animate);
+        }
+    }
+    
+    requestAnimationFrame(animate);
+}
+
+// 高亮匹配/不匹配的词
+function highlightMatches(spoken, target) {
+    var spokenWords = spoken.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+    var targetWords = target.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+    var originalSpoken = spoken.split(/\s+/);
+    
+    var targetSet = {};
+    targetWords.forEach(function(w) {
+        targetSet[w] = (targetSet[w] || 0) + 1;
+    });
+    
+    var html = originalSpoken.map(function(word, i) {
+        var cleanWord = spokenWords[i];
+        if (targetSet[cleanWord] && targetSet[cleanWord] > 0) {
+            targetSet[cleanWord]--;
+            return '<span style="color:#10b981;font-weight:600;">' + word + '</span>';
+        } else {
+            return '<span style="color:#ef4444;text-decoration:underline;">' + word + '</span>';
+        }
+    }).join(' ');
+    
+    return html;
+}
+
+// 保存最佳成绩
+function saveBestScore(sentenceIndex, score) {
+    try {
+        var bestScores = JSON.parse(localStorage.getItem('speakingBestScores') || '{}');
+        if (!bestScores[sentenceIndex] || score > bestScores[sentenceIndex]) {
+            bestScores[sentenceIndex] = score;
+            localStorage.setItem('speakingBestScores', JSON.stringify(bestScores));
+        }
+    } catch(e) {}
+}
+
+// 生成详细反馈
+function generateDetailedFeedback(score, details, spoken, target) {
+    var html = '';
+    
+    // 总体评价
+    var emoji, title, subtitle, titleColor;
+    if (score >= 90) {
+        emoji = '🏆'; title = '完美发音！'; subtitle = '你的发音非常标准，堪称典范！'; titleColor = '#059669';
+    } else if (score >= 80) {
+        emoji = '🌟'; title = '非常棒！'; subtitle = '发音清晰准确，继续保持！'; titleColor = '#059669';
+    } else if (score >= 70) {
+        emoji = '👍'; title = '很不错！'; subtitle = '大部分发音正确，注意个别单词'; titleColor = '#3b82f6';
+    } else if (score >= 60) {
+        emoji = '💪'; title = '继续加油！'; subtitle = '基础不错，多练习几遍会更好'; titleColor = '#f59e0b';
+    } else if (score >= 40) {
+        emoji = '📖'; title = '需要练习'; subtitle = '先听原音，注意每个单词的发音'; titleColor = '#f59e0b';
+    } else {
+        emoji = '🎯'; title = '继续努力'; subtitle = '多听几遍原音，逐词跟读'; titleColor = '#ef4444';
+    }
+    
+    html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">' +
+        '<span style="font-size:36px;">' + emoji + '</span>' +
+        '<div><div style="font-weight:700;font-size:18px;color:' + titleColor + ';">' + title + '</div>' +
+        '<div style="font-size:13px;color:#6b7280;">' + subtitle + '</div></div></div>';
+    
+    // 详细评分条
+    html += '<div style="background:#f8fafc;padding:14px;border-radius:12px;margin-bottom:12px;">' +
+        '<div style="font-size:12px;font-weight:600;color:#64748b;margin-bottom:10px;">📊 评分详情</div>';
+    
+    // 单词准确率
+    html += createScoreBar('单词准确', details.wordMatch, '#3b82f6', 
+        details.matchedWords + '/' + details.totalWords + ' 个单词匹配');
+    
+    // 词序正确率
+    html += createScoreBar('语序正确', details.orderMatch, '#8b5cf6', 
+        details.orderMatch >= 80 ? '语序很好' : '注意词序');
+    
+    // 完整度
+    html += createScoreBar('内容完整', details.completeness, '#10b981',
+        '说了 ' + details.spokenWords + ' 个词');
+    
+    html += '</div>';
+    
+    // 目标句子
+    html += '<div style="background:#f0f9ff;padding:12px;border-radius:10px;border-left:3px solid #3b82f6;">' +
+        '<div style="font-size:11px;color:#3b82f6;margin-bottom:4px;font-weight:600;">📝 目标句子</div>' +
+        '<div style="color:#1e40af;font-size:14px;line-height:1.5;">' + target + '</div></div>';
+    
+    return html;
+}
+
+// 创建评分条
+function createScoreBar(label, percentage, color, hint) {
+    return '<div style="margin-bottom:8px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;">' +
+        '<span style="font-size:12px;color:#475569;">' + label + '</span>' +
+        '<span style="font-size:11px;color:#94a3b8;">' + hint + '</span></div>' +
+        '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;">' +
+        '<div style="width:' + percentage + '%;height:100%;background:' + color + ';border-radius:3px;transition:width 0.5s ease;"></div>' +
+        '</div></div>';
+}
+
+// 升级版评分系统
 function calculateSimilarity(str1, str2) {
     // 清理字符串
-    str1 = str1.replace(/[^\w\s]/g, '').trim();
-    str2 = str2.replace(/[^\w\s]/g, '').trim();
+    str1 = str1.replace(/[^\w\s]/g, '').trim().toLowerCase();
+    str2 = str2.replace(/[^\w\s]/g, '').trim().toLowerCase();
     
-    if (!str1 || !str2) return 0;
+    if (!str1 || !str2) return { score: 0, details: { wordMatch: 0, orderMatch: 0, completeness: 0 } };
     
     var words1 = str1.split(/\s+/);
     var words2 = str2.split(/\s+/);
     
-    // 计算匹配的单词数
+    // 1. 单词匹配率（40分）
     var matchCount = 0;
     var targetWords = {};
+    var matchedPositions = [];
     
-    words2.forEach(function(w) {
-        targetWords[w] = (targetWords[w] || 0) + 1;
+    words2.forEach(function(w, i) {
+        targetWords[w] = targetWords[w] || [];
+        targetWords[w].push(i);
     });
     
-    words1.forEach(function(w) {
-        if (targetWords[w] && targetWords[w] > 0) {
+    words1.forEach(function(w, i) {
+        if (targetWords[w] && targetWords[w].length > 0) {
             matchCount++;
-            targetWords[w]--;
+            matchedPositions.push({ spoken: i, target: targetWords[w].shift() });
         }
     });
     
-    // 计算基础分数
-    var wordAccuracy = (matchCount / words2.length) * 100;
+    var wordMatchScore = (matchCount / words2.length) * 40;
     
-    // Levenshtein距离作为补充
-    var editDistance = levenshteinDistance(str1, str2);
-    var maxLen = Math.max(str1.length, str2.length);
-    var charAccuracy = ((maxLen - editDistance) / maxLen) * 100;
+    // 2. 词序正确率（30分）- 检查匹配单词的相对顺序
+    var orderScore = 0;
+    if (matchedPositions.length > 1) {
+        var correctOrder = 0;
+        for (var i = 1; i < matchedPositions.length; i++) {
+            if (matchedPositions[i].target > matchedPositions[i-1].target) {
+                correctOrder++;
+            }
+        }
+        orderScore = (correctOrder / (matchedPositions.length - 1)) * 30;
+    } else if (matchedPositions.length === 1) {
+        orderScore = 30; // 只有一个词，顺序满分
+    }
     
-    // 综合评分（单词匹配70%，字符相似30%）
-    var finalScore = Math.round(wordAccuracy * 0.7 + charAccuracy * 0.3);
+    // 3. 完整度评分（30分）- 说了多少目标内容
+    var completeness = Math.min(words1.length / words2.length, 1.2); // 最高1.2倍
+    var completenessScore = Math.min(completeness * 25, 30);
     
-    return Math.min(100, Math.max(0, finalScore));
+    // 4. 额外奖励：完美匹配
+    var bonus = 0;
+    if (matchCount === words2.length && words1.length === words2.length) {
+        bonus = 5; // 完美匹配奖励
+    }
+    
+    var finalScore = Math.round(wordMatchScore + orderScore + completenessScore + bonus);
+    finalScore = Math.min(100, Math.max(0, finalScore));
+    
+    return {
+        score: finalScore,
+        details: {
+            wordMatch: Math.round(wordMatchScore / 40 * 100),
+            orderMatch: Math.round(orderScore / 30 * 100),
+            completeness: Math.round(completenessScore / 30 * 100),
+            matchedWords: matchCount,
+            totalWords: words2.length,
+            spokenWords: words1.length
+        }
+    };
 }
 
 function levenshteinDistance(str1, str2) {
@@ -535,37 +777,16 @@ function levenshteinDistance(str1, str2) {
     return dp[m][n];
 }
 
+// 旧版反馈函数保留兼容
 function generateSpeakingFeedback(score, spoken, target) {
-    var html = '';
-    
-    if (score >= 90) {
-        html = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
-            '<span style="font-size:28px;">🌟</span>' +
-            '<div><div style="font-weight:700;color:#059669;">太棒了！</div>' +
-            '<div style="font-size:13px;color:#6b7280;">发音非常标准，继续保持！</div></div></div>';
-    } else if (score >= 70) {
-        html = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
-            '<span style="font-size:28px;">👍</span>' +
-            '<div><div style="font-weight:700;color:#d97706;">不错！</div>' +
-            '<div style="font-size:13px;color:#6b7280;">大部分内容正确，注意细节</div></div></div>';
-    } else if (score >= 50) {
-        html = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
-            '<span style="font-size:28px;">💪</span>' +
-            '<div><div style="font-weight:700;color:#f59e0b;">继续努力！</div>' +
-            '<div style="font-size:13px;color:#6b7280;">多听几遍原音再试试</div></div></div>';
-    } else {
-        html = '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">' +
-            '<span style="font-size:28px;">📚</span>' +
-            '<div><div style="font-weight:700;color:#ef4444;">需要练习</div>' +
-            '<div style="font-size:13px;color:#6b7280;">先听原音，跟读几遍后再录音</div></div></div>';
-    }
-    
-    // 显示目标句子
-    html += '<div style="background:white;padding:12px;border-radius:10px;margin-top:8px;">' +
-        '<div style="font-size:12px;color:#6b7280;margin-bottom:4px;">📝 目标句子</div>' +
-        '<div style="color:#374151;font-size:14px;">' + target + '</div></div>';
-    
-    return html;
+    return generateDetailedFeedback(score, {
+        wordMatch: score,
+        orderMatch: score,
+        completeness: score,
+        matchedWords: 0,
+        totalWords: 0,
+        spokenWords: 0
+    }, spoken, target);
 }
 
 // ==================== 阅读模块 ====================
