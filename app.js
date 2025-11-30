@@ -1,6 +1,116 @@
 // ==================== 全局变量 ====================
 var currentModule = null;
 
+// ==================== 版本控制与自动更新 ====================
+(function() {
+    'use strict';
+    
+    const APP_VERSION = '2.8';
+    const VERSION_KEY = 'app_version';
+    
+    // 检查版本更新
+    function checkVersion() {
+        const savedVersion = localStorage.getItem(VERSION_KEY);
+        if (savedVersion !== APP_VERSION) {
+            console.log('[App] New version detected:', APP_VERSION);
+            localStorage.setItem(VERSION_KEY, APP_VERSION);
+            
+            // 如果是更新（不是首次安装），清理缓存
+            if (savedVersion) {
+                clearAppCache();
+            }
+        }
+    }
+    
+    // 清理应用缓存（保留用户数据）
+    function clearAppCache() {
+        // 保留的用户数据键名
+        const preserveKeys = [
+            'activatedMachines',
+            'activationKey', 
+            'deviceId',
+            'machineId',
+            'wordStats',
+            'learnedWords',
+            'favoriteWords',
+            'vocabProgress',
+            'listeningProgress',
+            'readingProgress',
+            'userSettings',
+            'userAvatar',
+            'app_version',
+            'theme',
+            'fontSize'
+        ];
+        
+        // 备份用户数据
+        const backup = {};
+        preserveKeys.forEach(key => {
+            const value = localStorage.getItem(key);
+            if (value !== null) {
+                backup[key] = value;
+            }
+        });
+        
+        // 清理 Service Worker 缓存
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
+        }
+        
+        // 清理 localStorage（但保留用户数据）
+        const allKeys = Object.keys(localStorage);
+        allKeys.forEach(key => {
+            if (!preserveKeys.some(pk => key.startsWith(pk) || key === pk)) {
+                localStorage.removeItem(key);
+            }
+        });
+        
+        // 恢复用户数据
+        Object.keys(backup).forEach(key => {
+            localStorage.setItem(key, backup[key]);
+        });
+        
+        console.log('[App] Cache cleared, user data preserved');
+    }
+    
+    // 监听 Service Worker 更新消息
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', event => {
+            if (event.data && event.data.type === 'SW_UPDATED') {
+                console.log('[App] Service Worker updated, refreshing...');
+                // 自动刷新页面获取最新版本
+                window.location.reload();
+            }
+            if (event.data && event.data.type === 'CACHE_CLEARED') {
+                console.log('[App] Cache cleared successfully');
+            }
+        });
+        
+        // 注册/更新 Service Worker
+        navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('[App] Service Worker registered');
+            
+            // 立即检查更新
+            registration.update();
+            
+            // 每次页面显示时检查更新
+            document.addEventListener('visibilitychange', () => {
+                if (document.visibilityState === 'visible') {
+                    registration.update();
+                }
+            });
+        }).catch(err => {
+            console.log('[App] Service Worker registration failed:', err);
+        });
+    }
+    
+    // 页面加载时检查版本
+    checkVersion();
+    
+    // 暴露清理函数供手动调用
+    window.clearAppCache = clearAppCache;
+})();
+
 // ==================== 浏览器兼容性检测 ====================
 (function() {
     'use strict';

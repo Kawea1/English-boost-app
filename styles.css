@@ -1639,12 +1639,16 @@ svg {
 
 .goal-progress-info {
     flex: 1;
+    min-width: 0;
+    width: 100%;
 }
 
 .goal-progress-label {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     margin-bottom: 6px;
+    width: 100%;
 }
 
 .goal-progress-name {
@@ -5125,19 +5129,15 @@ svg {
 
 .progress-ring-text {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    display: -webkit-box;
-    display: -webkit-flex;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
-    -webkit-box-align: center;
-    -webkit-align-items: center;
     align-items: center;
-    -webkit-box-pack: center;
-    -webkit-justify-content: center;
     justify-content: center;
+    width: 100%;
+    height: 100%;
+    text-align: center;
 }
 
 .progress-ring-text span {
@@ -5214,6 +5214,7 @@ svg {
 .goal-progress-info {
     flex: 1;
     min-width: 0;
+    width: 100%;
 }
 
 .goal-progress-label {
@@ -5221,6 +5222,11 @@ svg {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
+    width: 100%;
+}
+
+.goal-progress-bar {
+    width: 100%;
 }
 
 .goal-progress-name {

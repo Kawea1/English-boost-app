@@ -143,16 +143,22 @@ function initSpeechRecognition() {
     
     recognition = new SpeechRecognition();
     recognition.continuous = false;
-    recognition.interimResults = false;
+    recognition.interimResults = true;  // 启用中间结果，提高识别成功率
     recognition.lang = 'en-US';
+    recognition.maxAlternatives = 1;
+    
+    var finalTranscript = '';  // 存储最终结果
     
     recognition.onresult = function(event) {
-        var transcript = event.results[0][0].transcript;
-        recognizedText = transcript;
-        console.log('识别结果:', transcript);
-        
-        // 显示结果并计算分数
-        showSpeakingResult(transcript);
+        var transcript = '';
+        for (var i = event.resultIndex; i < event.results.length; i++) {
+            transcript += event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+                finalTranscript = transcript;
+            }
+        }
+        recognizedText = finalTranscript || transcript;
+        console.log('识别结果:', recognizedText, '(final:', event.results[event.results.length-1].isFinal, ')');
     };
     
     recognition.onerror = function(event) {
@@ -162,12 +168,25 @@ function initSpeechRecognition() {
         if (event.error === 'not-allowed') {
             alert('请允许麦克风访问权限');
         } else if (event.error === 'no-speech') {
-            alert('未检测到语音，请重试');
+            // 没检测到语音，显示提示但不弹窗打断用户
+            showSpeakingResult('');
+        } else if (event.error === 'aborted') {
+            // 用户中止，检查是否有识别结果
+            if (recognizedText) {
+                showSpeakingResult(recognizedText);
+            }
         }
     };
     
     recognition.onend = function() {
+        console.log('语音识别结束，最终文本:', recognizedText);
         stopRecordingUI();
+        
+        // 如果有识别结果，显示评分
+        if (recognizedText) {
+            showSpeakingResult(recognizedText);
+            recognizedText = '';  // 重置
+        }
     };
 }
 
@@ -271,11 +290,15 @@ function stopHoldRecording(event) {
         try {
             recognition.stop();
             console.log('停止语音识别（松开按钮）');
+            // 不要在这里调用 stopRecordingUI()
+            // 让 onend 或 onresult 事件处理器来处理UI更新
         } catch (e) {
             console.log('停止识别失败:', e);
+            stopRecordingUI();
         }
+    } else {
+        stopRecordingUI();
     }
-    stopRecordingUI();
 }
 
 // 保留原来的toggleRecording兼容性
@@ -305,6 +328,30 @@ function stopRecordingUI() {
 
 function showSpeakingResult(transcript) {
     var targetText = speakingSentences[currentSpeakingIndex];
+    
+    // 如果没有识别到任何内容
+    if (!transcript || transcript.trim() === '') {
+        var resultCard = document.getElementById("resultCard");
+        var recognizedEl = document.getElementById("recognizedText");
+        var scoreValue = document.getElementById("scoreValue");
+        var scoreCircle = document.getElementById("scoreCircle");
+        var feedbackEl = document.getElementById("speakingFeedback");
+        
+        if (resultCard) resultCard.classList.remove("hidden");
+        if (recognizedEl) recognizedEl.textContent = '(未识别到语音，请重试)';
+        if (scoreValue) scoreValue.textContent = '0';
+        if (scoreCircle) {
+            scoreCircle.style.background = 'linear-gradient(135deg,#9ca3af,#6b7280)';
+        }
+        if (feedbackEl) {
+            feedbackEl.innerHTML = '<div style="display:flex;align-items:center;gap:10px;">' +
+                '<span style="font-size:28px;">🎤</span>' +
+                '<div><div style="font-weight:700;color:#6b7280;">未检测到语音</div>' +
+                '<div style="font-size:13px;color:#9ca3af;">请确保麦克风正常工作，按住按钮说话</div></div></div>';
+        }
+        return;
+    }
+    
     var score = calculateSimilarity(transcript.toLowerCase(), targetText.toLowerCase());
     
     // 显示结果卡片
@@ -535,12 +582,17 @@ function loadRandomUnreadPassage() {
     // 更新控制栏
     var listEl = document.getElementById("readingList");
     if (listEl) {
+        // 获取今日阅读篇数
+        var today = new Date().toDateString();
+        var todayReadData = JSON.parse(localStorage.getItem("todayReadArticles") || '{"date":"","articles":[]}');
+        var todayCount = (todayReadData.date === today) ? todayReadData.articles.length : 0;
+        
         listEl.innerHTML = 
             "<div style='display:flex;align-items:center;justify-content:space-between;'>" +
             "<div style='display:flex;align-items:center;gap:8px;'>" +
             "<span style='font-size:24px;'>📚</span>" +
             "<div><div style='font-weight:600;color:#333;'>今日阅读</div>" +
-            "<div style='font-size:13px;color:#888;'>剩余 " + (passages.length - readArticles.length) + " 篇未读</div></div></div>" +
+            "<div style='font-size:13px;color:#888;'>今日已读 " + todayCount + " 篇</div></div></div>" +
             "<button onclick='loadRandomUnreadPassage()' style='padding:10px 20px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:25px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(102,126,234,0.3);'>换一篇 🔄</button></div>";
     }
     loadReadingPassage(idx);
