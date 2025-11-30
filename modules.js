@@ -133,6 +133,11 @@ function initSpeakingModule() {
     if (resultCard) resultCard.classList.add("hidden");
 }
 
+// 录音计时器
+var recordingTimer = null;
+var recordingStartTime = 0;
+var MAX_RECORDING_TIME = 30000; // 最长30秒
+
 function initSpeechRecognition() {
     // 检查浏览器支持
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -142,7 +147,7 @@ function initSpeechRecognition() {
     }
     
     recognition = new SpeechRecognition();
-    recognition.continuous = false;
+    recognition.continuous = true;  // 改为持续监听
     recognition.interimResults = true;  // 启用中间结果，提高识别成功率
     recognition.lang = 'en-US';
     recognition.maxAlternatives = 1;
@@ -201,15 +206,42 @@ function speakSentence() {
         utterance.volume = 1;
         utterance.pitch = 1;
         
-        // 选择美式语音
+        // 选择最佳美式语音
         var voices = speechSynthesis.getVoices();
-        var usVoice = voices.find(function(v) { return v.lang.startsWith('en-US'); });
-        if (!usVoice) usVoice = voices.find(function(v) { return v.lang.startsWith('en'); });
-        if (usVoice) utterance.voice = usVoice;
+        var voice = selectBestUSVoice(voices);
+        if (voice) {
+            utterance.voice = voice;
+            console.log('口语模块使用语音:', voice.name);
+        }
         
         speechSynthesis.speak(utterance);
-        console.log('口语模块播放:', text);
     }
+}
+
+// 选择最佳美式英语语音（与vocabulary.js保持一致）
+function selectBestUSVoice(voices) {
+    if (!voices || voices.length === 0) return null;
+    
+    // macOS/iOS 优质美式语音
+    var preferredNames = ['Samantha', 'Alex', 'Allison', 'Ava', 'Susan', 'Tom', 
+                          'Google US English', 'Microsoft Zira', 'Microsoft David'];
+    
+    for (var i = 0; i < preferredNames.length; i++) {
+        var voice = voices.find(function(v) {
+            return v.name.includes(preferredNames[i]) && 
+                   (v.lang === 'en-US' || v.lang.startsWith('en-US'));
+        });
+        if (voice) return voice;
+    }
+    
+    // 降级：任何美式英语
+    var usVoice = voices.find(function(v) {
+        return v.lang === 'en-US' || v.lang.startsWith('en-US');
+    });
+    if (usVoice) return usVoice;
+    
+    // 最后降级：任何英语
+    return voices.find(function(v) { return v.lang.startsWith('en'); });
 }
 
 function nextSentence() {
@@ -225,6 +257,7 @@ function nextSentence() {
 // 按住录音 - 开始
 function startHoldRecording(event) {
     event.preventDefault(); // 防止触摸设备的默认行为
+    event.stopPropagation();
     
     if (isRecording) return; // 防止重复触发
     
@@ -246,6 +279,7 @@ function startHoldRecording(event) {
     
     isRecording = true;
     recognizedText = '';
+    recordingStartTime = Date.now();
     
     // 更新UI - 按下状态
     var recordBtn = document.getElementById("recordBtn");
@@ -265,13 +299,29 @@ function startHoldRecording(event) {
         navigator.vibrate(50);
     }
     
+    // 设置最大录音时长限制（30秒）
+    recordingTimer = setTimeout(function() {
+        if (isRecording) {
+            console.log('录音达到最大时长，自动停止');
+            stopHoldRecording({preventDefault: function(){}, stopPropagation: function(){}});
+        }
+    }, MAX_RECORDING_TIME);
+    
     // 开始识别
     try {
         recognition.start();
         console.log('开始语音识别（按住模式）');
     } catch (e) {
         console.log('语音识别启动失败:', e);
-        stopRecordingUI();
+        // 可能是上次没有正确停止，尝试重新初始化
+        recognition = null;
+        initSpeechRecognition();
+        try {
+            recognition.start();
+        } catch (e2) {
+            console.log('重试启动失败:', e2);
+            stopRecordingUI();
+        }
     }
 }
 
@@ -280,18 +330,41 @@ function stopHoldRecording(event) {
     if (!isRecording) return; // 如果没在录音就不处理
     
     event.preventDefault();
+    event.stopPropagation();
+    
+    // 清除最大时长计时器
+    if (recordingTimer) {
+        clearTimeout(recordingTimer);
+        recordingTimer = null;
+    }
     
     // 震动反馈
     if (navigator.vibrate) {
         navigator.vibrate(30);
     }
     
+    // 计算录音时长
+    var duration = Date.now() - recordingStartTime;
+    console.log('录音时长:', duration, 'ms');
+    
+    // 如果录音时间太短（小于500ms），给提示
+    if (duration < 500) {
+        stopRecordingUI();
+        var resultArea = document.getElementById("resultArea");
+        if (resultArea) {
+            resultArea.innerHTML = '<div style="padding:16px;background:#fef3c7;border-radius:12px;color:#92400e;text-align:center;">' +
+                '<p style="font-weight:600;">⚠️ 录音时间太短</p>' +
+                '<p style="font-size:13px;margin-top:4px;">请按住按钮说完整句话后再松开</p></div>';
+        }
+        var resultCard = document.getElementById("resultCard");
+        if (resultCard) resultCard.classList.remove("hidden");
+        return;
+    }
+    
     if (recognition) {
         try {
             recognition.stop();
             console.log('停止语音识别（松开按钮）');
-            // 不要在这里调用 stopRecordingUI()
-            // 让 onend 或 onresult 事件处理器来处理UI更新
         } catch (e) {
             console.log('停止识别失败:', e);
             stopRecordingUI();
@@ -312,6 +385,12 @@ function toggleRecording() {
 
 function stopRecordingUI() {
     isRecording = false;
+    
+    // 清除计时器
+    if (recordingTimer) {
+        clearTimeout(recordingTimer);
+        recordingTimer = null;
+    }
     
     var recordBtn = document.getElementById("recordBtn");
     var recordText = document.getElementById("recordText");

@@ -396,11 +396,60 @@ function prevWord() {
 
 // 预加载语音列表
 var cachedVoices = [];
+var preferredVoice = null;
+
 if ('speechSynthesis' in window) {
     cachedVoices = speechSynthesis.getVoices();
     speechSynthesis.onvoiceschanged = function() {
         cachedVoices = speechSynthesis.getVoices();
+        preferredVoice = selectBestUSVoice(cachedVoices);
+        console.log('可用语音:', cachedVoices.map(v => v.name + ' (' + v.lang + ')'));
+        console.log('已选择语音:', preferredVoice ? preferredVoice.name : '默认');
     };
+}
+
+// 选择最佳美式英语语音
+function selectBestUSVoice(voices) {
+    if (!voices || voices.length === 0) return null;
+    
+    // macOS 上优质美式英语语音（按优先级排序）
+    var preferredNames = [
+        // macOS 高质量美式语音
+        'Samantha',           // 美式女声 - 非常自然
+        'Alex',               // 美式男声 - 非常自然
+        'Allison',            // 美式女声 - 增强版
+        'Ava',                // 美式女声 - 增强版
+        'Susan',              // 美式女声
+        'Tom',                // 美式男声
+        'Zoe',                // 美式女声
+        // iOS 语音
+        'Samantha (Enhanced)',
+        'Alex (Enhanced)',
+        // Chrome/Edge 语音
+        'Google US English',
+        'Microsoft Zira',
+        'Microsoft David',
+    ];
+    
+    // 按优先级查找
+    for (var i = 0; i < preferredNames.length; i++) {
+        var voice = voices.find(function(v) {
+            return v.name.includes(preferredNames[i]) && 
+                   (v.lang === 'en-US' || v.lang.startsWith('en-US'));
+        });
+        if (voice) return voice;
+    }
+    
+    // 如果没找到优先语音，查找任何美式英语语音
+    var usVoice = voices.find(function(v) {
+        return v.lang === 'en-US' || v.lang.startsWith('en-US');
+    });
+    if (usVoice) return usVoice;
+    
+    // 最后降级到任何英语语音
+    return voices.find(function(v) {
+        return v.lang.startsWith('en');
+    });
 }
 
 // 美式发音 - 使用浏览器内置TTS
@@ -425,30 +474,21 @@ function speakText(text) {
     // 创建语音对象
     var utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'en-US';
-    utterance.rate = 0.8;
+    utterance.rate = 0.85;  // 稍微放慢，更清晰
     utterance.pitch = 1;
     utterance.volume = 1;
     
-    // 选择语音
+    // 选择最佳语音
     var voices = cachedVoices.length > 0 ? cachedVoices : speechSynthesis.getVoices();
-    if (voices.length > 0) {
-        // 优先选择美式英语
-        var usVoice = voices.find(function(v) {
-            return v.lang === 'en-US' || v.lang.startsWith('en-US');
-        });
-        if (!usVoice) {
-            usVoice = voices.find(function(v) {
-                return v.lang.startsWith('en');
-            });
-        }
-        if (usVoice) {
-            utterance.voice = usVoice;
-        }
+    var voice = preferredVoice || selectBestUSVoice(voices);
+    
+    if (voice) {
+        utterance.voice = voice;
+        console.log('使用语音:', voice.name);
     }
     
     // 播放
     speechSynthesis.speak(utterance);
-    console.log('正在播放:', text);
 }
 
 // 保留旧函数名兼容

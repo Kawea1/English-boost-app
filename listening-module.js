@@ -192,6 +192,60 @@ function updateListeningStats() {
 }
 
 // 音频播放功能
+// 缓存高质量语音
+let listeningCachedVoices = null;
+let listeningPreferredVoice = null;
+
+// 选择最佳语音（优先高质量美式发音）
+function selectListeningVoice(voices) {
+    // macOS 高质量美式英语语音优先级列表
+    const preferredVoices = [
+        'Samantha',      // macOS 高质量美式女声
+        'Ava',           // macOS 高质量美式女声
+        'Allison',       // macOS 高质量美式女声
+        'Alex',          // macOS 高质量美式男声
+        'Karen',         // macOS 高质量澳式女声（作为备选）
+    ];
+    
+    // 首先尝试找高质量的指定语音
+    for (const name of preferredVoices) {
+        const voice = voices.find(v => v.name.includes(name) && v.lang.startsWith('en'));
+        if (voice) {
+            console.log('Listening 选择高质量语音:', voice.name, voice.lang);
+            return voice;
+        }
+    }
+    
+    // 其次找任何美式英语语音
+    const usVoice = voices.find(v => v.lang === 'en-US' || v.lang === 'en_US');
+    if (usVoice) {
+        console.log('Listening 使用美式语音:', usVoice.name);
+        return usVoice;
+    }
+    
+    // 最后找任何英语语音
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) {
+        console.log('Listening 使用英语语音:', enVoice.name);
+        return enVoice;
+    }
+    
+    return null;
+}
+
+// 获取或加载语音
+function getListeningVoice() {
+    if (listeningPreferredVoice) return listeningPreferredVoice;
+    
+    const voices = speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        listeningCachedVoices = voices;
+        listeningPreferredVoice = selectListeningVoice(voices);
+        return listeningPreferredVoice;
+    }
+    return null;
+}
+
 function togglePlayEnhanced() {
     if (!currentListeningSentence) {
         if (typeof showToast === 'function') showToast('请先加载练习');
@@ -210,6 +264,12 @@ function togglePlayEnhanced() {
             const utterance = new SpeechSynthesisUtterance(currentListeningSentence.sentence);
             utterance.lang = 'en-US';
             utterance.rate = playbackSpeed;
+            
+            // 使用高质量语音
+            const voice = getListeningVoice();
+            if (voice) {
+                utterance.voice = voice;
+            }
             
             utterance.onend = function() {
                 isPlaying = false;

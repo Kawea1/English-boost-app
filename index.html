@@ -7,7 +7,7 @@
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=45">
+    <link rel="stylesheet" href="styles.css?v=50">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,7 +21,7 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=45" as="style">
+    <link rel="preload" href="styles.css?v=50" as="style">
     <link rel="preload" href="app.js?v=44" as="script">
 </head>
 <body>
@@ -235,7 +235,7 @@
                     <!-- 总进度环 -->
                     <div class="goals-total-progress">
                         <div class="progress-ring-container">
-                            <svg class="progress-ring" width="80" height="80">
+                            <svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">
                                 <circle class="progress-ring-bg" cx="40" cy="40" r="34" fill="none" stroke="#e5e7eb" stroke-width="6"/>
                                 <circle class="progress-ring-fill" id="progressRingFill" cx="40" cy="40" r="34" fill="none" stroke="url(#progressGradient)" stroke-width="6" stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" transform="rotate(-90 40 40)"/>
                                 <defs>
@@ -244,10 +244,9 @@
                                         <stop offset="100%" stop-color="#a855f7"/>
                                     </linearGradient>
                                 </defs>
+                                <!-- 文字直接放在SVG中心 -->
+                                <text x="40" y="40" text-anchor="middle" dominant-baseline="central" fill="#6366f1" font-size="18" font-weight="700" id="goalsTotalProgress">0%</text>
                             </svg>
-                            <div class="progress-ring-text">
-                                <span id="goalsTotalProgress">0%</span>
-                            </div>
                         </div>
                         <div class="progress-summary">
                             <span class="completed-text" id="goalsCompletedText">已完成 0/0 项</span>
@@ -1708,14 +1707,14 @@
     </div>
 
     <script src="auth.js?v=48"></script>
-    <script src="vocabulary.js?v=40"></script>
+    <script src="vocabulary.js?v=49"></script>
     <script src="dictionary.js?v=40"></script>
     <script src="listening-data.js?v=47"></script>
-    <script src="listening-module.js?v=46"></script>
+    <script src="listening-module.js?v=49"></script>
     <script src="reading-data.js?v=40"></script>
     <script src="sources.js?v=40"></script>
     <script src="online_sources.js?v=40"></script>
-    <script src="modules.js?v=46"></script>
+    <script src="modules.js?v=49"></script>
     <script src="quotes.js?v=32"></script>
     <script src="app.js?v=47"></script>
 </body>
