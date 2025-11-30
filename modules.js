@@ -530,6 +530,10 @@ function recordTodayRead(articleId) {
         todayReadData.articles.push(articleId);
         localStorage.setItem("todayReadArticles", JSON.stringify(todayReadData));
         todayReadArticles = todayReadData.articles;
+        
+        // 同步更新今日阅读计数（供首页统计使用）
+        localStorage.setItem("todayReadingCount", todayReadData.articles.length.toString());
+        localStorage.setItem("todayReadingDate", today);
     }
 }
 

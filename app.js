@@ -668,21 +668,28 @@ function initDailyGoals() {
 
 // 从统计数据同步进度
 function syncProgressFromStats() {
+    var today = new Date().toDateString();
+    
     // 词汇进度 - 使用今日学习的单词数
     var learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
-    todayProgress.vocabulary = parseInt(localStorage.getItem('todayVocabularyCount') || '0');
+    var vocabDate = localStorage.getItem('todayVocabularyDate');
+    todayProgress.vocabulary = (vocabDate === today) ? parseInt(localStorage.getItem('todayVocabularyCount') || '0') : 0;
     
     // 听力进度
-    todayProgress.listening = parseInt(localStorage.getItem('todayListeningCount') || '0');
+    var listenDate = localStorage.getItem('todayListeningDate');
+    todayProgress.listening = (listenDate === today) ? parseInt(localStorage.getItem('todayListeningCount') || '0') : 0;
     
     // 口语进度
-    todayProgress.speaking = parseInt(localStorage.getItem('todaySpeakingCount') || '0');
+    var speakDate = localStorage.getItem('todaySpeakingDate');
+    todayProgress.speaking = (speakDate === today) ? parseInt(localStorage.getItem('todaySpeakingCount') || '0') : 0;
     
-    // 阅读进度
-    todayProgress.reading = parseInt(localStorage.getItem('todayReadingCount') || '0');
+    // 阅读进度 - 从今日阅读文章数获取
+    var todayReadData = JSON.parse(localStorage.getItem('todayReadArticles') || '{"date":"","articles":[]}');
+    todayProgress.reading = (todayReadData.date === today) ? todayReadData.articles.length : 0;
     
     // 复习进度
-    todayProgress.review = parseInt(localStorage.getItem('todayReviewCount') || '0');
+    var reviewDate = localStorage.getItem('todayReviewDate');
+    todayProgress.review = (reviewDate === today) ? parseInt(localStorage.getItem('todayReviewCount') || '0') : 0;
 }
 
 // 渲染目标进度
