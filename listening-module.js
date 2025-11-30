@@ -141,23 +141,32 @@ function renderListeningExercise() {
     const regex = new RegExp(blankWord, 'i');
     const parts = sentence.split(regex);
     
-    // 更新标题
+    // 更新标题 - 不暴露答案！
     const titleEl = document.getElementById('audioTitle');
     const descEl = document.getElementById('audioDesc');
-    if (titleEl) titleEl.textContent = item.title || '单词练习: ' + blankWord;
-    if (descEl) descEl.textContent = item.meaningCn ? '词义: ' + item.meaningCn : '听音填词';
+    // 生成提示：首字母 + 单词长度
+    const hint = blankWord.charAt(0).toUpperCase() + '___  (' + blankWord.length + '个字母)';
+    if (titleEl) titleEl.textContent = '精听填词 #' + (completedListeningSentences.length + 1);
+    if (descEl) descEl.textContent = '提示: ' + hint;
     
-    // 更新填空区域
+    // 更新填空区域 - 美化样式
     const blankArea = document.getElementById('blankArea');
     if (blankArea) {
         blankArea.innerHTML = `
-            <span>${parts[0] || ''}</span>
-            <input type="text" id="blankInput" placeholder="____" 
-                style="border:2px solid #6366f1;border-radius:10px;padding:10px 16px;width:140px;font-size:16px;margin:0 8px;outline:none;transition:all 0.3s ease;box-shadow:0 2px 8px rgba(99,102,241,0.2);" 
-                onfocus="this.style.boxShadow='0 4px 15px rgba(99,102,241,0.3)';this.style.borderColor='#a855f7';" 
-                onblur="this.style.boxShadow='0 2px 8px rgba(99,102,241,0.2)';this.style.borderColor='#6366f1';"
-                onkeypress="if(event.key==='Enter')checkAnswerEnhanced()">
-            <span>${parts[1] || ''}</span>
+            <div style="background:linear-gradient(135deg,#f8fafc,#f1f5f9);padding:20px;border-radius:16px;border:1px solid #e2e8f0;margin-bottom:8px;">
+                <div style="font-size:16px;line-height:1.8;color:#334155;text-align:center;">
+                    <span>${parts[0] || ''}</span>
+                    <input type="text" id="blankInput" placeholder="?" autocomplete="off" autocapitalize="off" spellcheck="false"
+                        style="border:none;border-bottom:3px solid #6366f1;background:transparent;padding:6px 12px;width:100px;font-size:18px;font-weight:600;margin:0 6px;outline:none;transition:all 0.3s ease;color:#6366f1;text-align:center;" 
+                        onfocus="this.style.borderColor='#a855f7';this.placeholder='';" 
+                        onblur="this.style.borderColor='#6366f1';this.placeholder='?';"
+                        onkeypress="if(event.key==='Enter')checkAnswerEnhanced()">
+                    <span>${parts[1] || ''}</span>
+                </div>
+            </div>
+            <p style="text-align:center;font-size:13px;color:#94a3b8;margin:0;">
+                💡 仔细听音频，输入空白处的单词
+            </p>
         `;
     }
     
