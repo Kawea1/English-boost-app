@@ -8,14 +8,28 @@ for (let i = 1; i <= 100; i++) {
 }
 
 const VALID_KEYS = {
-    'ADMIN-HUANGJIAWEI-2025': { user: 'huangjiawei', role: 'admin', expires: null },
+    'ADMIN-HUANGJIAWEI-2025': { user: 'huangjiawei', role: 'admin', expires: null, permanent: true },
     'BOOST-USER-001': { user: 'user1', role: 'user', expires: '2025-12-31' },
     'BOOST-USER-002': { user: 'user2', role: 'user', expires: '2025-12-31' },
     'BOOST-USER-003': { user: 'user3', role: 'user', expires: '2025-12-31' },
     ...SHAO_KEYS
 };
 
-// 生成设备指纹
+// 已激活设备列表（设备指纹 -> 激活信息）
+// 这个会存储在 localStorage 中，key: 'activatedDevices'
+function getActivatedDevices() {
+    try {
+        return JSON.parse(localStorage.getItem('activatedDevices') || '{}');
+    } catch (e) {
+        return {};
+    }
+}
+
+function saveActivatedDevices(devices) {
+    localStorage.setItem('activatedDevices', JSON.stringify(devices));
+}
+
+// 生成设备指纹 - 更稳定的版本
 function getDeviceFingerprint() {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
@@ -39,6 +53,44 @@ function getDeviceFingerprint() {
         hash = hash & hash;
     }
     return 'DEV' + Math.abs(hash).toString(36).toUpperCase();
+}
+
+// 检查当前设备是否已激活
+function isDeviceActivated() {
+    const deviceId = getDeviceFingerprint();
+    const activatedDevices = getActivatedDevices();
+    
+    if (activatedDevices[deviceId]) {
+        // 设备已激活，恢复登录状态
+        const deviceInfo = activatedDevices[deviceId];
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('activationKey', deviceInfo.key);
+        localStorage.setItem('authUser', JSON.stringify(deviceInfo.userData));
+        localStorage.setItem('deviceId', deviceId);
+        return true;
+    }
+    return false;
+}
+
+// 激活设备
+function activateDevice(key, keyData) {
+    const deviceId = getDeviceFingerprint();
+    const activatedDevices = getActivatedDevices();
+    
+    // 保存设备激活信息
+    activatedDevices[deviceId] = {
+        key: key,
+        userData: keyData,
+        activatedAt: new Date().toISOString()
+    };
+    
+    saveActivatedDevices(activatedDevices);
+    
+    // 同时保存到常规存储
+    localStorage.setItem('isLoggedIn', 'true');
+    localStorage.setItem('activationKey', key);
+    localStorage.setItem('authUser', JSON.stringify(keyData));
+    localStorage.setItem('deviceId', deviceId);
 }
 
 function validateKey(key) {
@@ -66,26 +118,8 @@ function login() {
     const keyData = validateKey(key);
     
     if (keyData) {
-        // 对于永久密钥（SHAO系列），检查设备绑定
-        if (keyData.permanent) {
-            const bindings = JSON.parse(localStorage.getItem('keyBindings') || '{}');
-            const deviceId = getDeviceFingerprint();
-            
-            // 检查是否已被其他设备绑定
-            if (bindings[key] && bindings[key] !== deviceId) {
-                showActivationResult(false, '设备冲突', '此密钥已在其他设备激活，请联系管理员');
-                return;
-            }
-            
-            // 绑定到当前设备
-            bindings[key] = deviceId;
-            localStorage.setItem('keyBindings', JSON.stringify(bindings));
-        }
-        
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('activationKey', key);
-        localStorage.setItem('authUser', JSON.stringify(keyData));
-        localStorage.setItem('deviceId', getDeviceFingerprint());
+        // 激活当前设备（永久保存）
+        activateDevice(key, keyData);
         
         // 显示成功弹窗
         showActivationResult(true);
@@ -143,20 +177,47 @@ function enterApp() {
 }
 
 function logout() {
+    // 只清除登录状态，不清除设备激活信息
     localStorage.removeItem('isLoggedIn');
     localStorage.removeItem('activationKey');
     localStorage.removeItem('authUser');
     location.reload();
 }
 
+// 完全注销（清除设备激活）
+function fullLogout() {
+    const deviceId = getDeviceFingerprint();
+    const activatedDevices = getActivatedDevices();
+    delete activatedDevices[deviceId];
+    saveActivatedDevices(activatedDevices);
+    
+    localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('activationKey');
+    localStorage.removeItem('authUser');
+    localStorage.removeItem('deviceId');
+    location.reload();
+}
+
 function checkAuth() {
-    return localStorage.getItem('isLoggedIn') === 'true';
+    // 首先检查常规登录状态
+    if (localStorage.getItem('isLoggedIn') === 'true') {
+        return true;
+    }
+    
+    // 如果未登录，检查设备是否已激活
+    if (isDeviceActivated()) {
+        return true;
+    }
+    
+    return false;
 }
 
 // 导出全局函数
 window.login = login;
 window.logout = logout;
+window.fullLogout = fullLogout;
 window.checkAuth = checkAuth;
+window.isDeviceActivated = isDeviceActivated;
 window.showActivationResult = showActivationResult;
 window.closeActivationResult = closeActivationResult;
 window.enterApp = enterApp;
