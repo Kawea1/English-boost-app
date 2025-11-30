@@ -6045,6 +6045,10 @@ svg {
     box-shadow: 0 10px 40px rgba(236, 72, 153, 0.4);
     transition: all 0.3s;
     margin: 0 auto 16px;
+    touch-action: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .record-btn-new:hover {

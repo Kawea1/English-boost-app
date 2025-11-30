@@ -305,26 +305,32 @@ function checkAnswerEnhanced() {
         feedback.style.color = '#991b1b';
         feedback.style.padding = '20px';
         feedback.style.borderRadius = '16px';
+        
+        // 获取提示（首字母和长度）
+        const blankWord = currentListeningSentence.blank;
+        const hint = blankWord.charAt(0) + '___' + ' (' + blankWord.length + '个字母)';
+        
         feedback.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
                 <span style="background:linear-gradient(135deg,#ef4444,#dc2626);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">💪</span>
                 <div>
                     <div style="font-size:18px;font-weight:700;color:#991b1b;">再试一次！</div>
-                    <div style="font-size:14px;color:#b91c1c;">正确答案是下面这个哦</div>
+                    <div style="font-size:14px;color:#b91c1c;">不要放弃，仔细听</div>
                 </div>
             </div>
             <div style="background:white;padding:14px;border-radius:12px;margin-bottom:12px;">
-                <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">正确答案</div>
-                <div style="font-size:16px;font-weight:600;color:#059669;">"${currentListeningSentence.blank}"</div>
-                ${currentListeningSentence.meaningCn ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">释义: ${currentListeningSentence.meaningCn}</div>` : ''}
+                <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">💡 提示</div>
+                <div style="font-size:16px;font-weight:600;color:#6366f1;">${hint}</div>
+                ${currentListeningSentence.meaningCn ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">词义: ${currentListeningSentence.meaningCn}</div>` : ''}
             </div>
-            <div style="background:white;padding:14px;border-radius:12px;">
-                <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">完整句子</div>
-                <div style="font-size:15px;color:#374151;line-height:1.6;">${currentListeningSentence.sentence}</div>
+            <div style="display:flex;gap:10px;margin-top:16px;">
+                <button onclick="document.getElementById('blankInput').value='';document.getElementById('blankInput').focus();document.getElementById('answerFeedback').style.display='none';" style="flex:1;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
+                    🔄 再试一次
+                </button>
+                <button onclick="showListeningAnswer()" style="flex:1;background:linear-gradient(135deg,#6b7280,#4b5563);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
+                    👀 看答案
+                </button>
             </div>
-            <button onclick="loadNextListeningSentence()" style="margin-top:16px;width:100%;background:linear-gradient(135deg,#6b7280,#4b5563);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
-                换一题
-            </button>
         `;
     }
 }
@@ -332,6 +338,39 @@ function checkAnswerEnhanced() {
 // 标记完成并进入下一题
 function markCompletedAndNext() {
     loadNextListeningSentence();
+}
+
+// 显示答案（用户选择看答案时调用）
+function showListeningAnswer() {
+    if (!currentListeningSentence) return;
+    
+    const feedback = document.getElementById('answerFeedback');
+    if (!feedback) return;
+    
+    feedback.style.background = 'linear-gradient(135deg, rgba(245,158,11,0.1) 0%, rgba(234,88,12,0.1) 100%)';
+    feedback.style.border = '2px solid #fbbf24';
+    feedback.style.color = '#92400e';
+    feedback.innerHTML = `
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+            <span style="background:linear-gradient(135deg,#f59e0b,#d97706);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">📖</span>
+            <div>
+                <div style="font-size:18px;font-weight:700;color:#92400e;">答案揭晓</div>
+                <div style="font-size:14px;color:#a16207;">下次继续努力！</div>
+            </div>
+        </div>
+        <div style="background:white;padding:14px;border-radius:12px;margin-bottom:12px;">
+            <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">正确答案</div>
+            <div style="font-size:16px;font-weight:600;color:#059669;">"${currentListeningSentence.blank}"</div>
+            ${currentListeningSentence.meaningCn ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">释义: ${currentListeningSentence.meaningCn}</div>` : ''}
+        </div>
+        <div style="background:white;padding:14px;border-radius:12px;">
+            <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">完整句子</div>
+            <div style="font-size:15px;color:#374151;line-height:1.6;">${currentListeningSentence.sentence}</div>
+        </div>
+        <button onclick="loadNextListeningSentence()" style="margin-top:16px;width:100%;background:var(--gradient-primary);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
+            下一题 →
+        </button>
+    `;
 }
 
 // 刷新/换一个练习
@@ -359,3 +398,4 @@ window.loadNextListeningSentence = loadNextListeningSentence;
 window.refreshListening = refreshListening;
 window.markCompletedAndNext = markCompletedAndNext;
 window.resetListeningProgress = resetListeningProgress;
+window.showListeningAnswer = showListeningAnswer;
