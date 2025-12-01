@@ -1,6 +1,6 @@
 // Service Worker for English Boost App
 // 每次更新时修改版本号
-const CACHE_NAME = 'english-boost-v3.1';
+const CACHE_NAME = 'english-boost-v3.2';
 
 // 需要缓存的静态资源（仅用于离线备份）
 const urlsToCache = [
@@ -17,6 +17,7 @@ const urlsToCache = [
     '/online_sources.js',
     '/modules.js',
     '/auth.js',
+    '/subscription.js',
     '/manifest.json',
     '/quotes.js'
 ];

@@ -953,6 +953,269 @@
     window.renderSubscriptionBadge = renderSubscriptionBadge;
     window.checkAndShowExpiredWarning = checkAndShowExpiredWarning;
     window.closeTrialReminder = closeTrialReminder;
+    window.renderSubscriptionSettings = renderSubscriptionSettings;
     window.SUBSCRIPTION_CONFIG = SUBSCRIPTION_CONFIG;
     
+    // 渲染设置页面的订阅状态
+    function renderSubscriptionSettings() {
+        const container = document.getElementById('subscriptionStatusContent');
+        if (!container) return;
+        
+        const status = getSubscriptionStatus();
+        const daysLeft = getTrialDaysRemaining();
+        
+        let html = '';
+        
+        if (status.type === 'lifetime') {
+            html = `
+                <div class="sub-status-display lifetime">
+                    <div class="sub-status-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                            <defs>
+                                <linearGradient id="crownGradSettings" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#f97316"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M2 17l3-11 5 4 4-6 4 6 5-4 3 11H2z" fill="url(#crownGradSettings)"/>
+                            <circle cx="12" cy="6" r="1" fill="#fbbf24"/>
+                        </svg>
+                    </div>
+                    <div class="sub-status-info">
+                        <h5>终身会员</h5>
+                        <p>感谢您的支持！您已解锁全部功能</p>
+                        <span class="sub-activated-date">激活于: ${new Date(status.purchaseDate).toLocaleDateString('zh-CN')}</span>
+                    </div>
+                </div>
+                <div class="sub-benefits">
+                    <div class="benefit-item"><span class="benefit-check">✓</span> 全部词汇学习功能</div>
+                    <div class="benefit-item"><span class="benefit-check">✓</span> 艾宾浩斯复习系统</div>
+                    <div class="benefit-item"><span class="benefit-check">✓</span> 精听训练与口语练习</div>
+                    <div class="benefit-item"><span class="benefit-check">✓</span> 学术阅读精讲</div>
+                    <div class="benefit-item"><span class="benefit-check">✓</span> 永久免费更新</div>
+                </div>
+            `;
+        } else if (status.type === 'trial') {
+            const urgentClass = daysLeft <= 7 ? 'urgent' : '';
+            const progressPercent = Math.max(0, ((SUBSCRIPTION_CONFIG.TRIAL_DAYS - daysLeft) / SUBSCRIPTION_CONFIG.TRIAL_DAYS) * 100);
+            
+            html = `
+                <div class="sub-status-display trial ${urgentClass}">
+                    <div class="sub-status-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                    </div>
+                    <div class="sub-status-info">
+                        <h5>免费试用中</h5>
+                        <p>还剩 <strong>${daysLeft}</strong> 天试用期</p>
+                        <div class="trial-progress-bar">
+                            <div class="trial-progress-fill" style="width: ${progressPercent}%"></div>
+                        </div>
+                    </div>
+                </div>
+                <button class="upgrade-btn-settings" onclick="showPaymentModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span>升级终身会员 ¥${SUBSCRIPTION_CONFIG.PRICE}</span>
+                </button>
+                <p class="upgrade-hint">一次付费，永久使用，终身免费更新</p>
+            `;
+        } else {
+            html = `
+                <div class="sub-status-display expired">
+                    <div class="sub-status-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="15" y1="9" x2="9" y2="15"/>
+                            <line x1="9" y1="9" x2="15" y2="15"/>
+                        </svg>
+                    </div>
+                    <div class="sub-status-info">
+                        <h5>试用已过期</h5>
+                        <p>升级会员以继续使用全部功能</p>
+                    </div>
+                </div>
+                <button class="upgrade-btn-settings urgent" onclick="showPaymentModal()">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                    <span>立即升级 ¥${SUBSCRIPTION_CONFIG.PRICE}</span>
+                </button>
+                <p class="upgrade-hint expired">限时特惠，买断制终身使用</p>
+            `;
+        }
+        
+        container.innerHTML = html;
+        
+        // 添加设置页面订阅卡片样式
+        addSubscriptionSettingsStyles();
+    }
+    
+    // 添加设置页面订阅样式
+    function addSubscriptionSettingsStyles() {
+        if (document.getElementById('subscriptionSettingsStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'subscriptionSettingsStyles';
+        style.textContent = `
+            .subscription-card .settings-card-icon-new.subscription {
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                color: #92400e;
+            }
+            
+            .subscription-status-card {
+                padding: 16px 0;
+            }
+            
+            .sub-status-display {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 16px;
+                background: var(--gray-50);
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+            
+            .sub-status-display.lifetime {
+                background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+            }
+            
+            .sub-status-display.trial {
+                background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            }
+            
+            .sub-status-display.trial.urgent {
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            }
+            
+            .sub-status-display.expired {
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            }
+            
+            .sub-status-info h5 {
+                font-size: 18px;
+                font-weight: 700;
+                color: #1e1b4b;
+                margin: 0 0 4px 0;
+            }
+            
+            .sub-status-info p {
+                font-size: 14px;
+                color: #6b7280;
+                margin: 0;
+            }
+            
+            .sub-status-info p strong {
+                color: #6366f1;
+                font-size: 20px;
+            }
+            
+            .sub-activated-date {
+                font-size: 12px;
+                color: #92400e;
+                margin-top: 4px;
+                display: block;
+            }
+            
+            .trial-progress-bar {
+                width: 100%;
+                height: 6px;
+                background: rgba(99, 102, 241, 0.2);
+                border-radius: 3px;
+                margin-top: 8px;
+                overflow: hidden;
+            }
+            
+            .trial-progress-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #6366f1 0%, #a855f7 100%);
+                border-radius: 3px;
+                transition: width 0.3s ease;
+            }
+            
+            .sub-benefits {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8px;
+                margin-top: 12px;
+            }
+            
+            .benefit-item {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: #374151;
+            }
+            
+            .benefit-check {
+                color: #10b981;
+                font-weight: 600;
+            }
+            
+            .upgrade-btn-settings {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 14px 20px;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .upgrade-btn-settings:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+            }
+            
+            .upgrade-btn-settings.urgent {
+                background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+                animation: pulse-button 2s infinite;
+            }
+            
+            @keyframes pulse-button {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.02); }
+            }
+            
+            .upgrade-hint {
+                text-align: center;
+                font-size: 12px;
+                color: #9ca3af;
+                margin-top: 10px;
+            }
+            
+            .upgrade-hint.expired {
+                color: #dc2626;
+            }
+            
+            .subscription-badge-container {
+                margin-right: 8px;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // 在设置页面打开时渲染订阅状态
+    const originalOpenModule = window.openModule;
+    window.openModule = function(moduleName) {
+        if (originalOpenModule) {
+            originalOpenModule(moduleName);
+        }
+        if (moduleName === 'settings') {
+            setTimeout(renderSubscriptionSettings, 100);
+        }
+    };
+
 })();

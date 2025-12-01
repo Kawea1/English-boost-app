@@ -15,7 +15,7 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '3.1';
+    const APP_VERSION = '3.2';
     const VERSION_KEY = 'app_version';
     
     // 检查版本更新
@@ -546,6 +546,12 @@ function cleanupSettingsBottomBar() {
 // ==================== 应用初始化 ====================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== English Boost App Initializing ===');
+    
+    // 版本10：首次使用时显示适龄提示（《未成年人保护法》合规）
+    if (typeof checkAgeDisclaimer === 'function') {
+        checkAgeDisclaimer();
+    }
+    
     console.log('1. 检查所有必需函数...');
     console.log('  - openModule:', typeof openModule);
     console.log('  - closeModule:', typeof closeModule);
@@ -595,6 +601,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 初始化头像
         initAvatar();
+        
+        // 初始化订阅状态徽章
+        if (typeof renderSubscriptionBadge === 'function') {
+            renderSubscriptionBadge();
+        }
+        
+        // 检查订阅状态（试用期提醒等）
+        if (typeof checkAndShowExpiredWarning === 'function') {
+            setTimeout(() => {
+                checkAndShowExpiredWarning();
+            }, 1500);
+        }
     } else {
         const loginPage = document.getElementById('loginPage');
         const mainApp = document.getElementById('mainApp');

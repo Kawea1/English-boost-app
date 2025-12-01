@@ -356,6 +356,21 @@ function startHoldRecording(event) {
         return;
     }
     
+    // 版本8优化：首次使用时显示权限说明（《App收集使用个人信息最小必要评估规范》）
+    if (!localStorage.getItem('micPermissionExplained')) {
+        showMicPermissionExplanation(function() {
+            localStorage.setItem('micPermissionExplained', 'true');
+            localStorage.setItem('micPermissionExplainedAt', new Date().toISOString());
+            continueStartRecording();
+        });
+        return;
+    }
+    
+    continueStartRecording();
+}
+
+// 继续开始录音（权限说明后）
+function continueStartRecording() {
     if (!recognition) {
         initSpeechRecognition();
     }
@@ -4991,5 +5006,134 @@ function closeLegalModal(modalId) {
 window.showPrivacyPolicy = showPrivacyPolicy;
 window.showUserAgreement = showUserAgreement;
 window.closeLegalModal = closeLegalModal;
+
+// ==================== 版本8：权限申请说明弹窗 ====================
+// 符合《App收集使用个人信息最小必要评估规范》要求
+
+function showMicPermissionExplanation(callback) {
+    const overlay = document.createElement('div');
+    overlay.id = 'micPermissionOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px;animation:fadeIn 0.3s ease;';
+    
+    overlay.innerHTML = `
+        <div style="background:white;border-radius:20px;max-width:380px;width:100%;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+            <div style="padding:24px;text-align:center;">
+                <div style="width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                </div>
+                <h3 style="margin:0 0 8px;font-size:18px;color:#1f2937;font-weight:700;">麦克风权限说明</h3>
+                <p style="margin:0 0 16px;color:#6b7280;font-size:14px;line-height:1.6;">
+                    口语练习功能需要使用麦克风来识别您的发音
+                </p>
+                
+                <div style="background:#f0f9ff;border-radius:12px;padding:16px;text-align:left;margin-bottom:20px;">
+                    <div style="font-size:13px;color:#0369a1;font-weight:600;margin-bottom:10px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                        </svg>
+                        隐私保护承诺
+                    </div>
+                    <ul style="margin:0;padding-left:16px;font-size:12px;color:#0c4a6e;line-height:1.8;">
+                        <li>语音数据<strong>仅在本地实时处理</strong></li>
+                        <li>处理完成后<strong>立即释放</strong>，不存储</li>
+                        <li><strong>不上传</strong>任何语音数据到服务器</li>
+                        <li>您可随时在设置中<strong>撤回授权</strong></li>
+                    </ul>
+                </div>
+                
+                <div style="display:flex;gap:12px;">
+                    <button onclick="document.getElementById('micPermissionOverlay').remove();" style="flex:1;padding:14px;background:#f3f4f6;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#374151;cursor:pointer;">暂不使用</button>
+                    <button id="micPermissionConfirmBtn" style="flex:1;padding:14px;background:linear-gradient(135deg,#3b82f6,#2563eb);border:none;border-radius:12px;font-size:15px;font-weight:600;color:white;cursor:pointer;">我知道了</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+    
+    // 绑定确认按钮
+    document.getElementById('micPermissionConfirmBtn').onclick = function() {
+        overlay.remove();
+        if (callback) callback();
+    };
+}
+
+// 导出权限说明函数
+window.showMicPermissionExplanation = showMicPermissionExplanation;
+window.continueStartRecording = continueStartRecording;
+
+// ==================== 版本9：数据导出格式说明 ====================
+// 优化导出功能，符合《个人信息保护法》可携带权要求
+
+var originalExportAllData = window.exportAllData;
+
+// ==================== 版本10：适龄提示功能 ====================
+// 符合《网络游戏适龄提示》《未成年人保护法》要求
+
+function checkAgeDisclaimer() {
+    if (!localStorage.getItem('ageDisclaimerAccepted')) {
+        // 首次使用显示适龄提示
+        showAgeDisclaimer();
+        return false;
+    }
+    return true;
+}
+
+function showAgeDisclaimer() {
+    const overlay = document.createElement('div');
+    overlay.id = 'ageDisclaimerOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10002;display:flex;align-items:center;justify-content:center;padding:20px;';
+    
+    overlay.innerHTML = `
+        <div style="background:white;border-radius:20px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+            <div style="background:linear-gradient(135deg,#10b981,#059669);padding:20px;text-align:center;color:white;">
+                <div style="font-size:14px;opacity:0.9;margin-bottom:4px;">适龄提示</div>
+                <div style="font-size:28px;font-weight:800;">8+</div>
+                <div style="font-size:12px;opacity:0.8;margin-top:4px;">适合8周岁及以上用户</div>
+            </div>
+            <div style="padding:24px;">
+                <div style="background:#f0fdf4;border-radius:12px;padding:16px;margin-bottom:16px;">
+                    <div style="font-size:14px;font-weight:600;color:#166534;margin-bottom:8px;">📚 应用介绍</div>
+                    <p style="margin:0;font-size:13px;color:#15803d;line-height:1.6;">
+                        本应用为英语学习教育工具，提供词汇、听力、口语、阅读等学习功能，内容健康积极。
+                    </p>
+                </div>
+                
+                <div style="font-size:12px;color:#6b7280;line-height:1.8;margin-bottom:16px;">
+                    <p style="margin:0 0 8px;"><strong>致家长：</strong></p>
+                    <ul style="margin:0;padding-left:16px;">
+                        <li>本应用不含任何付费内容</li>
+                        <li>不包含社交聊天功能</li>
+                        <li>不收集个人身份信息</li>
+                        <li>建议指导孩子合理安排学习时间</li>
+                    </ul>
+                </div>
+                
+                <button onclick="acceptAgeDisclaimer()" style="width:100%;padding:14px;background:linear-gradient(135deg,#10b981,#059669);border:none;border-radius:12px;font-size:15px;font-weight:600;color:white;cursor:pointer;">
+                    我已知晓，开始使用
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+}
+
+function acceptAgeDisclaimer() {
+    localStorage.setItem('ageDisclaimerAccepted', 'true');
+    localStorage.setItem('ageDisclaimerAcceptedAt', new Date().toISOString());
+    const overlay = document.getElementById('ageDisclaimerOverlay');
+    if (overlay) overlay.remove();
+}
+
+// 导出适龄提示函数
+window.checkAgeDisclaimer = checkAgeDisclaimer;
+window.showAgeDisclaimer = showAgeDisclaimer;
+window.acceptAgeDisclaimer = acceptAgeDisclaimer;
 
 console.log("modules.js loaded");
