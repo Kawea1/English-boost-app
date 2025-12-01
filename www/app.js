@@ -5,6 +5,16 @@ var currentModule = null;
 (function() {
     'use strict';
     
+    // 立即应用液态玻璃模式（防止闪烁）
+    try {
+        const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+        if (settings.liquidGlassMode === true) {
+            document.body.classList.add('liquid-glass-mode');
+        }
+    } catch (e) {
+        console.error('Error applying liquid glass mode:', e);
+    }
+    
     const APP_VERSION = '2.8';
     const VERSION_KEY = 'app_version';
     
@@ -591,11 +601,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mainApp) mainApp.classList.add('hidden');
     }
     
-    // 从 appSettings 加载主题
+    // 从 appSettings 加载主题和液态玻璃
     const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
     const theme = settings.theme || 'default';
     if (typeof applyTheme === 'function') {
         applyTheme(theme);
+    }
+    
+    // 应用液态玻璃模式
+    if (settings.liquidGlassMode === true) {
+        document.body.classList.add('liquid-glass-mode');
+        console.log('液态玻璃模式已启用');
+    } else {
+        document.body.classList.remove('liquid-glass-mode');
     }
     
     if ('serviceWorker' in navigator) {

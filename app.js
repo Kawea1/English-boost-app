@@ -5,6 +5,16 @@ var currentModule = null;
 (function() {
     'use strict';
     
+    // 立即应用液态玻璃模式（防止闪烁）
+    try {
+        const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+        if (settings.liquidGlassMode === true) {
+            document.body.classList.add('liquid-glass-mode');
+        }
+    } catch (e) {
+        console.error('Error applying liquid glass mode:', e);
+    }
+    
     const APP_VERSION = '2.8';
     const VERSION_KEY = 'app_version';
     
@@ -497,15 +507,15 @@ function handleSettingsScroll(container, bottomBar) {
     const clientHeight = container.clientHeight;
     const scrollPercent = scrollTop / (scrollHeight - clientHeight);
     
-    // 向下滑动（scrollTop 增加）- 显示底部栏
+    // 向下滑动（scrollTop 增加）- 隐藏底部栏
     if (scrollTop > settingsLastScrollTop + 5) {
-        bottomBar.classList.remove('hiding');
-        bottomBar.classList.add('visible');
-    } 
-    // 向上滑动（scrollTop 减少）- 隐藏底部栏（缓慢动画）
-    else if (scrollTop < settingsLastScrollTop - 5) {
         bottomBar.classList.add('hiding');
         bottomBar.classList.remove('visible');
+    } 
+    // 向上滑动（scrollTop 减少）- 显示底部栏
+    else if (scrollTop < settingsLastScrollTop - 5) {
+        bottomBar.classList.remove('hiding');
+        bottomBar.classList.add('visible');
     }
     
     // 在页面顶部时隐藏
@@ -514,8 +524,8 @@ function handleSettingsScroll(container, bottomBar) {
         bottomBar.classList.remove('visible');
     }
     
-    // 滚动到底部90%以上时显示
-    if (scrollPercent > 0.9) {
+    // 滚动到底部95%以上时显示
+    if (scrollPercent > 0.95) {
         bottomBar.classList.remove('hiding');
         bottomBar.classList.add('visible');
     }
@@ -591,11 +601,19 @@ document.addEventListener('DOMContentLoaded', function() {
         if (mainApp) mainApp.classList.add('hidden');
     }
     
-    // 从 appSettings 加载主题
+    // 从 appSettings 加载主题和液态玻璃
     const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
     const theme = settings.theme || 'default';
     if (typeof applyTheme === 'function') {
         applyTheme(theme);
+    }
+    
+    // 应用液态玻璃模式
+    if (settings.liquidGlassMode === true) {
+        document.body.classList.add('liquid-glass-mode');
+        console.log('液态玻璃模式已启用');
+    } else {
+        document.body.classList.remove('liquid-glass-mode');
     }
     
     if ('serviceWorker' in navigator) {

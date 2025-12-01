@@ -1342,6 +1342,13 @@ function loadAppSettings() {
     
     // 应用主题
     applyTheme(settings.theme || 'default');
+    
+    // 液态玻璃模式 - 无论 DOM 是否存在都要应用效果
+    applyLiquidGlass(settings.liquidGlassMode === true);
+    const liquidGlassMode = document.getElementById('liquidGlassMode');
+    if (liquidGlassMode) {
+        liquidGlassMode.checked = settings.liquidGlassMode === true;
+    }
 }
 
 // 保存应用设置
@@ -1354,7 +1361,8 @@ function saveAppSettings() {
         useCloudTTS: document.getElementById('useCloudTTS')?.checked ?? false,
         cloudTTSUrl: document.getElementById('cloudTTSUrl')?.value || '',
         cloudTTSKey: document.getElementById('cloudTTSKey')?.value || '',
-        playbackSpeed: document.getElementById('playbackSpeed')?.value || 1
+        playbackSpeed: document.getElementById('playbackSpeed')?.value || 1,
+        liquidGlassMode: document.getElementById('liquidGlassMode')?.checked ?? false
     };
     
     localStorage.setItem('appSettings', JSON.stringify(settings));
@@ -1389,6 +1397,108 @@ function applyTheme(theme) {
         'theme-lavender'
     );
     document.body.classList.add('theme-' + (theme || 'default'));
+}
+
+// 切换液态玻璃模式
+function toggleLiquidGlass(enabled) {
+    applyLiquidGlass(enabled);
+    
+    // 保存设置
+    const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.liquidGlassMode = enabled;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 显示切换提示
+    if (enabled) {
+        showLiquidGlassToast('✨ 液态玻璃效果已启用');
+    } else {
+        showToast('液态玻璃效果已关闭');
+    }
+}
+
+// 应用液态玻璃效果
+function applyLiquidGlass(enabled) {
+    if (enabled) {
+        document.body.classList.add('liquid-glass-mode');
+    } else {
+        document.body.classList.remove('liquid-glass-mode');
+    }
+}
+
+// 液态玻璃风格的提示
+function showLiquidGlassToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'liquid-glass-toast';
+    toast.innerHTML = `
+        <div class="liquid-toast-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+            </svg>
+        </div>
+        <span>${message}</span>
+    `;
+    toast.style.cssText = `
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(25px) saturate(180%);
+        -webkit-backdrop-filter: blur(25px) saturate(180%);
+        border: 1px solid rgba(255, 255, 255, 0.7);
+        border-radius: 20px;
+        padding: 20px 32px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        color: #1e1b4b;
+        z-index: 10001;
+        box-shadow: 
+            0 25px 60px rgba(0, 0, 0, 0.15),
+            inset 0 1px 2px rgba(255, 255, 255, 0.8),
+            inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+        opacity: 0;
+        animation: liquidToastIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    `;
+    
+    // 添加图标样式
+    const iconStyle = document.createElement('style');
+    iconStyle.textContent = `
+        @keyframes liquidToastIn {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        @keyframes liquidToastOut {
+            0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+        .liquid-toast-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+    `;
+    document.head.appendChild(iconStyle);
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'liquidToastOut 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards';
+        setTimeout(() => {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+            if (iconStyle.parentNode) iconStyle.parentNode.removeChild(iconStyle);
+        }, 400);
+    }, 2000);
 }
 
 // 更新播放速度显示

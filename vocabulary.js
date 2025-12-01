@@ -56,16 +56,23 @@ window.vocabularyData = [
 // 当前学习状态
 var currentWordIndex = 0;
 var wordsPerSession = parseInt(localStorage.getItem('wordsPerSession') || '20'); // 每次学习单词数
-var sessionWords = []; // 本次学习的单词
+var requiredLearningTimes = parseInt(localStorage.getItem('requiredLearningTimes') || '3'); // 每个单词需要学习的次数
+var sessionWords = []; // 本次学习的单词（原始列表）
+var learningQueue = []; // 学习队列（包含重复出现的单词）
+var currentQueueIndex = 0; // 当前队列索引
 var learnedWords = [];
 var wordRatings = {};
+var wordLearningProgress = {}; // 记录每个单词的学习进度
+var sessionWordProgress = {}; // 本轮学习中每个单词的进度（用于间隔重复）
 
 try {
     learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
     wordRatings = JSON.parse(localStorage.getItem('wordRatings') || '{}');
+    wordLearningProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
 } catch(e) {
     learnedWords = [];
     wordRatings = {};
+    wordLearningProgress = {};
 }
 
 // 初始化词汇模块
@@ -88,25 +95,388 @@ function showVocabSettings() {
         if (modalHeader) {
             var settingsDiv = document.createElement('div');
             settingsDiv.id = 'vocabSettings';
-            settingsDiv.style.cssText = 'padding:12px 20px;background:linear-gradient(180deg,#f8f7ff 0%,#f1f5f9 100%);display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(99,102,241,0.1);';
-            settingsDiv.innerHTML = '<span style="color:#374151;font-weight:600;">📚 每次学习:</span>' +
-                '<select id="wordsPerSessionSelect" onchange="changeWordsPerSession(this.value)" style="padding:8px 16px;border-radius:10px;border:2px solid #6366f1;background:white;color:#1e1b4b;font-weight:600;cursor:pointer;outline:none;">' +
-                '<option value="10"' + (wordsPerSession === 10 ? ' selected' : '') + '>10个</option>' +
-                '<option value="20"' + (wordsPerSession === 20 ? ' selected' : '') + '>20个</option>' +
-                '<option value="30"' + (wordsPerSession === 30 ? ' selected' : '') + '>30个</option>' +
-                '<option value="50"' + (wordsPerSession === 50 ? ' selected' : '') + '>50个</option>' +
-                '<option value="100"' + (wordsPerSession === 100 ? ' selected' : '') + '>100个</option>' +
-                '</select>' +
-                '<span style="color:#6b7280;font-size:13px;">（选择后自动刷新）</span>';
+            settingsDiv.className = 'vocab-settings-panel';
+            settingsDiv.innerHTML = 
+                '<div class="settings-row">' +
+                    '<div class="setting-item">' +
+                        '<span class="setting-label"><span class="setting-icon">✦</span> 每次学习</span>' +
+                        '<select id="wordsPerSessionSelect" onchange="changeWordsPerSession(this.value)" class="setting-select">' +
+                            '<option value="10"' + (wordsPerSession === 10 ? ' selected' : '') + '>10个</option>' +
+                            '<option value="20"' + (wordsPerSession === 20 ? ' selected' : '') + '>20个</option>' +
+                            '<option value="30"' + (wordsPerSession === 30 ? ' selected' : '') + '>30个</option>' +
+                            '<option value="50"' + (wordsPerSession === 50 ? ' selected' : '') + '>50个</option>' +
+                            '<option value="100"' + (wordsPerSession === 100 ? ' selected' : '') + '>100个</option>' +
+                        '</select>' +
+                    '</div>' +
+                    '<div class="setting-item">' +
+                        '<span class="setting-label"><span class="setting-icon">◈</span> 学习次数</span>' +
+                        '<select id="learningTimesSelect" onchange="changeLearningTimes(this.value)" class="setting-select">' +
+                            '<option value="1"' + (requiredLearningTimes === 1 ? ' selected' : '') + '>1次</option>' +
+                            '<option value="2"' + (requiredLearningTimes === 2 ? ' selected' : '') + '>2次</option>' +
+                            '<option value="3"' + (requiredLearningTimes === 3 ? ' selected' : '') + '>3次</option>' +
+                            '<option value="4"' + (requiredLearningTimes === 4 ? ' selected' : '') + '>4次</option>' +
+                            '<option value="5"' + (requiredLearningTimes === 5 ? ' selected' : '') + '>5次</option>' +
+                        '</select>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="settings-tip"><span class="tip-icon">✧</span> 每个单词学习 <strong id="timesDisplay">' + requiredLearningTimes + '</strong> 次后才算掌握</div>';
             modalHeader.after(settingsDiv);
+            
+            // 添加样式
+            addVocabSettingsStyles();
         }
     }
+}
+
+// 添加设置面板样式
+function addVocabSettingsStyles() {
+    if (document.getElementById('vocabSettingsStyles')) return;
+    
+    var style = document.createElement('style');
+    style.id = 'vocabSettingsStyles';
+    style.textContent = `
+        .vocab-settings-panel {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f8f7ff 0%, #e0e7ff 100%);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+        }
+        
+        .settings-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .setting-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .setting-label {
+            color: #374151;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .setting-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: bold;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+        }
+        
+        .tip-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+        }
+        
+        .setting-select {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: 2px solid #6366f1;
+            background: white;
+            color: #1e1b4b;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            outline: none;
+            transition: all 0.2s ease;
+            min-width: 80px;
+        }
+        
+        .setting-select:hover {
+            border-color: #4f46e5;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+        }
+        
+        .setting-select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+        }
+        
+        .settings-tip {
+            color: #6b7280;
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .settings-tip strong {
+            color: #6366f1;
+            font-weight: 700;
+        }
+        
+        /* 学习进度指示器 */
+        .learning-progress-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
+            border-radius: 12px;
+        }
+        
+        .progress-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .progress-dot.completed {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+        }
+        
+        .progress-dot.current {
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .progress-label {
+            margin-left: 8px;
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+        
+        /* 词卡优化样式 */
+        .word-card-enhanced {
+            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(99, 102, 241, 0.1);
+        }
+        
+        .word-main-enhanced {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1e1b4b;
+            text-align: center;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
+        }
+        
+        .word-phonetic-enhanced {
+            font-size: 18px;
+            color: #6b7280;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        /* 评分按钮优化 */
+        .rate-btn-enhanced {
+            flex: 1;
+            padding: 16px 12px;
+            border: none;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .rate-btn-enhanced.hard {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            color: #dc2626;
+            border: 2px solid #fecaca;
+        }
+        
+        .rate-btn-enhanced.hard:hover {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
+        }
+        
+        .rate-btn-enhanced.medium {
+            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            color: #d97706;
+            border: 2px solid #fde68a;
+        }
+        
+        .rate-btn-enhanced.medium:hover {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.2);
+        }
+        
+        .rate-btn-enhanced.easy {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            color: #059669;
+            border: 2px solid #a7f3d0;
+        }
+        
+        .rate-btn-enhanced.easy:hover {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.2);
+        }
+        
+        .rate-emoji {
+            font-size: 24px;
+        }
+        
+        .rate-text {
+            font-size: 14px;
+        }
+        
+        .rate-hint {
+            font-size: 11px;
+            opacity: 0.7;
+            font-weight: 500;
+        }
+        
+        /* 右上角学习次数徽章 */
+        .learning-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            z-index: 10;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .learning-badge.new {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+            border: 2px solid #fcd34d;
+        }
+        
+        .learning-badge.new .badge-icon {
+            font-size: 14px;
+            animation: sparkle 1.5s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+        
+        .learning-badge.learning {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #3730a3;
+            border: 2px solid #a5b4fc;
+        }
+        
+        .learning-badge.completed {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #065f46;
+            border: 2px solid #6ee7b7;
+        }
+        
+        .learning-badge.completed .badge-icon {
+            font-size: 14px;
+            animation: checkBounce 0.5s ease;
+        }
+        
+        @keyframes checkBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        
+        .badge-count {
+            font-size: 16px;
+            font-weight: 800;
+            color: #4f46e5;
+        }
+        
+        .badge-separator {
+            font-size: 12px;
+            color: #9ca3af;
+            margin: 0 1px;
+        }
+        
+        .badge-total {
+            font-size: 13px;
+            font-weight: 600;
+            color: #6b7280;
+        }
+        
+        .badge-text {
+            font-size: 12px;
+            margin-left: 2px;
+        }
+        
+        /* Toast 动画 */
+        @keyframes toastIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        @keyframes toastOut {
+            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+            to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// 修改学习次数设置
+function changeLearningTimes(value) {
+    requiredLearningTimes = parseInt(value);
+    localStorage.setItem('requiredLearningTimes', requiredLearningTimes.toString());
+    
+    var timesDisplay = document.getElementById('timesDisplay');
+    if (timesDisplay) {
+        timesDisplay.textContent = requiredLearningTimes;
+    }
+    
+    // 更新当前单词的进度显示
+    updateLearningProgressIndicator();
 }
 
 // 初始化本次学习的单词
 function initSessionWords() {
     currentWordIndex = 0;
+    currentQueueIndex = 0;
     sessionWords = [];
+    learningQueue = [];
+    sessionWordProgress = {}; // 重置本轮学习进度
     
     if (!window.vocabularyData || window.vocabularyData.length === 0) return;
     
@@ -127,7 +497,148 @@ function initSessionWords() {
     // 取前N个
     var count = Math.min(wordsPerSession, allIndices.length);
     for (var m = 0; m < count; m++) {
-        sessionWords.push(window.vocabularyData[allIndices[m]]);
+        var wordData = window.vocabularyData[allIndices[m]];
+        sessionWords.push(wordData);
+        // 初始化本轮学习进度
+        sessionWordProgress[wordData.word] = {
+            times: 0,           // 本轮已学习次数
+            completed: false,   // 本轮是否完成
+            lastIndex: -1       // 上次出现的位置
+        };
+    }
+    
+    // 构建间隔重复的学习队列
+    buildLearningQueue();
+}
+
+// 构建间隔重复的学习队列
+function buildLearningQueue() {
+    learningQueue = [];
+    
+    // 获取所有未完成的单词
+    var pendingWords = sessionWords.filter(function(w) {
+        return !sessionWordProgress[w.word].completed;
+    });
+    
+    if (pendingWords.length === 0) return;
+    
+    // 计算每个单词还需要学习的次数
+    var wordsNeedReview = [];
+    pendingWords.forEach(function(wordData) {
+        var progress = sessionWordProgress[wordData.word];
+        var remaining = requiredLearningTimes - progress.times;
+        for (var i = 0; i < remaining; i++) {
+            wordsNeedReview.push({
+                wordData: wordData,
+                reviewRound: progress.times + i + 1
+            });
+        }
+    });
+    
+    // 按照间隔重复的原则重新排列
+    // 策略：先学新词，然后穿插复习
+    var newWords = wordsNeedReview.filter(function(w) { return w.reviewRound === 1; });
+    var reviewWords = wordsNeedReview.filter(function(w) { return w.reviewRound > 1; });
+    
+    // 打乱新词顺序
+    shuffleArray(newWords);
+    
+    // 构建队列：每学习2-3个新词后，插入需要复习的词
+    var result = [];
+    var newWordIndex = 0;
+    var reviewWordIndex = 0;
+    var wordsSinceLastReview = {};
+    var minGap = 3; // 同一个单词至少间隔3个位置再出现
+    
+    while (newWordIndex < newWords.length || reviewWordIndex < reviewWords.length) {
+        // 优先添加新词
+        var addedNewWord = false;
+        if (newWordIndex < newWords.length) {
+            var newWord = newWords[newWordIndex];
+            result.push(newWord.wordData);
+            wordsSinceLastReview[newWord.wordData.word] = 0;
+            newWordIndex++;
+            addedNewWord = true;
+        }
+        
+        // 更新所有单词的间隔计数
+        Object.keys(wordsSinceLastReview).forEach(function(w) {
+            wordsSinceLastReview[w]++;
+        });
+        
+        // 检查是否有需要复习的单词（间隔足够）
+        if (reviewWordIndex < reviewWords.length && result.length >= minGap) {
+            // 找到一个间隔足够的复习单词
+            for (var i = reviewWordIndex; i < reviewWords.length; i++) {
+                var reviewWord = reviewWords[i];
+                var gap = wordsSinceLastReview[reviewWord.wordData.word] || 999;
+                
+                if (gap >= minGap) {
+                    // 可以插入这个复习单词
+                    result.push(reviewWord.wordData);
+                    wordsSinceLastReview[reviewWord.wordData.word] = 0;
+                    
+                    // 从复习列表中移除
+                    reviewWords.splice(i, 1);
+                    
+                    // 更新间隔计数
+                    Object.keys(wordsSinceLastReview).forEach(function(w) {
+                        wordsSinceLastReview[w]++;
+                    });
+                    break;
+                }
+            }
+        }
+        
+        // 如果没有新词可加，继续添加复习词
+        if (!addedNewWord && reviewWordIndex < reviewWords.length) {
+            var nextReview = reviewWords[0];
+            var nextGap = wordsSinceLastReview[nextReview.wordData.word] || 999;
+            
+            if (nextGap >= minGap) {
+                result.push(nextReview.wordData);
+                wordsSinceLastReview[nextReview.wordData.word] = 0;
+                reviewWords.shift();
+            } else {
+                // 间隔不够，添加占位或跳过
+                // 找其他可以复习的词
+                var foundAlternative = false;
+                for (var j = 1; j < reviewWords.length; j++) {
+                    var altWord = reviewWords[j];
+                    var altGap = wordsSinceLastReview[altWord.wordData.word] || 999;
+                    if (altGap >= minGap) {
+                        result.push(altWord.wordData);
+                        wordsSinceLastReview[altWord.wordData.word] = 0;
+                        reviewWords.splice(j, 1);
+                        foundAlternative = true;
+                        break;
+                    }
+                }
+                
+                // 如果找不到替代，强制添加（避免死循环）
+                if (!foundAlternative) {
+                    result.push(nextReview.wordData);
+                    wordsSinceLastReview[nextReview.wordData.word] = 0;
+                    reviewWords.shift();
+                }
+            }
+            
+            Object.keys(wordsSinceLastReview).forEach(function(w) {
+                wordsSinceLastReview[w]++;
+            });
+        }
+    }
+    
+    learningQueue = result;
+}
+
+// 数组随机打乱
+function shuffleArray(arr) {
+    for (var i = arr.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
 }
 
@@ -137,7 +648,6 @@ function changeWordsPerSession(value) {
     localStorage.setItem('wordsPerSession', wordsPerSession.toString());
     
     // 自动刷新，重新开始学习
-    currentWordIndex = 0;
     initSessionWords();
     
     // 恢复"显示释义"按钮
@@ -162,17 +672,30 @@ function changeWordsPerSession(value) {
 function updateVocabProgress() {
     var progress = document.getElementById('vocabProgress');
     if (progress) {
-        progress.textContent = (currentWordIndex + 1) + '/' + sessionWords.length;
+        // 显示队列进度和单词完成数
+        var completedCount = 0;
+        sessionWords.forEach(function(w) {
+            if (sessionWordProgress[w.word] && sessionWordProgress[w.word].completed) {
+                completedCount++;
+            }
+        });
+        progress.textContent = (currentQueueIndex + 1) + '/' + learningQueue.length + ' (已掌握: ' + completedCount + '/' + sessionWords.length + ')';
     }
 }
 
 function showCurrentWord() {
-    if (!sessionWords || sessionWords.length === 0) {
+    if (!learningQueue || learningQueue.length === 0) {
         initSessionWords();
     }
-    if (!sessionWords || sessionWords.length === 0) return;
+    if (!learningQueue || learningQueue.length === 0) return;
     
-    var wordData = sessionWords[currentWordIndex];
+    // 检查是否完成所有学习
+    if (currentQueueIndex >= learningQueue.length) {
+        showSessionSummary();
+        return;
+    }
+    
+    var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
     document.getElementById('wordMain').textContent = wordData.word;
@@ -185,12 +708,104 @@ function showCurrentWord() {
     
     updateVocabProgress();
     
+    // 更新右上角学习次数徽章
+    updateLearningBadge();
+    
+    // 更新学习进度指示器
+    updateLearningProgressIndicator();
+    
     // 自动朗读新单词
     speakWord();
 }
 
+// 更新右上角学习次数徽章
+function updateLearningBadge() {
+    var wordData = learningQueue[currentQueueIndex];
+    if (!wordData) return;
+    
+    var word = wordData.word;
+    var progress = sessionWordProgress[word] || { times: 0, completed: false };
+    var currentTimes = progress.times;
+    
+    // 查找或创建徽章容器
+    var badge = document.getElementById('learningBadge');
+    if (!badge) {
+        var wordCard = document.getElementById('wordCard');
+        if (wordCard) {
+            // 确保 wordCard 是相对定位
+            wordCard.style.position = 'relative';
+            
+            badge = document.createElement('div');
+            badge.id = 'learningBadge';
+            badge.className = 'learning-badge';
+            wordCard.insertBefore(badge, wordCard.firstChild);
+        }
+    }
+    
+    if (badge) {
+        if (progress.completed) {
+            badge.className = 'learning-badge completed';
+            badge.innerHTML = '<span class="badge-icon">✓</span><span class="badge-text">已掌握</span>';
+        } else {
+            var remaining = requiredLearningTimes - currentTimes;
+            badge.className = 'learning-badge';
+            if (currentTimes === 0) {
+                badge.classList.add('new');
+                badge.innerHTML = '<span class="badge-icon">✨</span><span class="badge-text">新词</span>';
+            } else {
+                badge.classList.add('learning');
+                badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span><span class="badge-text" style="margin-left:4px;">复习中</span>';
+            }
+        }
+    }
+}
+
+// 更新学习进度指示器
+function updateLearningProgressIndicator() {
+    var wordData = learningQueue[currentQueueIndex];
+    if (!wordData) return;
+    
+    var word = wordData.word;
+    var progress = sessionWordProgress[word] || { times: 0, completed: false };
+    var currentTimes = progress.times;
+    
+    // 查找或创建进度指示器容器
+    var indicatorContainer = document.getElementById('learningProgressIndicator');
+    if (!indicatorContainer) {
+        var wordCard = document.getElementById('wordCard');
+        if (wordCard) {
+            indicatorContainer = document.createElement('div');
+            indicatorContainer.id = 'learningProgressIndicator';
+            indicatorContainer.className = 'learning-progress-indicator';
+            wordCard.appendChild(indicatorContainer);
+        }
+    }
+    
+    if (indicatorContainer) {
+        var dotsHtml = '';
+        for (var i = 0; i < requiredLearningTimes; i++) {
+            var dotClass = 'progress-dot';
+            if (i < currentTimes) {
+                dotClass += ' completed';
+            } else if (i === currentTimes) {
+                dotClass += ' current';
+            }
+            dotsHtml += '<div class="' + dotClass + '"></div>';
+        }
+        
+        var statusText = '';
+        if (progress.completed) {
+            statusText = '✅ 已掌握';
+        } else {
+            statusText = '第 ' + (currentTimes + 1) + '/' + requiredLearningTimes + ' 次学习';
+        }
+        
+        indicatorContainer.innerHTML = dotsHtml + '<span class="progress-label">' + statusText + '</span>';
+    }
+}
+
 function showMeaning() {
-    var wordData = sessionWords[currentWordIndex];
+    var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
     // 查询字典数据
@@ -204,9 +819,9 @@ function showMeaning() {
     
     // 如果有字典数据，优先显示
     if (dictData) {
-        meaningHtml += '<div class="dict-container" style="background:#f8f9fa;padding:12px;border-radius:8px;margin-bottom:10px;">';
+        meaningHtml += '<div class="dict-container" style="background:linear-gradient(135deg,#f8f7ff 0%,#eef2ff 100%);padding:14px;border-radius:12px;margin-bottom:12px;border:1px solid rgba(99,102,241,0.1);">';
         if (dictData.definitions && dictData.definitions.length > 0) {
-            meaningHtml += '<div style="font-weight:600;margin-bottom:8px;">📚 词典释义</div>';
+            meaningHtml += '<div style="font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:6px;box-shadow:0 2px 6px rgba(99,102,241,0.3);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span style="color:#4338ca;">词典释义</span></div>';
             dictData.definitions.slice(0, 3).forEach(function(def, idx) {
                 meaningHtml += '<div style="margin-bottom:6px;font-size:14px;color:#555;">• ' + def + '</div>';
             });
@@ -214,11 +829,11 @@ function showMeaning() {
         meaningHtml += '</div>';
     }
     
-    meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#333;margin-bottom:10px;font-weight:600;">📖 ' + (wordData.meaningCn || '暂无中文释义') + '</div>';
-    meaningHtml += '<div class="meaning-en" style="color:#666;font-size:15px;margin-bottom:15px;">📝 ' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
+    meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
+    meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
     
     if (wordData.example) {
-        meaningHtml += '<div class="word-example" style="color:#888;font-size:14px;font-style:italic;padding-top:15px;border-top:1px solid #e0e0e0;">💬 ' + wordData.example + '</div>';
+        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
     }
     
     document.getElementById('meaningCn').innerHTML = meaningHtml;
@@ -231,10 +846,59 @@ function showMeaning() {
 }
 
 function rateWord(rating) {
-    var wordData = sessionWords[currentWordIndex];
+    var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
     var word = wordData.word;
+    
+    // 更新本轮学习进度
+    var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
+    
+    // 如果评分为困难，不增加进度（需要重新学习）
+    if (rating === 'hard') {
+        // 困难的单词：在队列后面再添加一次
+        addWordToQueueLater(wordData, 4); // 间隔4个单词后再出现
+        showDifficultyFeedback('困难单词，稍后再学习一次');
+    } else {
+        // 简单或一般：增加学习进度
+        sessionProgress.times++;
+        sessionProgress.lastIndex = currentQueueIndex;
+        
+        // 判断本轮是否完成
+        if (sessionProgress.times >= requiredLearningTimes) {
+            sessionProgress.completed = true;
+            showCompletionToast(word);
+            
+            // 更新全局学习进度
+            var globalProgress = wordLearningProgress[word] || { times: 0, completed: false, ratings: [] };
+            globalProgress.times = sessionProgress.times;
+            globalProgress.completed = true;
+            globalProgress.ratings.push(rating);
+            globalProgress.lastReview = new Date().toISOString();
+            wordLearningProgress[word] = globalProgress;
+            localStorage.setItem('wordLearningProgress', JSON.stringify(wordLearningProgress));
+            
+            // 记录为已学
+            if (learnedWords.indexOf(word) === -1) {
+                learnedWords.push(word);
+                localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+                localStorage.setItem('learnedCount', learnedWords.length.toString());
+                
+                // 更新今日目标进度
+                if (typeof updateDailyProgress === 'function') {
+                    updateDailyProgress('vocabulary', 1);
+                }
+            }
+            
+            // 如果评分为简单，标记为已掌握
+            if (rating === 'easy') {
+                var mastered = parseInt(localStorage.getItem('masteredCount') || '0');
+                localStorage.setItem('masteredCount', (mastered + 1).toString());
+            }
+        }
+    }
+    
+    sessionWordProgress[word] = sessionProgress;
     
     // 计算复习间隔（艾宾浩斯曲线）
     var interval = 1; // 默认1天后复习
@@ -252,39 +916,79 @@ function rateWord(rating) {
         rating: rating,
         lastReview: new Date().toISOString(),
         count: prevCount + 1,
-        interval: interval
+        interval: interval,
+        learningProgress: sessionProgress
     };
     localStorage.setItem('wordRatings', JSON.stringify(wordRatings));
-    
-    // 记录已学单词
-    if (learnedWords.indexOf(word) === -1) {
-        learnedWords.push(word);
-        localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
-        localStorage.setItem('learnedCount', learnedWords.length.toString());
-        
-        // 更新今日目标进度
-        if (typeof updateDailyProgress === 'function') {
-            updateDailyProgress('vocabulary', 1);
-        }
-    }
-    
-    // 如果评分为简单，标记为已掌握
-    if (rating === 'easy') {
-        var mastered = parseInt(localStorage.getItem('masteredCount') || '0');
-        localStorage.setItem('masteredCount', (mastered + 1).toString());
-    }
     
     // 下一个词
     nextWord();
 }
 
+// 将单词添加到队列后面（用于困难单词重复学习）
+function addWordToQueueLater(wordData, gap) {
+    var insertIndex = Math.min(currentQueueIndex + gap, learningQueue.length);
+    learningQueue.splice(insertIndex, 0, wordData);
+}
+
+// 显示困难反馈
+function showDifficultyFeedback(message) {
+    var feedback = document.createElement('div');
+    feedback.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50%;margin-right:8px;box-shadow:0 2px 4px rgba(245,158,11,0.3);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>' + message;
+    feedback.style.cssText = 'position:fixed;top:20%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%);color:#92400e;padding:14px 28px;border-radius:14px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 8px 30px rgba(245,158,11,0.25);animation:toastIn 0.3s ease;border:2px solid #fcd34d;display:flex;align-items:center;';
+    document.body.appendChild(feedback);
+    
+    setTimeout(function() {
+        feedback.style.animation = 'toastOut 0.3s ease';
+        setTimeout(function() {
+            if (feedback.parentNode) feedback.parentNode.removeChild(feedback);
+        }, 300);
+    }, 1200);
+}
+
+// 显示单词完成提示
+function showCompletionToast(word) {
+    var toast = document.createElement('div');
+    toast.className = 'word-completion-toast';
+    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><strong style="font-size:18px;">' + word + '</strong><div style="font-size:13px;opacity:0.9;margin-top:2px;">学习完成！继续加油 ✓</div></div>';
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:white;padding:20px 32px;border-radius:20px;font-size:16px;font-weight:600;z-index:10001;box-shadow:0 15px 50px rgba(16,185,129,0.45);animation:toastIn 0.4s ease;display:flex;align-items:center;';
+    document.body.appendChild(toast);
+    
+    setTimeout(function() {
+        toast.style.animation = 'toastOut 0.3s ease';
+        setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 300);
+    }, 1500);
+}
+
 function nextWord() {
-    if (currentWordIndex < sessionWords.length - 1) {
-        currentWordIndex++;
+    currentQueueIndex++;
+    
+    if (currentQueueIndex < learningQueue.length) {
         showCurrentWord();
     } else {
-        // 学完本组，显示总结页面
-        showSessionSummary();
+        // 检查是否所有单词都已完成
+        var allCompleted = true;
+        sessionWords.forEach(function(w) {
+            if (!sessionWordProgress[w.word] || !sessionWordProgress[w.word].completed) {
+                allCompleted = false;
+            }
+        });
+        
+        if (allCompleted) {
+            // 学完本组，显示总结页面
+            showSessionSummary();
+        } else {
+            // 还有未完成的单词，重新构建队列
+            buildLearningQueue();
+            currentQueueIndex = 0;
+            if (learningQueue.length > 0) {
+                showCurrentWord();
+            } else {
+                showSessionSummary();
+            }
+        }
     }
 }
 
@@ -300,41 +1004,44 @@ function showSessionSummary() {
     
     // 构建总结HTML
     var summaryHtml = '<div style="padding:20px;">';
-    summaryHtml += '<div style="text-align:center;margin-bottom:24px;">';
-    summaryHtml += '<div style="font-size:60px;margin-bottom:12px;">🎉</div>';
-    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:24px;font-weight:800;">本轮学习完成！</h2>';
-    summaryHtml += '<p style="color:#6b7280;margin-top:8px;">共学习 ' + sessionWords.length + ' 个单词</p>';
+    summaryHtml += '<div style="text-align:center;margin-bottom:28px;">';
+    summaryHtml += '<div style="width:80px;height:80px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 10px 40px rgba(16,185,129,0.35);"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
+    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:26px;font-weight:800;">本轮学习完成！</h2>';
+    summaryHtml += '<p style="color:#6b7280;margin-top:10px;font-size:15px;">共学习 <span style="color:#6366f1;font-weight:700;">' + sessionWords.length + '</span> 个单词</p>';
     summaryHtml += '</div>';
     
     summaryHtml += '<div style="max-height:400px;overflow-y:auto;">';
     
     sessionWords.forEach(function(wordData, index) {
         var rating = wordRatings[wordData.word] ? wordRatings[wordData.word].rating : 'medium';
-        var ratingEmoji = rating === 'easy' ? '😊' : (rating === 'hard' ? '😰' : '🤔');
-        var ratingColor = rating === 'easy' ? '#10b981' : (rating === 'hard' ? '#ef4444' : '#f59e0b');
+        var ratingIcon = rating === 'easy' 
+            ? '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:50%;box-shadow:0 2px 8px rgba(16,185,129,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></span>'
+            : (rating === 'hard' 
+                ? '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border-radius:50%;box-shadow:0 2px 8px rgba(239,68,68,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>'
+                : '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:50%;box-shadow:0 2px 8px rgba(245,158,11,0.3);"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><line x1="5" y1="12" x2="19" y2="12"/></svg></span>');
         
-        summaryHtml += '<div style="background:linear-gradient(180deg,#f8f7ff 0%,#f1f5f9 100%);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(99,102,241,0.1);">';
-        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">';
-        summaryHtml += '<div style="display:flex;align-items:center;gap:10px;">';
-        summaryHtml += '<span style="background:linear-gradient(135deg,#6366f1,#a855f7);color:white;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;">' + (index + 1) + '</span>';
+        summaryHtml += '<div style="background:linear-gradient(180deg,#ffffff 0%,#f8f9fa 100%);border-radius:16px;padding:16px;margin-bottom:12px;border:1px solid rgba(99,102,241,0.08);box-shadow:0 2px 8px rgba(0,0,0,0.04);">';
+        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">';
+        summaryHtml += '<div style="display:flex;align-items:center;gap:12px;">';
+        summaryHtml += '<span style="background:linear-gradient(135deg,#6366f1,#a855f7);color:white;width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(99,102,241,0.3);">' + (index + 1) + '</span>';
         summaryHtml += '<span style="font-size:18px;font-weight:700;color:#1e1b4b;">' + wordData.word + '</span>';
-        summaryHtml += '<span style="font-size:12px;color:#6b7280;">' + (wordData.phonetic || '') + '</span>';
+        summaryHtml += '<span style="font-size:12px;color:#9ca3af;background:#f3f4f6;padding:2px 8px;border-radius:6px;">' + (wordData.phonetic || '') + '</span>';
         summaryHtml += '</div>';
-        summaryHtml += '<span style="font-size:20px;">' + ratingEmoji + '</span>';
+        summaryHtml += ratingIcon;
         summaryHtml += '</div>';
-        summaryHtml += '<div style="font-size:16px;color:#374151;font-weight:600;margin-bottom:6px;">📖 ' + (wordData.meaningCn || '') + '</div>';
-        summaryHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:6px;">📝 ' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
+        summaryHtml += '<div style="font-size:15px;color:#374151;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>' + (wordData.meaningCn || '') + '</div>';
+        summaryHtml += '<div style="font-size:13px;color:#6b7280;margin-bottom:6px;display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:5px;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span>' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
         if (wordData.example) {
-            summaryHtml += '<div style="font-size:13px;color:#9ca3af;font-style:italic;">💬 ' + wordData.example + '</div>';
+            summaryHtml += '<div style="font-size:12px;color:#9ca3af;font-style:italic;display:flex;align-items:flex-start;gap:8px;margin-top:8px;padding-top:8px;border-top:1px solid #f3f4f6;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:18px;height:18px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:5px;flex-shrink:0;"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
         }
         summaryHtml += '</div>';
     });
     
     summaryHtml += '</div>';
     
-    summaryHtml += '<div style="display:flex;gap:12px;margin-top:20px;">';
-    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:16px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);color:white;border:none;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 25px rgba(99,102,241,0.35);">🔄 继续学习</button>';
-    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:16px;background:white;color:#6366f1;border:2px solid #6366f1;border-radius:14px;font-size:16px;font-weight:700;cursor:pointer;">✓ 完成</button>';
+    summaryHtml += '<div style="display:flex;gap:12px;margin-top:24px;">';
+    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:18px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);color:white;border:none;border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(99,102,241,0.35);display:flex;align-items:center;justify-content:center;gap:10px;"><span style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;background:rgba(255,255,255,0.2);border-radius:50%;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></span>继续学习</button>';
+    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:18px;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);color:#6366f1;border:2px solid rgba(99,102,241,0.3);border-radius:16px;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;"><span style="display:flex;align-items:center;justify-content:center;width:24px;height:24px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:50%;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>完成</button>';
     summaryHtml += '</div>';
     summaryHtml += '</div>';
     
@@ -507,6 +1214,9 @@ window.speakWord = speakWord;
 window.nextWord = nextWord;
 window.prevWord = prevWord;
 window.changeWordsPerSession = changeWordsPerSession;
+window.changeLearningTimes = changeLearningTimes;
 window.initSessionWords = initSessionWords;
 window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
+window.updateLearningProgressIndicator = updateLearningProgressIndicator;
+window.updateLearningBadge = updateLearningBadge;

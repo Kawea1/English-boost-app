@@ -7,7 +7,7 @@
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=51">
+    <link rel="stylesheet" href="styles.css?v=20251201094837">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=51" as="style">
-    <link rel="preload" href="app.js?v=20251130235757" as="script">
+    <link rel="preload" href="styles.css?v=20251201094837" as="style">
+    <link rel="preload" href="app.js?v=20251201094837" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -1079,10 +1079,29 @@
 
             <!-- 设置模态 -->
             <div class="modal" id="settingsModal">
-                <div class="settings-header-simple">
-                    <button class="back-btn-simple" onclick="closeModule()">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                    </button>
+                <!-- 固定的设置操作栏 -->
+                <div class="settings-sticky-header">
+                    <div class="settings-header-left">
+                        <button class="back-btn-simple" onclick="closeModule()">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                        </button>
+                        <span class="settings-header-title">设置</span>
+                    </div>
+                    <div class="settings-header-actions">
+                        <button class="settings-action-btn reset" onclick="resetAppSettings()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="1 4 1 10 7 10"/>
+                                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+                            </svg>
+                            <span>重置</span>
+                        </button>
+                        <button class="settings-action-btn save" onclick="saveAppSettings()">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            <span>保存</span>
+                        </button>
+                    </div>
                 </div>
                 <div class="settings-content">
                     <!-- 设置分组导航 - 移到顶部 -->
@@ -1233,6 +1252,44 @@
                                     <span class="theme-name">薰衣紫</span>
                                     <span class="theme-check">✓</span>
                                 </label>
+                            </div>
+                        </div>
+
+                        <!-- iOS 26 液态玻璃效果设置 -->
+                        <div class="settings-card-modern liquid-glass-settings">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new glass">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                                        <path d="M2 17l10 5 10-5"/>
+                                        <path d="M2 12l10 5 10-5"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>液态玻璃效果</h4>
+                                    <p>iOS 26 风格毛玻璃视觉体验</p>
+                                </div>
+                            </div>
+                            <div class="liquid-glass-preview">
+                                <div class="liquid-glass-demo">
+                                    <div class="glass-demo-card">
+                                        <div class="glass-demo-icon">✦</div>
+                                        <div class="glass-demo-text">预览效果</div>
+                                    </div>
+                                    <div class="glass-demo-bg"></div>
+                                </div>
+                            </div>
+                            <div class="settings-list">
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">启用液态玻璃</span>
+                                        <span class="setting-desc">为所有卡片添加毛玻璃效果</span>
+                                    </div>
+                                    <label class="toggle-modern liquid-toggle">
+                                        <input type="checkbox" id="liquidGlassMode" onchange="toggleLiquidGlass(this.checked)">
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
@@ -1708,15 +1765,15 @@
     </div>
 
     <script src="auth.js?v=48"></script>
-    <script src="vocabulary.js?v=49"></script>
-    <script src="dictionary.js?v=40"></script>
-    <script src="listening-data.js?v=47"></script>
-    <script src="listening-module.js?v=49"></script>
-    <script src="reading-data.js?v=40"></script>
-    <script src="sources.js?v=40"></script>
-    <script src="online_sources.js?v=40"></script>
-    <script src="modules.js?v=49"></script>
+    <script src="vocabulary.js?v=20251201094837"></script>
+    <script src="dictionary.js?v=20251201094837"></script>
+    <script src="listening-data.js?v=20251201094837"></script>
+    <script src="listening-module.js?v=20251201094837"></script>
+    <script src="reading-data.js?v=20251201094837"></script>
+    <script src="sources.js?v=20251201094837"></script>
+    <script src="online_sources.js?v=20251201094837"></script>
+    <script src="modules.js?v=20251201094837"></script>
     <script src="quotes.js?v=32"></script>
-    <script src="app.js?v=49"></script>
+    <script src="app.js?v=20251201094837"></script>
 </body>
 </html>
