@@ -1,0 +1,10 @@
+{
+  "license": "MIT",
+  "devDependencies": {},
+  "author": "Academic English Team",
+  "name": "entry",
+  "description": "学术英语精进主模块",
+  "main": "",
+  "version": "1.0.0",
+  "dependencies": {}
+}

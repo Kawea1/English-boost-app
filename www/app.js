@@ -860,14 +860,34 @@ function renderGoalsProgress() {
     
     // 更新统计文本
     var completedText = document.getElementById('goalsCompletedText');
-    var totalProgress = document.getElementById('goalsTotalProgress');
+    var progressNumEl = document.getElementById('goalsTotalProgressNum');
+    var progressOverlay = document.getElementById('progressTextOverlay');
     var encourageText = document.getElementById('encourageText');
     
     if (completedText) {
         completedText.textContent = '已完成 ' + completedCount + '/' + totalGoals + ' 项';
     }
-    if (totalProgress) {
-        totalProgress.textContent = avgPercent + '%';
+    
+    // 版本1-3改进：更新横向百分比显示
+    if (progressNumEl) {
+        progressNumEl.textContent = avgPercent;
+        
+        // 版本2: 根据位数调整字体大小
+        progressNumEl.classList.remove('two-digits', 'three-digits');
+        if (avgPercent >= 100) {
+            progressNumEl.classList.add('three-digits');
+        } else if (avgPercent >= 10) {
+            progressNumEl.classList.add('two-digits');
+        }
+    }
+    
+    // 版本3: 100%完成时添加特殊样式
+    if (progressOverlay) {
+        if (avgPercent >= 100) {
+            progressOverlay.classList.add('completed');
+        } else {
+            progressOverlay.classList.remove('completed');
+        }
     }
     if (encourageText) {
         if (avgPercent === 0) {

@@ -254,9 +254,12 @@
                                         <stop offset="100%" stop-color="#a855f7"/>
                                     </linearGradient>
                                 </defs>
-                                <!-- 文字直接放在SVG中心 -->
-                                <text x="40" y="40" text-anchor="middle" dominant-baseline="central" fill="#6366f1" font-size="18" font-weight="700" id="goalsTotalProgress">0%</text>
                             </svg>
+                            <!-- 版本1-3改进：使用HTML元素替代SVG text，实现更好的横向布局 -->
+                            <div class="progress-ring-text-overlay" id="progressTextOverlay">
+                                <span class="progress-number" id="goalsTotalProgressNum">0</span>
+                                <span class="progress-percent">%</span>
+                            </div>
                         </div>
                         <div class="progress-summary">
                             <span class="completed-text" id="goalsCompletedText">已完成 0/0 项</span>

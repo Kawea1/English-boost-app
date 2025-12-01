@@ -1,0 +1,20 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "学术英语精进"
+    },
+    {
+      "name": "module_desc",
+      "value": "GRE、托福、学术英语学习应用 - 离线可用"
+    },
+    {
+      "name": "MainAbility_desc",
+      "value": "学术英语精进主界面"
+    },
+    {
+      "name": "MainAbility_label",
+      "value": "学术英语精进"
+    }
+  ]
+}
