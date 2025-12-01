@@ -15,6 +15,9 @@ try {
 function initListeningModule() {
     console.log('initListeningModule called');
     
+    // 检查全盘复习模式
+    updateListeningForReviewMode();
+    
     // 加载下一个句子
     loadNextListeningSentence();
     
@@ -22,14 +25,59 @@ function initListeningModule() {
     updateListeningStats();
 }
 
+// 检查是否启用全盘复习模式
+function isComprehensiveReviewEnabled() {
+    try {
+        var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+        return settings.comprehensiveReviewMode === true;
+    } catch(e) {
+        return false;
+    }
+}
+
+// 更新听力模块标题以反映复习模式
+function updateListeningForReviewMode() {
+    if (isComprehensiveReviewEnabled()) {
+        var titleEl = document.getElementById('audioTitle');
+        if (titleEl) {
+            var badge = document.createElement('span');
+            badge.className = 'review-mode-badge';
+            badge.innerHTML = '📝 复习模式';
+            titleEl.parentNode.insertBefore(badge, titleEl.nextSibling);
+        }
+    }
+}
+
 // 获取可用的听力练习句子（基于已学单词）
 function getAvailableListeningSentences() {
+    // 检查是否启用全盘复习模式
+    var reviewMode = isComprehensiveReviewEnabled();
+    
     // 获取已学单词列表
     let learnedWords = [];
     try {
         learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
     } catch(e) {
         learnedWords = [];
+    }
+    
+    // 如果是复习模式，只使用今日学习的单词
+    if (reviewMode) {
+        learnedWords = getTodayWordsForListening();
+        if (learnedWords.length === 0) {
+            // 没有今日单词，取最近学习的10个
+            var wordProgress = {};
+            try {
+                wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+            } catch(e) {}
+            
+            var allLearned = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+            learnedWords = allLearned.slice().sort(function(a, b) {
+                var aTime = wordProgress[a] ? new Date(wordProgress[a].lastReview || 0).getTime() : 0;
+                var bTime = wordProgress[b] ? new Date(wordProgress[b].lastReview || 0).getTime() : 0;
+                return bTime - aTime;
+            }).slice(0, 10);
+        }
     }
     
     // 如果没有已学单词，使用vocabularyData的前20个单词
@@ -55,15 +103,16 @@ function getAvailableListeningSentences() {
                         sentence: example,
                         blank: wordData.word,
                         meaningCn: wordData.meaningCn,
-                        meaningEn: wordData.meaningEn
+                        meaningEn: wordData.meaningEn,
+                        isReviewWord: reviewMode
                     });
                 }
             }
         });
     }
     
-    // 如果基于单词的句子不够，也加入原来的listeningData
-    if (window.listeningData) {
+    // 如果不是复习模式或基于单词的句子不够，也加入原来的listeningData
+    if (!reviewMode && window.listeningData) {
         window.listeningData.forEach(item => {
             sentences.push({
                 id: 'listening_' + item.id,
@@ -78,6 +127,27 @@ function getAvailableListeningSentences() {
     }
     
     return sentences;
+}
+
+// 获取今日学习的单词（用于听力模块）
+function getTodayWordsForListening() {
+    var today = new Date().toDateString();
+    var wordProgress = {};
+    try {
+        wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    } catch(e) {}
+    
+    var learnedWords = [];
+    try {
+        learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    } catch(e) {}
+    
+    return learnedWords.filter(function(word) {
+        var progress = wordProgress[word];
+        if (!progress || !progress.lastReview) return false;
+        var reviewDate = new Date(progress.lastReview).toDateString();
+        return reviewDate === today;
+    });
 }
 
 // 加载下一个随机句子

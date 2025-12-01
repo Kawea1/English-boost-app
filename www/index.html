@@ -7,7 +7,7 @@
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=20251202180000">
+    <link rel="stylesheet" href="styles.css?v=20251202190000">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=20251202180000" as="style">
-    <link rel="preload" href="app.js?v=20251202180000" as="script">
+    <link rel="preload" href="styles.css?v=20251202190000" as="style">
+    <link rel="preload" href="app.js?v=20251202190000" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -538,6 +538,18 @@
                 </div>
             </div>
             <div class="speaking-module-content">
+                <!-- 口语模式切换 -->
+                <div class="speaking-mode-selector">
+                    <button class="speaking-mode-btn active" data-mode="sentence" onclick="switchSpeakingMode('sentence')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                        <span>句子模式</span>
+                    </button>
+                    <button class="speaking-mode-btn" data-mode="paragraph" onclick="switchSpeakingMode('paragraph')">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h12"/></svg>
+                        <span>段落模式</span>
+                    </button>
+                </div>
+                
                 <!-- 句子卡片 -->
                 <div class="sentence-card-new">
                     <div class="sentence-header">
@@ -592,6 +604,17 @@
                         <h4>识别结果</h4>
                     </div>
                     <p id="recognizedText" class="recognized-text"></p>
+                    
+                    <!-- 单词级别评估 -->
+                    <div id="wordLevelAnalysis" class="word-level-analysis hidden">
+                        <div class="word-analysis-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                            <span>单词发音评估</span>
+                            <span id="wordScoreSummary" class="word-score-summary"></span>
+                        </div>
+                        <div id="wordScoresGrid" class="word-scores-grid"></div>
+                    </div>
+                    
                     <div class="score-section">
                         <div id="scoreCircle" class="score-circle">
                             <svg class="score-ring" width="120" height="120" viewBox="0 0 120 120">
@@ -1290,6 +1313,61 @@
                             </div>
                         </div>
 
+                        <!-- 全盘复习模式设置 -->
+                        <div class="settings-card-modern comprehensive-review-settings">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new review">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M12 6v6l4 2"/>
+                                        <path d="M16 16l2 2"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>全盘复习模式</h4>
+                                    <p>围绕今日所学词汇进行全方位练习</p>
+                                </div>
+                            </div>
+                            <div class="review-mode-preview">
+                                <div class="review-mode-info">
+                                    <div class="review-stat">
+                                        <span class="review-stat-icon">📚</span>
+                                        <span class="review-stat-label">今日词汇</span>
+                                        <span class="review-stat-value" id="todayWordsCount">0</span>
+                                    </div>
+                                    <div class="review-stat">
+                                        <span class="review-stat-icon">🎧</span>
+                                        <span class="review-stat-label">听力练习</span>
+                                        <span class="review-stat-value">✓</span>
+                                    </div>
+                                    <div class="review-stat">
+                                        <span class="review-stat-icon">🎤</span>
+                                        <span class="review-stat-label">口语跟读</span>
+                                        <span class="review-stat-value">✓</span>
+                                    </div>
+                                    <div class="review-stat">
+                                        <span class="review-stat-icon">📖</span>
+                                        <span class="review-stat-label">阅读理解</span>
+                                        <span class="review-stat-value">✓</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="settings-list">
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">启用全盘复习</span>
+                                        <span class="setting-desc">听力、口语、阅读围绕核心词汇</span>
+                                    </div>
+                                    <label class="toggle-modern review-toggle">
+                                        <input type="checkbox" id="comprehensiveReviewToggle" onchange="toggleComprehensiveReview(this.checked)">
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- 学习偏好设置 -->
                         <div class="settings-card-modern">
                             <div class="settings-card-header">
@@ -1801,18 +1879,18 @@
         </div>
     </div>
 
-    <script src="auth.js?v=20251202180000"></script>
-    <script src="subscription.js?v=20251202180000"></script>
-    <script src="vocabulary.js?v=20251202180000"></script>
-    <script src="dictionary.js?v=20251202180000"></script>
-    <script src="listening-data.js?v=20251202180000"></script>
-    <script src="listening-module.js?v=20251202180000"></script>
-    <script src="reading-data.js?v=20251202180000"></script>
-    <script src="sources.js?v=20251202180000"></script>
-    <script src="online_sources.js?v=20251202180000"></script>
-    <script src="modules.js?v=20251202180000"></script>
-    <script src="quotes.js?v=20251202180000"></script>
-    <script src="app.js?v=20251202180000"></script>
+    <script src="auth.js?v=20251202190000"></script>
+    <script src="subscription.js?v=20251202190000"></script>
+    <script src="vocabulary.js?v=20251202190000"></script>
+    <script src="dictionary.js?v=20251202190000"></script>
+    <script src="listening-data.js?v=20251202190000"></script>
+    <script src="listening-module.js?v=20251202190000"></script>
+    <script src="reading-data.js?v=20251202190000"></script>
+    <script src="sources.js?v=20251202190000"></script>
+    <script src="online_sources.js?v=20251202190000"></script>
+    <script src="modules.js?v=20251202190000"></script>
+    <script src="quotes.js?v=20251202190000"></script>
+    <script src="app.js?v=20251202190000"></script>
 
     <!-- 隐私政策弹窗 -->
     <div id="privacyPolicyModal" class="legal-modal" style="display:none;">

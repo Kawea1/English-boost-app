@@ -351,6 +351,58 @@ function showSettings() {
     
     // 初始化设置底部栏滚动行为
     initSettingsBottomBar();
+    
+    // 更新今日词汇计数
+    updateTodayWordsCount();
+    
+    // 恢复全盘复习模式开关状态
+    restoreComprehensiveReviewToggle();
+}
+
+// 更新设置页面的今日词汇计数
+function updateTodayWordsCount() {
+    var countEl = document.getElementById('todayWordsCount');
+    if (!countEl) return;
+    
+    if (typeof getTodayLearnedWords === 'function') {
+        var todayWords = getTodayLearnedWords();
+        countEl.textContent = todayWords.length;
+    } else {
+        // 回退方案
+        var today = new Date().toDateString();
+        var wordProgress = {};
+        try {
+            wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+        } catch(e) {}
+        
+        var learnedWords = [];
+        try {
+            learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+        } catch(e) {}
+        
+        var count = 0;
+        learnedWords.forEach(function(word) {
+            var progress = wordProgress[word];
+            if (progress && progress.lastReview) {
+                var reviewDate = new Date(progress.lastReview).toDateString();
+                if (reviewDate === today) count++;
+            }
+        });
+        countEl.textContent = count;
+    }
+}
+
+// 恢复全盘复习模式开关状态
+function restoreComprehensiveReviewToggle() {
+    var toggle = document.getElementById('comprehensiveReviewToggle');
+    if (!toggle) return;
+    
+    try {
+        var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+        toggle.checked = settings.comprehensiveReviewMode === true;
+    } catch(e) {
+        toggle.checked = false;
+    }
 }
 
 function confirmResetStats() {

@@ -466,8 +466,46 @@ function changeLearningTimes(value) {
         timesDisplay.textContent = requiredLearningTimes;
     }
     
+    // ====== 版本2改进：学习次数更新后自动刷新 ======
+    // 重新计算所有单词的完成状态
+    sessionWords.forEach(function(wordData) {
+        var progress = sessionWordProgress[wordData.word];
+        if (progress) {
+            // 根据新的学习次数要求，重新判断是否完成
+            progress.completed = progress.times >= requiredLearningTimes;
+        }
+    });
+    
+    // 重新构建学习队列（根据新的学习次数要求）
+    buildLearningQueue();
+    
+    // 如果当前队列索引超出范围，重置
+    if (currentQueueIndex >= learningQueue.length) {
+        currentQueueIndex = Math.max(0, learningQueue.length - 1);
+    }
+    
+    // 刷新进度显示
+    updateVocabProgress();
+    
     // 更新当前单词的进度显示
     updateLearningProgressIndicator();
+    
+    // 更新学习徽章
+    updateLearningBadge();
+    
+    // 显示设置更新提示
+    showSettingsUpdateToast('学习次数已更新为 ' + requiredLearningTimes + ' 次');
+    
+    // 触发设置更新事件
+    try {
+        window.dispatchEvent(new CustomEvent('vocabularySettingsUpdated', {
+            detail: {
+                setting: 'learningTimes',
+                value: requiredLearningTimes,
+                queueLength: learningQueue.length
+            }
+        }));
+    } catch(e) {}
 }
 
 // 初始化本次学习的单词
@@ -921,6 +959,28 @@ function rateWord(rating) {
     };
     localStorage.setItem('wordRatings', JSON.stringify(wordRatings));
     
+    // ====== 版本1改进：学习后自动刷新UI ======
+    // 刷新进度显示
+    updateVocabProgress();
+    
+    // 刷新学习徽章
+    updateLearningBadge();
+    
+    // 刷新进度指示器
+    updateLearningProgressIndicator();
+    
+    // 触发全局学习进度更新事件（供其他模块监听）
+    try {
+        window.dispatchEvent(new CustomEvent('vocabularyProgressUpdated', {
+            detail: {
+                word: word,
+                rating: rating,
+                sessionProgress: sessionProgress,
+                totalLearned: learnedWords.length
+            }
+        }));
+    } catch(e) {}
+    
     // 下一个词
     nextWord();
 }
@@ -944,6 +1004,21 @@ function showDifficultyFeedback(message) {
             if (feedback.parentNode) feedback.parentNode.removeChild(feedback);
         }, 300);
     }, 1200);
+}
+
+// ====== 版本2改进：设置更新提示 ======
+function showSettingsUpdateToast(message) {
+    var toast = document.createElement('div');
+    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:10px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span style="font-weight:600;">' + message + '</span>';
+    toast.style.cssText = 'position:fixed;top:15%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:white;padding:14px 24px;border-radius:14px;font-size:14px;z-index:10001;box-shadow:0 8px 30px rgba(99,102,241,0.35);animation:toastIn 0.3s ease;display:flex;align-items:center;';
+    document.body.appendChild(toast);
+    
+    setTimeout(function() {
+        toast.style.animation = 'toastOut 0.3s ease';
+        setTimeout(function() {
+            if (toast.parentNode) toast.parentNode.removeChild(toast);
+        }, 300);
+    }, 1500);
 }
 
 // 显示单词完成提示

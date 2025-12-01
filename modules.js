@@ -1,5 +1,535 @@
 // modules.js - 口语、阅读等模块
 
+// ==================== 全盘复习模式 ====================
+var comprehensiveReviewMode = false;  // 全盘复习模式开关
+var todayReviewWords = [];  // 今日核心复习词汇
+var speakingMode = 'sentence';  // 口语模式：'sentence' 或 'paragraph'
+var wordPronunciationScores = {};  // 单词发音评分
+var currentSpeakingContent = null;  // 当前口语内容（句子或段落）
+var currentParagraphData = null;    // 当前段落数据
+
+// 获取今日学习的核心词汇
+function getTodayLearnedWords() {
+    var today = new Date().toDateString();
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    var learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    var todayWords = [];
+    
+    learnedWords.forEach(function(word) {
+        var progress = wordProgress[word];
+        if (progress && progress.lastReview) {
+            var reviewDate = new Date(progress.lastReview).toDateString();
+            if (reviewDate === today) {
+                todayWords.push(word);
+            }
+        }
+    });
+    
+    // 如果今日没有学习单词，取最近学习的10个
+    if (todayWords.length === 0 && learnedWords.length > 0) {
+        var sortedWords = learnedWords.slice().sort(function(a, b) {
+            var aTime = wordProgress[a] ? new Date(wordProgress[a].lastReview || 0).getTime() : 0;
+            var bTime = wordProgress[b] ? new Date(wordProgress[b].lastReview || 0).getTime() : 0;
+            return bTime - aTime;
+        });
+        todayWords = sortedWords.slice(0, 10);
+    }
+    
+    return todayWords;
+}
+
+// 获取单词的详细信息（定义和例句）
+function getWordDetails(word) {
+    var wordDefinitions = {};
+    var wordChinese = {};
+    try {
+        wordDefinitions = JSON.parse(localStorage.getItem('wordDefinitions') || '{}');
+        wordChinese = JSON.parse(localStorage.getItem('wordChinese') || '{}');
+    } catch(e) {}
+    
+    var details = {
+        word: word,
+        chinese: wordChinese[word] || '',
+        definitions: [],
+        examples: []
+    };
+    
+    var def = wordDefinitions[word];
+    if (def && def.meanings) {
+        def.meanings.forEach(function(meaning) {
+            meaning.definitions.forEach(function(defItem) {
+                if (defItem.definition) {
+                    details.definitions.push(defItem.definition);
+                }
+                if (defItem.example) {
+                    details.examples.push({
+                        sentence: defItem.example,
+                        word: word
+                    });
+                }
+            });
+        });
+    }
+    
+    return details;
+}
+
+// 获取包含核心词汇的例句
+function getSentencesWithWords(words) {
+    var sentences = [];
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        details.examples.forEach(function(ex) {
+            sentences.push({
+                text: ex.sentence,
+                targetWord: word,
+                meaning: details.definitions[0] || '',
+                chinese: details.chinese
+            });
+        });
+        // 如果没有例句，创建一个包含该单词的句子
+        if (details.examples.length === 0) {
+            sentences.push({
+                text: 'Please use the word "' + word + '" in your daily conversation.',
+                targetWord: word,
+                meaning: details.definitions[0] || '',
+                chinese: details.chinese
+            });
+        }
+    });
+    
+    return sentences;
+}
+
+// ==================== 段落模式增强 v5.0 ====================
+
+// 段落模板库 - 用于生成高质量的学习段落
+var paragraphTemplates = {
+    // 学术讨论类
+    academic: [
+        "In academic contexts, understanding {word1} is fundamental. Scholars often {example1} Furthermore, the concept of {word2} plays a crucial role. {example2} These interconnected ideas form the basis of advanced learning.",
+        "Research demonstrates that {word1} significantly impacts modern society. {example1} Additionally, {word2} has become increasingly relevant. {example2} Both concepts deserve careful consideration.",
+        "The relationship between {word1} and {word2} merits examination. {example1} Moreover, {example2} This analysis reveals important patterns in contemporary discourse."
+    ],
+    // 日常生活类
+    daily: [
+        "In everyday life, we frequently encounter situations involving {word1}. {example1} Similarly, {word2} appears in many contexts. {example2} Mastering these terms enhances communication.",
+        "Communication skills require understanding {word1}. {example1} Equally important is {word2}. {example2} These words appear frequently in conversations.",
+        "Daily interactions often involve {word1} and {word2}. {example1} In addition, {example2} Using these words correctly improves your expression."
+    ],
+    // 工作职场类
+    professional: [
+        "Professional environments demand proficiency with terms like {word1}. {example1} Furthermore, {word2} is essential in business contexts. {example2} Mastery of such vocabulary advances careers.",
+        "In the workplace, {word1} often determines success. {example1} Similarly, understanding {word2} proves valuable. {example2} Both skills are highly sought after by employers.",
+        "Business communication relies heavily on {word1}. {example1} Additionally, {word2} frequently appears in professional settings. {example2} Developing this vocabulary is worthwhile."
+    ],
+    // 简单拼接类（作为备选）
+    simple: [
+        "{example1} {example2} These sentences demonstrate the practical usage of important vocabulary.",
+        "{example1} Moreover, {example2} Practice these sentences to improve your speaking skills.",
+        "Consider the following examples: {example1} Also, {example2} Regular practice leads to fluency."
+    ]
+};
+
+// 生成高质量段落 v5.0
+function generateParagraphWithWords(words) {
+    if (!words || words.length === 0) {
+        return generateDefaultParagraph();
+    }
+    
+    // 收集词汇详情
+    var wordDetails = [];
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        if (details.examples.length > 0 || details.definitions.length > 0) {
+            wordDetails.push(details);
+        }
+    });
+    
+    if (wordDetails.length === 0) {
+        return generateDefaultParagraph();
+    }
+    
+    // 选择2-3个词汇来组成段落
+    var selectedWords = wordDetails.slice(0, Math.min(3, wordDetails.length));
+    
+    // 随机选择段落类型
+    var types = ['academic', 'daily', 'professional', 'simple'];
+    var selectedType = types[Math.floor(Math.random() * types.length)];
+    var templates = paragraphTemplates[selectedType];
+    var template = templates[Math.floor(Math.random() * templates.length)];
+    
+    // 填充模板
+    var paragraph = template;
+    var usedWords = [];
+    var usedExamples = [];
+    
+    selectedWords.forEach(function(details, index) {
+        var wordPlaceholder = '{word' + (index + 1) + '}';
+        var examplePlaceholder = '{example' + (index + 1) + '}';
+        
+        paragraph = paragraph.replace(wordPlaceholder, details.word);
+        usedWords.push(details.word);
+        
+        var example = '';
+        if (details.examples.length > 0) {
+            example = details.examples[0].sentence;
+            usedExamples.push(example);
+        } else if (details.definitions.length > 0) {
+            example = 'The term "' + details.word + '" refers to ' + details.definitions[0].toLowerCase() + '.';
+            usedExamples.push(example);
+        }
+        paragraph = paragraph.replace(examplePlaceholder, example);
+    });
+    
+    // 清理未使用的占位符
+    paragraph = paragraph.replace(/\{word\d+\}/g, '');
+    paragraph = paragraph.replace(/\{example\d+\}/g, '');
+    paragraph = paragraph.replace(/\s+/g, ' ').trim();
+    
+    return {
+        text: paragraph,
+        words: usedWords,
+        examples: usedExamples,
+        sentenceCount: (paragraph.match(/\./g) || []).length,
+        type: selectedType,
+        wordCount: paragraph.split(/\s+/).length
+    };
+}
+
+// 生成默认段落（无词汇时使用）
+function generateDefaultParagraph() {
+    var defaultParagraphs = [
+        "Language learning requires consistent practice and dedication. Reading extensively helps build vocabulary naturally. Speaking regularly with others improves fluency and confidence. Setting achievable goals keeps motivation high throughout the journey.",
+        "Effective communication involves both speaking and listening skills. Practice makes perfect in language acquisition. Daily exposure to English through various media enhances comprehension. Remember that mistakes are valuable learning opportunities.",
+        "Building vocabulary is essential for language proficiency. Context helps you understand new words better. Regular review reinforces memory and retention. Apply new words in conversations to solidify your learning."
+    ];
+    
+    var text = defaultParagraphs[Math.floor(Math.random() * defaultParagraphs.length)];
+    return {
+        text: text,
+        words: [],
+        examples: [],
+        sentenceCount: (text.match(/\./g) || []).length,
+        type: 'default',
+        wordCount: text.split(/\s+/).length
+    };
+}
+
+// 切换全盘复习模式
+function toggleComprehensiveReview(enabled) {
+    comprehensiveReviewMode = enabled;
+    
+    if (enabled) {
+        todayReviewWords = getTodayLearnedWords();
+        if (todayReviewWords.length === 0) {
+            showToast('⚠️ 今日还没有学习单词，请先学习一些词汇');
+            comprehensiveReviewMode = false;
+            var toggle = document.getElementById('comprehensiveReviewToggle');
+            if (toggle) toggle.checked = false;
+            return;
+        }
+        showToast('✅ 全盘复习模式已开启，将围绕 ' + todayReviewWords.length + ' 个核心词汇进行练习');
+    } else {
+        showToast('全盘复习模式已关闭');
+    }
+    
+    // 保存设置
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.comprehensiveReviewMode = enabled;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+}
+
+// 切换口语模式 v5.0
+function switchSpeakingMode(mode) {
+    speakingMode = mode;
+    
+    // 更新UI按钮状态
+    document.querySelectorAll('.speaking-mode-btn').forEach(function(btn) {
+        btn.classList.remove('active');
+    });
+    var activeBtn = document.querySelector('.speaking-mode-btn[data-mode="' + mode + '"]');
+    if (activeBtn) activeBtn.classList.add('active');
+    
+    // 隐藏结果卡片
+    var resultCard = document.getElementById('resultCard');
+    if (resultCard) resultCard.classList.add('hidden');
+    var wordLevelEl = document.getElementById('wordLevelAnalysis');
+    if (wordLevelEl) wordLevelEl.classList.add('hidden');
+    
+    // 根据模式加载内容
+    if (mode === 'sentence') {
+        loadSentenceMode();
+    } else {
+        loadParagraphMode();
+    }
+}
+
+// 加载句子模式
+function loadSentenceMode() {
+    var el = document.getElementById('targetSentence');
+    if (!el) return;
+    
+    el.classList.remove('paragraph-mode');
+    
+    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
+        // 复习模式：使用今日词汇的例句
+        var sentences = getSentencesWithWords(todayReviewWords);
+        if (sentences.length > 0) {
+            var random = sentences[Math.floor(Math.random() * sentences.length)];
+            currentSpeakingContent = random;
+            el.innerHTML = highlightTargetWord(random.text, random.targetWord);
+            updateSentenceInfoReview(random.targetWord, random.meaning, random.chinese);
+        } else {
+            nextSentence();
+        }
+    } else {
+        // 普通模式
+        nextSentence();
+    }
+}
+
+// 加载段落模式 v5.0 - 全面增强
+function loadParagraphMode() {
+    var el = document.getElementById('targetSentence');
+    if (!el) return;
+    
+    el.classList.add('paragraph-mode');
+    
+    var paragraphData;
+    
+    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
+        // 复习模式：基于今日词汇生成段落
+        paragraphData = generateParagraphWithWords(todayReviewWords);
+    } else {
+        // 普通模式：使用已学词汇生成段落
+        var learnedWords = [];
+        try {
+            learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+        } catch(e) {}
+        
+        if (learnedWords.length > 0) {
+            // 随机选择3-5个已学单词
+            var shuffled = learnedWords.slice().sort(function() { return Math.random() - 0.5; });
+            var selectedWords = shuffled.slice(0, Math.min(5, shuffled.length));
+            paragraphData = generateParagraphWithWords(selectedWords);
+        } else {
+            paragraphData = generateDefaultParagraph();
+        }
+    }
+    
+    currentParagraphData = paragraphData;
+    currentSpeakingContent = { text: paragraphData.text, words: paragraphData.words };
+    
+    // 显示段落并高亮关键词
+    if (paragraphData.words && paragraphData.words.length > 0) {
+        el.innerHTML = highlightWordsInText(paragraphData.text, paragraphData.words);
+    } else {
+        el.textContent = paragraphData.text;
+    }
+    
+    // 更新信息栏
+    updateParagraphInfoEnhanced(paragraphData);
+}
+
+// 更新段落信息 v5.0 增强版
+function updateParagraphInfoEnhanced(paragraphData) {
+    var infoEl = document.getElementById('sentenceInfo');
+    if (!infoEl) return;
+    
+    var modeLabel = comprehensiveReviewMode ? '📝 复习段落' : '📖 段落模式';
+    var modeColor = comprehensiveReviewMode ? '#6366f1' : '#8b5cf6';
+    
+    var html = '<span style="background:' + modeColor + '20;color:' + modeColor + ';padding:3px 8px;border-radius:12px;font-size:12px;">' + modeLabel + '</span>';
+    
+    if (paragraphData.wordCount) {
+        html += '<span style="background:#f59e0b20;color:#f59e0b;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' + paragraphData.wordCount + ' 词</span>';
+    }
+    
+    if (paragraphData.words && paragraphData.words.length > 0) {
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + paragraphData.words.length + ' 核心词</span>';
+    }
+    
+    infoEl.innerHTML = html;
+}
+
+// 加载复习模式的口语内容
+function loadReviewSpeakingContent() {
+    if (!comprehensiveReviewMode || todayReviewWords.length === 0) {
+        return nextSentence();
+    }
+    
+    wordPronunciationScores = {};  // 重置单词评分
+    
+    if (speakingMode === 'sentence') {
+        loadSentenceMode();
+    } else {
+        loadParagraphMode();
+    }
+}
+
+// 高亮目标单词
+function highlightTargetWord(text, word) {
+    var regex = new RegExp('\\b(' + word + ')\\b', 'gi');
+    return text.replace(regex, '<mark class="target-word-highlight">$1</mark>');
+}
+
+// 高亮多个单词
+function highlightWordsInText(text, words) {
+    var result = text;
+    words.forEach(function(word) {
+        var regex = new RegExp('\\b(' + word + ')\\b', 'gi');
+        result = result.replace(regex, '<mark class="target-word-highlight">$1</mark>');
+    });
+    return result;
+}
+
+// 更新复习模式句子信息 v5.0
+function updateSentenceInfoReview(word, meaning, chinese) {
+    var infoEl = document.getElementById('sentenceInfo');
+    if (infoEl) {
+        var html = '<span style="background:#6366f120;color:#6366f1;padding:3px 8px;border-radius:12px;font-size:12px;">📝 复习模式</span>';
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + word + '</span>';
+        if (chinese) {
+            html += '<span style="background:#f59e0b20;color:#f59e0b;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:6px;">' + chinese + '</span>';
+        }
+        infoEl.innerHTML = html;
+    }
+}
+
+// 更新段落信息（保留旧函数兼容性）
+function updateParagraphInfo(paragraph) {
+    updateParagraphInfoEnhanced(paragraph);
+}
+
+// 分析单词级别发音准确度
+function analyzeWordPronunciation(original, recognized) {
+    var originalWords = original.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+    var recognizedWords = recognized.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+    
+    var results = [];
+    var totalScore = 0;
+    var scoredWords = 0;
+    
+    originalWords.forEach(function(word, index) {
+        if (word.length < 2) return; // 跳过太短的词
+        
+        var found = recognizedWords.indexOf(word);
+        var score = 0;
+        var status = 'missing';
+        
+        if (found !== -1) {
+            score = 100;
+            status = 'correct';
+        } else {
+            // 检查相似词
+            var bestMatch = 0;
+            recognizedWords.forEach(function(recWord) {
+                var similarity = calculateSimilarity(word, recWord);
+                if (similarity > bestMatch) {
+                    bestMatch = similarity;
+                }
+            });
+            
+            if (bestMatch > 0.7) {
+                score = Math.round(bestMatch * 100);
+                status = 'partial';
+            } else if (bestMatch > 0.4) {
+                score = Math.round(bestMatch * 100);
+                status = 'poor';
+            }
+        }
+        
+        results.push({
+            word: word,
+            score: score,
+            status: status
+        });
+        
+        totalScore += score;
+        scoredWords++;
+    });
+    
+    return {
+        words: results,
+        totalScore: scoredWords > 0 ? Math.round(totalScore / scoredWords) : 0,
+        correctCount: results.filter(function(r) { return r.status === 'correct'; }).length,
+        totalWords: results.length
+    };
+}
+
+// 计算字符串相似度
+function calculateSimilarity(str1, str2) {
+    var longer = str1.length > str2.length ? str1 : str2;
+    var shorter = str1.length > str2.length ? str2 : str1;
+    
+    if (longer.length === 0) return 1.0;
+    
+    var distance = levenshteinDistance(longer, shorter);
+    return (longer.length - distance) / longer.length;
+}
+
+// 编辑距离算法
+function levenshteinDistance(str1, str2) {
+    var matrix = [];
+    for (var i = 0; i <= str2.length; i++) {
+        matrix[i] = [i];
+    }
+    for (var j = 0; j <= str1.length; j++) {
+        matrix[0][j] = j;
+    }
+    for (var i = 1; i <= str2.length; i++) {
+        for (var j = 1; j <= str1.length; j++) {
+            if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                matrix[i][j] = matrix[i - 1][j - 1];
+            } else {
+                matrix[i][j] = Math.min(
+                    matrix[i - 1][j - 1] + 1,
+                    matrix[i][j - 1] + 1,
+                    matrix[i - 1][j] + 1
+                );
+            }
+        }
+    }
+    return matrix[str2.length][str1.length];
+}
+
+// 显示单词级别评估结果
+function showWordLevelResults(analysis) {
+    var html = '<div class="word-analysis-section">';
+    html += '<h5 style="margin:0 0 12px 0;color:#374151;font-size:14px;">📊 单词发音评估</h5>';
+    html += '<div class="word-scores-grid">';
+    
+    analysis.words.forEach(function(item) {
+        var colorClass = 'score-correct';
+        var icon = '✓';
+        if (item.status === 'partial') {
+            colorClass = 'score-partial';
+            icon = '○';
+        } else if (item.status === 'poor') {
+            colorClass = 'score-poor';
+            icon = '△';
+        } else if (item.status === 'missing') {
+            colorClass = 'score-missing';
+            icon = '✗';
+        }
+        
+        html += '<div class="word-score-item ' + colorClass + '">';
+        html += '<span class="word-text">' + item.word + '</span>';
+        html += '<span class="word-score-badge">' + icon + ' ' + item.score + '</span>';
+        html += '</div>';
+    });
+    
+    html += '</div>';
+    html += '<div class="word-analysis-summary">';
+    html += '<span>正确: ' + analysis.correctCount + '/' + analysis.totalWords + '</span>';
+    html += '<span>总分: <strong>' + analysis.totalScore + '</strong></span>';
+    html += '</div>';
+    html += '</div>';
+    
+    return html;
+}
+
 // ==================== 口语模块 ====================
 var currentSpeakingIndex = 0;
 var isRecording = false;
@@ -329,10 +859,24 @@ function selectBestUSVoice(voices) {
 }
 
 function nextSentence() {
+    // 检查是否在全盘复习模式
+    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
+        loadReviewSpeakingContent();
+        // 隐藏上次结果
+        var resultCard = document.getElementById("resultCard");
+        if (resultCard) resultCard.classList.add("hidden");
+        var wordLevelEl = document.getElementById("wordLevelAnalysis");
+        if (wordLevelEl) wordLevelEl.classList.add("hidden");
+        return;
+    }
+    
     // 随机选择下一个句子（而不是顺序）
     currentSpeakingIndex = getRandomSentenceIndex();
     var el = document.getElementById("targetSentence");
-    if (el) el.textContent = speakingSentences[currentSpeakingIndex];
+    if (el) {
+        el.textContent = speakingSentences[currentSpeakingIndex];
+        el.classList.remove('paragraph-mode');
+    }
     
     // 更新句子信息
     updateSentenceInfo();
@@ -340,6 +884,8 @@ function nextSentence() {
     // 隐藏上次结果
     var resultCard = document.getElementById("resultCard");
     if (resultCard) resultCard.classList.add("hidden");
+    var wordLevelEl = document.getElementById("wordLevelAnalysis");
+    if (wordLevelEl) wordLevelEl.classList.add("hidden");
 }
 
 // 按住录音 - 开始
@@ -509,7 +1055,27 @@ function stopRecordingUI() {
 }
 
 function showSpeakingResult(transcript) {
-    var targetText = speakingSentences[currentSpeakingIndex];
+    // v5.0 改进：获取当前显示的目标文本
+    var targetText = '';
+    var targetEl = document.getElementById('targetSentence');
+    
+    if (targetEl) {
+        // 获取纯文本内容（去除HTML标签）
+        targetText = targetEl.textContent || targetEl.innerText || '';
+    }
+    
+    // 如果目标文本为空，尝试从当前内容获取
+    if (!targetText && currentSpeakingContent && currentSpeakingContent.text) {
+        targetText = currentSpeakingContent.text;
+    }
+    
+    // 最后回退到句子库
+    if (!targetText && speakingSentences[currentSpeakingIndex]) {
+        targetText = speakingSentences[currentSpeakingIndex];
+    }
+    
+    console.log('口语评估 - 目标文本:', targetText.substring(0, 50) + '...');
+    console.log('口语评估 - 识别结果:', transcript);
     
     // 获取DOM元素
     var resultCard = document.getElementById("resultCard");
@@ -517,12 +1083,16 @@ function showSpeakingResult(transcript) {
     var scoreValue = document.getElementById("scoreValue");
     var scoreCircle = document.getElementById("scoreCircle");
     var feedbackEl = document.getElementById("speakingFeedback");
+    var wordLevelEl = document.getElementById("wordLevelAnalysis");
+    var wordScoresGrid = document.getElementById("wordScoresGrid");
+    var wordScoreSummary = document.getElementById("wordScoreSummary");
     
     // 如果没有识别到任何内容
     if (!transcript || transcript.trim() === '') {
         if (resultCard) resultCard.classList.remove("hidden");
         if (recognizedEl) recognizedEl.textContent = '(未识别到语音，请重试)';
         if (scoreValue) scoreValue.textContent = '0';
+        if (wordLevelEl) wordLevelEl.classList.add("hidden");
         if (scoreCircle) {
             scoreCircle.style.background = 'linear-gradient(135deg,#9ca3af,#6b7280)';
         }
@@ -540,6 +1110,9 @@ function showSpeakingResult(transcript) {
     var score = result.score;
     var details = result.details;
     
+    // 单词级别发音分析
+    var wordAnalysis = analyzeWordPronunciation(targetText, transcript);
+    
     // 显示结果卡片（带动画）
     if (resultCard) {
         resultCard.classList.remove("hidden");
@@ -549,6 +1122,39 @@ function showSpeakingResult(transcript) {
     // 显示识别文本（高亮匹配/不匹配的词）
     if (recognizedEl) {
         recognizedEl.innerHTML = highlightMatches(transcript, targetText);
+    }
+    
+    // 显示单词级别评估
+    if (wordLevelEl && wordScoresGrid) {
+        wordLevelEl.classList.remove("hidden");
+        
+        var gridHtml = '';
+        wordAnalysis.words.forEach(function(item) {
+            var icon = '✓';
+            var statusClass = 'correct';
+            
+            if (item.status === 'partial') {
+                icon = '○';
+                statusClass = 'partial';
+            } else if (item.status === 'poor') {
+                icon = '△';
+                statusClass = 'poor';
+            } else if (item.status === 'missing') {
+                icon = '✗';
+                statusClass = 'missing';
+            }
+            
+            gridHtml += '<span class="word-score-item ' + statusClass + '">';
+            gridHtml += '<span class="word-score-icon">' + icon + '</span>';
+            gridHtml += '<span class="word-score-text">' + item.word + '</span>';
+            gridHtml += '</span>';
+        });
+        
+        wordScoresGrid.innerHTML = gridHtml;
+        
+        if (wordScoreSummary) {
+            wordScoreSummary.textContent = wordAnalysis.correctCount + '/' + wordAnalysis.totalWords + ' 正确';
+        }
     }
     
     // 分数动画
@@ -875,7 +1481,148 @@ function recordTodayRead(articleId) {
 
 function initReadingModule() {
     updateReadingStats();
-    loadRandomUnreadPassage();
+    
+    // 检查是否启用全盘复习模式
+    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
+        loadReviewReadingPassage();
+    } else {
+        loadRandomUnreadPassage();
+    }
+}
+
+// 加载复习模式的阅读文章
+function loadReviewReadingPassage() {
+    if (!todayReviewWords || todayReviewWords.length === 0) {
+        loadRandomUnreadPassage();
+        return;
+    }
+    
+    // 尝试找到包含今日复习词汇的文章
+    var passages = window.READING_PASSAGES || [];
+    var matchingPassages = [];
+    
+    passages.forEach(function(passage, index) {
+        var matchCount = 0;
+        var passageText = (passage.passage || '').toLowerCase();
+        todayReviewWords.forEach(function(word) {
+            if (passageText.includes(word.toLowerCase())) {
+                matchCount++;
+            }
+        });
+        if (matchCount > 0) {
+            matchingPassages.push({ index: index, matchCount: matchCount });
+        }
+    });
+    
+    // 按匹配数量排序，选择最匹配的
+    if (matchingPassages.length > 0) {
+        matchingPassages.sort(function(a, b) { return b.matchCount - a.matchCount; });
+        var bestMatch = matchingPassages[Math.floor(Math.random() * Math.min(3, matchingPassages.length))];
+        loadReadingPassageWithHighlight(bestMatch.index);
+    } else {
+        // 没有匹配的文章，生成一个基于词汇的文章
+        generateReviewPassage();
+    }
+}
+
+// 生成基于复习词汇的短文
+function generateReviewPassage() {
+    var wordDefinitions = {};
+    try {
+        wordDefinitions = JSON.parse(localStorage.getItem('wordDefinitions') || '{}');
+    } catch(e) {}
+    
+    // 收集词汇信息
+    var vocabInfo = [];
+    todayReviewWords.forEach(function(word) {
+        var def = wordDefinitions[word];
+        if (def && def.meanings && def.meanings.length > 0) {
+            var meaning = def.meanings[0].definitions[0];
+            vocabInfo.push({
+                word: word,
+                definition: meaning ? meaning.definition : '',
+                example: meaning && meaning.example ? meaning.example : ''
+            });
+        }
+    });
+    
+    // 创建复习短文
+    var passage = 'Today\'s Vocabulary Review\n\n';
+    passage += 'This reading exercise focuses on the words you have learned today. ';
+    passage += 'Pay attention to how each word is used in context.\n\n';
+    
+    vocabInfo.forEach(function(item) {
+        if (item.example) {
+            passage += item.example + ' ';
+        }
+    });
+    
+    if (passage.length < 200) {
+        passage += '\n\nThese vocabulary words are essential for academic reading and writing. ';
+        passage += 'Understanding their meanings and usage patterns will help you improve your English proficiency. ';
+        passage += 'Try to use these words in your own sentences to reinforce your learning.';
+    }
+    
+    // 创建临时文章对象
+    var reviewPassage = {
+        id: 'review_' + Date.now(),
+        category: '复习',
+        topic: '词汇巩固',
+        difficulty: '中级',
+        title: '今日词汇复习阅读',
+        passage: passage,
+        vocabulary: vocabInfo.map(function(item) {
+            return { word: item.word, meaning: item.definition };
+        }),
+        questions: [
+            {
+                question: '这篇短文的主要目的是什么？',
+                options: ['介绍新概念', '复习今日所学词汇', '讲述一个故事', '分析学术问题'],
+                answer: 'B',
+                explanation: '这篇短文围绕今日学习的核心词汇展开，帮助巩固记忆。'
+            }
+        ]
+    };
+    
+    // 临时添加到passages数组并加载
+    var tempIndex = window.READING_PASSAGES.length;
+    window.READING_PASSAGES.push(reviewPassage);
+    loadReadingPassageWithHighlight(tempIndex);
+}
+
+// 加载文章并高亮复习词汇
+function loadReadingPassageWithHighlight(index) {
+    loadReadingPassage(index);
+    
+    // 延迟高亮复习词汇
+    setTimeout(function() {
+        highlightReviewWordsInPassage();
+    }, 100);
+}
+
+// 在文章中高亮复习词汇
+function highlightReviewWordsInPassage() {
+    if (!comprehensiveReviewMode || !todayReviewWords || todayReviewWords.length === 0) return;
+    
+    var textEl = document.getElementById("passageText");
+    if (!textEl) return;
+    
+    var html = textEl.innerHTML;
+    todayReviewWords.forEach(function(word) {
+        var regex = new RegExp('\\b(' + word + ')\\b', 'gi');
+        html = html.replace(regex, '<mark class="target-word-highlight">$1</mark>');
+    });
+    textEl.innerHTML = html;
+    
+    // 添加复习模式标签
+    var titleEl = document.getElementById("passageTitle");
+    if (titleEl && !titleEl.querySelector('.review-mode-badge')) {
+        var badge = document.createElement('span');
+        badge.className = 'review-mode-badge';
+        badge.style.marginLeft = '10px';
+        badge.innerHTML = '📝 复习模式';
+        titleEl.appendChild(badge);
+    }
 }
 
 function updateReadingStats() {
@@ -4972,6 +5719,12 @@ window.checkReviewNeeded = checkReviewNeeded;
 window.startReviewFromReminder = startReviewFromReminder;
 window.dismissReviewReminder = dismissReviewReminder;
 window.getWordsToReview = getWordsToReview;
+
+// 全盘复习模式函数导出
+window.toggleComprehensiveReview = toggleComprehensiveReview;
+window.switchSpeakingMode = switchSpeakingMode;
+window.loadReviewSpeakingContent = loadReviewSpeakingContent;
+window.getTodayLearnedWords = getTodayLearnedWords;
 
 // ==================== 法律合规功能 ====================
 
