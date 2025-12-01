@@ -732,76 +732,397 @@ function updateSentenceInfo() {
     }
 }
 
-// 录音计时器
+// ==================== 录音模块 v4.0 - 自动申请权限 ====================
 var recordingTimer = null;
 var recordingStartTime = 0;
 var MAX_RECORDING_TIME = 30000; // 最长30秒
+var recognitionReady = false;   // 语音识别是否就绪
+var micPermissionGranted = false; // 麦克风权限是否已授予
+var micStream = null;           // 麦克风流
 
+// 检查并申请麦克风权限 v4.0
+async function checkAndRequestMicPermission() {
+    console.log('[录音v4] 检查麦克风权限...');
+    
+    // 检查是否支持 getUserMedia
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.log('[录音v4] 浏览器不支持 getUserMedia');
+        showToast('❌ 您的浏览器不支持麦克风');
+        return false;
+    }
+    
+    try {
+        // 主动申请麦克风权限
+        console.log('[录音v4] 正在申请麦克风权限...');
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        
+        console.log('[录音v4] ✅ 麦克风权限已获取');
+        micPermissionGranted = true;
+        
+        // 保持流活跃（不要立即关闭）
+        return true;
+        
+    } catch (err) {
+        console.log('[录音v4] ❌ 麦克风权限被拒绝:', err.name, err.message);
+        micPermissionGranted = false;
+        
+        if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+            showMicPermissionDeniedDialog();
+        } else if (err.name === 'NotFoundError') {
+            showToast('❌ 未找到麦克风设备');
+        } else {
+            showToast('❌ 无法访问麦克风: ' + err.message);
+        }
+        
+        return false;
+    }
+}
+
+// 显示麦克风权限被拒绝的提示
+function showMicPermissionDeniedDialog() {
+    var isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    var isSafari = /Safari/.test(navigator.userAgent) && !/Chrome/.test(navigator.userAgent);
+    var isChrome = /Chrome/.test(navigator.userAgent);
+    
+    var instructions = '';
+    if (isIOS && isSafari) {
+        instructions = '请前往 设置 > Safari > 麦克风，允许此网站使用麦克风';
+    } else if (isSafari) {
+        instructions = '请点击地址栏左侧的网站设置图标，允许麦克风权限';
+    } else if (isChrome) {
+        instructions = '请点击地址栏左侧的🔒图标，将麦克风设置为"允许"';
+    } else {
+        instructions = '请在浏览器设置中允许麦克风权限';
+    }
+    
+    showToast('🎤 请开启麦克风权限');
+    
+    setTimeout(function() {
+        alert('麦克风权限被拒绝\n\n' + instructions + '\n\n设置完成后请刷新页面重试');
+    }, 100);
+}
+
+// 初始化语音识别 v4.0
 function initSpeechRecognition() {
+    console.log('[录音v4] 初始化语音识别...');
+    
     // 检查浏览器支持
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-        console.log('浏览器不支持语音识别');
+        console.log('[录音v4] 浏览器不支持语音识别');
+        showToast('您的浏览器不支持语音识别');
+        return false;
+    }
+    
+    try {
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = true;
+        recognition.lang = 'en-US';
+        recognition.maxAlternatives = 1;
+        
+        var finalTranscript = '';
+        var interimTranscript = '';
+        
+        recognition.onstart = function() {
+            console.log('[录音v4] ✅ 语音识别已启动');
+            recognitionReady = true;
+            showToast('🎤 开始说话...');
+        };
+        
+        recognition.onaudiostart = function() {
+            console.log('[录音v4] 音频输入已开始');
+        };
+        
+        recognition.onresult = function(event) {
+            interimTranscript = '';
+            finalTranscript = '';
+            
+            for (var i = event.resultIndex; i < event.results.length; i++) {
+                var transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript;
+                } else {
+                    interimTranscript += transcript;
+                }
+            }
+            
+            recognizedText = finalTranscript || interimTranscript;
+            console.log('[录音v4] 识别中:', recognizedText.substring(0, 50));
+        };
+        
+        recognition.onerror = function(event) {
+            console.log('[录音v4] 错误:', event.error);
+            recognitionReady = false;
+            isRecording = false;
+            updateRecordingUI(false);
+            
+            if (event.error === 'not-allowed') {
+                micPermissionGranted = false;
+                showMicPermissionDeniedDialog();
+            } else if (event.error === 'no-speech') {
+                showToast('🔇 未检测到语音');
+                showSpeakingResult('');
+            } else if (event.error === 'audio-capture') {
+                showToast('❌ 无法捕获音频');
+            } else if (event.error === 'network') {
+                showToast('❌ 网络错误');
+            } else if (event.error === 'aborted') {
+                if (recognizedText) {
+                    showSpeakingResult(recognizedText);
+                }
+            }
+        };
+        
+        recognition.onend = function() {
+            console.log('[录音v4] 识别结束');
+            recognitionReady = false;
+            isRecording = false;
+            updateRecordingUI(false);
+            
+            if (recognizedText && recognizedText.trim()) {
+                showSpeakingResult(recognizedText);
+                recognizedText = '';
+            }
+        };
+        
+        console.log('[录音v4] 语音识别初始化成功');
+        return true;
+        
+    } catch (e) {
+        console.log('[录音v4] 初始化失败:', e);
+        return false;
+    }
+}
+
+// 按住录音 - 开始 v4.0
+async function startHoldRecording(event) {
+    if (event && event.preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    console.log('[录音v4] 按下录音按钮');
+    
+    if (isRecording) {
+        console.log('[录音v4] 已在录音中');
         return;
     }
     
-    recognition = new SpeechRecognition();
-    recognition.continuous = true;  // 改为持续监听
-    recognition.interimResults = true;  // 启用中间结果，提高识别成功率
-    recognition.lang = 'en-US';
-    recognition.maxAlternatives = 1;
+    // 检查浏览器支持
+    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+        showToast('❌ 浏览器不支持语音识别');
+        return;
+    }
     
-    var finalTranscript = '';  // 存储最终结果
+    // 显示加载状态
+    updateRecordingUI(true);
+    showToast('🎤 正在准备录音...');
     
-    recognition.onresult = function(event) {
-        var transcript = '';
-        for (var i = event.resultIndex; i < event.results.length; i++) {
-            transcript += event.results[i][0].transcript;
-            if (event.results[i].isFinal) {
-                finalTranscript = transcript;
-            }
+    // 自动申请麦克风权限
+    if (!micPermissionGranted) {
+        var granted = await checkAndRequestMicPermission();
+        if (!granted) {
+            updateRecordingUI(false);
+            return;
         }
-        recognizedText = finalTranscript || transcript;
-        console.log('识别结果:', recognizedText, '(final:', event.results[event.results.length-1].isFinal, ')');
-    };
+    }
     
-    recognition.onerror = function(event) {
-        console.log('语音识别错误:', event.error);
-        stopRecordingUI();
+    // 初始化并启动录音
+    startRecordingCore();
+}
+
+// 核心录音启动逻辑 v4.0
+function startRecordingCore() {
+    console.log('[录音v4] 启动录音核心');
+    
+    // 重新初始化识别器
+    recognition = null;
+    if (!initSpeechRecognition()) {
+        showToast('❌ 初始化失败');
+        updateRecordingUI(false);
+        return;
+    }
+    
+    isRecording = true;
+    recognizedText = '';
+    recordingStartTime = Date.now();
+    
+    // 震动反馈
+    if (navigator.vibrate) {
+        navigator.vibrate(50);
+    }
+    
+    // 最大时长限制
+    recordingTimer = setTimeout(function() {
+        if (isRecording) {
+            console.log('[录音v4] 达到最大时长');
+            stopHoldRecording(null);
+        }
+    }, MAX_RECORDING_TIME);
+    
+    // 启动识别
+    try {
+        recognition.start();
+        console.log('[录音v4] recognition.start() 已调用');
+    } catch (e) {
+        console.log('[录音v4] 启动异常:', e.message);
         
-        if (event.error === 'not-allowed') {
-            alert('请允许麦克风访问权限');
-        } else if (event.error === 'no-speech') {
-            // 没检测到语音，显示提示但不弹窗打断用户
-            showSpeakingResult('');
-        } else if (event.error === 'aborted') {
-            // 用户中止，检查是否有识别结果
-            if (recognizedText) {
-                showSpeakingResult(recognizedText);
+        if (e.message && e.message.includes('already started')) {
+            try {
+                recognition.abort();
+                setTimeout(function() {
+                    try {
+                        recognition.start();
+                    } catch (e2) {
+                        showToast('❌ 启动失败，请重试');
+                        isRecording = false;
+                        updateRecordingUI(false);
+                    }
+                }, 200);
+            } catch (e2) {
+                isRecording = false;
+                updateRecordingUI(false);
             }
+        } else {
+            showToast('❌ ' + e.message);
+            isRecording = false;
+            updateRecordingUI(false);
         }
-    };
+    }
+}
+
+// 更新录音UI v4.0
+function updateRecordingUI(recording) {
+    var recordBtn = document.getElementById("recordBtn");
+    var recordText = document.getElementById("recordText");
+    var indicator = document.getElementById("recordingIndicator");
     
-    recognition.onend = function() {
-        console.log('语音识别结束，最终文本:', recognizedText);
-        stopRecordingUI();
-        
-        // 如果有识别结果，显示评分
-        if (recognizedText) {
-            showSpeakingResult(recognizedText);
-            recognizedText = '';  // 重置
+    if (recording) {
+        if (recordBtn) {
+            recordBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+            recordBtn.style.transform = 'scale(0.95)';
+            recordBtn.style.boxShadow = '0 0 20px rgba(16,185,129,0.6)';
+            recordBtn.classList.add('recording');
         }
-    };
+        if (recordText) recordText.textContent = '松开结束';
+        if (indicator) indicator.classList.remove('hidden');
+    } else {
+        if (recordBtn) {
+            recordBtn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+            recordBtn.style.transform = 'scale(1)';
+            recordBtn.style.boxShadow = '0 6px 25px rgba(239,68,68,0.4)';
+            recordBtn.classList.remove('recording');
+        }
+        if (recordText) recordText.textContent = '按住录音';
+        if (indicator) indicator.classList.add('hidden');
+    }
+}
+
+// 按住录音 - 结束 v4.0
+function stopHoldRecording(event) {
+    if (event && event.preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+    
+    console.log('[录音v4] 松开录音按钮');
+    
+    if (!isRecording) {
+        return;
+    }
+    
+    // 清除计时器
+    if (recordingTimer) {
+        clearTimeout(recordingTimer);
+        recordingTimer = null;
+    }
+    
+    // 震动反馈
+    if (navigator.vibrate) {
+        navigator.vibrate(30);
+    }
+    
+    // 计算时长
+    var duration = Date.now() - recordingStartTime;
+    console.log('[录音v4] 录音时长:', duration, 'ms');
+    
+    if (duration < 500) {
+        console.log('[录音v4] 时间太短');
+        isRecording = false;
+        updateRecordingUI(false);
+        if (recognition) {
+            try { recognition.abort(); } catch(e) {}
+        }
+        showToast('⚠️ 请按住说完整句话');
+        return;
+    }
+    
+    // 停止识别
+    if (recognition) {
+        try {
+            recognition.stop();
+            console.log('[录音v4] 已停止识别');
+        } catch (e) {
+            console.log('[录音v4] 停止异常:', e);
+            isRecording = false;
+            updateRecordingUI(false);
+        }
+    } else {
+        isRecording = false;
+        updateRecordingUI(false);
+    }
+}
+
+// 兼容性函数
+function toggleRecording() {
+    if (isRecording) {
+        stopHoldRecording(null);
+    } else {
+        startHoldRecording(null);
+    }
+}
+
+function stopRecordingUI() {
+    isRecording = false;
+    if (recordingTimer) {
+        clearTimeout(recordingTimer);
+        recordingTimer = null;
+    }
+    updateRecordingUI(false);
 }
 
 function speakSentence() {
-    var text = speakingSentences[currentSpeakingIndex];
+    // v5.0: 获取当前显示的文本内容
+    var text = '';
+    var targetEl = document.getElementById('targetSentence');
+    
+    if (targetEl) {
+        text = targetEl.textContent || targetEl.innerText || '';
+    }
+    
+    // 回退到存储的内容
+    if (!text && currentSpeakingContent && currentSpeakingContent.text) {
+        text = currentSpeakingContent.text;
+    }
+    
+    // 最后回退到句子库
+    if (!text) {
+        text = speakingSentences[currentSpeakingIndex];
+    }
+    
     if (!text) return;
+    
+    console.log('朗读文本:', text.substring(0, 50) + '...');
+    
     if (window.speechSynthesis) {
         speechSynthesis.cancel();
         var utterance = new SpeechSynthesisUtterance(text);
         utterance.lang = "en-US";
-        utterance.rate = 0.85;
+        
+        // 段落模式使用稍慢的语速
+        utterance.rate = speakingMode === 'paragraph' ? 0.8 : 0.85;
         utterance.volume = 1;
         utterance.pitch = 1;
         
@@ -859,70 +1180,71 @@ function selectBestUSVoice(voices) {
 }
 
 function nextSentence() {
-    // 检查是否在全盘复习模式
-    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
-        loadReviewSpeakingContent();
-        // 隐藏上次结果
-        var resultCard = document.getElementById("resultCard");
-        if (resultCard) resultCard.classList.add("hidden");
-        var wordLevelEl = document.getElementById("wordLevelAnalysis");
-        if (wordLevelEl) wordLevelEl.classList.add("hidden");
-        return;
-    }
-    
-    // 随机选择下一个句子（而不是顺序）
-    currentSpeakingIndex = getRandomSentenceIndex();
-    var el = document.getElementById("targetSentence");
-    if (el) {
-        el.textContent = speakingSentences[currentSpeakingIndex];
-        el.classList.remove('paragraph-mode');
-    }
-    
-    // 更新句子信息
-    updateSentenceInfo();
-    
     // 隐藏上次结果
     var resultCard = document.getElementById("resultCard");
     if (resultCard) resultCard.classList.add("hidden");
     var wordLevelEl = document.getElementById("wordLevelAnalysis");
     if (wordLevelEl) wordLevelEl.classList.add("hidden");
+    
+    // 根据当前模式加载内容
+    if (speakingMode === 'paragraph') {
+        loadParagraphMode();
+        return;
+    }
+    
+    // 句子模式
+    if (comprehensiveReviewMode && todayReviewWords.length > 0) {
+        loadSentenceMode();
+        return;
+    }
+    
+    // 普通句子模式
+    currentSpeakingIndex = getRandomSentenceIndex();
+    var el = document.getElementById("targetSentence");
+    if (el) {
+        el.textContent = speakingSentences[currentSpeakingIndex];
+        el.classList.remove('paragraph-mode');
+        currentSpeakingContent = { text: speakingSentences[currentSpeakingIndex] };
+    }
+    
+    // 更新句子信息
+    updateSentenceInfo();
 }
 
-// 按住录音 - 开始
+// 按住录音 - 开始 v3.0
 function startHoldRecording(event) {
-    event.preventDefault(); // 防止触摸设备的默认行为
-    event.stopPropagation();
+    if (event && event.preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     
-    if (isRecording) return; // 防止重复触发
+    console.log('[录音v3] 按下录音按钮');
+    
+    if (isRecording) {
+        console.log('[录音v3] 已在录音中，忽略');
+        return;
+    }
     
     // 检查浏览器支持
     var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-        alert('您的浏览器不支持语音识别功能，请使用Chrome或Safari浏览器');
+        showToast('❌ 您的浏览器不支持语音识别');
+        alert('请使用Chrome、Safari或Edge浏览器');
         return;
     }
     
-    // 版本8优化：首次使用时显示权限说明（《App收集使用个人信息最小必要评估规范》）
-    if (!localStorage.getItem('micPermissionExplained')) {
-        showMicPermissionExplanation(function() {
-            localStorage.setItem('micPermissionExplained', 'true');
-            localStorage.setItem('micPermissionExplainedAt', new Date().toISOString());
-            continueStartRecording();
-        });
-        return;
-    }
-    
-    continueStartRecording();
+    // 跳过权限说明（直接请求麦克风）
+    startRecordingDirect();
 }
 
-// 继续开始录音（权限说明后）
-function continueStartRecording() {
-    if (!recognition) {
-        initSpeechRecognition();
-    }
+// 直接开始录音 v3.0
+function startRecordingDirect() {
+    console.log('[录音v3] 开始录音流程');
     
-    if (!recognition) {
-        alert('语音识别初始化失败');
+    // 每次录音都重新初始化，确保状态清洁
+    recognition = null;
+    if (!initSpeechRecognition()) {
+        showToast('❌ 语音识别初始化失败');
         return;
     }
     
@@ -930,58 +1252,90 @@ function continueStartRecording() {
     recognizedText = '';
     recordingStartTime = Date.now();
     
-    // 更新UI - 按下状态
-    var recordBtn = document.getElementById("recordBtn");
-    var recordText = document.getElementById("recordText");
-    var indicator = document.getElementById("recordingIndicator");
+    // 更新UI
+    updateRecordingUI(true);
     
-    if (recordBtn) {
-        recordBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-        recordBtn.style.transform = 'scale(0.95)';
-        recordBtn.style.boxShadow = '0 2px 10px rgba(16,185,129,0.4)';
-    }
-    if (recordText) recordText.textContent = '正在录音...';
-    if (indicator) indicator.classList.remove('hidden');
-    
-    // 震动反馈（移动设备）
+    // 震动反馈
     if (navigator.vibrate) {
         navigator.vibrate(50);
     }
     
-    // 设置最大录音时长限制（30秒）
+    // 设置最大录音时长
     recordingTimer = setTimeout(function() {
         if (isRecording) {
-            console.log('录音达到最大时长，自动停止');
-            stopHoldRecording({preventDefault: function(){}, stopPropagation: function(){}});
+            console.log('[录音v3] 达到最大时长，自动停止');
+            stopHoldRecording(null);
         }
     }, MAX_RECORDING_TIME);
     
-    // 开始识别
+    // 启动识别
     try {
         recognition.start();
-        console.log('开始语音识别（按住模式）');
+        console.log('[录音v3] 语音识别启动成功');
     } catch (e) {
-        console.log('语音识别启动失败:', e);
-        // 可能是上次没有正确停止，尝试重新初始化
-        recognition = null;
-        initSpeechRecognition();
-        try {
-            recognition.start();
-        } catch (e2) {
-            console.log('重试启动失败:', e2);
-            stopRecordingUI();
+        console.log('[录音v3] 启动失败:', e.message);
+        
+        // 如果是"already started"错误，先停止再重启
+        if (e.message && e.message.includes('already started')) {
+            try {
+                recognition.stop();
+                setTimeout(function() {
+                    recognition.start();
+                }, 100);
+            } catch (e2) {
+                console.log('[录音v3] 重启也失败:', e2);
+                isRecording = false;
+                updateRecordingUI(false);
+                showToast('❌ 录音启动失败，请重试');
+            }
+        } else {
+            isRecording = false;
+            updateRecordingUI(false);
+            showToast('❌ 录音启动失败: ' + e.message);
         }
     }
 }
 
-// 按住录音 - 结束
+// 更新录音UI v3.0
+function updateRecordingUI(recording) {
+    var recordBtn = document.getElementById("recordBtn");
+    var recordText = document.getElementById("recordText");
+    var indicator = document.getElementById("recordingIndicator");
+    
+    if (recording) {
+        if (recordBtn) {
+            recordBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
+            recordBtn.style.transform = 'scale(0.95)';
+            recordBtn.style.boxShadow = '0 2px 10px rgba(16,185,129,0.4)';
+        }
+        if (recordText) recordText.textContent = '正在录音...';
+        if (indicator) indicator.classList.remove('hidden');
+    } else {
+        if (recordBtn) {
+            recordBtn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
+            recordBtn.style.transform = 'scale(1)';
+            recordBtn.style.boxShadow = '0 6px 25px rgba(239,68,68,0.4)';
+        }
+        if (recordText) recordText.textContent = '按住录音';
+        if (indicator) indicator.classList.add('hidden');
+    }
+}
+
+// 按住录音 - 结束 v3.0
 function stopHoldRecording(event) {
-    if (!isRecording) return; // 如果没在录音就不处理
+    if (event && event.preventDefault) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
     
-    event.preventDefault();
-    event.stopPropagation();
+    console.log('[录音v3] 松开录音按钮, isRecording:', isRecording);
     
-    // 清除最大时长计时器
+    if (!isRecording) {
+        console.log('[录音v3] 未在录音，忽略');
+        return;
+    }
+    
+    // 清除计时器
     if (recordingTimer) {
         clearTimeout(recordingTimer);
         recordingTimer = null;
@@ -994,44 +1348,48 @@ function stopHoldRecording(event) {
     
     // 计算录音时长
     var duration = Date.now() - recordingStartTime;
-    console.log('录音时长:', duration, 'ms');
+    console.log('[录音v3] 录音时长:', duration, 'ms');
     
-    // 如果录音时间太短（小于500ms），给提示
+    // 录音太短
     if (duration < 500) {
-        stopRecordingUI();
-        var resultArea = document.getElementById("resultArea");
-        if (resultArea) {
-            resultArea.innerHTML = '<div style="padding:16px;background:#fef3c7;border-radius:12px;color:#92400e;text-align:center;">' +
-                '<p style="font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>录音时间太短</p>' +
-                '<p style="font-size:13px;margin-top:4px;">请按住按钮说完整句话后再松开</p></div>';
+        console.log('[录音v3] 录音太短');
+        isRecording = false;
+        updateRecordingUI(false);
+        
+        if (recognition) {
+            try { recognition.abort(); } catch(e) {}
         }
-        var resultCard = document.getElementById("resultCard");
-        if (resultCard) resultCard.classList.remove("hidden");
+        
+        showToast('⚠️ 录音时间太短，请按住说完整句话');
         return;
     }
     
+    // 停止识别
     if (recognition) {
         try {
             recognition.stop();
-            console.log('停止语音识别（松开按钮）');
+            console.log('[录音v3] 已请求停止识别');
         } catch (e) {
-            console.log('停止识别失败:', e);
-            stopRecordingUI();
+            console.log('[录音v3] 停止识别异常:', e);
+            isRecording = false;
+            updateRecordingUI(false);
         }
     } else {
-        stopRecordingUI();
+        isRecording = false;
+        updateRecordingUI(false);
     }
 }
 
 // 保留原来的toggleRecording兼容性
 function toggleRecording() {
     if (isRecording) {
-        stopHoldRecording({preventDefault: function(){}});
+        stopHoldRecording(null);
     } else {
-        startHoldRecording({preventDefault: function(){}});
+        startHoldRecording(null);
     }
 }
 
+// stopRecordingUI v3.0 - 使用updateRecordingUI
 function stopRecordingUI() {
     isRecording = false;
     
@@ -1041,17 +1399,7 @@ function stopRecordingUI() {
         recordingTimer = null;
     }
     
-    var recordBtn = document.getElementById("recordBtn");
-    var recordText = document.getElementById("recordText");
-    var indicator = document.getElementById("recordingIndicator");
-    
-    if (recordBtn) {
-        recordBtn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
-        recordBtn.style.transform = 'scale(1)';
-        recordBtn.style.boxShadow = '0 6px 25px rgba(239,68,68,0.4)';
-    }
-    if (recordText) recordText.textContent = '按住录音';
-    if (indicator) indicator.classList.add('hidden');
+    updateRecordingUI(false);
 }
 
 function showSpeakingResult(transcript) {
@@ -5585,12 +5933,36 @@ function executeDataDeletion() {
     // 清除所有 localStorage 数据
     localStorage.clear();
     
+    // 重置核心单词学习数据（内存中的变量）
+    if (typeof window.learnedWords !== 'undefined') window.learnedWords = [];
+    if (typeof window.wordRatings !== 'undefined') window.wordRatings = {};
+    if (typeof window.wordLearningProgress !== 'undefined') window.wordLearningProgress = {};
+    if (typeof window.sessionWordProgress !== 'undefined') window.sessionWordProgress = {};
+    if (typeof window.sessionWords !== 'undefined') window.sessionWords = [];
+    if (typeof window.learningQueue !== 'undefined') window.learningQueue = [];
+    if (typeof window.currentQueueIndex !== 'undefined') window.currentQueueIndex = 0;
+    if (typeof window.currentWordIndex !== 'undefined') window.currentWordIndex = 0;
+    
+    // 通过全局变量重置（vocabulary.js 中的变量）
+    try {
+        if (typeof learnedWords !== 'undefined') learnedWords = [];
+        if (typeof wordRatings !== 'undefined') wordRatings = {};
+        if (typeof wordLearningProgress !== 'undefined') wordLearningProgress = {};
+        if (typeof sessionWordProgress !== 'undefined') sessionWordProgress = {};
+        if (typeof sessionWords !== 'undefined') sessionWords = [];
+        if (typeof learningQueue !== 'undefined') learningQueue = [];
+        if (typeof currentQueueIndex !== 'undefined') currentQueueIndex = 0;
+        if (typeof currentWordIndex !== 'undefined') currentWordIndex = 0;
+    } catch(e) {
+        console.log('Variable reset skipped:', e);
+    }
+    
     // 移除弹窗
     const overlay = document.getElementById('dataDeleteOverlay');
     if (overlay) overlay.remove();
     
     // 显示提示并刷新
-    showToast('✅ 所有数据已删除');
+    showToast('✅ 所有数据已删除（包括核心单词进度）');
     setTimeout(() => location.reload(), 1500);
 }
 
