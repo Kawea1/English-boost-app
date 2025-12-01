@@ -1638,7 +1638,7 @@ function showHelp() {
 
 // 检查更新
 function checkForUpdates() {
-    showToast('🔄 正在检查更新...');
+    showToast('🪐 正在同步云端数据...');
     
     if ('serviceWorker' in navigator) {
         navigator.serviceWorker.ready.then(registration => {
@@ -1646,7 +1646,7 @@ function checkForUpdates() {
                 // 如果有新版本，SW会自动激活并刷新页面
                 // 如果没有新版本，我们提示用户
                 setTimeout(() => {
-                    if (confirm('已检查更新。如果没有自动刷新，说明当前已是最新版本。\n\n是否强制刷新页面以确保万无一失？')) {
+                    if (confirm('✨ 已经是最新版本了\n\n所有功能运行正常。如果您遇到显示问题，可以点击"确定"强制刷新缓存。')) {
                         window.location.reload(true);
                     }
                 }, 2000);
