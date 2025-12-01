@@ -760,13 +760,7 @@ body.liquid-glass-mode .settings-bottom-bar {
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
 }
 
-/* 模态框头部 - 液态玻璃 */
-body.liquid-glass-mode .modal-header {
-    background: rgba(255, 255, 255, 0.7) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
+/* 模态框头部 - 液态玻璃 (已移至文件末尾 v1-v5 修复) */
 
 /* 底部导航栏 - 液态玻璃 */
 body.liquid-glass-mode #bottomNav,
@@ -1894,6 +1888,13 @@ svg {
     background: var(--gray-300);
     border-radius: 2px;
     margin-top: 6px;
+    transition: all 0.3s ease;
+}
+
+/* 导航指示器动画 */
+.bottom-nav:hover .nav-indicator {
+    width: 60px;
+    background: var(--primary);
 }
 
 .nav-item {
@@ -1910,6 +1911,27 @@ svg {
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-radius: 16px;
     min-width: 70px;
+    overflow: hidden;
+}
+
+/* 点击涟漪效果 */
+.nav-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+    pointer-events: none;
+}
+
+.nav-item:active::before {
+    width: 150px;
+    height: 150px;
 }
 
 .nav-icon-wrapper {
@@ -1920,7 +1942,26 @@ svg {
     align-items: center;
     justify-content: center;
     background: transparent;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+/* 图标悬浮光晕 */
+.nav-icon-wrapper::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gradient-primary);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.nav-item.active .nav-icon-wrapper::after {
+    opacity: 0.12;
+    transform: scale(1);
 }
 
 .nav-svg {
@@ -1930,10 +1971,39 @@ svg {
     transition: all 0.3s ease;
 }
 
+/* 悬浮时图标弹跳 */
+.nav-item:hover .nav-svg {
+    animation: navIconBounce 0.5s ease;
+}
+
+@keyframes navIconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
 .nav-label {
     font-size: 11px;
     font-weight: 600;
     transition: all 0.3s ease;
+    position: relative;
+}
+
+/* 标签下划线动画 */
+.nav-label::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--primary);
+    border-radius: 1px;
+    transform: translateX(-50%);
+    transition: width 0.3s ease;
+}
+
+.nav-item.active .nav-label::after {
+    width: 100%;
 }
 
 .nav-item.active {
@@ -1942,11 +2012,19 @@ svg {
 
 .nav-item.active .nav-icon-wrapper {
     background: rgba(99, 102, 241, 0.12);
-    transform: scale(1.05);
+    transform: scale(1.08);
 }
 
+/* 激活状态图标动画 */
 .nav-item.active .nav-svg {
     stroke-width: 2.5;
+    animation: navActiveIcon 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes navActiveIcon {
+    0% { transform: scale(0.8); }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); }
 }
 
 .nav-item.active .nav-label {
@@ -1959,10 +2037,11 @@ svg {
 
 .nav-item:hover:not(.active) .nav-icon-wrapper {
     background: var(--gray-100);
+    transform: scale(1.02);
 }
 
 .nav-item:active {
-    transform: scale(0.95);
+    transform: scale(0.92);
 }
 
 /* ==================== 新版统计页面样式 ==================== */
@@ -2722,6 +2801,44 @@ svg {
     display: flex;
     align-items: center;
     gap: 12px;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.goal-progress-item:hover {
+    background: rgba(99, 102, 241, 0.05);
+    transform: translateX(4px);
+}
+
+/* 完成状态样式 */
+.goal-progress-item.completed {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(52, 211, 153, 0.05) 100%);
+}
+
+.goal-progress-item.completed::after {
+    content: '✓';
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background: linear-gradient(135deg, #10b981, #34d399);
+    border-radius: 50%;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: completedCheck 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes completedCheck {
+    0% { transform: translateY(-50%) scale(0) rotate(-180deg); }
+    100% { transform: translateY(-50%) scale(1) rotate(0deg); }
 }
 
 .goal-progress-icon {
@@ -2733,6 +2850,28 @@ svg {
     justify-content: center;
     font-size: 18px;
     background: linear-gradient(180deg, #f8f7ff 0%, #f1f5f9 100%);
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.goal-progress-item:hover .goal-progress-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* 图标脉冲 */
+.goal-progress-icon::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: inherit;
+    opacity: 0;
+    animation: goalIconPulse 2.5s ease-in-out infinite;
+}
+
+@keyframes goalIconPulse {
+    0%, 100% { transform: scale(1); opacity: 0; }
+    50% { transform: scale(1.2); opacity: 0.2; }
 }
 
 .goal-progress-info {
@@ -2753,11 +2892,22 @@ svg {
     font-size: 14px;
     font-weight: 600;
     color: var(--gray-700);
+    transition: color 0.3s ease;
+}
+
+.goal-progress-item.completed .goal-progress-name {
+    color: #10b981;
 }
 
 .goal-progress-count {
     font-size: 13px;
     color: var(--gray-500);
+    transition: all 0.3s ease;
+}
+
+.goal-progress-item.completed .goal-progress-count {
+    color: #10b981;
+    font-weight: 600;
 }
 
 .goal-progress-bar {
@@ -2766,12 +2916,42 @@ svg {
     border-radius: 4px;
     overflow: hidden;
     width: 100%;
+    position: relative;
 }
 
 .goal-progress-fill {
     height: 100%;
     border-radius: 4px;
-    transition: width 0.5s ease;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+/* 进度条闪光效果 */
+.goal-progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: goalProgressShine 2.5s ease-in-out infinite;
+}
+
+@keyframes goalProgressShine {
+    0% { left: -100%; }
+    50%, 100% { left: 200%; }
+}
+
+/* 完成时进度条发光 */
+.goal-progress-item.completed .goal-progress-fill::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: inherit;
+    filter: blur(8px);
+    opacity: 0.5;
+    border-radius: inherit;
 }
 
 .goal-progress-fill.vocabulary { background: var(--gradient-primary); }
@@ -2779,6 +2959,26 @@ svg {
 .goal-progress-fill.speaking { background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); }
 .goal-progress-fill.reading { background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%); }
 .goal-progress-fill.review { background: var(--gradient-warm); }
+
+/* 全部完成时的庆祝动画 */
+.goals-all-completed {
+    position: relative;
+}
+
+.goals-all-completed::before {
+    content: '🎉';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    animation: celebrationBounce 1s ease-in-out infinite;
+}
+
+@keyframes celebrationBounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-10px); }
+}
 
 .goals-stats {
     display: flex;
@@ -2798,52 +2998,67 @@ svg {
     fill: #6366f1;
 }
 
-/* ====== 居中改进 v4-8：进度圈百分比完全居中（彻底修复） ====== */
+/* ====== 进度圈百分比居中 v9-11：彻底修复 0% 不居中问题 ====== */
 
-/* 版本4: 确保容器是定位上下文 */
-/* 居中改进v8: 最终完美居中方案 */
+/* ========== 版本9: 基础居中修复 ========== */
+/* 确保容器是精确的定位上下文 */
 .progress-ring-container {
     position: relative !important;
     width: 80px !important;
     height: 80px !important;
     flex-shrink: 0;
     box-sizing: border-box !important;
+    /* v9: 确保容器本身居中展示 */
+    margin: 0 auto;
 }
 
-/* SVG进度环 - 占满容器 */
+/* SVG进度环 - 精确占满容器 */
 .progress-ring-container .progress-ring {
     position: absolute !important;
     top: 0 !important;
     left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
     width: 100% !important;
     height: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* 居中改进v8: 文字覆盖层 - 使用全覆盖+flex居中 */
+/* v9: 文字覆盖层 - 使用绝对定位+transform实现精确居中 */
 .progress-ring-text-overlay {
     position: absolute !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: auto !important;
+    height: auto !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     z-index: 10;
     pointer-events: none;
     box-sizing: border-box !important;
+    /* v9: 移除可能导致偏移的属性 */
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
-/* 居中改进v8: 内联包装器 - 作为一个整体居中 */
+/* ========== 版本10: 数字和百分号打包居中 ========== */
+/* v10: 内联包装器 - 将数字和%作为整体打包 */
 .progress-text-inner {
     display: inline-flex !important;
-    align-items: center !important;
+    align-items: baseline !important;  /* v10: 使用baseline确保数字和%底部对齐 */
     justify-content: center !important;
     white-space: nowrap !important;
     line-height: 1 !important;
+    /* v10: 确保包装器没有额外空间 */
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
 }
 
-/* 版本8: 数字样式 */
+/* v10: 数字样式 - 使用更稳定的布局 */
 .progress-number {
     font-size: 18px;
     font-weight: 800;
@@ -2851,32 +3066,52 @@ svg {
     line-height: 1;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
     letter-spacing: -0.3px;
-    display: inline !important;
+    display: inline-block !important;  /* v10: 改用inline-block更稳定 */
+    /* v10: 移除可能导致偏移的margin/padding */
+    margin: 0 !important;
+    padding: 0 !important;
+    vertical-align: baseline !important;
 }
 
-/* 版本7: 百分号样式 - 与数字同行 */
+/* v10: 百分号样式 - 紧贴数字 */
 .progress-percent {
     font-size: 10px;
     font-weight: 700;
     color: #8b5cf6;
     line-height: 1;
-    display: inline !important;
-    margin-left: 1px;
+    display: inline-block !important;  /* v10: 改用inline-block更稳定 */
+    margin: 0 0 0 1px !important;  /* v10: 只保留左边1px间距 */
+    padding: 0 !important;
     vertical-align: baseline !important;
 }
 
-/* 版本8: 不同位数的自适应 */
+/* ========== 版本11: 响应式和位数自适应 ========== */
+/* v11: 单位数字（0-9）保持默认大小 */
+.progress-number.single-digit {
+    font-size: 20px;
+    min-width: 12px;
+    text-align: center;
+}
+
+/* v11: 两位数（10-99）稍微缩小 */
 .progress-number.two-digits {
-    font-size: 16px;
+    font-size: 17px;
+    min-width: 22px;
+    text-align: center;
 }
 
+/* v11: 三位数（100）进一步缩小 */
 .progress-number.three-digits {
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: -0.5px;
+    min-width: 32px;
+    text-align: center;
 }
 
+/* v11: 三位数时百分号也要缩小 */
 .progress-number.three-digits + .progress-percent {
     font-size: 8px;
+    margin-left: 0px !important;
 }
 
 /* 完成状态样式 */
@@ -2886,6 +3121,22 @@ svg {
 
 .progress-ring-text-overlay.completed .progress-percent {
     color: #059669;
+}
+
+/* v11: 确保在小屏幕上也能居中 */
+@media (max-width: 380px) {
+    .progress-ring-container {
+        width: 70px !important;
+        height: 70px !important;
+    }
+    
+    .progress-number {
+        font-size: 16px;
+    }
+    
+    .progress-percent {
+        font-size: 9px;
+    }
 }
 
 /* ==================== 目标设置弹窗 ==================== */
@@ -5611,10 +5862,10 @@ body.liquid-glass-mode .settings-action-btn.save {
         gap: 30px;
     }
     
-    /* 居中改进v4: 大屏响应式 */
+    /* v9-11: 大屏响应式进度环 */
     .progress-ring-container {
-        width: 100px;
-        height: 100px;
+        width: 100px !important;
+        height: 100px !important;
     }
     
     .progress-ring-container .progress-ring {
@@ -5622,13 +5873,23 @@ body.liquid-glass-mode .settings-action-btn.save {
         height: 100% !important;
     }
     
-    .progress-ring {
-        width: 100px;
-        height: 100px;
+    /* v11: 大屏幕数字和百分号放大 */
+    .progress-number {
+        font-size: 24px !important;
     }
     
-    .progress-percent { font-size: 28px; }
+    .progress-number.two-digits {
+        font-size: 22px !important;
+    }
     
+    .progress-number.three-digits {
+        font-size: 18px !important;
+    }
+    
+    .progress-percent {
+        font-size: 13px !important;
+    }
+
     .goal-settings-content {
         max-width: 450px;
     }
@@ -5734,15 +5995,24 @@ body.liquid-glass-mode .settings-action-btn.save {
         gap: 15px;
     }
     
-    /* 居中改进v4: 横屏小屏响应式 */
+    /* v9-11: 横屏小屏响应式 */
     .progress-ring-container {
-        width: 60px;
-        height: 60px;
+        width: 60px !important;
+        height: 60px !important;
     }
     
     .progress-ring-container .progress-ring {
         width: 100% !important;
         height: 100% !important;
+    }
+    
+    /* v11: 横屏时缩小字体 */
+    .progress-number {
+        font-size: 14px !important;
+    }
+    
+    .progress-percent {
+        font-size: 8px !important;
     }
     
     .goals-progress-container {
@@ -8830,17 +9100,282 @@ body.liquid-glass-mode .settings-action-btn.save {
     }
 }
 
-/* 骨架屏加载 */
+/* ==================== 高级骨架屏加载系统 ==================== */
 .skeleton {
     background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
     background-size: 200% 100%;
-    animation: skeleton-loading 1.5s infinite;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
     border-radius: var(--radius-sm);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 骨架屏闪光覆盖层 */
+.skeleton::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+    animation: skeletonShine 1.5s ease-in-out infinite;
 }
 
 @keyframes skeleton-loading {
     0% { background-position: 200% 0; }
     100% { background-position: -200% 0; }
+}
+
+@keyframes skeletonShine {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* 卡片骨架屏 */
+.skeleton-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+.skeleton-card .skeleton-avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    animation: skeletonPulse 1.5s ease-in-out infinite;
+}
+
+.skeleton-card .skeleton-title {
+    height: 20px;
+    width: 60%;
+    border-radius: 10px;
+    margin-bottom: 12px;
+}
+
+.skeleton-card .skeleton-text {
+    height: 14px;
+    width: 100%;
+    border-radius: 7px;
+    margin-bottom: 8px;
+}
+
+.skeleton-card .skeleton-text:last-child {
+    width: 80%;
+}
+
+@keyframes skeletonPulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* 列表项骨架屏 */
+.skeleton-list-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.skeleton-list-item .skeleton-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.skeleton-list-item .skeleton-lines {
+    flex: 1;
+}
+
+.skeleton-list-item .skeleton-line {
+    height: 12px;
+    border-radius: 6px;
+    margin-bottom: 6px;
+}
+
+.skeleton-list-item .skeleton-line:first-child {
+    width: 70%;
+}
+
+.skeleton-list-item .skeleton-line:last-child {
+    width: 40%;
+    margin-bottom: 0;
+}
+
+/* 统计卡片骨架屏 */
+.skeleton-stat-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #e5e7eb, #d1d5db, #e5e7eb);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+.skeleton-stat-card .skeleton-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.skeleton-stat-card .skeleton-number {
+    height: 32px;
+    width: 50%;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.skeleton-stat-card .skeleton-label {
+    height: 13px;
+    width: 70%;
+    border-radius: 6px;
+}
+
+/* 模块卡片骨架屏 */
+.skeleton-module-card {
+    background: white;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.skeleton-module-card .skeleton-module-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    flex-shrink: 0;
+}
+
+.skeleton-module-card .skeleton-module-content {
+    flex: 1;
+}
+
+.skeleton-module-card .skeleton-module-title {
+    height: 18px;
+    width: 60%;
+    border-radius: 9px;
+    margin-bottom: 8px;
+}
+
+.skeleton-module-card .skeleton-module-desc {
+    height: 14px;
+    width: 80%;
+    border-radius: 7px;
+}
+
+/* 页面加载过渡 */
+.page-loading {
+    opacity: 0;
+    animation: pageLoadIn 0.5s ease forwards;
+}
+
+@keyframes pageLoadIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 内容淡入动画（分步） */
+.stagger-load > * {
+    opacity: 0;
+    animation: staggerFadeIn 0.4s ease forwards;
+}
+
+.stagger-load > *:nth-child(1) { animation-delay: 0.05s; }
+.stagger-load > *:nth-child(2) { animation-delay: 0.1s; }
+.stagger-load > *:nth-child(3) { animation-delay: 0.15s; }
+.stagger-load > *:nth-child(4) { animation-delay: 0.2s; }
+.stagger-load > *:nth-child(5) { animation-delay: 0.25s; }
+.stagger-load > *:nth-child(6) { animation-delay: 0.3s; }
+.stagger-load > *:nth-child(7) { animation-delay: 0.35s; }
+.stagger-load > *:nth-child(8) { animation-delay: 0.4s; }
+
+@keyframes staggerFadeIn {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 加载旋转动画 */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--gray-200);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spinnerRotate 0.8s linear infinite;
+}
+
+@keyframes spinnerRotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* 脉冲加载点 */
+.loading-dots {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    justify-content: center;
+}
+
+.loading-dots span {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.loading-dots span:nth-child(1) { animation-delay: 0s; }
+.loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes dotPulse {
+    0%, 80%, 100% { transform: scale(0.6); opacity: 0.5; }
+    40% { transform: scale(1); opacity: 1; }
+}
+
+/* 进度波浪加载 */
+.loading-wave {
+    display: flex;
+    gap: 4px;
+    align-items: flex-end;
+    height: 24px;
+}
+
+.loading-wave span {
+    width: 4px;
+    background: var(--primary);
+    border-radius: 2px;
+    animation: waveBar 1s ease-in-out infinite;
+}
+
+.loading-wave span:nth-child(1) { animation-delay: 0s; }
+.loading-wave span:nth-child(2) { animation-delay: 0.1s; }
+.loading-wave span:nth-child(3) { animation-delay: 0.2s; }
+.loading-wave span:nth-child(4) { animation-delay: 0.3s; }
+.loading-wave span:nth-child(5) { animation-delay: 0.4s; }
+
+@keyframes waveBar {
+    0%, 100% { height: 8px; }
+    50% { height: 24px; }
 }
 
 /* 成功/错误状态指示 */
@@ -10937,5 +11472,199 @@ body.liquid-glass-mode .ux-levelup-card {
     .ux-levelup-rays,
     .ux-achievement-glow {
         animation: none !important;
+    }
+}
+
+/* ==================== 液态玻璃模式 - 模态框头部修复 v1-v5 ==================== */
+
+/* v1: 基础修复 - 保留渐变背景，添加玻璃效果叠加 */
+body.liquid-glass-mode .modal-header {
+    background: var(--gradient-primary) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 
+        0 4px 30px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+/* v1: 添加玻璃高光层 */
+body.liquid-glass-mode .modal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* v2: 各模块专属渐变保持 */
+body.liquid-glass-mode .modal-header-vocab {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-listen {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(6, 182, 212, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-speak {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.95) 0%, rgba(244, 63, 94, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-read {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-review {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(249, 115, 22, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-resource {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.95) 0%, rgba(168, 85, 247, 0.95) 100%) !important;
+}
+
+body.liquid-glass-mode .modal-header-stats {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%) !important;
+}
+
+/* v3: 模态框头部内容层级修复 */
+body.liquid-glass-mode .modal-header > * {
+    position: relative;
+    z-index: 1;
+}
+
+body.liquid-glass-mode .modal-header h2,
+body.liquid-glass-mode .modal-header .modal-title-group,
+body.liquid-glass-mode .modal-header .back-btn {
+    position: relative;
+    z-index: 2;
+}
+
+/* v3: 返回按钮液态玻璃效果 */
+body.liquid-glass-mode .modal-header .back-btn {
+    background: rgba(255, 255, 255, 0.2) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body.liquid-glass-mode .modal-header .back-btn:hover {
+    background: rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-1px);
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+body.liquid-glass-mode .modal-header .back-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* v4: 图标徽章液态玻璃效果 */
+body.liquid-glass-mode .modal-header .modal-icon-badge {
+    background: rgba(255, 255, 255, 0.25) !important;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+/* v4: 头部底部边缘发光效果 */
+body.liquid-glass-mode .modal-header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.5) 20%, 
+        rgba(255, 255, 255, 0.8) 50%, 
+        rgba(255, 255, 255, 0.5) 80%, 
+        transparent 100%
+    );
+    z-index: 1;
+}
+
+/* v5: 滚动时头部增强效果 */
+body.liquid-glass-mode .modal-header.scrolled {
+    box-shadow: 
+        0 8px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+/* v5: 设置模态框头部特殊处理 */
+body.liquid-glass-mode #settingsModal .modal-header,
+body.liquid-glass-mode #statsModal .modal-header {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%) !important;
+}
+
+/* v5: 深色主题下的液态玻璃头部 */
+body.theme-dark.liquid-glass-mode .modal-header {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+body.theme-dark.liquid-glass-mode .modal-header::before {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+body.theme-dark.liquid-glass-mode .modal-header .back-btn {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* v5: 各模块深色主题适配 */
+body.theme-dark.liquid-glass-mode .modal-header-vocab {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(139, 92, 246, 0.85) 100%) !important;
+}
+
+body.theme-dark.liquid-glass-mode .modal-header-listen {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(6, 182, 212, 0.85) 100%) !important;
+}
+
+body.theme-dark.liquid-glass-mode .modal-header-speak {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.85) 0%, rgba(244, 63, 94, 0.85) 100%) !important;
+}
+
+body.theme-dark.liquid-glass-mode .modal-header-read {
+    background: linear-gradient(135deg, rgba(20, 184, 166, 0.85) 0%, rgba(16, 185, 129, 0.85) 100%) !important;
+}
+
+body.theme-dark.liquid-glass-mode .modal-header-review {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.85) 0%, rgba(249, 115, 22, 0.85) 100%) !important;
+}
+
+body.theme-dark.liquid-glass-mode .modal-header-resource {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.85) 0%, rgba(168, 85, 247, 0.85) 100%) !important;
+}
+
+/* v5: 模态框整体背景增强 */
+body.liquid-glass-mode .modal {
+    background: rgba(248, 250, 252, 0.98);
+}
+
+body.theme-dark.liquid-glass-mode .modal {
+    background: rgba(15, 23, 42, 0.98);
+}
+
+/* v5: iOS安全区域适配 */
+body.liquid-glass-mode .modal-header {
+    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+}
+
+@supports (padding-top: env(safe-area-inset-top)) {
+    body.liquid-glass-mode .modal-header {
+        padding-top: calc(18px + env(safe-area-inset-top));
     }
 }

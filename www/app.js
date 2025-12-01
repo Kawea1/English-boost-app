@@ -1326,16 +1326,19 @@ function renderGoalsProgress() {
         completedText.textContent = '已完成 ' + completedCount + '/' + totalGoals + ' 项';
     }
     
-    // 版本1-3改进：更新横向百分比显示
+    // 版本9-11改进：更新横向百分比显示
     if (progressNumEl) {
         progressNumEl.textContent = avgPercent;
         
-        // 版本2: 根据位数调整字体大小
-        progressNumEl.classList.remove('two-digits', 'three-digits');
+        // v11: 根据位数调整字体大小类名
+        progressNumEl.classList.remove('single-digit', 'two-digits', 'three-digits');
         if (avgPercent >= 100) {
             progressNumEl.classList.add('three-digits');
         } else if (avgPercent >= 10) {
             progressNumEl.classList.add('two-digits');
+        } else {
+            // v11新增: 单位数字添加single-digit类
+            progressNumEl.classList.add('single-digit');
         }
     }
     
