@@ -1639,9 +1639,27 @@ function showHelp() {
 // 检查更新
 function checkForUpdates() {
     showToast('🔄 正在检查更新...');
-    setTimeout(() => {
-        showToast('✅ 当前已是最新版本');
-    }, 1500);
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
+            registration.update().then(() => {
+                // 如果有新版本，SW会自动激活并刷新页面
+                // 如果没有新版本，我们提示用户
+                setTimeout(() => {
+                    if (confirm('已检查更新。如果没有自动刷新，说明当前已是最新版本。\n\n是否强制刷新页面以确保万无一失？')) {
+                        window.location.reload(true);
+                    }
+                }, 2000);
+            }).catch(err => {
+                console.error('Update failed:', err);
+                window.location.reload(true);
+            });
+        });
+    } else {
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 1000);
+    }
 }
 
 // 显示反馈
