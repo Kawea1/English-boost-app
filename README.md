@@ -1,112 +1,134 @@
-# 🎯 学术英语精进 (English Boost App)
+<p align="center">
+  <img src="assets/icon-192.png" width="128" height="128" alt="学术英语精进">
+</p>
 
-一款专为研究生和学术英语学习者设计的全功能英语学习 PWA 应用。支持离线使用，可安装到手机主屏幕。
+<h1 align="center">🎯 学术英语精进</h1>
 
-🌐 **在线访问**: [https://english-boost-app.vercel.app](https://english-boost-app.vercel.app)
+<p align="center">
+  <strong>Academic English Mastery - 专为研究生和学术英语学习者打造</strong>
+</p>
 
-## ✨ 功能特性
+<p align="center">
+  <a href="https://github.com/Kawea1/English-boost-app/releases/latest">
+    <img src="https://img.shields.io/github/v/release/Kawea1/English-boost-app?style=flat-square&color=blue" alt="Latest Release">
+  </a>
+  <a href="https://github.com/Kawea1/English-boost-app/releases">
+    <img src="https://img.shields.io/github/downloads/Kawea1/English-boost-app/total?style=flat-square&color=green" alt="Downloads">
+  </a>
+  <a href="https://github.com/Kawea1/English-boost-app/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Kawea1/English-boost-app?style=flat-square" alt="License">
+  </a>
+</p>
 
-### 📖 核心词汇
-- **10000+ 高频词汇**：GRE、托福、六级、学术570词、高阶学术词汇
-- **智能记忆系统**：艾宾浩斯遗忘曲线复习提醒
-- **三级难度评分**：困难/一般/简单，自适应复习间隔
-- **中英双语释义**：包含音标、例句、详细定义
-- **真人发音**：美式英语 TTS 发音
-
-### 🎧 精听训练
-- **50篇高质量材料**：学术讲座、TOEFL、GRE风格
-- **填空式听写**：边听边填，即时反馈
-- **可调语速**：0.5x - 2.0x
-- **答案解析**：完整句子对照
-
-### 🎤 口语跟读
-- **100句精选句子**：学术表达、日常会话、商务英语、科技主题
-- **语音识别**：Web Speech API 实时识别
-- **智能评分**：0-100 分相似度评分
-- **发音对比**：原音 vs 录音对比
-
-### 📰 阅读精读
-- **100篇精选文章**：GRE/托福/学术英语
-- **理解题训练**：每篇配有选择题
-- **核心词汇标注**：重点词汇表
-
-### 🔄 复习巩固
-- **科学复习计划**：7 个时间节点
-- **学习统计**：已学/待复习/已掌握
-- **进度追踪**：全面的数据统计
-
-### 🌐 学习资源
-- **在线资源整合**：TED、学术文章、音频
-- **一键访问**：直接跳转原文
-
-## 🚀 技术特点
-
-- **纯静态部署**：无需后端服务器
-- **PWA 支持**：离线可用，可安装到主屏幕
-- **自动更新**：网络优先策略，始终获取最新版本
-- **用户数据安全**：学习进度本地保存，更新不丢失
-
-## 📱 技术栈
-
-- HTML5 + CSS3 + Vanilla JavaScript
-- Service Worker (PWA)
-- Web Speech API
-- Local Storage
-- Vercel 静态托管
-
-## 📁 项目结构
-
-\`\`\`
-english-boost-app/
-├── index.html          # 主页面
-├── styles.css          # 样式表
-├── app.js              # 应用主逻辑
-├── auth.js             # 认证系统
-├── vocabulary.js       # 词汇模块
-├── dictionary.js       # 字典功能
-├── listening-module.js # 听力模块
-├── modules.js          # 口语/阅读/资源/复习模块
-├── quotes.js           # 名人名言（370+条）
-├── listening-data.js   # 精听数据（50篇）
-├── reading-data.js     # 阅读数据（100篇）
-├── sw.js               # Service Worker
-├── manifest.json       # PWA 配置
-├── vercel.json         # Vercel 部署配置
-├── words.json          # 词汇数据库（10000+词）
-├── word_chinese.json   # 中文释义（含双层释义）
-├── word_definitions.json # 英文详细定义
-└── scripts/            # Python 工具脚本
-\`\`\`
-
-## 🔧 本地开发
-
-\`\`\`bash
-# 启动本地服务器
-python3 -m http.server 8000
-
-# 访问
-open http://localhost:8000
-\`\`\`
-
-## 🚀 部署更新
-
-\`\`\`bash
-# 提交并推送更改
-git add -A && git commit -m "更新内容" && git push
-
-# Vercel 会自动检测并重新部署
-\`\`\`
-
-## 📄 许可证
-
-Copyright © 2025 黄家伟. All Rights Reserved.
-
-本项目保留所有权利，未经授权不得复制、修改或分发。
-
-## 👤 作者
-
-**黄家伟** (Jiawei Huang)
+<p align="center">
+  <a href="#-下载安装">📥 下载</a> •
+  <a href="#-功能特性">✨ 功能</a> •
+  <a href="#-截图预览">📸 截图</a> •
+  <a href="#-快速开始">🚀 快速开始</a>
+</p>
 
 ---
 
-**开始你的英语冲刺之旅！🚀**
+## 📥 下载安装
+
+### 桌面应用
+
+| 平台 | 下载 | 说明 |
+|:---:|:---:|:---:|
+| **Windows** | [📦 下载 .exe](https://github.com/Kawea1/English-boost-app/releases/latest/download/English-Boost-Setup.exe) | Windows 10/11 |
+| **macOS** | [📦 下载 .dmg](https://github.com/Kawea1/English-boost-app/releases/latest/download/English-Boost.dmg) | macOS 10.15+ |
+| **Linux** | [📦 下载 .AppImage](https://github.com/Kawea1/English-boost-app/releases/latest/download/English-Boost.AppImage) | Ubuntu/Debian |
+
+### 移动端 & 网页版
+
+| 平台 | 使用方式 |
+|:---:|:---:|
+| **🌐 网页版** | 访问 [kawea1.github.io/English-boost-app](https://kawea1.github.io/English-boost-app) |
+| **�� iOS** | Safari 打开网页 → 点击分享 → "添加到主屏幕" |
+| **📱 Android** | Chrome 打开网页 → 菜单 → "添加到主屏幕" |
+
+> 💡 **推荐**：手机用户使用 PWA 方式安装，体验更佳且自动更新！
+
+---
+
+## ✨ 功能特性
+
+### 📖 核心词汇 (10000+ 词)
+- **多词库支持**：GRE、托福、六级、学术570词、高阶学术词汇
+- **智能复习**：艾宾浩斯遗忘曲线，科学间隔重复
+- **中英双语**：音标、例句、详细释义
+- **真人发音**：美式英语 TTS
+
+### 🎧 精听训练 (50+ 材料)
+- 学术讲座、TOEFL/GRE 风格听力
+- 填空式听写，即时反馈
+- 0.5x - 2.0x 可调语速
+
+### 🎤 口语跟读 (100+ 句子)
+- 语音识别评分 (0-100分)
+- 原音 vs 录音对比
+- 学术/商务/日常多场景
+
+### 📰 阅读精读 (100+ 文章)
+- GRE/托福/学术英语精选
+- 理解题训练 + 核心词汇标注
+
+### 🔄 复习系统
+- 7个科学复习节点
+- 学习数据统计追踪
+- 进度云端同步 (可选)
+
+---
+
+## 📸 截图预览
+
+<p align="center">
+  <img src="docs/screenshot-1.png" width="200">
+  <img src="docs/screenshot-2.png" width="200">
+  <img src="docs/screenshot-3.png" width="200">
+</p>
+
+---
+
+## 🚀 快速开始
+
+### 在线使用 (推荐)
+直接访问：**https://kawea1.github.io/English-boost-app**
+
+### 本地开发
+\`\`\`bash
+# 克隆仓库
+git clone https://github.com/Kawea1/English-boost-app.git
+cd English-boost-app
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm start
+
+# 打包桌面应用
+npm run build
+\`\`\`
+
+---
+
+## 🛠️ 技术栈
+
+- **前端**：原生 JavaScript + CSS3
+- **桌面**：Electron
+- **移动**：PWA + Capacitor
+- **语音**：Web Speech API
+- **存储**：LocalStorage + IndexedDB
+
+---
+
+## 📄 开源协议
+
+MIT License - 详见 [LICENSE](LICENSE)
+
+---
+
+<p align="center">
+  <sub>Made with ❤️ for English learners</sub>
+</p>
