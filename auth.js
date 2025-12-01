@@ -109,6 +109,13 @@ function login() {
         return;
     }
     
+    // 版本3优化：检查用户是否同意协议（《个人信息保护法》要求）
+    const agreementCheckbox = document.getElementById('agreementCheckbox');
+    if (agreementCheckbox && !agreementCheckbox.checked) {
+        showActivationResult(false, '请先同意协议', '请阅读并勾选同意《用户协议》和《隐私政策》后再继续');
+        return;
+    }
+    
     const key = input.value.trim().toUpperCase();
     if (!key) {
         showActivationResult(false, '输入为空', '请输入激活密钥');
@@ -118,6 +125,10 @@ function login() {
     const keyData = validateKey(key);
     
     if (keyData) {
+        // 记录用户同意协议的时间（合规留痕）
+        localStorage.setItem('agreementAcceptedAt', new Date().toISOString());
+        localStorage.setItem('agreementVersion', '2025.01.01');
+        
         // 激活当前设备（永久保存）
         activateDevice(key, keyData);
         

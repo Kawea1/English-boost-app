@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta http-equiv=20251201109000"X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=20251201150000"X-UA-Compatible" content="IE=edge">
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=20251201109000">
+    <link rel="stylesheet" href="styles.css?v=20251201150000">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=20251201109000" as="style">
-    <link rel="preload" href="app.js?v=20251201109000" as="script">
+    <link rel="preload" href="styles.css?v=20251201150000" as="style">
+    <link rel="preload" href="app.js?v=20251201150000" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -51,6 +51,14 @@
                         <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                     <input type="text" id="activationKey" placeholder="请输入激活密钥" class="login-input">
+                </div>
+                <!-- 协议同意勾选 -->
+                <div class="agreement-check">
+                    <label class="agreement-label">
+                        <input type="checkbox" id="agreementCheckbox" class="agreement-checkbox">
+                        <span class="checkbox-custom"></span>
+                        <span class="agreement-text">我已阅读并同意<a href="#" onclick="showUserAgreement();return false;">《用户协议》</a>和<a href="#" onclick="showPrivacyPolicy();return false;">《隐私政策》</a></span>
+                    </label>
                 </div>
                 <button onclick="login()" class="login-btn">
                     <span>立即激活</span>
@@ -280,7 +288,7 @@
                             </svg>
                         </div>
                         <h3>核心词汇</h3>
-                        <p>10000+ GRE/托福/学术词汇</p>
+                        <p>10000+ 学术词汇精选</p>
                         <div class="module-arrow">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                         </div>
@@ -1648,12 +1656,34 @@
                                     <span>反馈建议</span>
                                     <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
                                 </a>
+                                <a href="#" class="about-link-new" onclick="showPrivacyPolicy()">
+                                    <div class="link-icon-wrap">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                        </svg>
+                                    </div>
+                                    <span>隐私政策</span>
+                                    <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
+                                <a href="#" class="about-link-new" onclick="showUserAgreement()">
+                                    <div class="link-icon-wrap">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                            <line x1="16" y1="13" x2="8" y2="13"/>
+                                            <line x1="16" y1="17" x2="8" y2="17"/>
+                                        </svg>
+                                    </div>
+                                    <span>用户协议</span>
+                                    <svg class="link-arrow-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                                </a>
                             </div>
                         </div>
 
                         <div class="about-footer">
                             <p>Made with ❤️ for English Learners</p>
                             <p class="copyright">© 2025 Jiawei Huang. All rights reserved.</p>
+                            <p class="trademark-notice">GRE®、TOEFL® 为 ETS 注册商标，本应用与 ETS 无关联</p>
                         </div>
                     </div>
                 </div>
@@ -1751,16 +1781,131 @@
         </div>
     </div>
 
-    <script src="auth.js?v=20251201109000"></script>
-    <script src="vocabulary.js?v=20251201109000"></script>
-    <script src="dictionary.js?v=20251201109000"></script>
-    <script src="listening-data.js?v=20251201109000"></script>
-    <script src="listening-module.js?v=20251201109000"></script>
-    <script src="reading-data.js?v=20251201109000"></script>
-    <script src="sources.js?v=20251201109000"></script>
-    <script src="online_sources.js?v=20251201109000"></script>
-    <script src="modules.js?v=20251201109000"></script>
-    <script src="quotes.js?v=20251201109000"></script>
-    <script src="app.js?v=20251201109000"></script>
+    <script src="auth.js?v=20251201150000"></script>
+    <script src="vocabulary.js?v=20251201150000"></script>
+    <script src="dictionary.js?v=20251201150000"></script>
+    <script src="listening-data.js?v=20251201150000"></script>
+    <script src="listening-module.js?v=20251201150000"></script>
+    <script src="reading-data.js?v=20251201150000"></script>
+    <script src="sources.js?v=20251201150000"></script>
+    <script src="online_sources.js?v=20251201150000"></script>
+    <script src="modules.js?v=20251201150000"></script>
+    <script src="quotes.js?v=20251201150000"></script>
+    <script src="app.js?v=20251201150000"></script>
+
+    <!-- 隐私政策弹窗 -->
+    <div id="privacyPolicyModal" class="legal-modal" style="display:none;">
+        <div class="legal-modal-content">
+            <div class="legal-modal-header">
+                <h2>隐私政策</h2>
+                <button class="legal-close-btn" onclick="closeLegalModal('privacyPolicyModal')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="legal-modal-body">
+                <p class="legal-update-date">更新日期：2025年1月1日</p>
+                
+                <h3>一、信息收集</h3>
+                <p>本应用遵循《中华人民共和国个人信息保护法》，仅在设备本地存储以下数据：</p>
+                <ul>
+                    <li>学习进度数据（已学单词、阅读记录等）</li>
+                    <li>应用设置偏好（主题、语音设置等）</li>
+                    <li>激活状态信息</li>
+                </ul>
+                <p><strong>我们不收集、不上传、不共享任何个人信息至服务器。</strong></p>
+                
+                <h3>二、数据存储</h3>
+                <p>所有数据均使用浏览器 localStorage 技术存储在您的设备本地，具有以下特点：</p>
+                <ul>
+                    <li>数据仅存储在您的设备上</li>
+                    <li>清除浏览器数据将删除应用数据</li>
+                    <li>您可随时导出或删除数据</li>
+                </ul>
+                
+                <h3>三、权限使用</h3>
+                <p>本应用可能请求以下权限：</p>
+                <ul>
+                    <li><strong>麦克风权限</strong>：用于口语练习的语音识别功能，语音数据仅在本地处理</li>
+                    <li><strong>通知权限</strong>：用于复习提醒功能（可选）</li>
+                </ul>
+                
+                <h3>四、第三方服务</h3>
+                <p>本应用使用设备内置的语音合成(TTS)和语音识别服务，不涉及第三方数据传输。</p>
+                
+                <h3>五、未成年人保护</h3>
+                <p>本应用适合所有年龄段用户。我们不主动收集任何用户的个人信息，包括未成年人信息。</p>
+                
+                <h3>六、您的权利</h3>
+                <p>根据法律规定，您享有以下权利：</p>
+                <ul>
+                    <li>访问权：查看应用存储的所有数据</li>
+                    <li>导出权：导出所有学习数据</li>
+                    <li>删除权：随时删除所有应用数据</li>
+                </ul>
+                
+                <h3>七、政策更新</h3>
+                <p>我们可能适时更新本隐私政策。重大变更将在应用内通知。</p>
+                
+                <h3>八、联系方式</h3>
+                <p>如有隐私相关问题，请通过应用内"反馈建议"功能联系我们。</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 用户协议弹窗 -->
+    <div id="userAgreementModal" class="legal-modal" style="display:none;">
+        <div class="legal-modal-content">
+            <div class="legal-modal-header">
+                <h2>用户协议</h2>
+                <button class="legal-close-btn" onclick="closeLegalModal('userAgreementModal')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="legal-modal-body">
+                <p class="legal-update-date">更新日期：2025年1月1日</p>
+                
+                <h3>一、服务说明</h3>
+                <p>「学术英语精进」是一款英语学习辅助工具，提供词汇学习、听力练习、口语训练、阅读理解等功能。</p>
+                
+                <h3>二、用户行为规范</h3>
+                <p>使用本应用时，您同意：</p>
+                <ul>
+                    <li>遵守中华人民共和国法律法规</li>
+                    <li>不利用本应用从事违法活动</li>
+                    <li>不传播违法、有害信息</li>
+                    <li>尊重知识产权</li>
+                </ul>
+                
+                <h3>三、知识产权声明</h3>
+                <p>1. 本应用的软件代码、界面设计、图标等受著作权法保护。</p>
+                <p>2. 词汇数据来源于公开学术词汇表（如AWL学术词汇表），仅供学习参考。</p>
+                <p>3. "GRE"、"TOEFL"、"托福"为 ETS (Educational Testing Service) 的注册商标，本应用与 ETS 无任何关联，相关内容仅为备考参考。</p>
+                <p>4. 部分学习资源链接指向第三方网站，其内容与本应用无关。</p>
+                
+                <h3>四、免责声明</h3>
+                <ul>
+                    <li>本应用提供的学习内容仅供参考，不保证考试效果</li>
+                    <li>因设备、网络等原因导致的数据丢失，本应用不承担责任</li>
+                    <li>建议定期导出备份重要学习数据</li>
+                </ul>
+                
+                <h3>五、服务变更</h3>
+                <p>我们保留随时修改、中断或终止服务的权利，届时将提前通知用户。</p>
+                
+                <h3>六、协议更新</h3>
+                <p>本协议可能更新，继续使用即表示接受更新后的协议。</p>
+                
+                <h3>七、争议解决</h3>
+                <p>本协议受中华人民共和国法律管辖。如发生争议，双方应友好协商解决。</p>
+                
+                <h3>八、联系我们</h3>
+                <p>如有疑问，请通过应用内"反馈建议"功能联系。</p>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

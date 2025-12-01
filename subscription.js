@@ -1,0 +1,958 @@
+// ==================== 订阅系统 ====================
+// 免费试用30天，一次付费终身使用
+
+(function() {
+    'use strict';
+    
+    // ==================== 配置 ====================
+    const SUBSCRIPTION_CONFIG = {
+        TRIAL_DAYS: 30,                    // 免费试用天数
+        PRICE: 68,                         // 终身会员价格（元）
+        CURRENCY: 'CNY',
+        PRODUCT_NAME: '学术英语精进 - 终身会员',
+        CONTACT_WECHAT: 'huangjiawei_boost', // 微信号
+        CONTACT_EMAIL: 'support@english-boost.app'
+    };
+    
+    // 激活码前缀（用于一次性激活码）
+    const LIFETIME_KEY_PREFIX = 'LIFETIME-';
+    
+    // ==================== 订阅状态管理 ====================
+    
+    // 获取订阅状态
+    function getSubscriptionStatus() {
+        const status = JSON.parse(localStorage.getItem('subscriptionStatus') || 'null');
+        
+        if (!status) {
+            // 首次使用，初始化试用状态
+            return initTrialStatus();
+        }
+        
+        return status;
+    }
+    
+    // 初始化试用状态
+    function initTrialStatus() {
+        const now = new Date();
+        const trialEndDate = new Date(now);
+        trialEndDate.setDate(trialEndDate.getDate() + SUBSCRIPTION_CONFIG.TRIAL_DAYS);
+        
+        const status = {
+            type: 'trial',                         // trial | lifetime | expired
+            startDate: now.toISOString(),
+            trialEndDate: trialEndDate.toISOString(),
+            purchaseDate: null,
+            activationKey: null,
+            deviceId: getDeviceFingerprint(),
+            lastCheckDate: now.toISOString()
+        };
+        
+        saveSubscriptionStatus(status);
+        return status;
+    }
+    
+    // 保存订阅状态
+    function saveSubscriptionStatus(status) {
+        status.lastCheckDate = new Date().toISOString();
+        localStorage.setItem('subscriptionStatus', JSON.stringify(status));
+    }
+    
+    // 检查订阅是否有效
+    function isSubscriptionValid() {
+        const status = getSubscriptionStatus();
+        
+        // 终身会员永久有效
+        if (status.type === 'lifetime') {
+            return true;
+        }
+        
+        // 试用期检查
+        if (status.type === 'trial') {
+            const trialEnd = new Date(status.trialEndDate);
+            const now = new Date();
+            
+            if (now <= trialEnd) {
+                return true;
+            } else {
+                // 试用期已过期，更新状态
+                status.type = 'expired';
+                saveSubscriptionStatus(status);
+                return false;
+            }
+        }
+        
+        return false;
+    }
+    
+    // 获取剩余试用天数
+    function getTrialDaysRemaining() {
+        const status = getSubscriptionStatus();
+        
+        if (status.type === 'lifetime') {
+            return -1; // -1 表示终身会员
+        }
+        
+        if (status.type === 'trial') {
+            const trialEnd = new Date(status.trialEndDate);
+            const now = new Date();
+            const diffTime = trialEnd - now;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return Math.max(0, diffDays);
+        }
+        
+        return 0;
+    }
+    
+    // 激活终身会员
+    function activateLifetime(activationKey) {
+        // 验证激活码格式
+        const key = activationKey.trim().toUpperCase();
+        
+        // 检查是否是有效的终身激活码
+        if (!isValidLifetimeKey(key)) {
+            return {
+                success: false,
+                message: '无效的激活码，请检查后重试'
+            };
+        }
+        
+        // 检查激活码是否已被使用
+        if (isKeyUsed(key)) {
+            return {
+                success: false,
+                message: '该激活码已被使用'
+            };
+        }
+        
+        // 激活成功
+        const status = getSubscriptionStatus();
+        status.type = 'lifetime';
+        status.purchaseDate = new Date().toISOString();
+        status.activationKey = key;
+        saveSubscriptionStatus(status);
+        
+        // 记录已使用的激活码
+        markKeyAsUsed(key);
+        
+        return {
+            success: true,
+            message: '🎉 恭喜！您已成功激活终身会员'
+        };
+    }
+    
+    // 验证终身激活码格式
+    function isValidLifetimeKey(key) {
+        // 格式: LIFETIME-XXXX-XXXX-XXXX 或管理员密钥
+        if (key === 'ADMIN-HUANGJIAWEI-2025') {
+            return true;
+        }
+        
+        // 检查 SHAO 密钥
+        if (/^SHAO\d+$/.test(key)) {
+            return true;
+        }
+        
+        // 检查 LIFETIME 格式
+        if (/^LIFETIME-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(key)) {
+            return true;
+        }
+        
+        // 检查旧版 BOOST-USER 密钥
+        if (/^BOOST-USER-\d{3}$/.test(key)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    // 检查激活码是否已使用
+    function isKeyUsed(key) {
+        const usedKeys = JSON.parse(localStorage.getItem('usedActivationKeys') || '[]');
+        return usedKeys.includes(key);
+    }
+    
+    // 标记激活码已使用
+    function markKeyAsUsed(key) {
+        const usedKeys = JSON.parse(localStorage.getItem('usedActivationKeys') || '[]');
+        if (!usedKeys.includes(key)) {
+            usedKeys.push(key);
+            localStorage.setItem('usedActivationKeys', JSON.stringify(usedKeys));
+        }
+    }
+    
+    // 生成设备指纹
+    function getDeviceFingerprint() {
+        if (typeof window.getDeviceFingerprint === 'function') {
+            return window.getDeviceFingerprint();
+        }
+        
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillText('device-fingerprint', 2, 2);
+        const canvasHash = canvas.toDataURL().slice(-50);
+        
+        const nav = [
+            navigator.userAgent,
+            navigator.language,
+            screen.width + 'x' + screen.height,
+            screen.colorDepth,
+            new Date().getTimezoneOffset()
+        ].join('|');
+        
+        let hash = 0;
+        const str = nav + canvasHash;
+        for (let i = 0; i < str.length; i++) {
+            hash = ((hash << 5) - hash) + str.charCodeAt(i);
+            hash = hash & hash;
+        }
+        return 'DEV' + Math.abs(hash).toString(36).toUpperCase();
+    }
+    
+    // ==================== UI 相关 ====================
+    
+    // 显示订阅状态徽章
+    function renderSubscriptionBadge() {
+        const status = getSubscriptionStatus();
+        const container = document.getElementById('subscriptionBadge');
+        if (!container) return;
+        
+        let badgeHtml = '';
+        
+        if (status.type === 'lifetime') {
+            badgeHtml = `
+                <div class="sub-badge lifetime">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <span>终身会员</span>
+                </div>
+            `;
+        } else if (status.type === 'trial') {
+            const daysLeft = getTrialDaysRemaining();
+            const urgentClass = daysLeft <= 7 ? 'urgent' : '';
+            badgeHtml = `
+                <div class="sub-badge trial ${urgentClass}" onclick="showPaymentModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    <span>试用${daysLeft}天</span>
+                </div>
+            `;
+        } else {
+            badgeHtml = `
+                <div class="sub-badge expired" onclick="showPaymentModal()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    <span>已过期</span>
+                </div>
+            `;
+        }
+        
+        container.innerHTML = badgeHtml;
+    }
+    
+    // 显示付费弹窗
+    function showPaymentModal() {
+        const status = getSubscriptionStatus();
+        const daysLeft = getTrialDaysRemaining();
+        
+        let headerText = '';
+        let subText = '';
+        
+        if (status.type === 'expired') {
+            headerText = '试用期已结束';
+            subText = '升级终身会员，解锁全部功能';
+        } else if (status.type === 'trial') {
+            headerText = `试用期还剩 ${daysLeft} 天`;
+            subText = '现在升级享受终身服务';
+        } else {
+            return; // 已是终身会员
+        }
+        
+        const modalHtml = `
+            <div class="payment-modal-overlay" id="paymentModalOverlay" onclick="closePaymentModal(event)">
+                <div class="payment-modal" onclick="event.stopPropagation()">
+                    <button class="payment-close-btn" onclick="closePaymentModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    
+                    <div class="payment-header">
+                        <div class="payment-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                                <defs>
+                                    <linearGradient id="crownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#f59e0b"/>
+                                        <stop offset="100%" stop-color="#f97316"/>
+                                    </linearGradient>
+                                </defs>
+                                <path d="M2 17l3-11 5 4 4-6 4 6 5-4 3 11H2z" fill="url(#crownGrad)"/>
+                                <circle cx="12" cy="6" r="1" fill="#fbbf24"/>
+                                <circle cx="6" cy="8" r="1" fill="#fbbf24"/>
+                                <circle cx="18" cy="8" r="1" fill="#fbbf24"/>
+                            </svg>
+                        </div>
+                        <h2>${headerText}</h2>
+                        <p class="payment-subtitle">${subText}</p>
+                    </div>
+                    
+                    <div class="payment-price">
+                        <div class="price-original">原价 ¥198</div>
+                        <div class="price-current">
+                            <span class="price-symbol">¥</span>
+                            <span class="price-amount">${SUBSCRIPTION_CONFIG.PRICE}</span>
+                            <span class="price-unit">/终身</span>
+                        </div>
+                        <div class="price-tag">限时特惠 · 买断制</div>
+                    </div>
+                    
+                    <div class="payment-features">
+                        <div class="feature-row">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>10000+ GRE/托福核心词汇</span>
+                        </div>
+                        <div class="feature-row">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>艾宾浩斯科学复习系统</span>
+                        </div>
+                        <div class="feature-row">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>精听训练 + 口语跟读</span>
+                        </div>
+                        <div class="feature-row">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>阅读精进 + 学习资源</span>
+                        </div>
+                        <div class="feature-row">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                            <span>永久免费更新</span>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <div class="method-title">选择支付方式</div>
+                        <div class="method-options">
+                            <div class="method-option active" data-method="wechat">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#07c160">
+                                    <path d="M8.5 11c-.83 0-1.5-.67-1.5-1.5S7.67 8 8.5 8s1.5.67 1.5 1.5S9.33 11 8.5 11zm7 0c-.83 0-1.5-.67-1.5-1.5S14.67 8 15.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 5.58 2 10c0 2.03 1.02 3.87 2.67 5.27l-.67 2.73 3.1-1.55c1.22.38 2.55.55 3.9.55 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+                                </svg>
+                                <span>微信支付</span>
+                            </div>
+                            <div class="method-option" data-method="alipay">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#1677ff">
+                                    <path d="M21 12V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c.56 0 1.07-.23 1.43-.61l-7.43-3.18c-1.31.68-2.82 1.12-4.47 1.17-1.07-.27-2.03-.78-2.76-1.5C4.65 14.78 4 13.29 4 11.68c0-2.89 2.39-5.43 5.97-6.03 3.29-.35 5.93 1.54 6.58 4.31.29-.16.58-.31.88-.44 1.69-.73 3.31-1.11 4.69-1.25.34 1.05.55 2.12.55 3.26 0 .98-.13 1.93-.38 2.84l1.72.73V12z"/>
+                                </svg>
+                                <span>支付宝</span>
+                            </div>
+                            <div class="method-option" data-method="key">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="#6366f1">
+                                    <path d="M12.65 10A5.99 5.99 0 0 0 7 6c-3.31 0-6 2.69-6 6s2.69 6 6 6a5.99 5.99 0 0 0 5.65-4H17v4h4v-4h2v-4H12.65zM7 14c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z"/>
+                                </svg>
+                                <span>激活码</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 微信/支付宝支付区域 -->
+                    <div class="payment-qr-section" id="paymentQrSection">
+                        <div class="qr-placeholder">
+                            <svg width="160" height="160" viewBox="0 0 160 160">
+                                <rect width="160" height="160" fill="#f3f4f6" rx="8"/>
+                                <text x="80" y="75" text-anchor="middle" fill="#9ca3af" font-size="12">扫码支付</text>
+                                <text x="80" y="95" text-anchor="middle" fill="#9ca3af" font-size="12">¥${SUBSCRIPTION_CONFIG.PRICE}</text>
+                            </svg>
+                            <p class="qr-hint">请联系客服获取付款码</p>
+                        </div>
+                        <div class="contact-info">
+                            <p>微信: <strong>${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}</strong></p>
+                            <p class="contact-note">付款后发送截图获取激活码</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 激活码输入区域 -->
+                    <div class="payment-key-section hidden" id="paymentKeySection">
+                        <div class="key-input-wrap">
+                            <input type="text" id="lifetimeKeyInput" class="key-input" placeholder="请输入终身激活码">
+                            <button class="key-submit-btn" onclick="submitLifetimeKey()">激活</button>
+                        </div>
+                        <p class="key-hint">激活码格式: LIFETIME-XXXX-XXXX-XXXX</p>
+                    </div>
+                    
+                    <div class="payment-guarantee">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#10b981"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <span>安全支付 · 即时激活 · 终身有效</span>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // 移除旧弹窗
+        const oldModal = document.getElementById('paymentModalOverlay');
+        if (oldModal) oldModal.remove();
+        
+        // 添加新弹窗
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        
+        // 绑定支付方式切换
+        setTimeout(() => {
+            document.querySelectorAll('.method-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    document.querySelectorAll('.method-option').forEach(o => o.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const method = this.dataset.method;
+                    const qrSection = document.getElementById('paymentQrSection');
+                    const keySection = document.getElementById('paymentKeySection');
+                    
+                    if (method === 'key') {
+                        qrSection.classList.add('hidden');
+                        keySection.classList.remove('hidden');
+                    } else {
+                        qrSection.classList.remove('hidden');
+                        keySection.classList.add('hidden');
+                    }
+                });
+            });
+        }, 100);
+        
+        // 添加样式
+        addPaymentStyles();
+    }
+    
+    // 关闭付费弹窗
+    function closePaymentModal(event) {
+        if (event && event.target.id !== 'paymentModalOverlay') return;
+        
+        const status = getSubscriptionStatus();
+        
+        // 如果已过期且不是点击关闭按钮，阻止关闭
+        if (status.type === 'expired' && event && event.target.id === 'paymentModalOverlay') {
+            showToast('请先完成付费激活');
+            return;
+        }
+        
+        const modal = document.getElementById('paymentModalOverlay');
+        if (modal) {
+            modal.classList.add('closing');
+            setTimeout(() => modal.remove(), 300);
+        }
+    }
+    
+    // 提交终身激活码
+    function submitLifetimeKey() {
+        const input = document.getElementById('lifetimeKeyInput');
+        if (!input || !input.value.trim()) {
+            showToast('请输入激活码');
+            return;
+        }
+        
+        const result = activateLifetime(input.value);
+        
+        if (result.success) {
+            showToast(result.message);
+            closePaymentModal();
+            renderSubscriptionBadge();
+            
+            // 刷新页面状态
+            setTimeout(() => {
+                location.reload();
+            }, 1500);
+        } else {
+            showToast(result.message);
+        }
+    }
+    
+    // 检查并显示过期提醒
+    function checkAndShowExpiredWarning() {
+        const status = getSubscriptionStatus();
+        
+        if (status.type === 'expired') {
+            // 显示付费弹窗，不可关闭
+            showPaymentModal();
+            return false;
+        }
+        
+        // 试用期最后7天提醒
+        if (status.type === 'trial') {
+            const daysLeft = getTrialDaysRemaining();
+            if (daysLeft <= 7 && daysLeft > 0) {
+                // 每天只提醒一次
+                const lastReminder = localStorage.getItem('lastTrialReminder');
+                const today = new Date().toDateString();
+                if (lastReminder !== today) {
+                    localStorage.setItem('lastTrialReminder', today);
+                    setTimeout(() => {
+                        showTrialEndingReminder(daysLeft);
+                    }, 2000);
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    // 显示试用即将结束提醒
+    function showTrialEndingReminder(daysLeft) {
+        const reminderHtml = `
+            <div class="trial-reminder-toast" id="trialReminderToast">
+                <div class="reminder-content">
+                    <div class="reminder-icon">⏰</div>
+                    <div class="reminder-text">
+                        <strong>试用期还剩 ${daysLeft} 天</strong>
+                        <p>升级终身会员，享受完整功能</p>
+                    </div>
+                    <button class="reminder-btn" onclick="showPaymentModal();closeTrialReminder();">立即升级</button>
+                    <button class="reminder-close" onclick="closeTrialReminder()">×</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', reminderHtml);
+        
+        // 10秒后自动关闭
+        setTimeout(closeTrialReminder, 10000);
+    }
+    
+    // 关闭试用提醒
+    function closeTrialReminder() {
+        const reminder = document.getElementById('trialReminderToast');
+        if (reminder) {
+            reminder.classList.add('hiding');
+            setTimeout(() => reminder.remove(), 300);
+        }
+    }
+    
+    // 显示Toast
+    function showToast(message) {
+        if (typeof window.showToast === 'function') {
+            window.showToast(message);
+        } else {
+            alert(message);
+        }
+    }
+    
+    // 添加付费弹窗样式
+    function addPaymentStyles() {
+        if (document.getElementById('paymentStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'paymentStyles';
+        style.textContent = `
+            /* 订阅徽章 */
+            .sub-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 4px;
+                padding: 4px 10px;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+            
+            .sub-badge.lifetime {
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                color: #92400e;
+            }
+            
+            .sub-badge.trial {
+                background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+                color: #3730a3;
+            }
+            
+            .sub-badge.trial.urgent {
+                background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+                color: #991b1b;
+                animation: pulse-urgent 2s infinite;
+            }
+            
+            .sub-badge.expired {
+                background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+                color: #dc2626;
+            }
+            
+            @keyframes pulse-urgent {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.05); }
+            }
+            
+            /* 付费弹窗 */
+            .payment-modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+                padding: 20px;
+            }
+            
+            .payment-modal-overlay.closing {
+                animation: fadeOut 0.3s ease forwards;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            
+            .payment-modal {
+                background: white;
+                border-radius: 24px;
+                width: 100%;
+                max-width: 400px;
+                max-height: 90vh;
+                overflow-y: auto;
+                padding: 24px;
+                position: relative;
+                animation: slideUp 0.3s ease;
+            }
+            
+            @keyframes slideUp {
+                from { transform: translateY(20px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            
+            .payment-close-btn {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: #f3f4f6;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #6b7280;
+                transition: all 0.2s;
+            }
+            
+            .payment-close-btn:hover {
+                background: #e5e7eb;
+                color: #374151;
+            }
+            
+            .payment-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .payment-icon {
+                margin-bottom: 12px;
+            }
+            
+            .payment-header h2 {
+                font-size: 22px;
+                font-weight: 800;
+                color: #1e1b4b;
+                margin-bottom: 8px;
+            }
+            
+            .payment-subtitle {
+                font-size: 14px;
+                color: #6b7280;
+            }
+            
+            .payment-price {
+                text-align: center;
+                padding: 20px;
+                background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+                border-radius: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .price-original {
+                font-size: 14px;
+                color: #9ca3af;
+                text-decoration: line-through;
+                margin-bottom: 4px;
+            }
+            
+            .price-current {
+                display: flex;
+                align-items: baseline;
+                justify-content: center;
+                gap: 2px;
+            }
+            
+            .price-symbol {
+                font-size: 20px;
+                font-weight: 700;
+                color: #dc2626;
+            }
+            
+            .price-amount {
+                font-size: 48px;
+                font-weight: 800;
+                color: #dc2626;
+                line-height: 1;
+            }
+            
+            .price-unit {
+                font-size: 16px;
+                font-weight: 600;
+                color: #92400e;
+            }
+            
+            .price-tag {
+                display: inline-block;
+                margin-top: 8px;
+                padding: 4px 12px;
+                background: #dc2626;
+                color: white;
+                border-radius: 20px;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            
+            .payment-features {
+                margin-bottom: 20px;
+            }
+            
+            .feature-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 10px 0;
+                border-bottom: 1px solid #f3f4f6;
+                font-size: 14px;
+                color: #374151;
+            }
+            
+            .feature-row:last-child {
+                border-bottom: none;
+            }
+            
+            .payment-methods {
+                margin-bottom: 20px;
+            }
+            
+            .method-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 12px;
+            }
+            
+            .method-options {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .method-option {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 6px;
+                padding: 12px 8px;
+                border: 2px solid #e5e7eb;
+                border-radius: 12px;
+                cursor: pointer;
+                transition: all 0.2s;
+                font-size: 12px;
+                color: #6b7280;
+            }
+            
+            .method-option:hover {
+                border-color: #d1d5db;
+            }
+            
+            .method-option.active {
+                border-color: #6366f1;
+                background: #eef2ff;
+                color: #4f46e5;
+            }
+            
+            .payment-qr-section,
+            .payment-key-section {
+                text-align: center;
+                padding: 20px;
+                background: #f9fafb;
+                border-radius: 12px;
+                margin-bottom: 16px;
+            }
+            
+            .qr-placeholder {
+                margin-bottom: 16px;
+            }
+            
+            .qr-hint {
+                font-size: 13px;
+                color: #9ca3af;
+                margin-top: 8px;
+            }
+            
+            .contact-info {
+                font-size: 14px;
+                color: #374151;
+            }
+            
+            .contact-info strong {
+                color: #6366f1;
+            }
+            
+            .contact-note {
+                font-size: 12px;
+                color: #9ca3af;
+                margin-top: 4px;
+            }
+            
+            .key-input-wrap {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 12px;
+            }
+            
+            .key-input {
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #e5e7eb;
+                border-radius: 10px;
+                font-size: 14px;
+                text-align: center;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            .key-input:focus {
+                outline: none;
+                border-color: #6366f1;
+            }
+            
+            .key-submit-btn {
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .key-submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            }
+            
+            .key-hint {
+                font-size: 12px;
+                color: #9ca3af;
+            }
+            
+            .payment-guarantee {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                font-size: 12px;
+                color: #6b7280;
+            }
+            
+            /* 试用提醒Toast */
+            .trial-reminder-toast {
+                position: fixed;
+                bottom: 100px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 9999;
+                animation: slideUpToast 0.3s ease;
+            }
+            
+            .trial-reminder-toast.hiding {
+                animation: slideDownToast 0.3s ease forwards;
+            }
+            
+            @keyframes slideUpToast {
+                from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+                to { transform: translateX(-50%) translateY(0); opacity: 1; }
+            }
+            
+            @keyframes slideDownToast {
+                from { transform: translateX(-50%) translateY(0); opacity: 1; }
+                to { transform: translateX(-50%) translateY(20px); opacity: 0; }
+            }
+            
+            .reminder-content {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 20px;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+            }
+            
+            .reminder-icon {
+                font-size: 28px;
+            }
+            
+            .reminder-text strong {
+                display: block;
+                font-size: 14px;
+                color: #1e1b4b;
+            }
+            
+            .reminder-text p {
+                font-size: 12px;
+                color: #6b7280;
+                margin: 0;
+            }
+            
+            .reminder-btn {
+                padding: 8px 16px;
+                background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                white-space: nowrap;
+            }
+            
+            .reminder-close {
+                width: 24px;
+                height: 24px;
+                border: none;
+                background: #f3f4f6;
+                border-radius: 50%;
+                font-size: 16px;
+                color: #9ca3af;
+                cursor: pointer;
+            }
+            
+            .hidden {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // ==================== 导出全局函数 ====================
+    window.getSubscriptionStatus = getSubscriptionStatus;
+    window.isSubscriptionValid = isSubscriptionValid;
+    window.getTrialDaysRemaining = getTrialDaysRemaining;
+    window.activateLifetime = activateLifetime;
+    window.showPaymentModal = showPaymentModal;
+    window.closePaymentModal = closePaymentModal;
+    window.submitLifetimeKey = submitLifetimeKey;
+    window.renderSubscriptionBadge = renderSubscriptionBadge;
+    window.checkAndShowExpiredWarning = checkAndShowExpiredWarning;
+    window.closeTrialReminder = closeTrialReminder;
+    window.SUBSCRIPTION_CONFIG = SUBSCRIPTION_CONFIG;
+    
+})();

@@ -4237,12 +4237,14 @@ function applyTheme(theme) {
 
 // 切换液态玻璃模式
 function toggleLiquidGlass(enabled) {
+    console.log('toggleLiquidGlass called with:', enabled);
     applyLiquidGlass(enabled);
     
     // 保存设置
     const settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
     settings.liquidGlassMode = enabled;
     localStorage.setItem('appSettings', JSON.stringify(settings));
+    console.log('Settings saved:', settings);
     
     // 显示切换提示
     if (enabled) {
@@ -4254,11 +4256,14 @@ function toggleLiquidGlass(enabled) {
 
 // 应用液态玻璃效果
 function applyLiquidGlass(enabled) {
+    console.log('applyLiquidGlass called with:', enabled);
+    console.log('Body classes before:', document.body.className);
     if (enabled) {
         document.body.classList.add('liquid-glass-mode');
     } else {
         document.body.classList.remove('liquid-glass-mode');
     }
+    console.log('Body classes after:', document.body.className);
 }
 
 // 液态玻璃风格的提示
@@ -4764,16 +4769,71 @@ function confirmClearCache() {
     }
 }
 
-// 确认重置所有数据
+// 确认重置所有数据 - 版本4优化：符合《个人信息保护法》第47条删除权要求
 function confirmResetAll() {
-    if (confirm('⚠️ 警告：这将删除所有学习进度和设置！\n\n确定要继续吗？')) {
-        if (confirm('再次确认：这个操作不可撤销！')) {
-            localStorage.clear();
-            showToast('⚠️ 所有数据已清除，页面将刷新');
-            setTimeout(() => location.reload(), 1500);
-        }
-    }
+    // 创建专业的数据删除确认弹窗
+    const overlay = document.createElement('div');
+    overlay.id = 'dataDeleteOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px;';
+    
+    overlay.innerHTML = `
+        <div style="background:white;border-radius:20px;max-width:400px;width:100%;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+            <div style="padding:24px;text-align:center;">
+                <div style="width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#fef3c7,#fde68a);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                </div>
+                <h3 style="margin:0 0 8px;font-size:18px;color:#1f2937;">确认删除所有数据</h3>
+                <p style="margin:0 0 16px;color:#6b7280;font-size:14px;line-height:1.6;">
+                    根据《个人信息保护法》第47条，您有权删除您的个人信息。
+                </p>
+                <div style="background:#fef3c7;border-radius:12px;padding:14px;margin-bottom:20px;text-align:left;">
+                    <p style="margin:0;font-size:13px;color:#92400e;font-weight:600;">此操作将永久删除：</p>
+                    <ul style="margin:8px 0 0;padding-left:20px;font-size:13px;color:#b45309;">
+                        <li>所有学习进度记录</li>
+                        <li>词汇掌握数据</li>
+                        <li>应用设置和偏好</li>
+                        <li>激活状态信息</li>
+                    </ul>
+                </div>
+                <p style="margin:0 0 20px;color:#ef4444;font-size:13px;font-weight:600;">⚠️ 此操作不可撤销！</p>
+                <div style="display:flex;gap:12px;">
+                    <button onclick="document.getElementById('dataDeleteOverlay').remove();" style="flex:1;padding:14px;background:#f3f4f6;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#374151;cursor:pointer;">取消</button>
+                    <button onclick="executeDataDeletion()" style="flex:1;padding:14px;background:linear-gradient(135deg,#ef4444,#dc2626);border:none;border-radius:12px;font-size:15px;font-weight:600;color:white;cursor:pointer;">确认删除</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
 }
+
+// 执行数据删除
+function executeDataDeletion() {
+    // 记录删除操作日志（合规留痕，存储后立即清除）
+    const deletionLog = {
+        action: 'user_requested_data_deletion',
+        timestamp: new Date().toISOString(),
+        reason: 'User exercised right to deletion under PIPL Article 47'
+    };
+    console.log('Data deletion executed:', deletionLog);
+    
+    // 清除所有 localStorage 数据
+    localStorage.clear();
+    
+    // 移除弹窗
+    const overlay = document.getElementById('dataDeleteOverlay');
+    if (overlay) overlay.remove();
+    
+    // 显示提示并刷新
+    showToast('✅ 所有数据已删除');
+    setTimeout(() => location.reload(), 1500);
+}
+
+// 导出删除函数
+window.executeDataDeletion = executeDataDeletion;
 
 // 更新存储信息
 function updateStorageInfo() {
@@ -4897,5 +4957,39 @@ window.checkReviewNeeded = checkReviewNeeded;
 window.startReviewFromReminder = startReviewFromReminder;
 window.dismissReviewReminder = dismissReviewReminder;
 window.getWordsToReview = getWordsToReview;
+
+// ==================== 法律合规功能 ====================
+
+// 显示隐私政策
+function showPrivacyPolicy() {
+    const modal = document.getElementById('privacyPolicyModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// 显示用户协议
+function showUserAgreement() {
+    const modal = document.getElementById('userAgreementModal');
+    if (modal) {
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// 关闭法律文档弹窗
+function closeLegalModal(modalId) {
+    const modal = document.getElementById(modalId);
+    if (modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+}
+
+// 导出法律相关函数
+window.showPrivacyPolicy = showPrivacyPolicy;
+window.showUserAgreement = showUserAgreement;
+window.closeLegalModal = closeLegalModal;
 
 console.log("modules.js loaded");

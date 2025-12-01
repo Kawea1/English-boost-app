@@ -1034,6 +1034,67 @@ svg {
 
 .login-hint { color: var(--gray-400); font-size: 13px; margin-top: 20px; }
 
+/* ==================== 协议同意勾选样式 ==================== */
+.agreement-check {
+    margin: 16px 0;
+    text-align: left;
+}
+
+.agreement-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.agreement-checkbox {
+    display: none;
+}
+
+.checkbox-custom {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--gray-300);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    margin-top: 2px;
+}
+
+.agreement-checkbox:checked + .checkbox-custom {
+    background: var(--gradient-primary);
+    border-color: transparent;
+}
+
+.agreement-checkbox:checked + .checkbox-custom::after {
+    content: '';
+    width: 5px;
+    height: 9px;
+    border: 2px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+}
+
+.agreement-text {
+    color: var(--gray-500);
+}
+
+.agreement-text a {
+    color: #6366f1;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.agreement-text a:hover {
+    text-decoration: underline;
+}
+
 /* ==================== 激活结果弹窗 ==================== */
 .activation-result-modal {
     position: fixed;
@@ -4326,6 +4387,16 @@ body.liquid-glass-mode .liquid-glass-settings {
 .about-footer .copyright {
     margin-top: 4px;
     font-size: 11px;
+}
+
+.about-footer .trademark-notice {
+    margin-top: 8px;
+    font-size: 10px;
+    color: var(--gray-400);
+    max-width: 280px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
 }
 
 /* ========== 设置页面新布局 ========== */
@@ -7625,3 +7696,123 @@ body:not(.theme-default) .modal-header-resource,
 body:not(.theme-default) .modal-header-stats {
     background: var(--gradient-primary) !important;
 }
+
+/* ==================== 法律文档弹窗样式 ==================== */
+.legal-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.legal-modal-content {
+    background: white;
+    border-radius: 20px;
+    max-width: 600px;
+    width: 100%;
+    max-height: 80vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+}
+
+.legal-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.legal-modal-header h2 {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.legal-close-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.legal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+.legal-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #374151;
+}
+
+.legal-modal-body h3 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #1f2937;
+    margin: 24px 0 12px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.legal-modal-body h3:first-of-type {
+    margin-top: 12px;
+}
+
+.legal-modal-body p {
+    margin: 8px 0;
+}
+
+.legal-modal-body ul {
+    margin: 8px 0;
+    padding-left: 24px;
+}
+
+.legal-modal-body li {
+    margin: 6px 0;
+}
+
+.legal-update-date {
+    color: #6b7280;
+    font-size: 13px;
+    padding: 8px 12px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    display: inline-block;
+    margin-bottom: 16px;
+}
+
+/* Liquid Glass 模式下的法律弹窗 */
+body.liquid-glass-mode .legal-modal-content {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+body.liquid-glass-mode .legal-modal-header {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.9), rgba(118, 75, 162, 0.9));
+}
+
