@@ -8448,3 +8448,485 @@ body.liquid-glass-mode .review-stat {
 }
 
 
+
+/* ==================== 自动更新弹窗样式 v1-v5 ==================== */
+
+/* 版本1: 基础弹窗覆盖层 */
+.update-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+    -webkit-backdrop-filter: blur(0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 20px;
+}
+
+.update-dialog-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+/* 版本2: 弹窗主体 - 卡片设计 */
+.update-dialog {
+    background: white;
+    border-radius: 24px;
+    width: 100%;
+    max-width: 380px;
+    overflow: hidden;
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.25),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
+    transform: scale(0.9) translateY(20px);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.update-dialog-overlay.show .update-dialog {
+    transform: scale(1) translateY(0);
+}
+
+/* 版本3: 头部装饰区 */
+.update-header {
+    position: relative;
+    height: 120px;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #a855f7 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.update-header-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+}
+
+.update-glow {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    top: -50px;
+    right: -50px;
+    animation: glow-pulse 3s ease-in-out infinite;
+}
+
+@keyframes glow-pulse {
+    0%, 100% { opacity: 0.5; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(1.1); }
+}
+
+/* 粒子动画 */
+.update-particles {
+    position: absolute;
+    inset: 0;
+}
+
+.update-particles span {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    animation: particle-float 4s ease-in-out infinite;
+}
+
+.update-particles span:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+.update-particles span:nth-child(2) { left: 20%; top: 60%; animation-delay: 0.5s; }
+.update-particles span:nth-child(3) { left: 30%; top: 40%; animation-delay: 1s; }
+.update-particles span:nth-child(4) { left: 50%; top: 80%; animation-delay: 1.5s; }
+.update-particles span:nth-child(5) { left: 60%; top: 30%; animation-delay: 2s; }
+.update-particles span:nth-child(6) { left: 70%; top: 70%; animation-delay: 2.5s; }
+.update-particles span:nth-child(7) { left: 80%; top: 20%; animation-delay: 3s; }
+.update-particles span:nth-child(8) { left: 90%; top: 50%; animation-delay: 3.5s; }
+.update-particles span:nth-child(9) { left: 15%; top: 80%; animation-delay: 0.3s; }
+.update-particles span:nth-child(10) { left: 45%; top: 15%; animation-delay: 1.2s; }
+.update-particles span:nth-child(11) { left: 75%; top: 45%; animation-delay: 2.2s; }
+.update-particles span:nth-child(12) { left: 85%; top: 85%; animation-delay: 0.8s; }
+
+@keyframes particle-float {
+    0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+    50% { transform: translateY(-15px) scale(1.2); opacity: 1; }
+}
+
+/* 更新图标 */
+.update-icon-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.update-icon-ring {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: ring-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ring-pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    50% { transform: translate(-50%, -50%) scale(1.15); opacity: 0.8; }
+}
+
+.update-icon {
+    width: 56px;
+    height: 56px;
+    background: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.update-icon svg {
+    width: 32px;
+    height: 32px;
+}
+
+/* NEW 徽章 */
+.update-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: #fbbf24;
+    color: #78350f;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(251, 191, 36, 0.4);
+    animation: badge-bounce 2s ease-in-out infinite;
+}
+
+@keyframes badge-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+}
+
+/* 版本4: 内容区域 */
+.update-content {
+    padding: 24px;
+    text-align: center;
+}
+
+.update-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.update-version-info {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #f3f4f6;
+    padding: 8px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+.version-current {
+    color: #6b7280;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.version-arrow {
+    width: 16px;
+    height: 16px;
+    color: #9ca3af;
+}
+
+.version-new {
+    color: #6366f1;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* 更新日志 */
+.update-changelog {
+    text-align: left;
+    background: #f9fafb;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.update-changelog h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 10px;
+}
+
+.update-changelog ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.update-changelog li {
+    font-size: 13px;
+    color: #4b5563;
+    padding: 6px 0;
+    padding-left: 20px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.update-changelog li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 12px;
+    width: 6px;
+    height: 6px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    border-radius: 50%;
+}
+
+/* 元信息 */
+.update-meta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    color: #9ca3af;
+    font-size: 12px;
+}
+
+.update-meta span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.update-meta svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* 版本5: 按钮区域 */
+.update-actions {
+    padding: 0 24px 24px;
+}
+
+.update-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 24px;
+    border: none;
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.update-btn.primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+}
+
+.update-btn.primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+}
+
+.update-btn.primary:active {
+    transform: translateY(0);
+}
+
+.update-btn.primary svg {
+    width: 18px;
+    height: 18px;
+}
+
+.update-secondary-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.update-btn.secondary,
+.update-btn.tertiary {
+    flex: 1;
+    padding: 10px 16px;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.update-btn.secondary {
+    background: #f3f4f6;
+    color: #4b5563;
+}
+
+.update-btn.secondary:hover {
+    background: #e5e7eb;
+}
+
+.update-btn.tertiary {
+    background: transparent;
+    color: #6b7280;
+}
+
+.update-btn.tertiary:hover {
+    background: #f9fafb;
+}
+
+/* 强制更新提示 */
+.force-update-tip {
+    text-align: center;
+    font-size: 12px;
+    color: #ef4444;
+    margin-top: 12px;
+    padding: 8px;
+    background: #fef2f2;
+    border-radius: 8px;
+}
+
+/* Toast 提示 */
+.update-toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: rgba(31, 41, 55, 0.95);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 100001;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.update-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .update-dialog {
+        background: #1f2937;
+    }
+    
+    .update-title {
+        color: #f9fafb;
+    }
+    
+    .update-version-info {
+        background: #374151;
+    }
+    
+    .version-current {
+        color: #9ca3af;
+    }
+    
+    .update-changelog {
+        background: #374151;
+    }
+    
+    .update-changelog h3 {
+        color: #e5e7eb;
+    }
+    
+    .update-changelog li {
+        color: #d1d5db;
+    }
+    
+    .update-btn.secondary {
+        background: #374151;
+        color: #e5e7eb;
+    }
+    
+    .update-btn.secondary:hover {
+        background: #4b5563;
+    }
+    
+    .update-btn.tertiary {
+        color: #9ca3af;
+    }
+    
+    .update-btn.tertiary:hover {
+        background: #374151;
+    }
+}
+
+/* 液态玻璃模式适配 */
+body.liquid-glass-mode .update-dialog {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+body.liquid-glass-mode .update-changelog {
+    background: rgba(249, 250, 251, 0.7);
+}
+
+body.liquid-glass-mode .update-version-info {
+    background: rgba(243, 244, 246, 0.8);
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+    .update-dialog {
+        max-width: 100%;
+        margin: 0 16px;
+        border-radius: 20px;
+    }
+    
+    .update-header {
+        height: 100px;
+    }
+    
+    .update-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .update-icon svg {
+        width: 28px;
+        height: 28px;
+    }
+    
+    .update-content {
+        padding: 20px;
+    }
+    
+    .update-title {
+        font-size: 20px;
+    }
+    
+    .update-actions {
+        padding: 0 20px 20px;
+    }
+}

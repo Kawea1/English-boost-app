@@ -1,0 +1,26 @@
+{
+  "version": "3.3.0",
+  "versionCode": 330,
+  "releaseDate": "2025-12-01",
+  "minVersion": "3.0.0",
+  "forceUpdate": false,
+  "changelog": [
+    "🎯 进度圈百分比完美居中显示",
+    "📚 词库扩充至更多学术词汇",
+    "🔧 修复已知问题，提升稳定性",
+    "✨ 界面细节优化"
+  ],
+  "downloadUrls": {
+    "web": "https://kawea1.github.io/English-boost-app/",
+    "ios": "https://apps.apple.com/app/id123456789",
+    "android": "https://play.google.com/store/apps/details?id=com.academic.english",
+    "mac": "https://github.com/Kawea1/English-boost-app/releases/latest",
+    "win": "https://github.com/Kawea1/English-boost-app/releases/latest",
+    "linux": "https://github.com/Kawea1/English-boost-app/releases/latest"
+  },
+  "features": {
+    "silentCheck": true,
+    "checkInterval": 3600000,
+    "showChangelog": true
+  }
+}

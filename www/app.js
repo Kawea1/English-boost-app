@@ -15,8 +15,291 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '3.2';
+    const APP_VERSION = '3.3.0';
+    const APP_VERSION_CODE = 330;
     const VERSION_KEY = 'app_version';
+    const UPDATE_CHECK_KEY = 'last_update_check';
+    const UPDATE_SKIP_KEY = 'skip_version';
+    const CHECK_INTERVAL = 60 * 60 * 1000; // 1小时检查一次
+    
+    // 远程版本检查地址（多个备用）
+    const VERSION_URLS = [
+        'https://raw.githubusercontent.com/Kawea1/English-boost-app/main/version.json',
+        'https://kawea1.github.io/English-boost-app/version.json',
+        './version.json'
+    ];
+    
+    // 获取当前平台
+    function getPlatform() {
+        const userAgent = navigator.userAgent.toLowerCase();
+        if (window.electron || userAgent.includes('electron')) {
+            if (navigator.platform.includes('Mac')) return 'mac';
+            if (navigator.platform.includes('Win')) return 'win';
+            return 'linux';
+        }
+        if (/iphone|ipad|ipod/.test(userAgent)) return 'ios';
+        if (/android/.test(userAgent)) return 'android';
+        return 'web';
+    }
+    
+    // 比较版本号
+    function compareVersion(v1, v2) {
+        const parts1 = v1.split('.').map(Number);
+        const parts2 = v2.split('.').map(Number);
+        for (let i = 0; i < Math.max(parts1.length, parts2.length); i++) {
+            const p1 = parts1[i] || 0;
+            const p2 = parts2[i] || 0;
+            if (p1 > p2) return 1;
+            if (p1 < p2) return -1;
+        }
+        return 0;
+    }
+    
+    // 静默检查更新（用户无感知）
+    async function silentCheckUpdate() {
+        const lastCheck = localStorage.getItem(UPDATE_CHECK_KEY);
+        const now = Date.now();
+        
+        // 检查是否需要检查（间隔控制）
+        if (lastCheck && (now - parseInt(lastCheck)) < CHECK_INTERVAL) {
+            console.log('[Update] Skip check, last check was recent');
+            return;
+        }
+        
+        console.log('[Update] Silent checking for updates...');
+        localStorage.setItem(UPDATE_CHECK_KEY, now.toString());
+        
+        for (const url of VERSION_URLS) {
+            try {
+                const response = await fetch(url + '?t=' + now, {
+                    cache: 'no-store',
+                    headers: { 'Cache-Control': 'no-cache' }
+                });
+                
+                if (!response.ok) continue;
+                
+                const data = await response.json();
+                processUpdateInfo(data);
+                return;
+            } catch (e) {
+                console.log('[Update] Failed to fetch from:', url);
+            }
+        }
+        console.log('[Update] All version check URLs failed');
+    }
+    
+    // 处理更新信息
+    function processUpdateInfo(data) {
+        const remoteVersion = data.version;
+        const skipVersion = localStorage.getItem(UPDATE_SKIP_KEY);
+        
+        // 检查是否有新版本
+        if (compareVersion(remoteVersion, APP_VERSION) > 0) {
+            // 检查是否已跳过此版本
+            if (skipVersion === remoteVersion && !data.forceUpdate) {
+                console.log('[Update] User skipped this version:', remoteVersion);
+                return;
+            }
+            
+            console.log('[Update] New version available:', remoteVersion);
+            showUpdateDialog(data);
+        } else {
+            console.log('[Update] Current version is up to date:', APP_VERSION);
+        }
+    }
+    
+    // 显示更新弹窗 - 版本5: 终极精美版
+    function showUpdateDialog(data) {
+        // 移除已存在的弹窗
+        const existing = document.getElementById('updateDialog');
+        if (existing) existing.remove();
+        
+        const platform = getPlatform();
+        const downloadUrl = data.downloadUrls?.[platform] || data.downloadUrls?.web;
+        const isForce = data.forceUpdate;
+        const changelog = data.changelog || [];
+        
+        const dialog = document.createElement('div');
+        dialog.id = 'updateDialog';
+        dialog.className = 'update-dialog-overlay' + (isForce ? ' force-update' : '');
+        
+        dialog.innerHTML = `
+            <div class="update-dialog">
+                <!-- 头部装饰 -->
+                <div class="update-header">
+                    <div class="update-header-bg">
+                        <div class="update-particles">
+                            ${Array(12).fill('<span></span>').join('')}
+                        </div>
+                        <div class="update-glow"></div>
+                    </div>
+                    <div class="update-icon-wrapper">
+                        <div class="update-icon-ring"></div>
+                        <div class="update-icon">
+                            <svg viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="url(#starGrad)" stroke="url(#starGrad)" stroke-width="1"/>
+                                <defs>
+                                    <linearGradient id="starGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#fbbf24"/>
+                                        <stop offset="100%" stop-color="#f59e0b"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                    </div>
+                    <div class="update-badge">NEW</div>
+                </div>
+                
+                <!-- 内容区 -->
+                <div class="update-content">
+                    <h2 class="update-title">发现新版本</h2>
+                    <div class="update-version-info">
+                        <span class="version-current">v${APP_VERSION}</span>
+                        <svg class="version-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                        <span class="version-new">v${data.version}</span>
+                    </div>
+                    
+                    ${changelog.length > 0 ? `
+                    <div class="update-changelog">
+                        <h3>更新内容</h3>
+                        <ul>
+                            ${changelog.map(item => `<li>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="update-meta">
+                        <span class="update-date">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                                <line x1="16" y1="2" x2="16" y2="6"/>
+                                <line x1="8" y1="2" x2="8" y2="6"/>
+                                <line x1="3" y1="10" x2="21" y2="10"/>
+                            </svg>
+                            ${data.releaseDate || '最新发布'}
+                        </span>
+                        <span class="update-platform">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+                                <line x1="8" y1="21" x2="16" y2="21"/>
+                                <line x1="12" y1="17" x2="12" y2="21"/>
+                            </svg>
+                            ${platform === 'web' ? 'Web版' : platform === 'ios' ? 'iOS' : platform === 'android' ? 'Android' : platform === 'mac' ? 'macOS' : platform === 'win' ? 'Windows' : 'Linux'}
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- 按钮区 -->
+                <div class="update-actions">
+                    <button class="update-btn primary" onclick="window.appUpdate.doUpdate('${downloadUrl}')">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                            <polyline points="7 10 12 15 17 10"/>
+                            <line x1="12" y1="15" x2="12" y2="3"/>
+                        </svg>
+                        <span>立即更新</span>
+                    </button>
+                    ${!isForce ? `
+                    <div class="update-secondary-actions">
+                        <button class="update-btn secondary" onclick="window.appUpdate.skipVersion('${data.version}')">
+                            跳过此版本
+                        </button>
+                        <button class="update-btn tertiary" onclick="window.appUpdate.remindLater()">
+                            稍后提醒
+                        </button>
+                    </div>
+                    ` : `
+                    <p class="force-update-tip">此版本为重要更新，需要立即更新才能继续使用</p>
+                    `}
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        // 入场动画
+        requestAnimationFrame(() => {
+            dialog.classList.add('show');
+        });
+    }
+    
+    // 执行更新
+    function doUpdate(url) {
+        const platform = getPlatform();
+        
+        if (platform === 'web') {
+            // Web版：刷新页面
+            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
+            }
+            setTimeout(() => window.location.reload(true), 500);
+        } else if (platform === 'ios' || platform === 'android') {
+            // 移动端：跳转到应用商店
+            window.open(url, '_blank');
+        } else {
+            // 桌面端：打开下载页面
+            if (window.electron?.shell) {
+                window.electron.shell.openExternal(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+        
+        closeUpdateDialog();
+    }
+    
+    // 跳过此版本
+    function skipVersion(version) {
+        localStorage.setItem(UPDATE_SKIP_KEY, version);
+        closeUpdateDialog();
+        showToast('已跳过此版本，下个版本时会再次提醒');
+    }
+    
+    // 稍后提醒
+    function remindLater() {
+        // 重置检查时间，30分钟后再提醒
+        const laterTime = Date.now() - CHECK_INTERVAL + (30 * 60 * 1000);
+        localStorage.setItem(UPDATE_CHECK_KEY, laterTime.toString());
+        closeUpdateDialog();
+        showToast('好的，30分钟后再提醒您');
+    }
+    
+    // 关闭更新弹窗
+    function closeUpdateDialog() {
+        const dialog = document.getElementById('updateDialog');
+        if (dialog) {
+            dialog.classList.remove('show');
+            setTimeout(() => dialog.remove(), 300);
+        }
+    }
+    
+    // 简单的 toast 提示
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'update-toast';
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        
+        requestAnimationFrame(() => toast.classList.add('show'));
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 2500);
+    }
+    
+    // 暴露更新 API
+    window.appUpdate = {
+        check: silentCheckUpdate,
+        doUpdate,
+        skipVersion,
+        remindLater,
+        close: closeUpdateDialog,
+        version: APP_VERSION,
+        versionCode: APP_VERSION_CODE
+    };
     
     // 检查版本更新
     function checkVersion() {
@@ -49,6 +332,8 @@ var currentModule = null;
             'userSettings',
             'userAvatar',
             'app_version',
+            'last_update_check',
+            'skip_version',
             'theme',
             'fontSize'
         ];
@@ -116,6 +401,18 @@ var currentModule = null;
     
     // 页面加载时检查版本
     checkVersion();
+    
+    // 应用启动后静默检查远程更新（延迟3秒，不影响首屏加载）
+    setTimeout(() => {
+        silentCheckUpdate();
+    }, 3000);
+    
+    // 页面每次可见时检查更新
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            silentCheckUpdate();
+        }
+    });
     
     // 暴露清理函数供手动调用
     window.clearAppCache = clearAppCache;
