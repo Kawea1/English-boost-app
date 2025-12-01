@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    学术英语精进 - 深色模式颜色
+    v1.0
+-->
+<resources>
+    <!-- ========== 主色调 (深色模式) ========== -->
+    <color name="colorPrimary">#7c8cf8</color>
+    <color name="colorPrimaryDark">#5a67d8</color>
+    <color name="colorAccent">#9b6bc3</color>
+    
+    <!-- ========== 背景颜色 (深色模式) ========== -->
+    <color name="windowBackground">#1a202c</color>
+    <color name="cardBackground">#2d3748</color>
+    <color name="surfaceBackground">#2d3748</color>
+    <color name="navigationBarColor">#1a202c</color>
+    
+    <!-- ========== 文字颜色 (深色模式) ========== -->
+    <color name="textPrimary">#f7fafc</color>
+    <color name="textSecondary">#e2e8f0</color>
+    <color name="textHint">#a0aec0</color>
+    
+    <!-- ========== 分隔线 (深色模式) ========== -->
+    <color name="divider">#4a5568</color>
+</resources>

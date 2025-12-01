@@ -1,24 +1,78 @@
 require_relative '../../node_modules/@capacitor/ios/scripts/pods_helpers'
 
+# ========================================
+# 学术英语精进 - iOS CocoaPods 配置
+# v2.0 - 增强版
+# ========================================
+
+# 最低支持 iOS 版本
 platform :ios, '14.0'
 use_frameworks!
 
-# workaround to avoid Xcode caching of Pods that requires
-# Product -> Clean Build Folder after new Cordova plugins installed
-# Requires CocoaPods 1.6 or newer
+# 解决 Xcode 缓存问题
 install! 'cocoapods', :disable_input_output_paths => true
 
+# ========== Capacitor 核心 Pods ==========
 def capacitor_pods
   pod 'Capacitor', :path => '../../node_modules/@capacitor/ios'
   pod 'CapacitorCordova', :path => '../../node_modules/@capacitor/ios'
-
 end
 
+# ========== 主应用 Target ==========
 target 'App' do
   capacitor_pods
-  # Add your Pods here
+  
+  # ========== 可选 Pods (根据需要取消注释) ==========
+  
+  # 键盘管理
+  # pod 'IQKeyboardManagerSwift', '~> 6.5.0'
+  
+  # 图片加载缓存
+  # pod 'SDWebImage', '~> 5.0'
+  
+  # 动画库
+  # pod 'lottie-ios', '~> 4.0'
+  
+  # 网络请求
+  # pod 'Alamofire', '~> 5.0'
+  
+  # JSON 解析
+  # pod 'SwiftyJSON', '~> 5.0'
+  
+  # 数据持久化
+  # pod 'RealmSwift', '~> 10.0'
+  
+  # Firebase (推送通知、分析等)
+  # pod 'Firebase/Analytics'
+  # pod 'Firebase/Messaging'
+  # pod 'Firebase/Crashlytics'
+  
 end
 
+# ========== 构建后处理 ==========
 post_install do |installer|
+  # 设置部署目标
   assertDeploymentTarget(installer)
+  
+  # 额外配置
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      # 确保最低 iOS 版本一致
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '14.0'
+      
+      # 启用模块
+      config.build_settings['CLANG_ENABLE_MODULES'] = 'YES'
+      
+      # Swift 版本
+      config.build_settings['SWIFT_VERSION'] = '5.0'
+      
+      # 代码签名 (CI/CD 环境)
+      config.build_settings['CODE_SIGN_IDENTITY'] = ''
+      config.build_settings['CODE_SIGNING_REQUIRED'] = 'NO'
+      config.build_settings['CODE_SIGNING_ALLOWED'] = 'NO'
+      
+      # 架构设置
+      config.build_settings['EXCLUDED_ARCHS[sdk=iphonesimulator*]'] = 'arm64'
+    end
+  end
 end

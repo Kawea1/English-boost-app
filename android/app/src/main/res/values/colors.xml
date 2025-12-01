@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    学术英语精进 - 颜色资源
+    v2.0 - 增强版
+    
+    颜色方案：蓝紫渐变主题
+-->
+<resources>
+    <!-- ========== 主色调 ========== -->
+    <!-- 蓝紫渐变色系 -->
+    <color name="colorPrimary">#667eea</color>
+    <color name="colorPrimaryDark">#5a67d8</color>
+    <color name="colorPrimaryDarker">#4c51bf</color>
+    <color name="colorPrimaryLight">#7c8cf8</color>
+    
+    <!-- 强调色 (紫罗兰) -->
+    <color name="colorAccent">#764ba2</color>
+    <color name="colorAccentDark">#5e3d82</color>
+    <color name="colorAccentLight">#9b6bc3</color>
+    
+    <!-- ========== 功能颜色 ========== -->
+    <!-- 成功 (绿色) -->
+    <color name="colorSuccess">#48bb78</color>
+    <color name="colorSuccessLight">#68d391</color>
+    <color name="colorSuccessDark">#38a169</color>
+    
+    <!-- 警告 (橙色) -->
+    <color name="colorWarning">#ed8936</color>
+    <color name="colorWarningLight">#f6ad55</color>
+    <color name="colorWarningDark">#dd6b20</color>
+    
+    <!-- 错误 (红色) -->
+    <color name="colorError">#f56565</color>
+    <color name="colorErrorLight">#fc8181</color>
+    <color name="colorErrorDark">#e53e3e</color>
+    
+    <!-- 信息 (青色) -->
+    <color name="colorInfo">#4299e1</color>
+    <color name="colorInfoLight">#63b3ed</color>
+    <color name="colorInfoDark">#3182ce</color>
+    
+    <!-- ========== 背景颜色 ========== -->
+    <color name="windowBackground">#f8f9fa</color>
+    <color name="cardBackground">#ffffff</color>
+    <color name="surfaceBackground">#ffffff</color>
+    
+    <!-- 深色模式背景 -->
+    <color name="darkBackground">#1a202c</color>
+    <color name="darkSurface">#2d3748</color>
+    <color name="darkCard">#4a5568</color>
+    
+    <!-- 启动页背景 (渐变起始色) -->
+    <color name="splashBackground">#667eea</color>
+    <color name="splashBackgroundEnd">#764ba2</color>
+    
+    <!-- ========== 导航栏颜色 ========== -->
+    <color name="navigationBarColor">#f8f9fa</color>
+    <color name="navigationBarColorDark">#1a202c</color>
+    
+    <!-- ========== 文字颜色 ========== -->
+    <color name="textPrimary">#1a202c</color>
+    <color name="textSecondary">#4a5568</color>
+    <color name="textHint">#a0aec0</color>
+    <color name="textOnPrimary">#ffffff</color>
+    
+    <!-- 深色模式文字 -->
+    <color name="textPrimaryDark">#f7fafc</color>
+    <color name="textSecondaryDark">#e2e8f0</color>
+    <color name="textHintDark">#a0aec0</color>
+    
+    <!-- ========== 分隔线颜色 ========== -->
+    <color name="divider">#e2e8f0</color>
+    <color name="dividerDark">#4a5568</color>
+    
+    <!-- ========== 阴影颜色 ========== -->
+    <color name="shadow">#1a000000</color>
+    
+    <!-- ========== 渐变色定义 (用于自定义View) ========== -->
+    <!-- 主渐变 -->
+    <color name="gradientStart">#667eea</color>
+    <color name="gradientEnd">#764ba2</color>
+    
+    <!-- 金色渐变 (成就) -->
+    <color name="goldGradientStart">#f6e05e</color>
+    <color name="goldGradientEnd">#d69e2e</color>
+    
+    <!-- ========== 单词等级颜色 ========== -->
+    <color name="wordLevelEasy">#48bb78</color>
+    <color name="wordLevelMedium">#ed8936</color>
+    <color name="wordLevelHard">#f56565</color>
+    <color name="wordLevelMaster">#667eea</color>
+    
+    <!-- ========== 状态颜色 ========== -->
+    <color name="stateEnabled">#667eea</color>
+    <color name="stateDisabled">#a0aec0</color>
+    <color name="statePressed">#5a67d8</color>
+    <color name="stateFocused">#7c8cf8</color>
+</resources>

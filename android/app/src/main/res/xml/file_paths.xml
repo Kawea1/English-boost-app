@@ -1,5 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+    学术英语精进 - 文件路径配置
+    v2.0
+    
+    用于 FileProvider 共享文件
+-->
 <paths xmlns:android="http://schemas.android.com/apk/res/android">
-    <external-path name="my_images" path="." />
-    <cache-path name="my_cache_images" path="." />
+    <!-- 外部存储根目录 -->
+    <external-path name="external_files" path="." />
+    
+    <!-- 应用缓存目录 -->
+    <cache-path name="cache_files" path="." />
+    
+    <!-- 应用内部文件目录 -->
+    <files-path name="internal_files" path="." />
+    
+    <!-- 外部缓存目录 -->
+    <external-cache-path name="external_cache" path="." />
+    
+    <!-- 外部文件目录 -->
+    <external-files-path name="external_app_files" path="." />
+    
+    <!-- 媒体目录 (图片/音频) -->
+    <external-files-path name="media_files" path="media/" />
+    
+    <!-- 下载目录 -->
+    <external-files-path name="download_files" path="downloads/" />
 </paths>

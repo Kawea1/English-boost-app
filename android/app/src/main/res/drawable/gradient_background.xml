@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    主渐变背景 (蓝紫渐变)
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    
+    <gradient
+        android:startColor="@color/gradientStart"
+        android:endColor="@color/gradientEnd"
+        android:angle="135"
+        android:type="linear" />
+</shape>
