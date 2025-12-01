@@ -2389,70 +2389,78 @@ svg {
     fill: #6366f1;
 }
 
-/* ====== 居中改进 v1-3：进度圈百分比完全居中 ====== */
+/* ====== 居中改进 v4-8：进度圈百分比完全居中（彻底修复） ====== */
 
-/* 版本1: 使用绝对定位实现完美居中 */
-.progress-ring-text-overlay {
+/* 版本4: 确保容器是定位上下文 */
+.progress-ring-container {
+    position: relative !important;
+    width: 80px;
+    height: 80px;
+    flex-shrink: 0;
+}
+
+/* 版本5: SVG不要transform影响文字层 */
+.progress-ring-container .progress-ring {
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
+    width: 80px;
+    height: 80px;
+}
+
+/* 版本6: 文字覆盖层 - 绝对居中 */
+.progress-ring-text-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     display: flex;
+    flex-direction: row;
     align-items: center;
     justify-content: center;
-    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
 }
 
-/* 版本2: 内部容器确保数字+%作为整体居中 */
-.progress-ring-text-overlay .progress-inner {
-    display: flex;
-    align-items: baseline;
-    justify-content: center;
-}
-
-/* 版本1: 基础横向布局 - 数字和百分号分离显示 */
+/* 版本7: 数字样式 */
 .progress-number {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 800;
     color: #6366f1;
     line-height: 1;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-    letter-spacing: -0.5px;
+    letter-spacing: -0.3px;
+    display: inline-block;
 }
 
+/* 版本7: 百分号样式 - 与数字同行 */
 .progress-percent {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
     color: #8b5cf6;
     line-height: 1;
+    display: inline-block;
     margin-left: 1px;
-    /* 版本3: 微调百分号位置，视觉上更协调 */
-    position: relative;
-    top: -1px;
+    vertical-align: top;
+    margin-top: 2px;
 }
 
-/* 版本2: 两位数时的自适应 */
+/* 版本8: 不同位数的自适应 */
 .progress-number.two-digits {
-    font-size: 18px;
+    font-size: 16px;
 }
 
-/* 版本3: 三位数(100%)时的特殊样式 */
 .progress-number.three-digits {
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: -0.5px;
 }
 
 .progress-number.three-digits + .progress-percent {
-    font-size: 9px;
-    top: -2px;
+    font-size: 8px;
+    margin-top: 1px;
 }
 
 /* 完成状态样式 */
-.progress-ring-text-overlay.completed {
-    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 70%, transparent 100%);
-}
-
 .progress-ring-text-overlay.completed .progress-number {
     color: #10b981;
 }
