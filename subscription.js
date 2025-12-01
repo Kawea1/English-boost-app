@@ -8,10 +8,23 @@
     const SUBSCRIPTION_CONFIG = {
         TRIAL_DAYS: 30,                    // 免费试用天数
         PRICE: 68,                         // 终身会员价格（元）
+        ORIGINAL_PRICE: 198,               // 原价
         CURRENCY: 'CNY',
         PRODUCT_NAME: '学术英语精进 - 终身会员',
         CONTACT_WECHAT: 'huangjiawei_boost', // 微信号
-        CONTACT_EMAIL: 'support@english-boost.app'
+        CONTACT_EMAIL: 'support@english-boost.app',
+        // 功能访问控制
+        FREE_FEATURES: ['vocabulary_basic', 'listening_basic', 'reading_basic'],
+        PREMIUM_FEATURES: ['vocabulary_full', 'review_system', 'speaking', 'reading_advanced', 'offline_mode', 'export_data'],
+        // 试用期功能限制
+        TRIAL_LIMITS: {
+            daily_words: 20,              // 试用期每日学习单词上限
+            review_sessions: 3,           // 试用期每日复习次数
+            listening_minutes: 30,        // 试用期每日听力时长
+            reading_articles: 2           // 试用期每日阅读文章数
+        },
+        // 限时优惠
+        PROMO_END_DATE: null              // 如果设置日期，显示倒计时
     };
     
     // 激活码前缀（用于一次性激活码）
@@ -103,6 +116,285 @@
         return 0;
     }
     
+    // ==================== 功能访问控制 ====================
+    
+    // 检查是否可以使用某功能
+    function canAccessFeature(featureName) {
+        const status = getSubscriptionStatus();
+        
+        // 终身会员可以访问所有功能
+        if (status.type === 'lifetime') {
+            return { allowed: true, reason: 'lifetime' };
+        }
+        
+        // 过期用户只能访问基础功能
+        if (status.type === 'expired') {
+            if (SUBSCRIPTION_CONFIG.FREE_FEATURES.includes(featureName)) {
+                return { allowed: true, reason: 'free' };
+            }
+            return { 
+                allowed: false, 
+                reason: 'expired',
+                message: '试用期已结束，升级会员解锁此功能'
+            };
+        }
+        
+        // 试用期用户可以访问所有功能，但有使用限制
+        return { allowed: true, reason: 'trial' };
+    }
+    
+    // 获取今日使用统计
+    function getDailyUsageStats() {
+        const today = new Date().toDateString();
+        const statsKey = 'dailyUsageStats_' + today;
+        return JSON.parse(localStorage.getItem(statsKey) || JSON.stringify({
+            date: today,
+            wordsLearned: 0,
+            reviewSessions: 0,
+            listeningMinutes: 0,
+            readingArticles: 0
+        }));
+    }
+    
+    // 保存今日使用统计
+    function saveDailyUsageStats(stats) {
+        const today = new Date().toDateString();
+        const statsKey = 'dailyUsageStats_' + today;
+        localStorage.setItem(statsKey, JSON.stringify(stats));
+    }
+    
+    // 检查是否超出试用期限制
+    function checkTrialLimit(limitType) {
+        const status = getSubscriptionStatus();
+        
+        // 终身会员无限制
+        if (status.type === 'lifetime') {
+            return { exceeded: false, remaining: Infinity };
+        }
+        
+        // 过期用户不能使用高级功能
+        if (status.type === 'expired') {
+            return { exceeded: true, remaining: 0, reason: 'expired' };
+        }
+        
+        // 试用期检查限制
+        const stats = getDailyUsageStats();
+        const limits = SUBSCRIPTION_CONFIG.TRIAL_LIMITS;
+        
+        let used = 0;
+        let limit = 0;
+        
+        switch (limitType) {
+            case 'words':
+                used = stats.wordsLearned;
+                limit = limits.daily_words;
+                break;
+            case 'review':
+                used = stats.reviewSessions;
+                limit = limits.review_sessions;
+                break;
+            case 'listening':
+                used = stats.listeningMinutes;
+                limit = limits.listening_minutes;
+                break;
+            case 'reading':
+                used = stats.readingArticles;
+                limit = limits.reading_articles;
+                break;
+            default:
+                return { exceeded: false, remaining: Infinity };
+        }
+        
+        return {
+            exceeded: used >= limit,
+            remaining: Math.max(0, limit - used),
+            used: used,
+            limit: limit
+        };
+    }
+    
+    // 增加使用统计
+    function incrementUsage(type, amount = 1) {
+        const stats = getDailyUsageStats();
+        
+        switch (type) {
+            case 'words':
+                stats.wordsLearned += amount;
+                break;
+            case 'review':
+                stats.reviewSessions += amount;
+                break;
+            case 'listening':
+                stats.listeningMinutes += amount;
+                break;
+            case 'reading':
+                stats.readingArticles += amount;
+                break;
+        }
+        
+        saveDailyUsageStats(stats);
+    }
+    
+    // 显示升级提示弹窗
+    function showUpgradePrompt(reason, limitType) {
+        let title = '';
+        let message = '';
+        
+        if (reason === 'expired') {
+            title = '试用期已结束';
+            message = '升级终身会员，解锁全部功能，无限制使用';
+        } else if (reason === 'limit') {
+            const limits = SUBSCRIPTION_CONFIG.TRIAL_LIMITS;
+            const limitNames = {
+                words: `每日学习 ${limits.daily_words} 个单词`,
+                review: `每日复习 ${limits.review_sessions} 次`,
+                listening: `每日听力 ${limits.listening_minutes} 分钟`,
+                reading: `每日阅读 ${limits.reading_articles} 篇文章`
+            };
+            title = '已达到今日限制';
+            message = `试用版${limitNames[limitType] || ''}上限，升级会员享受无限制使用`;
+        }
+        
+        const promptHtml = `
+            <div class="upgrade-prompt-overlay" id="upgradePromptOverlay">
+                <div class="upgrade-prompt-modal">
+                    <div class="upgrade-prompt-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none">
+                            <defs>
+                                <linearGradient id="lockGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#f59e0b"/>
+                                    <stop offset="100%" stop-color="#f97316"/>
+                                </linearGradient>
+                            </defs>
+                            <rect x="3" y="11" width="18" height="11" rx="2" stroke="url(#lockGrad)" stroke-width="2" fill="none"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4" stroke="url(#lockGrad)" stroke-width="2" fill="none"/>
+                        </svg>
+                    </div>
+                    <h3>${title}</h3>
+                    <p>${message}</p>
+                    <div class="upgrade-prompt-buttons">
+                        <button class="upgrade-btn-primary" onclick="closeUpgradePrompt();showPaymentModal();">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                            </svg>
+                            升级会员
+                        </button>
+                        <button class="upgrade-btn-secondary" onclick="closeUpgradePrompt();">稍后再说</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', promptHtml);
+        addUpgradePromptStyles();
+    }
+    
+    // 关闭升级提示
+    function closeUpgradePrompt() {
+        const overlay = document.getElementById('upgradePromptOverlay');
+        if (overlay) {
+            overlay.classList.add('closing');
+            setTimeout(() => overlay.remove(), 300);
+        }
+    }
+    
+    // 添加升级提示样式
+    function addUpgradePromptStyles() {
+        if (document.getElementById('upgradePromptStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'upgradePromptStyles';
+        style.textContent = `
+            .upgrade-prompt-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10001;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            .upgrade-prompt-overlay.closing {
+                animation: fadeOut 0.3s ease forwards;
+            }
+            
+            .upgrade-prompt-modal {
+                background: white;
+                border-radius: 20px;
+                padding: 32px 24px;
+                text-align: center;
+                max-width: 320px;
+                width: 90%;
+                animation: slideUp 0.3s ease;
+            }
+            
+            .upgrade-prompt-icon {
+                margin-bottom: 16px;
+            }
+            
+            .upgrade-prompt-modal h3 {
+                font-size: 20px;
+                font-weight: 700;
+                color: #1e1b4b;
+                margin: 0 0 8px 0;
+            }
+            
+            .upgrade-prompt-modal p {
+                font-size: 14px;
+                color: #6b7280;
+                margin: 0 0 24px 0;
+                line-height: 1.5;
+            }
+            
+            .upgrade-prompt-buttons {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .upgrade-btn-primary {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                padding: 14px 24px;
+                background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .upgrade-btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 8px 20px rgba(245, 158, 11, 0.3);
+            }
+            
+            .upgrade-btn-secondary {
+                padding: 12px 24px;
+                background: transparent;
+                color: #6b7280;
+                border: none;
+                font-size: 14px;
+                cursor: pointer;
+            }
+            
+            .upgrade-btn-secondary:hover {
+                color: #374151;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+
     // 激活终身会员
     function activateLifetime(activationKey) {
         // 验证激活码格式
@@ -292,14 +584,29 @@
                         <p class="payment-subtitle">${subText}</p>
                     </div>
                     
-                    <div class="payment-price">
-                        <div class="price-original">原价 ¥198</div>
+                    <div class="payment-price" id="paymentPriceSection">
+                        <div class="price-original">原价 ¥${SUBSCRIPTION_CONFIG.ORIGINAL_PRICE}</div>
                         <div class="price-current">
                             <span class="price-symbol">¥</span>
-                            <span class="price-amount">${SUBSCRIPTION_CONFIG.PRICE}</span>
+                            <span class="price-amount" id="displayPrice">${SUBSCRIPTION_CONFIG.PRICE}</span>
                             <span class="price-unit">/终身</span>
                         </div>
                         <div class="price-tag">限时特惠 · 买断制</div>
+                    </div>
+                    
+                    <!-- 优惠码输入 -->
+                    <div class="promo-code-section">
+                        <div class="promo-input-wrap" id="promoInputWrap">
+                            <input type="text" id="promoCodeInput" placeholder="输入优惠码（可选）">
+                            <button onclick="applyPromoCodeUI()">使用</button>
+                        </div>
+                        <div class="promo-applied hidden" id="promoApplied">
+                            <span class="promo-tag">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="#10b981"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                                <span id="promoDescription">优惠码已应用</span>
+                            </span>
+                            <button class="promo-remove" onclick="removePromoCode()">移除</button>
+                        </div>
                     </div>
                     
                     <div class="payment-features">
@@ -355,7 +662,7 @@
                             <svg width="160" height="160" viewBox="0 0 160 160">
                                 <rect width="160" height="160" fill="#f3f4f6" rx="8"/>
                                 <text x="80" y="75" text-anchor="middle" fill="#9ca3af" font-size="12">扫码支付</text>
-                                <text x="80" y="95" text-anchor="middle" fill="#9ca3af" font-size="12">¥${SUBSCRIPTION_CONFIG.PRICE}</text>
+                                <text x="80" y="95" text-anchor="middle" fill="#9ca3af" font-size="12" id="qrPriceText">¥${SUBSCRIPTION_CONFIG.PRICE}</text>
                             </svg>
                             <p class="qr-hint">请联系客服获取付款码</p>
                         </div>
@@ -372,6 +679,18 @@
                             <button class="key-submit-btn" onclick="submitLifetimeKey()">激活</button>
                         </div>
                         <p class="key-hint">激活码格式: LIFETIME-XXXX-XXXX-XXXX</p>
+                    </div>
+                    
+                    <!-- 邀请好友入口 -->
+                    <div class="invite-entry" onclick="closePaymentModal();showInviteModal();">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                            <circle cx="9" cy="7" r="4"/>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                        </svg>
+                        <span>邀请好友，双方各获赠试用天数</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                     </div>
                     
                     <div class="payment-guarantee">
@@ -413,6 +732,51 @@
         
         // 添加样式
         addPaymentStyles();
+    }
+    
+    // 应用优惠码UI
+    function applyPromoCodeUI() {
+        const input = document.getElementById('promoCodeInput');
+        if (!input || !input.value.trim()) {
+            showToast('请输入优惠码');
+            return;
+        }
+        
+        const result = validatePromoCode(input.value);
+        
+        if (result.valid) {
+            // 显示应用成功
+            document.getElementById('promoInputWrap').classList.add('hidden');
+            document.getElementById('promoApplied').classList.remove('hidden');
+            document.getElementById('promoDescription').textContent = `${result.description}，省¥${result.saved}`;
+            
+            // 更新价格显示
+            document.getElementById('displayPrice').textContent = result.finalPrice;
+            document.getElementById('qrPriceText').textContent = `¥${result.finalPrice}`;
+            
+            // 保存当前优惠码
+            localStorage.setItem('currentPromoCode', JSON.stringify(result));
+            
+            showToast(`✅ ${result.description}，省¥${result.saved}`);
+        } else {
+            showToast(result.message);
+        }
+    }
+    
+    // 移除优惠码
+    function removePromoCode() {
+        document.getElementById('promoInputWrap').classList.remove('hidden');
+        document.getElementById('promoApplied').classList.add('hidden');
+        document.getElementById('promoCodeInput').value = '';
+        
+        // 恢复原价
+        document.getElementById('displayPrice').textContent = SUBSCRIPTION_CONFIG.PRICE;
+        document.getElementById('qrPriceText').textContent = `¥${SUBSCRIPTION_CONFIG.PRICE}`;
+        
+        // 清除保存的优惠码
+        localStorage.removeItem('currentPromoCode');
+        
+        showToast('优惠码已移除');
     }
     
     // 关闭付费弹窗
@@ -862,6 +1226,90 @@
                 color: #6b7280;
             }
             
+            /* 优惠码区域 */
+            .promo-code-section {
+                margin-bottom: 16px;
+            }
+            
+            .promo-input-wrap {
+                display: flex;
+                gap: 8px;
+            }
+            
+            .promo-input-wrap input {
+                flex: 1;
+                padding: 10px 14px;
+                border: 2px solid #e5e7eb;
+                border-radius: 8px;
+                font-size: 13px;
+                text-transform: uppercase;
+            }
+            
+            .promo-input-wrap input:focus {
+                outline: none;
+                border-color: #6366f1;
+            }
+            
+            .promo-input-wrap button {
+                padding: 10px 16px;
+                background: #6366f1;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            
+            .promo-applied {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 14px;
+                background: #d1fae5;
+                border-radius: 8px;
+            }
+            
+            .promo-tag {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #065f46;
+            }
+            
+            .promo-remove {
+                background: none;
+                border: none;
+                color: #6b7280;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            
+            /* 邀请入口 */
+            .invite-entry {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                padding: 14px 16px;
+                background: #f9fafb;
+                border-radius: 12px;
+                margin-bottom: 16px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .invite-entry:hover {
+                background: #f3f4f6;
+            }
+            
+            .invite-entry span {
+                flex: 1;
+                font-size: 13px;
+                color: #374151;
+            }
+
             /* 试用提醒Toast */
             .trial-reminder-toast {
                 position: fixed;
@@ -942,6 +1390,476 @@
         document.head.appendChild(style);
     }
     
+    // ==================== 邀请系统 ====================
+    
+    // 生成邀请码
+    function generateInviteCode() {
+        const deviceId = getDeviceFingerprint();
+        const code = 'INV-' + deviceId.slice(-6).toUpperCase() + '-' + Date.now().toString(36).toUpperCase().slice(-4);
+        
+        // 保存邀请码
+        localStorage.setItem('myInviteCode', code);
+        return code;
+    }
+    
+    // 获取我的邀请码
+    function getMyInviteCode() {
+        let code = localStorage.getItem('myInviteCode');
+        if (!code) {
+            code = generateInviteCode();
+        }
+        return code;
+    }
+    
+    // 使用邀请码
+    function useInviteCode(code) {
+        if (!code || !code.startsWith('INV-')) {
+            return { success: false, message: '无效的邀请码格式' };
+        }
+        
+        // 检查是否已使用过邀请码
+        if (localStorage.getItem('usedInviteCode')) {
+            return { success: false, message: '您已使用过邀请码' };
+        }
+        
+        // 检查是否是自己的邀请码
+        if (code === getMyInviteCode()) {
+            return { success: false, message: '不能使用自己的邀请码' };
+        }
+        
+        // 使用成功，增加7天试用期
+        const status = getSubscriptionStatus();
+        if (status.type === 'trial') {
+            const currentEnd = new Date(status.trialEndDate);
+            currentEnd.setDate(currentEnd.getDate() + 7);
+            status.trialEndDate = currentEnd.toISOString();
+            saveSubscriptionStatus(status);
+            
+            localStorage.setItem('usedInviteCode', code);
+            
+            return { 
+                success: true, 
+                message: '🎉 邀请码使用成功！您的试用期增加了7天',
+                bonusDays: 7
+            };
+        }
+        
+        return { success: false, message: '当前状态无法使用邀请码' };
+    }
+    
+    // 获取邀请统计
+    function getInviteStats() {
+        const invited = JSON.parse(localStorage.getItem('invitedUsers') || '[]');
+        return {
+            inviteCode: getMyInviteCode(),
+            invitedCount: invited.length,
+            bonusDays: invited.length * 3 // 每邀请一人获得3天
+        };
+    }
+    
+    // ==================== 优惠码系统 ====================
+    
+    // 有效的优惠码
+    const PROMO_CODES = {
+        'WELCOME10': { discount: 10, type: 'amount', description: '新用户优惠', minPrice: 50 },
+        'STUDENT20': { discount: 20, type: 'percent', description: '学生优惠', minPrice: 0 },
+        'EARLY50': { discount: 50, type: 'percent', description: '早鸟优惠', minPrice: 0, expires: '2025-03-01' },
+        'VIP30': { discount: 30, type: 'amount', description: 'VIP专属优惠', minPrice: 50 }
+    };
+    
+    // 验证优惠码
+    function validatePromoCode(code) {
+        const upperCode = code.trim().toUpperCase();
+        const promo = PROMO_CODES[upperCode];
+        
+        if (!promo) {
+            return { valid: false, message: '优惠码不存在' };
+        }
+        
+        // 检查是否过期
+        if (promo.expires && new Date(promo.expires) < new Date()) {
+            return { valid: false, message: '优惠码已过期' };
+        }
+        
+        // 检查是否已使用
+        const usedCodes = JSON.parse(localStorage.getItem('usedPromoCodes') || '[]');
+        if (usedCodes.includes(upperCode)) {
+            return { valid: false, message: '优惠码已使用' };
+        }
+        
+        // 计算折后价格
+        let finalPrice = SUBSCRIPTION_CONFIG.PRICE;
+        if (promo.type === 'amount') {
+            finalPrice = Math.max(0, finalPrice - promo.discount);
+        } else if (promo.type === 'percent') {
+            finalPrice = Math.round(finalPrice * (100 - promo.discount) / 100);
+        }
+        
+        return {
+            valid: true,
+            code: upperCode,
+            description: promo.description,
+            originalPrice: SUBSCRIPTION_CONFIG.PRICE,
+            finalPrice: finalPrice,
+            saved: SUBSCRIPTION_CONFIG.PRICE - finalPrice
+        };
+    }
+    
+    // 应用优惠码（购买时调用）
+    function applyPromoCode(code) {
+        const result = validatePromoCode(code);
+        if (!result.valid) {
+            return result;
+        }
+        
+        // 标记为已使用
+        const usedCodes = JSON.parse(localStorage.getItem('usedPromoCodes') || '[]');
+        usedCodes.push(result.code);
+        localStorage.setItem('usedPromoCodes', JSON.stringify(usedCodes));
+        
+        // 保存当前应用的优惠码
+        localStorage.setItem('currentPromoCode', JSON.stringify(result));
+        
+        return result;
+    }
+    
+    // 获取当前应用的优惠码
+    function getCurrentPromoCode() {
+        return JSON.parse(localStorage.getItem('currentPromoCode') || 'null');
+    }
+    
+    // 清除当前优惠码
+    function clearCurrentPromoCode() {
+        localStorage.removeItem('currentPromoCode');
+    }
+    
+    // 显示邀请好友弹窗
+    function showInviteModal() {
+        const inviteCode = getMyInviteCode();
+        const stats = getInviteStats();
+        
+        const modalHtml = `
+            <div class="invite-modal-overlay" id="inviteModalOverlay" onclick="closeInviteModal(event)">
+                <div class="invite-modal" onclick="event.stopPropagation()">
+                    <button class="invite-close-btn" onclick="closeInviteModal()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    </button>
+                    
+                    <div class="invite-header">
+                        <div class="invite-icon">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                        </div>
+                        <h2>邀请好友</h2>
+                        <p>邀请好友一起学习，双方都能获得奖励</p>
+                    </div>
+                    
+                    <div class="invite-rewards">
+                        <div class="reward-item">
+                            <div class="reward-icon">🎁</div>
+                            <div class="reward-text">
+                                <strong>邀请人奖励</strong>
+                                <span>每成功邀请1人，获得3天试用期</span>
+                            </div>
+                        </div>
+                        <div class="reward-item">
+                            <div class="reward-icon">🎉</div>
+                            <div class="reward-text">
+                                <strong>被邀请人奖励</strong>
+                                <span>使用邀请码，获得7天试用期</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="invite-code-section">
+                        <label>我的邀请码</label>
+                        <div class="invite-code-display">
+                            <span id="myInviteCodeDisplay">${inviteCode}</span>
+                            <button class="copy-btn" onclick="copyInviteCode()">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="9" y="9" width="13" height="13" rx="2"/>
+                                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                                </svg>
+                                复制
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="invite-stats">
+                        <div class="stat-item">
+                            <span class="stat-value">${stats.invitedCount}</span>
+                            <span class="stat-label">已邀请</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">+${stats.bonusDays}</span>
+                            <span class="stat-label">获得天数</span>
+                        </div>
+                    </div>
+                    
+                    <div class="invite-input-section">
+                        <label>使用邀请码</label>
+                        <div class="invite-input-wrap">
+                            <input type="text" id="inviteCodeInput" placeholder="输入好友的邀请码">
+                            <button onclick="submitInviteCode()">使用</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHtml);
+        addInviteModalStyles();
+    }
+    
+    // 关闭邀请弹窗
+    function closeInviteModal(event) {
+        if (event && event.target.id !== 'inviteModalOverlay') return;
+        const modal = document.getElementById('inviteModalOverlay');
+        if (modal) {
+            modal.classList.add('closing');
+            setTimeout(() => modal.remove(), 300);
+        }
+    }
+    
+    // 复制邀请码
+    function copyInviteCode() {
+        const code = getMyInviteCode();
+        navigator.clipboard.writeText(code).then(() => {
+            showToast('✅ 邀请码已复制');
+        }).catch(() => {
+            showToast('复制失败，请手动复制');
+        });
+    }
+    
+    // 提交邀请码
+    function submitInviteCode() {
+        const input = document.getElementById('inviteCodeInput');
+        if (!input || !input.value.trim()) {
+            showToast('请输入邀请码');
+            return;
+        }
+        
+        const result = useInviteCode(input.value.trim());
+        showToast(result.message);
+        
+        if (result.success) {
+            closeInviteModal();
+            renderSubscriptionBadge();
+        }
+    }
+    
+    // 添加邀请弹窗样式
+    function addInviteModalStyles() {
+        if (document.getElementById('inviteModalStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'inviteModalStyles';
+        style.textContent = `
+            .invite-modal-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.6);
+                backdrop-filter: blur(4px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+                padding: 20px;
+            }
+            
+            .invite-modal-overlay.closing {
+                animation: fadeOut 0.3s ease forwards;
+            }
+            
+            .invite-modal {
+                background: white;
+                border-radius: 24px;
+                width: 100%;
+                max-width: 400px;
+                padding: 24px;
+                position: relative;
+                animation: slideUp 0.3s ease;
+            }
+            
+            .invite-close-btn {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                width: 32px;
+                height: 32px;
+                border: none;
+                background: #f3f4f6;
+                border-radius: 50%;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #6b7280;
+            }
+            
+            .invite-header {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            
+            .invite-icon {
+                margin-bottom: 12px;
+            }
+            
+            .invite-header h2 {
+                font-size: 22px;
+                font-weight: 800;
+                color: #1e1b4b;
+                margin-bottom: 8px;
+            }
+            
+            .invite-header p {
+                font-size: 14px;
+                color: #6b7280;
+            }
+            
+            .invite-rewards {
+                background: #f9fafb;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 20px;
+            }
+            
+            .reward-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 8px 0;
+            }
+            
+            .reward-item:not(:last-child) {
+                border-bottom: 1px solid #e5e7eb;
+            }
+            
+            .reward-icon {
+                font-size: 24px;
+            }
+            
+            .reward-text strong {
+                display: block;
+                font-size: 14px;
+                color: #1e1b4b;
+            }
+            
+            .reward-text span {
+                font-size: 12px;
+                color: #6b7280;
+            }
+            
+            .invite-code-section {
+                margin-bottom: 16px;
+            }
+            
+            .invite-code-section label,
+            .invite-input-section label {
+                display: block;
+                font-size: 13px;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 8px;
+            }
+            
+            .invite-code-display {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+                padding: 12px 16px;
+                border-radius: 10px;
+            }
+            
+            .invite-code-display span {
+                flex: 1;
+                font-size: 18px;
+                font-weight: 700;
+                color: #4f46e5;
+                font-family: monospace;
+                letter-spacing: 2px;
+            }
+            
+            .copy-btn {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                padding: 8px 12px;
+                background: #6366f1;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 12px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+            
+            .invite-stats {
+                display: flex;
+                gap: 20px;
+                justify-content: center;
+                margin-bottom: 20px;
+            }
+            
+            .stat-item {
+                text-align: center;
+            }
+            
+            .stat-value {
+                display: block;
+                font-size: 24px;
+                font-weight: 700;
+                color: #6366f1;
+            }
+            
+            .stat-label {
+                font-size: 12px;
+                color: #6b7280;
+            }
+            
+            .invite-input-wrap {
+                display: flex;
+                gap: 10px;
+            }
+            
+            .invite-input-wrap input {
+                flex: 1;
+                padding: 12px 16px;
+                border: 2px solid #e5e7eb;
+                border-radius: 10px;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+            
+            .invite-input-wrap input:focus {
+                outline: none;
+                border-color: #6366f1;
+            }
+            
+            .invite-input-wrap button {
+                padding: 12px 20px;
+                background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
     // ==================== 导出全局函数 ====================
     window.getSubscriptionStatus = getSubscriptionStatus;
     window.isSubscriptionValid = isSubscriptionValid;
@@ -954,6 +1872,27 @@
     window.checkAndShowExpiredWarning = checkAndShowExpiredWarning;
     window.closeTrialReminder = closeTrialReminder;
     window.renderSubscriptionSettings = renderSubscriptionSettings;
+    window.canAccessFeature = canAccessFeature;
+    window.checkTrialLimit = checkTrialLimit;
+    window.incrementUsage = incrementUsage;
+    window.showUpgradePrompt = showUpgradePrompt;
+    window.closeUpgradePrompt = closeUpgradePrompt;
+    window.getDailyUsageStats = getDailyUsageStats;
+    // 邀请系统
+    window.showInviteModal = showInviteModal;
+    window.closeInviteModal = closeInviteModal;
+    window.copyInviteCode = copyInviteCode;
+    window.submitInviteCode = submitInviteCode;
+    window.getMyInviteCode = getMyInviteCode;
+    window.useInviteCode = useInviteCode;
+    window.getInviteStats = getInviteStats;
+    // 优惠码系统
+    window.validatePromoCode = validatePromoCode;
+    window.applyPromoCode = applyPromoCode;
+    window.applyPromoCodeUI = applyPromoCodeUI;
+    window.removePromoCode = removePromoCode;
+    window.getCurrentPromoCode = getCurrentPromoCode;
+    window.clearCurrentPromoCode = clearCurrentPromoCode;
     window.SUBSCRIPTION_CONFIG = SUBSCRIPTION_CONFIG;
     
     // 渲染设置页面的订阅状态
@@ -963,6 +1902,8 @@
         
         const status = getSubscriptionStatus();
         const daysLeft = getTrialDaysRemaining();
+        const inviteStats = getInviteStats();
+        const usageStats = getDailyUsageStats();
         
         let html = '';
         
@@ -994,10 +1935,21 @@
                     <div class="benefit-item"><span class="benefit-check">✓</span> 学术阅读精讲</div>
                     <div class="benefit-item"><span class="benefit-check">✓</span> 永久免费更新</div>
                 </div>
+                
+                <!-- 邀请好友入口 -->
+                <div class="settings-invite-entry" onclick="showInviteModal()">
+                    <div class="invite-entry-icon">👥</div>
+                    <div class="invite-entry-info">
+                        <strong>邀请好友</strong>
+                        <span>已邀请 ${inviteStats.invitedCount} 人</span>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
             `;
         } else if (status.type === 'trial') {
             const urgentClass = daysLeft <= 7 ? 'urgent' : '';
             const progressPercent = Math.max(0, ((SUBSCRIPTION_CONFIG.TRIAL_DAYS - daysLeft) / SUBSCRIPTION_CONFIG.TRIAL_DAYS) * 100);
+            const limits = SUBSCRIPTION_CONFIG.TRIAL_LIMITS;
             
             html = `
                 <div class="sub-status-display trial ${urgentClass}">
@@ -1015,6 +1967,65 @@
                         </div>
                     </div>
                 </div>
+                
+                <!-- 今日使用情况 -->
+                <div class="usage-stats-card">
+                    <div class="usage-title">今日使用情况</div>
+                    <div class="usage-items">
+                        <div class="usage-item">
+                            <span class="usage-label">单词学习</span>
+                            <span class="usage-value">${usageStats.wordsLearned}/${limits.daily_words}</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-label">复习次数</span>
+                            <span class="usage-value">${usageStats.reviewSessions}/${limits.review_sessions}</span>
+                        </div>
+                        <div class="usage-item">
+                            <span class="usage-label">听力时长</span>
+                            <span class="usage-value">${usageStats.listeningMinutes}/${limits.listening_minutes}分钟</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 权益对比 -->
+                <div class="benefits-compare">
+                    <div class="compare-header">
+                        <span></span>
+                        <span class="trial-label">试用版</span>
+                        <span class="vip-label">终身会员</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>每日单词</span>
+                        <span class="limit">${limits.daily_words}个</span>
+                        <span class="unlimited">无限制</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>复习次数</span>
+                        <span class="limit">${limits.review_sessions}次</span>
+                        <span class="unlimited">无限制</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>听力训练</span>
+                        <span class="limit">${limits.listening_minutes}分钟/天</span>
+                        <span class="unlimited">无限制</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>阅读文章</span>
+                        <span class="limit">${limits.reading_articles}篇/天</span>
+                        <span class="unlimited">无限制</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>口语练习</span>
+                        <span class="check">✓</span>
+                        <span class="check">✓</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>永久更新</span>
+                        <span class="cross">✗</span>
+                        <span class="check">✓</span>
+                    </div>
+                </div>
+                
                 <button class="upgrade-btn-settings" onclick="showPaymentModal()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -1022,6 +2033,16 @@
                     <span>升级终身会员 ¥${SUBSCRIPTION_CONFIG.PRICE}</span>
                 </button>
                 <p class="upgrade-hint">一次付费，永久使用，终身免费更新</p>
+                
+                <!-- 邀请好友入口 -->
+                <div class="settings-invite-entry" onclick="showInviteModal()">
+                    <div class="invite-entry-icon">👥</div>
+                    <div class="invite-entry-info">
+                        <strong>邀请好友延长试用</strong>
+                        <span>邀请1人可获得3天，被邀请可获7天</span>
+                    </div>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                </div>
             `;
         } else {
             html = `
@@ -1038,6 +2059,36 @@
                         <p>升级会员以继续使用全部功能</p>
                     </div>
                 </div>
+                
+                <!-- 权益对比 -->
+                <div class="benefits-compare expired">
+                    <div class="compare-header">
+                        <span></span>
+                        <span class="expired-label">当前状态</span>
+                        <span class="vip-label">终身会员</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>词汇学习</span>
+                        <span class="cross">受限</span>
+                        <span class="unlimited">无限制</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>复习系统</span>
+                        <span class="cross">✗</span>
+                        <span class="check">✓</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>听力训练</span>
+                        <span class="cross">✗</span>
+                        <span class="check">✓</span>
+                    </div>
+                    <div class="compare-row">
+                        <span>口语练习</span>
+                        <span class="cross">✗</span>
+                        <span class="check">✓</span>
+                    </div>
+                </div>
+                
                 <button class="upgrade-btn-settings urgent" onclick="showPaymentModal()">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -1202,6 +2253,151 @@
             
             .subscription-badge-container {
                 margin-right: 8px;
+            }
+            
+            /* 使用统计卡片 */
+            .usage-stats-card {
+                background: #f9fafb;
+                border-radius: 12px;
+                padding: 14px;
+                margin-bottom: 16px;
+            }
+            
+            .usage-title {
+                font-size: 13px;
+                font-weight: 600;
+                color: #374151;
+                margin-bottom: 10px;
+            }
+            
+            .usage-items {
+                display: flex;
+                gap: 12px;
+            }
+            
+            .usage-item {
+                flex: 1;
+                text-align: center;
+            }
+            
+            .usage-label {
+                display: block;
+                font-size: 11px;
+                color: #9ca3af;
+                margin-bottom: 4px;
+            }
+            
+            .usage-value {
+                font-size: 14px;
+                font-weight: 600;
+                color: #374151;
+            }
+            
+            /* 权益对比表 */
+            .benefits-compare {
+                background: #f9fafb;
+                border-radius: 12px;
+                padding: 14px;
+                margin-bottom: 16px;
+            }
+            
+            .compare-header {
+                display: grid;
+                grid-template-columns: 1fr 70px 70px;
+                gap: 8px;
+                padding-bottom: 10px;
+                border-bottom: 1px solid #e5e7eb;
+                margin-bottom: 8px;
+            }
+            
+            .compare-header span {
+                font-size: 11px;
+                font-weight: 600;
+                text-align: center;
+            }
+            
+            .trial-label {
+                color: #6b7280;
+            }
+            
+            .vip-label {
+                color: #f59e0b;
+            }
+            
+            .expired-label {
+                color: #dc2626;
+            }
+            
+            .compare-row {
+                display: grid;
+                grid-template-columns: 1fr 70px 70px;
+                gap: 8px;
+                padding: 8px 0;
+                font-size: 12px;
+                color: #374151;
+            }
+            
+            .compare-row span {
+                text-align: center;
+            }
+            
+            .compare-row span:first-child {
+                text-align: left;
+            }
+            
+            .compare-row .limit {
+                color: #9ca3af;
+                font-size: 11px;
+            }
+            
+            .compare-row .unlimited {
+                color: #10b981;
+                font-weight: 600;
+            }
+            
+            .compare-row .check {
+                color: #10b981;
+            }
+            
+            .compare-row .cross {
+                color: #dc2626;
+            }
+            
+            /* 设置页面邀请入口 */
+            .settings-invite-entry {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 14px 16px;
+                background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+                border-radius: 12px;
+                margin-top: 16px;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .settings-invite-entry:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.15);
+            }
+            
+            .invite-entry-icon {
+                font-size: 24px;
+            }
+            
+            .invite-entry-info {
+                flex: 1;
+            }
+            
+            .invite-entry-info strong {
+                display: block;
+                font-size: 14px;
+                color: #1e1b4b;
+            }
+            
+            .invite-entry-info span {
+                font-size: 12px;
+                color: #6b7280;
             }
         `;
         document.head.appendChild(style);
