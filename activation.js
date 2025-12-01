@@ -1178,7 +1178,13 @@ const ActivationSystem = {
 
 /**
  * 激活码UI组件
- * v4.0 - 完整UI组件
+ * v5.0 - 高级UI设计 (5版迭代)
+ * 
+ * v1: 毛玻璃+流体渐变背景
+ * v2: 3D卡片+粒子动画
+ * v3: 霓虹光效+打字机效果
+ * v4: 高级输入框+脉冲按钮
+ * v5: 成功页面烟花+勋章系统
  */
 const ActivationUI = {
     /**
@@ -1198,49 +1204,171 @@ const ActivationUI = {
         dialog.id = 'activation-dialog';
         dialog.className = 'activation-overlay';
         dialog.innerHTML = `
+            <!-- v1: 流体渐变背景层 -->
+            <div class="activation-bg-gradient"></div>
+            <div class="activation-bg-particles" id="particles-container"></div>
+            
             <div class="activation-dialog">
+                <!-- v2: 3D光效边框 -->
+                <div class="activation-glow-border"></div>
+                <div class="activation-shine"></div>
+                
                 <div class="activation-header">
-                    <div class="activation-icon">🔐</div>
-                    <h2>激活应用</h2>
-                    <p>请输入您的激活码以解锁全部功能</p>
+                    <!-- v1: 动态图标容器 -->
+                    <div class="activation-icon-wrapper">
+                        <div class="activation-icon-ring"></div>
+                        <div class="activation-icon-ring delay-1"></div>
+                        <div class="activation-icon-ring delay-2"></div>
+                        <div class="activation-icon">
+                            <svg viewBox="0 0 100 100" class="lock-svg">
+                                <defs>
+                                    <linearGradient id="lockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" style="stop-color:#667eea"/>
+                                        <stop offset="100%" style="stop-color:#764ba2"/>
+                                    </linearGradient>
+                                </defs>
+                                <path class="lock-body" d="M25,45 L25,85 Q25,95 35,95 L65,95 Q75,95 75,85 L75,45 Q75,35 65,35 L35,35 Q25,35 25,45" fill="url(#lockGradient)"/>
+                                <path class="lock-shackle" d="M35,35 L35,25 Q35,10 50,10 Q65,10 65,25 L65,35" fill="none" stroke="url(#lockGradient)" stroke-width="8" stroke-linecap="round"/>
+                                <circle class="lock-keyhole" cx="50" cy="62" r="8" fill="#fff"/>
+                                <rect class="lock-keyhole-slot" x="47" y="62" width="6" height="15" rx="2" fill="#fff"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- v3: 打字机标题效果 -->
+                    <h2 class="activation-title">
+                        <span class="title-text" data-text="解锁全部功能">解锁全部功能</span>
+                        <span class="title-cursor">|</span>
+                    </h2>
+                    <p class="activation-subtitle">输入激活码，开启您的学习之旅</p>
+                    
+                    <!-- v2: 特性徽章 -->
+                    <div class="activation-badges">
+                        <span class="badge badge-secure">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                            </svg>
+                            安全加密
+                        </span>
+                        <span class="badge badge-devices">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1z"/>
+                            </svg>
+                            ${ActivationSystem.config.maxDevices}台设备
+                        </span>
+                        <span class="badge badge-lifetime">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/>
+                            </svg>
+                            永久有效
+                        </span>
+                    </div>
                 </div>
                 
                 <div class="activation-body">
-                    <div class="activation-input-group">
-                        <input type="text" 
-                               id="activation-code-input" 
-                               placeholder="XXXX-XXXX-XXXX-XXXX"
-                               maxlength="19"
-                               autocomplete="off"
-                               spellcheck="false">
-                        <button id="paste-code-btn" class="paste-btn" title="粘贴">
-                            📋
-                        </button>
+                    <!-- v4: 高级输入框设计 -->
+                    <div class="activation-input-container">
+                        <label class="input-label">激活码</label>
+                        <div class="activation-input-group">
+                            <div class="input-icon-left">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.5">
+                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                                </svg>
+                            </div>
+                            <input type="text" 
+                                   id="activation-code-input" 
+                                   placeholder="XXXX-XXXX-XXXX-XXXX"
+                                   maxlength="19"
+                                   autocomplete="off"
+                                   spellcheck="false">
+                            <button id="paste-code-btn" class="paste-btn" title="从剪贴板粘贴">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
+                                </svg>
+                            </button>
+                            <div class="input-glow"></div>
+                        </div>
+                        <div class="input-hint">格式: XXXX-XXXX-XXXX-XXXX</div>
                     </div>
                     
-                    <div id="activation-error" class="activation-error"></div>
+                    <div id="activation-error" class="activation-error">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span id="error-text"></span>
+                    </div>
                     
+                    <!-- v4: 脉冲动画按钮 -->
                     <button id="activate-btn" class="activation-btn">
-                        <span class="btn-text">激活</span>
-                        <span class="btn-loading" style="display:none;">⏳ 验证中...</span>
+                        <span class="btn-bg"></span>
+                        <span class="btn-content">
+                            <span class="btn-text">立即激活</span>
+                            <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                            </svg>
+                        </span>
+                        <span class="btn-loading" style="display:none;">
+                            <svg class="loading-spinner" width="24" height="24" viewBox="0 0 24 24">
+                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="32" stroke-linecap="round"/>
+                            </svg>
+                            验证中...
+                        </span>
+                        <span class="btn-pulse"></span>
                     </button>
                     
                     ${canTrial ? `
-                        <button id="start-trial-btn" class="trial-btn">
-                            🎁 免费试用 ${ActivationSystem.config.trialDays} 天
-                        </button>
+                        <!-- v3: 试用按钮带光效 -->
+                        <div class="trial-section">
+                            <div class="trial-divider">
+                                <span class="divider-line"></span>
+                                <span class="divider-text">或者</span>
+                                <span class="divider-line"></span>
+                            </div>
+                            <button id="start-trial-btn" class="trial-btn">
+                                <span class="trial-icon">🎁</span>
+                                <span class="trial-content">
+                                    <span class="trial-title">免费体验 ${ActivationSystem.config.trialDays} 天</span>
+                                    <span class="trial-desc">无需激活码，立即开始</span>
+                                </span>
+                                <svg class="trial-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
+                                </svg>
+                            </button>
+                        </div>
                     ` : ''}
                 </div>
                 
+                <!-- v5: 增强底部设计 -->
                 <div class="activation-footer">
-                    <p>还没有激活码？<a href="#" id="get-code-link">获取激活码</a></p>
-                    <p class="activation-hint">
+                    <div class="footer-links">
+                        <a href="#" id="get-code-link" class="footer-link primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                            </svg>
+                            获取激活码
+                        </a>
+                        <span class="footer-divider">•</span>
+                        <a href="#" id="migration-btn" class="footer-link">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
+                            </svg>
+                            设备迁移
+                        </a>
+                    </div>
+                    <p class="footer-tip">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" opacity="0.6">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
                         一个激活码最多支持 ${ActivationSystem.config.maxDevices} 台设备同时使用
                     </p>
-                    <p class="activation-hint">
-                        <a href="#" id="migration-btn">已有激活？换设备迁移 →</a>
-                    </p>
                 </div>
+                
+                <!-- 关闭按钮 -->
+                <button class="activation-close-btn" id="activation-close">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
             </div>
         `;
         

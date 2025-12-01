@@ -1,18 +1,41 @@
 // modules.js - 口语、阅读等模块
 
-// ==================== 全盘复习模式 ====================
-var comprehensiveReviewMode = false;  // 全盘复习模式开关
-var todayReviewWords = [];  // 今日核心复习词汇
+// ==================== 全局复习模式 v10.0 ====================
+var comprehensiveReviewMode = false;  // 全局复习模式开关
+var globalReviewMode = 'all';  // 复习范围: 'today', 'week', 'all'
+var todayReviewWords = [];  // 当前批次复习词汇
+var allReviewWords = [];  // 所有待复习词汇
+var currentReviewBatch = 0;  // 当前复习批次
+var reviewBatchSize = 10;  // 每批复习单词数量
 var speakingMode = 'sentence';  // 口语模式：'sentence' 或 'paragraph'
 var wordPronunciationScores = {};  // 单词发音评分
 var currentSpeakingContent = null;  // 当前口语内容（句子或段落）
 var currentParagraphData = null;    // 当前段落数据
+var reviewSessionStats = {  // 复习会话统计
+    startTime: null,
+    wordsReviewed: [],
+    totalWords: 0,
+    completedBatches: 0
+};
 
-// 获取今日学习的核心词汇
+// ==================== V1: 获取所有已学单词 ====================
+
+// 获取所有已学单词（完整版）
+function getAllLearnedWords() {
+    var learnedWords = [];
+    try {
+        learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    } catch(e) {
+        console.error('获取已学单词失败:', e);
+    }
+    return learnedWords;
+}
+
+// 获取今日学习的单词
 function getTodayLearnedWords() {
     var today = new Date().toDateString();
     var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
-    var learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    var learnedWords = getAllLearnedWords();
     var todayWords = [];
     
     learnedWords.forEach(function(word) {
@@ -25,18 +48,1459 @@ function getTodayLearnedWords() {
         }
     });
     
-    // 如果今日没有学习单词，取最近学习的10个
+    return todayWords;
+}
+
+// 获取本周学习的单词
+function getWeekLearnedWords() {
+    var now = new Date();
+    var weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    var learnedWords = getAllLearnedWords();
+    var weekWords = [];
+    
+    learnedWords.forEach(function(word) {
+        var progress = wordProgress[word];
+        if (progress && progress.lastReview) {
+            var reviewDate = new Date(progress.lastReview);
+            if (reviewDate >= weekAgo) {
+                weekWords.push(word);
+            }
+        }
+    });
+    
+    return weekWords;
+}
+
+// 根据复习模式获取词汇（核心函数）
+function getReviewWordsByMode(mode) {
+    mode = mode || globalReviewMode;
+    
+    switch(mode) {
+        case 'today':
+            return getTodayLearnedWords();
+        case 'week':
+            return getWeekLearnedWords();
+        case 'all':
+        default:
+            return getAllLearnedWords();
+    }
+}
+
+// 获取当前批次的复习词汇（兼容旧代码）
+function getCurrentReviewBatchWords() {
+    if (allReviewWords.length === 0) {
+        allReviewWords = getReviewWordsByMode(globalReviewMode);
+    }
+    
+    var startIndex = currentReviewBatch * reviewBatchSize;
+    var endIndex = Math.min(startIndex + reviewBatchSize, allReviewWords.length);
+    
+    return allReviewWords.slice(startIndex, endIndex);
+}
+
+// 旧函数重构 - 保持兼容性
+function getTodayLearnedWordsLegacy() {
+    var today = new Date().toDateString();
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    var learnedWords = getAllLearnedWords();
+    var todayWords = [];
+    
+    learnedWords.forEach(function(word) {
+        var progress = wordProgress[word];
+        if (progress && progress.lastReview) {
+            var reviewDate = new Date(progress.lastReview).toDateString();
+            if (reviewDate === today) {
+                todayWords.push(word);
+            }
+        }
+    });
+    
+    // 全局复习模式下返回所有已学单词
+    if (globalReviewMode === 'all' && todayWords.length === 0) {
+        return learnedWords;
+    }
+    
+    // 如果今日没有学习单词，取最近学习的单词
     if (todayWords.length === 0 && learnedWords.length > 0) {
         var sortedWords = learnedWords.slice().sort(function(a, b) {
             var aTime = wordProgress[a] ? new Date(wordProgress[a].lastReview || 0).getTime() : 0;
             var bTime = wordProgress[b] ? new Date(wordProgress[b].lastReview || 0).getTime() : 0;
             return bTime - aTime;
         });
-        todayWords = sortedWords.slice(0, 10);
+        // 全局模式返回所有，否则返回最近10个
+        todayWords = globalReviewMode === 'all' ? sortedWords : sortedWords.slice(0, 10);
     }
     
     return todayWords;
 }
+
+// ==================== V2: 单词分类和优先级系统 ====================
+
+// 单词复习优先级级别
+var REVIEW_PRIORITY = {
+    URGENT: 1,      // 紧急复习（遗忘曲线临界点）
+    HIGH: 2,        // 高优先级（长时间未复习）
+    MEDIUM: 3,      // 中优先级（正常复习周期）
+    LOW: 4,         // 低优先级（熟练单词）
+    MASTERED: 5     // 已掌握（可选复习）
+};
+
+// 计算单词复习优先级
+function calculateWordPriority(word, progress) {
+    if (!progress) {
+        return { priority: REVIEW_PRIORITY.URGENT, reason: '新单词' };
+    }
+    
+    var now = Date.now();
+    var lastReview = progress.lastReview ? new Date(progress.lastReview).getTime() : 0;
+    var daysSinceReview = (now - lastReview) / (1000 * 60 * 60 * 24);
+    var reviewCount = progress.reviewCount || 0;
+    var correctRate = progress.correctCount ? (progress.correctCount / reviewCount) : 0;
+    
+    // 根据艾宾浩斯遗忘曲线判断优先级
+    if (daysSinceReview > 30) {
+        return { priority: REVIEW_PRIORITY.URGENT, reason: '超过30天未复习' };
+    } else if (daysSinceReview > 14) {
+        return { priority: REVIEW_PRIORITY.HIGH, reason: '超过2周未复习' };
+    } else if (daysSinceReview > 7) {
+        return { priority: REVIEW_PRIORITY.MEDIUM, reason: '超过1周未复习' };
+    } else if (reviewCount >= 5 && correctRate >= 0.9) {
+        return { priority: REVIEW_PRIORITY.MASTERED, reason: '已掌握' };
+    } else if (reviewCount >= 3 && correctRate >= 0.7) {
+        return { priority: REVIEW_PRIORITY.LOW, reason: '基本掌握' };
+    } else {
+        return { priority: REVIEW_PRIORITY.MEDIUM, reason: '正常复习' };
+    }
+}
+
+// 对所有已学单词进行分类
+function categorizeAllWords() {
+    var allWords = getAllLearnedWords();
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    
+    var categorized = {
+        urgent: [],
+        high: [],
+        medium: [],
+        low: [],
+        mastered: [],
+        all: allWords
+    };
+    
+    allWords.forEach(function(word) {
+        var progress = wordProgress[word];
+        var priorityInfo = calculateWordPriority(word, progress);
+        
+        var wordData = {
+            word: word,
+            priority: priorityInfo.priority,
+            reason: priorityInfo.reason,
+            lastReview: progress ? progress.lastReview : null,
+            reviewCount: progress ? (progress.reviewCount || 0) : 0
+        };
+        
+        switch(priorityInfo.priority) {
+            case REVIEW_PRIORITY.URGENT:
+                categorized.urgent.push(wordData);
+                break;
+            case REVIEW_PRIORITY.HIGH:
+                categorized.high.push(wordData);
+                break;
+            case REVIEW_PRIORITY.MEDIUM:
+                categorized.medium.push(wordData);
+                break;
+            case REVIEW_PRIORITY.LOW:
+                categorized.low.push(wordData);
+                break;
+            case REVIEW_PRIORITY.MASTERED:
+                categorized.mastered.push(wordData);
+                break;
+        }
+    });
+    
+    return categorized;
+}
+
+// 获取优先排序的复习单词列表
+function getPrioritizedReviewWords() {
+    var categorized = categorizeAllWords();
+    
+    // 按优先级合并：紧急 > 高 > 中 > 低 > 已掌握
+    var prioritizedList = [];
+    prioritizedList = prioritizedList.concat(categorized.urgent);
+    prioritizedList = prioritizedList.concat(categorized.high);
+    prioritizedList = prioritizedList.concat(categorized.medium);
+    prioritizedList = prioritizedList.concat(categorized.low);
+    prioritizedList = prioritizedList.concat(categorized.mastered);
+    
+    return prioritizedList.map(function(item) { return item.word; });
+}
+
+// 获取复习统计摘要
+function getReviewSummary() {
+    var categorized = categorizeAllWords();
+    
+    return {
+        total: categorized.all.length,
+        urgent: categorized.urgent.length,
+        high: categorized.high.length,
+        medium: categorized.medium.length,
+        low: categorized.low.length,
+        mastered: categorized.mastered.length,
+        needsReview: categorized.urgent.length + categorized.high.length + categorized.medium.length,
+        categories: categorized
+    };
+}
+
+// ==================== V3: 智能分批加载机制 ====================
+
+// 批次管理器
+var batchManager = {
+    currentBatch: 0,
+    batchSize: 10,
+    totalBatches: 0,
+    allWords: [],
+    loadedBatches: [],
+    isLoading: false
+};
+
+// 初始化全局复习批次
+function initializeGlobalReviewBatches(mode) {
+    mode = mode || 'all';
+    
+    // 获取所有需要复习的单词
+    var words;
+    if (mode === 'prioritized') {
+        words = getPrioritizedReviewWords();
+    } else {
+        words = getReviewWordsByMode(mode);
+    }
+    
+    batchManager.allWords = words;
+    batchManager.totalBatches = Math.ceil(words.length / batchManager.batchSize);
+    batchManager.currentBatch = 0;
+    batchManager.loadedBatches = [];
+    
+    // 加载第一批
+    if (words.length > 0) {
+        loadNextBatch();
+    }
+    
+    return {
+        totalWords: words.length,
+        totalBatches: batchManager.totalBatches,
+        batchSize: batchManager.batchSize
+    };
+}
+
+// 加载下一批单词
+function loadNextBatch() {
+    if (batchManager.currentBatch >= batchManager.totalBatches) {
+        return null; // 所有批次已加载完成
+    }
+    
+    var startIndex = batchManager.currentBatch * batchManager.batchSize;
+    var endIndex = Math.min(startIndex + batchManager.batchSize, batchManager.allWords.length);
+    var batchWords = batchManager.allWords.slice(startIndex, endIndex);
+    
+    var batchData = {
+        batchNumber: batchManager.currentBatch + 1,
+        words: batchWords,
+        startIndex: startIndex,
+        endIndex: endIndex,
+        isLast: batchManager.currentBatch >= batchManager.totalBatches - 1
+    };
+    
+    batchManager.loadedBatches.push(batchData);
+    batchManager.currentBatch++;
+    
+    return batchData;
+}
+
+// 获取当前批次
+function getCurrentBatch() {
+    if (batchManager.loadedBatches.length === 0) {
+        return loadNextBatch();
+    }
+    return batchManager.loadedBatches[batchManager.loadedBatches.length - 1];
+}
+
+// 跳转到指定批次
+function goToBatch(batchNumber) {
+    if (batchNumber < 1 || batchNumber > batchManager.totalBatches) {
+        return null;
+    }
+    
+    batchManager.currentBatch = batchNumber - 1;
+    var startIndex = batchManager.currentBatch * batchManager.batchSize;
+    var endIndex = Math.min(startIndex + batchManager.batchSize, batchManager.allWords.length);
+    
+    return {
+        batchNumber: batchNumber,
+        words: batchManager.allWords.slice(startIndex, endIndex),
+        startIndex: startIndex,
+        endIndex: endIndex,
+        isLast: batchNumber >= batchManager.totalBatches
+    };
+}
+
+// 获取批次进度信息
+function getBatchProgress() {
+    return {
+        currentBatch: batchManager.currentBatch,
+        totalBatches: batchManager.totalBatches,
+        totalWords: batchManager.allWords.length,
+        wordsCompleted: batchManager.currentBatch * batchManager.batchSize,
+        percentComplete: batchManager.totalBatches > 0 
+            ? Math.round((batchManager.currentBatch / batchManager.totalBatches) * 100) 
+            : 0
+    };
+}
+
+// 重置批次管理器
+function resetBatchManager() {
+    batchManager.currentBatch = 0;
+    batchManager.loadedBatches = [];
+}
+
+// 设置批次大小
+function setBatchSize(size) {
+    if (size >= 5 && size <= 50) {
+        batchManager.batchSize = size;
+        reviewBatchSize = size;
+    }
+}
+
+// ==================== V4: 间隔重复算法集成 (SM-2算法改进版) ====================
+
+// 间隔重复参数
+var SR_PARAMS = {
+    minEaseFactor: 1.3,
+    maxEaseFactor: 2.5,
+    defaultEaseFactor: 2.5,
+    intervals: [1, 3, 7, 14, 30, 60, 120] // 复习间隔天数
+};
+
+// 计算下次复习时间（基于SM-2算法）
+function calculateNextReview(word, quality) {
+    // quality: 0-5 (0=完全忘记, 5=完美记忆)
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    var progress = wordProgress[word] || {
+        easeFactor: SR_PARAMS.defaultEaseFactor,
+        interval: 0,
+        repetitions: 0
+    };
+    
+    var easeFactor = progress.easeFactor || SR_PARAMS.defaultEaseFactor;
+    var interval = progress.interval || 0;
+    var repetitions = progress.repetitions || 0;
+    
+    // SM-2 算法核心
+    if (quality >= 3) {
+        // 回答正确
+        if (repetitions === 0) {
+            interval = 1;
+        } else if (repetitions === 1) {
+            interval = 3;
+        } else {
+            interval = Math.round(interval * easeFactor);
+        }
+        repetitions++;
+        easeFactor = easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02));
+    } else {
+        // 回答错误，重置
+        repetitions = 0;
+        interval = 1;
+    }
+    
+    // 限制 easeFactor 范围
+    easeFactor = Math.max(SR_PARAMS.minEaseFactor, Math.min(SR_PARAMS.maxEaseFactor, easeFactor));
+    
+    // 计算下次复习日期
+    var nextReviewDate = new Date();
+    nextReviewDate.setDate(nextReviewDate.getDate() + interval);
+    
+    return {
+        word: word,
+        easeFactor: easeFactor,
+        interval: interval,
+        repetitions: repetitions,
+        nextReview: nextReviewDate.toISOString(),
+        quality: quality
+    };
+}
+
+// 更新单词复习进度
+function updateWordReviewProgress(word, quality) {
+    var result = calculateNextReview(word, quality);
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    
+    wordProgress[word] = {
+        ...wordProgress[word],
+        easeFactor: result.easeFactor,
+        interval: result.interval,
+        repetitions: result.repetitions,
+        nextReview: result.nextReview,
+        lastReview: new Date().toISOString(),
+        reviewCount: (wordProgress[word]?.reviewCount || 0) + 1,
+        correctCount: quality >= 3 ? ((wordProgress[word]?.correctCount || 0) + 1) : (wordProgress[word]?.correctCount || 0),
+        lastQuality: quality
+    };
+    
+    localStorage.setItem('wordLearningProgress', JSON.stringify(wordProgress));
+    
+    return result;
+}
+
+// 获取今日需要复习的单词（基于间隔重复）
+function getDueWords() {
+    var allWords = getAllLearnedWords();
+    var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    var dueWords = [];
+    var overdueWords = [];
+    var upcomingWords = [];
+    
+    allWords.forEach(function(word) {
+        var progress = wordProgress[word];
+        
+        if (!progress || !progress.nextReview) {
+            // 新单词，需要复习
+            dueWords.push({ word: word, dueDate: today, isNew: true });
+            return;
+        }
+        
+        var nextReview = new Date(progress.nextReview);
+        nextReview.setHours(0, 0, 0, 0);
+        
+        if (nextReview <= today) {
+            var daysOverdue = Math.floor((today - nextReview) / (1000 * 60 * 60 * 24));
+            if (daysOverdue > 0) {
+                overdueWords.push({ word: word, dueDate: nextReview, daysOverdue: daysOverdue });
+            } else {
+                dueWords.push({ word: word, dueDate: nextReview, daysOverdue: 0 });
+            }
+        } else {
+            var daysUntil = Math.floor((nextReview - today) / (1000 * 60 * 60 * 24));
+            upcomingWords.push({ word: word, dueDate: nextReview, daysUntil: daysUntil });
+        }
+    });
+    
+    // 按逾期天数排序
+    overdueWords.sort(function(a, b) { return b.daysOverdue - a.daysOverdue; });
+    
+    return {
+        due: dueWords,
+        overdue: overdueWords,
+        upcoming: upcomingWords,
+        total: allWords.length,
+        needsReview: dueWords.length + overdueWords.length
+    };
+}
+
+// 获取间隔重复排序的复习列表
+function getSRSortedReviewWords() {
+    var dueData = getDueWords();
+    
+    // 优先逾期 > 今日到期 > 新单词
+    var sortedWords = [];
+    
+    dueData.overdue.forEach(function(item) {
+        sortedWords.push(item.word);
+    });
+    
+    dueData.due.forEach(function(item) {
+        sortedWords.push(item.word);
+    });
+    
+    return sortedWords;
+}
+
+// ==================== V5: 复习进度追踪系统 ====================
+
+// 复习会话管理器
+var reviewSession = {
+    id: null,
+    startTime: null,
+    endTime: null,
+    totalWords: 0,
+    reviewedWords: [],
+    correctWords: [],
+    incorrectWords: [],
+    skippedWords: [],
+    currentWordIndex: 0,
+    isActive: false,
+    mode: 'all' // 'today', 'week', 'all', 'due', 'prioritized'
+};
+
+// 开始新的复习会话
+function startReviewSession(mode) {
+    mode = mode || 'all';
+    
+    reviewSession.id = 'session_' + Date.now();
+    reviewSession.startTime = new Date().toISOString();
+    reviewSession.endTime = null;
+    reviewSession.mode = mode;
+    reviewSession.isActive = true;
+    reviewSession.currentWordIndex = 0;
+    reviewSession.reviewedWords = [];
+    reviewSession.correctWords = [];
+    reviewSession.incorrectWords = [];
+    reviewSession.skippedWords = [];
+    
+    // 根据模式获取复习单词
+    var words;
+    switch(mode) {
+        case 'today':
+            words = getTodayLearnedWords();
+            break;
+        case 'week':
+            words = getWeekLearnedWords();
+            break;
+        case 'due':
+            words = getSRSortedReviewWords();
+            break;
+        case 'prioritized':
+            words = getPrioritizedReviewWords();
+            break;
+        case 'all':
+        default:
+            words = getAllLearnedWords();
+    }
+    
+    reviewSession.totalWords = words.length;
+    allReviewWords = words;
+    todayReviewWords = words;
+    
+    // 初始化批次管理
+    initializeGlobalReviewBatches(mode === 'prioritized' ? 'prioritized' : mode);
+    
+    // 保存会话到 localStorage
+    saveReviewSession();
+    
+    return {
+        sessionId: reviewSession.id,
+        totalWords: reviewSession.totalWords,
+        mode: mode,
+        startTime: reviewSession.startTime
+    };
+}
+
+// 记录单词复习结果
+function recordWordReview(word, result, quality) {
+    if (!reviewSession.isActive) return;
+    
+    if (reviewSession.reviewedWords.indexOf(word) === -1) {
+        reviewSession.reviewedWords.push(word);
+    }
+    
+    if (result === 'correct' || quality >= 3) {
+        if (reviewSession.correctWords.indexOf(word) === -1) {
+            reviewSession.correctWords.push(word);
+        }
+        // 从错误列表移除（如果之前错过）
+        var incorrectIndex = reviewSession.incorrectWords.indexOf(word);
+        if (incorrectIndex > -1) {
+            reviewSession.incorrectWords.splice(incorrectIndex, 1);
+        }
+    } else if (result === 'incorrect' || (quality !== undefined && quality < 3)) {
+        if (reviewSession.incorrectWords.indexOf(word) === -1) {
+            reviewSession.incorrectWords.push(word);
+        }
+    } else if (result === 'skipped') {
+        if (reviewSession.skippedWords.indexOf(word) === -1) {
+            reviewSession.skippedWords.push(word);
+        }
+    }
+    
+    // 更新间隔重复进度
+    if (quality !== undefined) {
+        updateWordReviewProgress(word, quality);
+    }
+    
+    reviewSession.currentWordIndex++;
+    saveReviewSession();
+    
+    return getSessionProgress();
+}
+
+// 获取当前会话进度
+function getSessionProgress() {
+    if (!reviewSession.isActive) {
+        return {
+            isActive: false,
+            message: '没有活动的复习会话'
+        };
+    }
+    
+    var reviewed = reviewSession.reviewedWords.length;
+    var total = reviewSession.totalWords;
+    var correct = reviewSession.correctWords.length;
+    var incorrect = reviewSession.incorrectWords.length;
+    var skipped = reviewSession.skippedWords.length;
+    
+    return {
+        isActive: true,
+        sessionId: reviewSession.id,
+        mode: reviewSession.mode,
+        totalWords: total,
+        reviewedWords: reviewed,
+        remainingWords: total - reviewed,
+        correctWords: correct,
+        incorrectWords: incorrect,
+        skippedWords: skipped,
+        accuracy: reviewed > 0 ? Math.round((correct / reviewed) * 100) : 0,
+        progress: total > 0 ? Math.round((reviewed / total) * 100) : 0,
+        isComplete: reviewed >= total
+    };
+}
+
+// 结束复习会话
+function endReviewSession() {
+    if (!reviewSession.isActive) return null;
+    
+    reviewSession.endTime = new Date().toISOString();
+    reviewSession.isActive = false;
+    
+    var summary = {
+        sessionId: reviewSession.id,
+        mode: reviewSession.mode,
+        duration: calculateSessionDuration(),
+        totalWords: reviewSession.totalWords,
+        reviewedWords: reviewSession.reviewedWords.length,
+        correctWords: reviewSession.correctWords.length,
+        incorrectWords: reviewSession.incorrectWords.length,
+        skippedWords: reviewSession.skippedWords.length,
+        accuracy: reviewSession.reviewedWords.length > 0 
+            ? Math.round((reviewSession.correctWords.length / reviewSession.reviewedWords.length) * 100) 
+            : 0,
+        incorrectWordsList: reviewSession.incorrectWords.slice(),
+        startTime: reviewSession.startTime,
+        endTime: reviewSession.endTime
+    };
+    
+    // 保存会话历史
+    saveSessionToHistory(summary);
+    saveReviewSession();
+    
+    return summary;
+}
+
+// 计算会话持续时间
+function calculateSessionDuration() {
+    if (!reviewSession.startTime) return 0;
+    
+    var start = new Date(reviewSession.startTime);
+    var end = reviewSession.endTime ? new Date(reviewSession.endTime) : new Date();
+    
+    return Math.round((end - start) / 1000); // 返回秒数
+}
+
+// 保存会话到 localStorage
+function saveReviewSession() {
+    localStorage.setItem('currentReviewSession', JSON.stringify(reviewSession));
+}
+
+// 恢复未完成的会话
+function restoreReviewSession() {
+    try {
+        var saved = JSON.parse(localStorage.getItem('currentReviewSession') || 'null');
+        if (saved && saved.isActive) {
+            reviewSession = saved;
+            allReviewWords = getReviewWordsByMode(saved.mode);
+            todayReviewWords = allReviewWords;
+            return true;
+        }
+    } catch(e) {
+        console.error('恢复复习会话失败:', e);
+    }
+    return false;
+}
+
+// 保存会话到历史记录
+function saveSessionToHistory(summary) {
+    var history = JSON.parse(localStorage.getItem('reviewSessionHistory') || '[]');
+    history.unshift(summary);
+    
+    // 只保留最近50条记录
+    if (history.length > 50) {
+        history = history.slice(0, 50);
+    }
+    
+    localStorage.setItem('reviewSessionHistory', JSON.stringify(history));
+}
+
+// 获取复习历史
+function getReviewHistory(limit) {
+    var history = JSON.parse(localStorage.getItem('reviewSessionHistory') || '[]');
+    return limit ? history.slice(0, limit) : history;
+}
+
+// ==================== V6: 多模式复习生成器 ====================
+
+// 复习内容类型
+var REVIEW_CONTENT_TYPES = {
+    SENTENCE: 'sentence',       // 例句模式
+    PARAGRAPH: 'paragraph',     // 段落模式
+    DEFINITION: 'definition',   // 释义模式
+    FILL_BLANK: 'fill_blank',   // 填空模式
+    MATCH: 'match',             // 配对模式
+    SPELLING: 'spelling'        // 拼写模式
+};
+
+// 生成复习内容（支持所有已学单词）
+function generateReviewContent(words, contentType) {
+    if (!words || words.length === 0) {
+        words = getAllLearnedWords();
+    }
+    
+    contentType = contentType || REVIEW_CONTENT_TYPES.SENTENCE;
+    
+    switch(contentType) {
+        case REVIEW_CONTENT_TYPES.SENTENCE:
+            return generateSentenceReview(words);
+        case REVIEW_CONTENT_TYPES.PARAGRAPH:
+            return generateParagraphReview(words);
+        case REVIEW_CONTENT_TYPES.DEFINITION:
+            return generateDefinitionReview(words);
+        case REVIEW_CONTENT_TYPES.FILL_BLANK:
+            return generateFillBlankReview(words);
+        case REVIEW_CONTENT_TYPES.MATCH:
+            return generateMatchReview(words);
+        case REVIEW_CONTENT_TYPES.SPELLING:
+            return generateSpellingReview(words);
+        default:
+            return generateSentenceReview(words);
+    }
+}
+
+// 生成例句复习（包含所有单词）
+function generateSentenceReview(words) {
+    var allSentences = [];
+    
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        
+        if (details.examples && details.examples.length > 0) {
+            details.examples.forEach(function(ex) {
+                allSentences.push({
+                    type: 'sentence',
+                    word: word,
+                    text: ex.sentence,
+                    chinese: details.chinese,
+                    definition: details.definitions[0] || ''
+                });
+            });
+        } else {
+            // 为没有例句的单词生成默认句子
+            allSentences.push({
+                type: 'sentence',
+                word: word,
+                text: 'The word "' + word + '" is important to learn and remember.',
+                chinese: details.chinese,
+                definition: details.definitions[0] || ''
+            });
+        }
+    });
+    
+    // 随机打乱顺序
+    shuffleArray(allSentences);
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.SENTENCE,
+        items: allSentences,
+        totalWords: words.length,
+        totalItems: allSentences.length
+    };
+}
+
+// 生成段落复习（批量包含多个单词）
+function generateParagraphReview(words) {
+    var paragraphs = [];
+    var wordsPerParagraph = 3;
+    
+    // 将单词分组
+    for (var i = 0; i < words.length; i += wordsPerParagraph) {
+        var batchWords = words.slice(i, i + wordsPerParagraph);
+        var paragraph = generateParagraphWithWords(batchWords);
+        
+        paragraphs.push({
+            type: 'paragraph',
+            words: batchWords,
+            text: paragraph.text,
+            wordCount: paragraph.wordCount,
+            paragraphType: paragraph.type
+        });
+    }
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.PARAGRAPH,
+        items: paragraphs,
+        totalWords: words.length,
+        totalParagraphs: paragraphs.length
+    };
+}
+
+// 生成释义复习
+function generateDefinitionReview(words) {
+    var items = [];
+    
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        
+        if (details.definitions.length > 0 || details.chinese) {
+            items.push({
+                type: 'definition',
+                word: word,
+                chinese: details.chinese,
+                definitions: details.definitions,
+                examples: details.examples.map(function(ex) { return ex.sentence; })
+            });
+        }
+    });
+    
+    shuffleArray(items);
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.DEFINITION,
+        items: items,
+        totalWords: words.length,
+        totalItems: items.length
+    };
+}
+
+// 生成填空复习
+function generateFillBlankReview(words) {
+    var items = [];
+    
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        
+        details.examples.forEach(function(ex) {
+            // 在句子中用下划线替换目标单词
+            var regex = new RegExp('\\b' + word + '\\b', 'gi');
+            var blankSentence = ex.sentence.replace(regex, '_____');
+            
+            if (blankSentence !== ex.sentence) {
+                items.push({
+                    type: 'fill_blank',
+                    word: word,
+                    blankSentence: blankSentence,
+                    fullSentence: ex.sentence,
+                    chinese: details.chinese,
+                    hint: word.charAt(0) + '...' + word.charAt(word.length - 1)
+                });
+            }
+        });
+        
+        // 如果没有例句，使用定义创建填空
+        if (items.filter(function(i) { return i.word === word; }).length === 0 && details.definitions.length > 0) {
+            items.push({
+                type: 'fill_blank',
+                word: word,
+                blankSentence: 'The word _____ means: ' + details.definitions[0],
+                fullSentence: 'The word ' + word + ' means: ' + details.definitions[0],
+                chinese: details.chinese,
+                hint: word.charAt(0) + '...' + word.charAt(word.length - 1)
+            });
+        }
+    });
+    
+    shuffleArray(items);
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.FILL_BLANK,
+        items: items,
+        totalWords: words.length,
+        totalItems: items.length
+    };
+}
+
+// 生成配对复习
+function generateMatchReview(words) {
+    var matchGroups = [];
+    var groupSize = 5; // 每组5个单词进行配对
+    
+    for (var i = 0; i < words.length; i += groupSize) {
+        var groupWords = words.slice(i, i + groupSize);
+        var wordItems = [];
+        var definitionItems = [];
+        
+        groupWords.forEach(function(word, index) {
+            var details = getWordDetails(word);
+            
+            wordItems.push({
+                id: 'word_' + index,
+                text: word
+            });
+            
+            definitionItems.push({
+                id: 'def_' + index,
+                text: details.chinese || details.definitions[0] || '未知',
+                matchId: 'word_' + index
+            });
+        });
+        
+        // 打乱定义顺序
+        shuffleArray(definitionItems);
+        
+        matchGroups.push({
+            type: 'match',
+            words: wordItems,
+            definitions: definitionItems,
+            groupSize: groupWords.length
+        });
+    }
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.MATCH,
+        items: matchGroups,
+        totalWords: words.length,
+        totalGroups: matchGroups.length
+    };
+}
+
+// 生成拼写复习
+function generateSpellingReview(words) {
+    var items = [];
+    
+    words.forEach(function(word) {
+        var details = getWordDetails(word);
+        
+        items.push({
+            type: 'spelling',
+            word: word,
+            chinese: details.chinese,
+            definition: details.definitions[0] || '',
+            hint: generateSpellingHint(word),
+            audio: null // 可以后续添加音频支持
+        });
+    });
+    
+    shuffleArray(items);
+    
+    return {
+        type: REVIEW_CONTENT_TYPES.SPELLING,
+        items: items,
+        totalWords: words.length,
+        totalItems: items.length
+    };
+}
+
+// 生成拼写提示
+function generateSpellingHint(word) {
+    if (word.length <= 3) {
+        return word.charAt(0) + '_'.repeat(word.length - 1);
+    }
+    
+    // 显示首字母、中间随机一个字母、尾字母
+    var hint = word.charAt(0);
+    for (var i = 1; i < word.length - 1; i++) {
+        hint += '_';
+    }
+    hint += word.charAt(word.length - 1);
+    
+    return hint;
+}
+
+// 辅助函数：打乱数组
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+    return array;
+}
+
+// 生成综合复习内容（包含多种类型）
+function generateComprehensiveReviewContent(words) {
+    if (!words || words.length === 0) {
+        words = getAllLearnedWords();
+    }
+    
+    return {
+        sentences: generateSentenceReview(words),
+        paragraphs: generateParagraphReview(words),
+        definitions: generateDefinitionReview(words),
+        fillBlanks: generateFillBlankReview(words),
+        matches: generateMatchReview(words),
+        spellings: generateSpellingReview(words),
+        totalWords: words.length,
+        generatedAt: new Date().toISOString()
+    };
+}
+
+// ==================== V7: 复习统计和分析 ====================
+
+// 统计分析器
+var reviewAnalytics = {
+    // 获取总体学习统计
+    getOverallStats: function() {
+        var allWords = getAllLearnedWords();
+        var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+        var history = getReviewHistory();
+        
+        var totalReviews = 0;
+        var totalCorrect = 0;
+        var totalStudyTime = 0;
+        var masteredCount = 0;
+        var learningCount = 0;
+        var newCount = 0;
+        
+        allWords.forEach(function(word) {
+            var progress = wordProgress[word];
+            if (!progress) {
+                newCount++;
+                return;
+            }
+            
+            totalReviews += progress.reviewCount || 0;
+            totalCorrect += progress.correctCount || 0;
+            
+            var correctRate = progress.reviewCount > 0 
+                ? progress.correctCount / progress.reviewCount 
+                : 0;
+            
+            if (progress.reviewCount >= 5 && correctRate >= 0.9) {
+                masteredCount++;
+            } else {
+                learningCount++;
+            }
+        });
+        
+        // 计算总学习时间
+        history.forEach(function(session) {
+            totalStudyTime += session.duration || 0;
+        });
+        
+        return {
+            totalWords: allWords.length,
+            masteredWords: masteredCount,
+            learningWords: learningCount,
+            newWords: newCount,
+            totalReviews: totalReviews,
+            totalCorrect: totalCorrect,
+            overallAccuracy: totalReviews > 0 ? Math.round((totalCorrect / totalReviews) * 100) : 0,
+            totalStudyTime: totalStudyTime, // 秒
+            totalSessions: history.length,
+            averageSessionDuration: history.length > 0 ? Math.round(totalStudyTime / history.length) : 0
+        };
+    },
+    
+    // 获取每日学习统计
+    getDailyStats: function(days) {
+        days = days || 7;
+        var history = getReviewHistory();
+        var dailyStats = {};
+        
+        // 初始化最近N天
+        for (var i = 0; i < days; i++) {
+            var date = new Date();
+            date.setDate(date.getDate() - i);
+            var dateKey = date.toISOString().split('T')[0];
+            dailyStats[dateKey] = {
+                date: dateKey,
+                sessions: 0,
+                wordsReviewed: 0,
+                correctWords: 0,
+                studyTime: 0
+            };
+        }
+        
+        // 填充数据
+        history.forEach(function(session) {
+            if (!session.startTime) return;
+            var sessionDate = new Date(session.startTime).toISOString().split('T')[0];
+            
+            if (dailyStats[sessionDate]) {
+                dailyStats[sessionDate].sessions++;
+                dailyStats[sessionDate].wordsReviewed += session.reviewedWords || 0;
+                dailyStats[sessionDate].correctWords += session.correctWords || 0;
+                dailyStats[sessionDate].studyTime += session.duration || 0;
+            }
+        });
+        
+        // 转换为数组并排序
+        var result = Object.values(dailyStats).sort(function(a, b) {
+            return new Date(b.date) - new Date(a.date);
+        });
+        
+        return result;
+    },
+    
+    // 获取单词掌握度分布
+    getWordMasteryDistribution: function() {
+        var categorized = categorizeAllWords();
+        
+        return {
+            urgent: {
+                count: categorized.urgent.length,
+                percentage: categorized.all.length > 0 
+                    ? Math.round((categorized.urgent.length / categorized.all.length) * 100) 
+                    : 0,
+                label: '紧急复习'
+            },
+            high: {
+                count: categorized.high.length,
+                percentage: categorized.all.length > 0 
+                    ? Math.round((categorized.high.length / categorized.all.length) * 100) 
+                    : 0,
+                label: '高优先级'
+            },
+            medium: {
+                count: categorized.medium.length,
+                percentage: categorized.all.length > 0 
+                    ? Math.round((categorized.medium.length / categorized.all.length) * 100) 
+                    : 0,
+                label: '中优先级'
+            },
+            low: {
+                count: categorized.low.length,
+                percentage: categorized.all.length > 0 
+                    ? Math.round((categorized.low.length / categorized.all.length) * 100) 
+                    : 0,
+                label: '低优先级'
+            },
+            mastered: {
+                count: categorized.mastered.length,
+                percentage: categorized.all.length > 0 
+                    ? Math.round((categorized.mastered.length / categorized.all.length) * 100) 
+                    : 0,
+                label: '已掌握'
+            }
+        };
+    },
+    
+    // 获取学习趋势
+    getLearningTrend: function(days) {
+        var dailyStats = this.getDailyStats(days || 30);
+        
+        var wordsPerDay = [];
+        var accuracyPerDay = [];
+        var studyTimePerDay = [];
+        
+        dailyStats.forEach(function(day) {
+            wordsPerDay.push({
+                date: day.date,
+                value: day.wordsReviewed
+            });
+            accuracyPerDay.push({
+                date: day.date,
+                value: day.wordsReviewed > 0 
+                    ? Math.round((day.correctWords / day.wordsReviewed) * 100) 
+                    : 0
+            });
+            studyTimePerDay.push({
+                date: day.date,
+                value: Math.round(day.studyTime / 60) // 转换为分钟
+            });
+        });
+        
+        return {
+            wordsPerDay: wordsPerDay,
+            accuracyPerDay: accuracyPerDay,
+            studyTimePerDay: studyTimePerDay
+        };
+    },
+    
+    // 获取最难的单词（错误率最高）
+    getDifficultWords: function(limit) {
+        limit = limit || 10;
+        var allWords = getAllLearnedWords();
+        var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+        
+        var wordDifficulty = [];
+        
+        allWords.forEach(function(word) {
+            var progress = wordProgress[word];
+            if (!progress || !progress.reviewCount) return;
+            
+            var errorRate = 1 - (progress.correctCount || 0) / progress.reviewCount;
+            
+            wordDifficulty.push({
+                word: word,
+                reviewCount: progress.reviewCount,
+                correctCount: progress.correctCount || 0,
+                errorRate: errorRate,
+                errorPercentage: Math.round(errorRate * 100)
+            });
+        });
+        
+        // 按错误率排序
+        wordDifficulty.sort(function(a, b) {
+            return b.errorRate - a.errorRate;
+        });
+        
+        return wordDifficulty.slice(0, limit);
+    },
+    
+    // 获取学习连续天数
+    getLearningStreak: function() {
+        var history = getReviewHistory();
+        if (history.length === 0) return { currentStreak: 0, longestStreak: 0 };
+        
+        var dates = [];
+        history.forEach(function(session) {
+            if (session.startTime) {
+                var date = new Date(session.startTime).toISOString().split('T')[0];
+                if (dates.indexOf(date) === -1) {
+                    dates.push(date);
+                }
+            }
+        });
+        
+        dates.sort().reverse();
+        
+        var currentStreak = 0;
+        var longestStreak = 0;
+        var tempStreak = 0;
+        var today = new Date().toISOString().split('T')[0];
+        var yesterday = new Date(Date.now() - 86400000).toISOString().split('T')[0];
+        
+        // 检查当前连续
+        if (dates[0] === today || dates[0] === yesterday) {
+            currentStreak = 1;
+            for (var i = 1; i < dates.length; i++) {
+                var prevDate = new Date(dates[i - 1]);
+                var currDate = new Date(dates[i]);
+                var diff = (prevDate - currDate) / 86400000;
+                
+                if (diff === 1) {
+                    currentStreak++;
+                } else {
+                    break;
+                }
+            }
+        }
+        
+        // 计算最长连续
+        tempStreak = 1;
+        for (var j = 1; j < dates.length; j++) {
+            var prev = new Date(dates[j - 1]);
+            var curr = new Date(dates[j]);
+            var dayDiff = (prev - curr) / 86400000;
+            
+            if (dayDiff === 1) {
+                tempStreak++;
+                longestStreak = Math.max(longestStreak, tempStreak);
+            } else {
+                tempStreak = 1;
+            }
+        }
+        
+        longestStreak = Math.max(longestStreak, currentStreak, 1);
+        
+        return {
+            currentStreak: currentStreak,
+            longestStreak: longestStreak
+        };
+    }
+};
+
+// ==================== V8: 复习完整性验证 ====================
+
+// 验证器对象
+var reviewValidator = {
+    // 验证所有单词是否都有复习内容
+    validateAllWordsHaveContent: function() {
+        var allWords = getAllLearnedWords();
+        var wordDefinitions = JSON.parse(localStorage.getItem('wordDefinitions') || '{}');
+        var wordChinese = JSON.parse(localStorage.getItem('wordChinese') || '{}');
+        
+        var valid = [];
+        var incomplete = [];
+        var missing = [];
+        
+        allWords.forEach(function(word) {
+            var details = getWordDetails(word);
+            var hasDefinition = details.definitions.length > 0;
+            var hasChinese = !!details.chinese;
+            var hasExamples = details.examples.length > 0;
+            
+            if (hasDefinition || hasChinese) {
+                if (hasExamples) {
+                    valid.push({
+                        word: word,
+                        hasDefinition: hasDefinition,
+                        hasChinese: hasChinese,
+                        hasExamples: hasExamples,
+                        exampleCount: details.examples.length
+                    });
+                } else {
+                    incomplete.push({
+                        word: word,
+                        hasDefinition: hasDefinition,
+                        hasChinese: hasChinese,
+                        hasExamples: false,
+                        missing: ['examples']
+                    });
+                }
+            } else {
+                missing.push({
+                    word: word,
+                    hasDefinition: false,
+                    hasChinese: false,
+                    hasExamples: false,
+                    missing: ['definition', 'chinese', 'examples']
+                });
+            }
+        });
+        
+        return {
+            totalWords: allWords.length,
+            validWords: valid.length,
+            incompleteWords: incomplete.length,
+            missingWords: missing.length,
+            completionRate: allWords.length > 0 
+                ? Math.round((valid.length / allWords.length) * 100) 
+                : 0,
+            details: {
+                valid: valid,
+                incomplete: incomplete,
+                missing: missing
+            }
+        };
+    },
+    
+    // 验证复习会话完整性
+    validateSessionCompleteness: function() {
+        var progress = getSessionProgress();
+        
+        if (!progress.isActive) {
+            return {
+                isValid: false,
+                message: '没有活动的复习会话'
+            };
+        }
+        
+        var unreviewed = progress.totalWords - progress.reviewedWords;
+        
+        return {
+            isValid: true,
+            isComplete: progress.isComplete,
+            totalWords: progress.totalWords,
+            reviewedWords: progress.reviewedWords,
+            unreviewedWords: unreviewed,
+            completionPercentage: progress.progress,
+            accuracy: progress.accuracy,
+            message: progress.isComplete 
+                ? '✅ 所有单词已复习完成' 
+                : '⏳ 还有 ' + unreviewed + ' 个单词未复习'
+        };
+    },
+    
+    // 确保所有单词都被包含在复习中
+    ensureAllWordsIncluded: function(reviewWords) {
+        var allWords = getAllLearnedWords();
+        var missingFromReview = [];
+        
+        allWords.forEach(function(word) {
+            if (reviewWords.indexOf(word) === -1) {
+                missingFromReview.push(word);
+            }
+        });
+        
+        if (missingFromReview.length > 0) {
+            // 将遗漏的单词添加到复习列表
+            reviewWords = reviewWords.concat(missingFromReview);
+            console.log('添加了 ' + missingFromReview.length + ' 个遗漏的单词到复习列表');
+        }
+        
+        return {
+            originalCount: reviewWords.length - missingFromReview.length,
+            addedCount: missingFromReview.length,
+            totalCount: reviewWords.length,
+            allIncluded: missingFromReview.length === 0,
+            completeList: reviewWords
+        };
+    },
+    
+    // 生成完整的复习计划
+    generateCompleteReviewPlan: function() {
+        var allWords = getAllLearnedWords();
+        var categorized = categorizeAllWords();
+        var validation = this.validateAllWordsHaveContent();
+        
+        return {
+            summary: {
+                totalWords: allWords.length,
+                wordsWithContent: validation.validWords,
+                wordsNeedingData: validation.incompleteWords + validation.missingWords,
+                readyForReview: validation.validWords,
+                completionRate: validation.completionRate
+            },
+            byPriority: {
+                urgent: categorized.urgent.map(function(w) { return w.word; }),
+                high: categorized.high.map(function(w) { return w.word; }),
+                medium: categorized.medium.map(function(w) { return w.word; }),
+                low: categorized.low.map(function(w) { return w.word; }),
+                mastered: categorized.mastered.map(function(w) { return w.word; })
+            },
+            recommendations: {
+                immediateReview: categorized.urgent.length + categorized.high.length,
+                normalReview: categorized.medium.length,
+                optionalReview: categorized.low.length + categorized.mastered.length
+            },
+            allWords: allWords,
+            generatedAt: new Date().toISOString()
+        };
+    },
+    
+    // 验证复习覆盖率
+    validateReviewCoverage: function(days) {
+        days = days || 30;
+        var allWords = getAllLearnedWords();
+        var wordProgress = JSON.parse(localStorage.getItem('wordLearningProgress') || '{}');
+        var cutoffDate = new Date();
+        cutoffDate.setDate(cutoffDate.getDate() - days);
+        
+        var recentlyReviewed = [];
+        var notReviewed = [];
+        var neverReviewed = [];
+        
+        allWords.forEach(function(word) {
+            var progress = wordProgress[word];
+            
+            if (!progress || !progress.lastReview) {
+                neverReviewed.push(word);
+            } else {
+                var lastReview = new Date(progress.lastReview);
+                if (lastReview >= cutoffDate) {
+                    recentlyReviewed.push({
+                        word: word,
+                        lastReview: progress.lastReview,
+                        reviewCount: progress.reviewCount || 0
+                    });
+                } else {
+                    notReviewed.push({
+                        word: word,
+                        lastReview: progress.lastReview,
+                        daysSinceReview: Math.floor((new Date() - lastReview) / (1000 * 60 * 60 * 24))
+                    });
+                }
+            }
+        });
+        
+        return {
+            period: days + ' days',
+            totalWords: allWords.length,
+            recentlyReviewed: recentlyReviewed.length,
+            notReviewedInPeriod: notReviewed.length,
+            neverReviewed: neverReviewed.length,
+            coverageRate: allWords.length > 0 
+                ? Math.round((recentlyReviewed.length / allWords.length) * 100) 
+                : 0,
+            needsAttention: notReviewed.concat(neverReviewed.map(function(w) {
+                return { word: w, lastReview: null, daysSinceReview: Infinity };
+            }))
+        };
+    }
+};
 
 // 获取单词的详细信息（定义和例句）
 function getWordDetails(word) {
@@ -216,22 +1680,283 @@ function generateDefaultParagraph() {
     };
 }
 
-// 切换全盘复习模式
+// ==================== V9: UI反馈和进度指示器 ====================
+
+// 显示全局复习模式选择器
+function showGlobalReviewModeSelector() {
+    var allWords = getAllLearnedWords();
+    var summary = getReviewSummary();
+    var dueData = getDueWords();
+    
+    var html = '<div class="review-mode-selector-overlay" onclick="hideGlobalReviewModeSelector()">';
+    html += '<div class="review-mode-selector" onclick="event.stopPropagation()">';
+    html += '<h3>🎯 选择复习模式</h3>';
+    html += '<p class="review-summary-text">共有 <strong>' + allWords.length + '</strong> 个已学单词</p>';
+    
+    // 复习模式选项
+    html += '<div class="review-mode-options">';
+    
+    // 今日单词
+    var todayCount = getTodayLearnedWords().length;
+    html += '<div class="review-mode-option" onclick="selectReviewMode(\'today\')">';
+    html += '<div class="mode-icon">📅</div>';
+    html += '<div class="mode-info"><div class="mode-title">今日单词</div>';
+    html += '<div class="mode-count">' + todayCount + ' 个单词</div></div></div>';
+    
+    // 本周单词
+    var weekCount = getWeekLearnedWords().length;
+    html += '<div class="review-mode-option" onclick="selectReviewMode(\'week\')">';
+    html += '<div class="mode-icon">📆</div>';
+    html += '<div class="mode-info"><div class="mode-title">本周单词</div>';
+    html += '<div class="mode-count">' + weekCount + ' 个单词</div></div></div>';
+    
+    // 待复习单词（基于间隔重复）
+    html += '<div class="review-mode-option" onclick="selectReviewMode(\'due\')">';
+    html += '<div class="mode-icon">⏰</div>';
+    html += '<div class="mode-info"><div class="mode-title">待复习</div>';
+    html += '<div class="mode-count">' + dueData.needsReview + ' 个单词</div></div></div>';
+    
+    // 优先级排序
+    html += '<div class="review-mode-option" onclick="selectReviewMode(\'prioritized\')">';
+    html += '<div class="mode-icon">🔥</div>';
+    html += '<div class="mode-info"><div class="mode-title">按优先级</div>';
+    html += '<div class="mode-count">紧急: ' + summary.urgent + ' | 高: ' + summary.high + '</div></div></div>';
+    
+    // 全部单词
+    html += '<div class="review-mode-option highlight" onclick="selectReviewMode(\'all\')">';
+    html += '<div class="mode-icon">📚</div>';
+    html += '<div class="mode-info"><div class="mode-title">全部单词</div>';
+    html += '<div class="mode-count">' + allWords.length + ' 个单词</div></div></div>';
+    
+    html += '</div>';
+    
+    // 批次大小设置
+    html += '<div class="batch-size-setting">';
+    html += '<label>每批单词数: </label>';
+    html += '<select id="batchSizeSelect" onchange="updateBatchSize(this.value)">';
+    [5, 10, 15, 20, 30, 50].forEach(function(size) {
+        var selected = size === reviewBatchSize ? ' selected' : '';
+        html += '<option value="' + size + '"' + selected + '>' + size + '</option>';
+    });
+    html += '</select></div>';
+    
+    html += '<button class="close-btn" onclick="hideGlobalReviewModeSelector()">取消</button>';
+    html += '</div></div>';
+    
+    // 添加到页面
+    var container = document.createElement('div');
+    container.id = 'reviewModeSelectorContainer';
+    container.innerHTML = html;
+    document.body.appendChild(container);
+}
+
+// 隐藏复习模式选择器
+function hideGlobalReviewModeSelector() {
+    var container = document.getElementById('reviewModeSelectorContainer');
+    if (container) {
+        container.remove();
+    }
+}
+
+// 选择复习模式并开始
+function selectReviewMode(mode) {
+    hideGlobalReviewModeSelector();
+    globalReviewMode = mode;
+    
+    // 开始复习会话
+    var sessionInfo = startReviewSession(mode);
+    
+    // 显示开始通知
+    var modeNames = {
+        'today': '今日单词',
+        'week': '本周单词',
+        'due': '待复习单词',
+        'prioritized': '优先级模式',
+        'all': '全部单词'
+    };
+    
+    showToast('✅ 开始复习 ' + modeNames[mode] + '，共 ' + sessionInfo.totalWords + ' 个单词');
+    
+    // 启用全局复习模式
+    comprehensiveReviewMode = true;
+    todayReviewWords = allReviewWords;
+    
+    // 显示进度指示器
+    showReviewProgressIndicator();
+    
+    // 保存设置
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.comprehensiveReviewMode = true;
+    settings.globalReviewMode = mode;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 重新加载口语内容
+    if (speakingMode === 'sentence') {
+        loadSentenceMode();
+    } else {
+        loadParagraphMode();
+    }
+}
+
+// 更新批次大小
+function updateBatchSize(size) {
+    setBatchSize(parseInt(size));
+    showToast('批次大小已设置为 ' + size + ' 个单词');
+}
+
+// 显示复习进度指示器
+function showReviewProgressIndicator() {
+    var existing = document.getElementById('reviewProgressIndicator');
+    if (existing) existing.remove();
+    
+    var progress = getSessionProgress();
+    if (!progress.isActive) return;
+    
+    var progressPercent = progress.progress;
+    var html = '<div id="reviewProgressIndicator" class="review-progress-indicator">';
+    html += '<div class="progress-bar-container">';
+    html += '<div class="progress-bar" style="width: ' + progressPercent + '%"></div>';
+    html += '</div>';
+    html += '<div class="progress-text">';
+    html += '<span class="progress-count">' + progress.reviewedWords + '/' + progress.totalWords + '</span>';
+    html += '<span class="progress-percent">' + progressPercent + '%</span>';
+    html += '</div>';
+    html += '<div class="progress-stats">';
+    html += '<span class="stat-correct">✓ ' + progress.correctWords + '</span>';
+    html += '<span class="stat-incorrect">✗ ' + progress.incorrectWords + '</span>';
+    html += '<span class="stat-accuracy">' + progress.accuracy + '%</span>';
+    html += '</div>';
+    html += '</div>';
+    
+    var container = document.createElement('div');
+    container.innerHTML = html;
+    
+    // 插入到口语模块顶部
+    var speakingModule = document.getElementById('speakingModule');
+    if (speakingModule) {
+        speakingModule.insertBefore(container.firstChild, speakingModule.firstChild);
+    }
+}
+
+// 更新复习进度指示器
+function updateReviewProgressIndicator() {
+    var indicator = document.getElementById('reviewProgressIndicator');
+    if (!indicator) {
+        showReviewProgressIndicator();
+        return;
+    }
+    
+    var progress = getSessionProgress();
+    if (!progress.isActive) {
+        indicator.remove();
+        return;
+    }
+    
+    var progressBar = indicator.querySelector('.progress-bar');
+    var progressCount = indicator.querySelector('.progress-count');
+    var progressPercent = indicator.querySelector('.progress-percent');
+    var statCorrect = indicator.querySelector('.stat-correct');
+    var statIncorrect = indicator.querySelector('.stat-incorrect');
+    var statAccuracy = indicator.querySelector('.stat-accuracy');
+    
+    if (progressBar) progressBar.style.width = progress.progress + '%';
+    if (progressCount) progressCount.textContent = progress.reviewedWords + '/' + progress.totalWords;
+    if (progressPercent) progressPercent.textContent = progress.progress + '%';
+    if (statCorrect) statCorrect.textContent = '✓ ' + progress.correctWords;
+    if (statIncorrect) statIncorrect.textContent = '✗ ' + progress.incorrectWords;
+    if (statAccuracy) statAccuracy.textContent = progress.accuracy + '%';
+    
+    // 检查是否完成
+    if (progress.isComplete) {
+        showReviewCompleteDialog();
+    }
+}
+
+// 显示复习完成对话框
+function showReviewCompleteDialog() {
+    var summary = endReviewSession();
+    if (!summary) return;
+    
+    var html = '<div class="review-complete-overlay" onclick="hideReviewCompleteDialog()">';
+    html += '<div class="review-complete-dialog" onclick="event.stopPropagation()">';
+    html += '<div class="complete-icon">🎉</div>';
+    html += '<h3>复习完成！</h3>';
+    
+    html += '<div class="complete-stats">';
+    html += '<div class="stat-item"><span class="stat-label">总单词</span><span class="stat-value">' + summary.totalWords + '</span></div>';
+    html += '<div class="stat-item"><span class="stat-label">已复习</span><span class="stat-value">' + summary.reviewedWords + '</span></div>';
+    html += '<div class="stat-item"><span class="stat-label">正确率</span><span class="stat-value">' + summary.accuracy + '%</span></div>';
+    html += '<div class="stat-item"><span class="stat-label">用时</span><span class="stat-value">' + formatDuration(summary.duration) + '</span></div>';
+    html += '</div>';
+    
+    if (summary.incorrectWordsList.length > 0) {
+        html += '<div class="incorrect-words">';
+        html += '<h4>需要加强的单词：</h4>';
+        html += '<div class="word-list">' + summary.incorrectWordsList.slice(0, 10).join(', ') + '</div>';
+        if (summary.incorrectWordsList.length > 10) {
+            html += '<div class="more-text">还有 ' + (summary.incorrectWordsList.length - 10) + ' 个...</div>';
+        }
+        html += '</div>';
+    }
+    
+    html += '<div class="dialog-buttons">';
+    html += '<button class="btn-primary" onclick="startNewReviewSession()">继续复习</button>';
+    html += '<button class="btn-secondary" onclick="hideReviewCompleteDialog()">完成</button>';
+    html += '</div>';
+    html += '</div></div>';
+    
+    var container = document.createElement('div');
+    container.id = 'reviewCompleteContainer';
+    container.innerHTML = html;
+    document.body.appendChild(container);
+}
+
+// 隐藏复习完成对话框
+function hideReviewCompleteDialog() {
+    var container = document.getElementById('reviewCompleteContainer');
+    if (container) container.remove();
+    
+    // 隐藏进度指示器
+    var indicator = document.getElementById('reviewProgressIndicator');
+    if (indicator) indicator.remove();
+    
+    // 关闭全局复习模式
+    comprehensiveReviewMode = false;
+    var toggle = document.getElementById('comprehensiveReviewToggle');
+    if (toggle) toggle.checked = false;
+}
+
+// 开始新的复习会话
+function startNewReviewSession() {
+    hideReviewCompleteDialog();
+    showGlobalReviewModeSelector();
+}
+
+// 格式化时长
+function formatDuration(seconds) {
+    if (seconds < 60) return seconds + '秒';
+    if (seconds < 3600) return Math.floor(seconds / 60) + '分' + (seconds % 60) + '秒';
+    return Math.floor(seconds / 3600) + '小时' + Math.floor((seconds % 3600) / 60) + '分';
+}
+
+// 切换全局复习模式（更新版）
 function toggleComprehensiveReview(enabled) {
     comprehensiveReviewMode = enabled;
     
     if (enabled) {
-        todayReviewWords = getTodayLearnedWords();
-        if (todayReviewWords.length === 0) {
-            showToast('⚠️ 今日还没有学习单词，请先学习一些词汇');
-            comprehensiveReviewMode = false;
-            var toggle = document.getElementById('comprehensiveReviewToggle');
-            if (toggle) toggle.checked = false;
-            return;
-        }
-        showToast('✅ 全盘复习模式已开启，将围绕 ' + todayReviewWords.length + ' 个核心词汇进行练习');
+        // 显示模式选择器让用户选择
+        showGlobalReviewModeSelector();
     } else {
-        showToast('全盘复习模式已关闭');
+        // 结束当前会话
+        if (reviewSession.isActive) {
+            endReviewSession();
+        }
+        
+        // 隐藏进度指示器
+        var indicator = document.getElementById('reviewProgressIndicator');
+        if (indicator) indicator.remove();
+        
+        showToast('全局复习模式已关闭');
     }
     
     // 保存设置
@@ -6086,11 +7811,87 @@ window.startReviewFromReminder = startReviewFromReminder;
 window.dismissReviewReminder = dismissReviewReminder;
 window.getWordsToReview = getWordsToReview;
 
-// 全盘复习模式函数导出
+// ==================== V10: 全局复习模式函数导出（完整版） ====================
+
+// 核心复习函数
 window.toggleComprehensiveReview = toggleComprehensiveReview;
 window.switchSpeakingMode = switchSpeakingMode;
 window.loadReviewSpeakingContent = loadReviewSpeakingContent;
+
+// V1: 获取单词函数
+window.getAllLearnedWords = getAllLearnedWords;
 window.getTodayLearnedWords = getTodayLearnedWords;
+window.getWeekLearnedWords = getWeekLearnedWords;
+window.getReviewWordsByMode = getReviewWordsByMode;
+window.getCurrentReviewBatchWords = getCurrentReviewBatchWords;
+
+// V2: 优先级系统
+window.REVIEW_PRIORITY = REVIEW_PRIORITY;
+window.calculateWordPriority = calculateWordPriority;
+window.categorizeAllWords = categorizeAllWords;
+window.getPrioritizedReviewWords = getPrioritizedReviewWords;
+window.getReviewSummary = getReviewSummary;
+
+// V3: 批次管理
+window.batchManager = batchManager;
+window.initializeGlobalReviewBatches = initializeGlobalReviewBatches;
+window.loadNextBatch = loadNextBatch;
+window.getCurrentBatch = getCurrentBatch;
+window.goToBatch = goToBatch;
+window.getBatchProgress = getBatchProgress;
+window.resetBatchManager = resetBatchManager;
+window.setBatchSize = setBatchSize;
+
+// V4: 间隔重复算法
+window.SR_PARAMS = SR_PARAMS;
+window.calculateNextReview = calculateNextReview;
+window.updateWordReviewProgress = updateWordReviewProgress;
+window.getDueWords = getDueWords;
+window.getSRSortedReviewWords = getSRSortedReviewWords;
+
+// V5: 复习会话管理
+window.reviewSession = reviewSession;
+window.startReviewSession = startReviewSession;
+window.recordWordReview = recordWordReview;
+window.getSessionProgress = getSessionProgress;
+window.endReviewSession = endReviewSession;
+window.restoreReviewSession = restoreReviewSession;
+window.getReviewHistory = getReviewHistory;
+
+// V6: 多模式复习生成器
+window.REVIEW_CONTENT_TYPES = REVIEW_CONTENT_TYPES;
+window.generateReviewContent = generateReviewContent;
+window.generateSentenceReview = generateSentenceReview;
+window.generateParagraphReview = generateParagraphReview;
+window.generateDefinitionReview = generateDefinitionReview;
+window.generateFillBlankReview = generateFillBlankReview;
+window.generateMatchReview = generateMatchReview;
+window.generateSpellingReview = generateSpellingReview;
+window.generateComprehensiveReviewContent = generateComprehensiveReviewContent;
+
+// V7: 复习统计分析
+window.reviewAnalytics = reviewAnalytics;
+
+// V8: 复习完整性验证
+window.reviewValidator = reviewValidator;
+
+// V9: UI 函数
+window.showGlobalReviewModeSelector = showGlobalReviewModeSelector;
+window.hideGlobalReviewModeSelector = hideGlobalReviewModeSelector;
+window.selectReviewMode = selectReviewMode;
+window.updateBatchSize = updateBatchSize;
+window.showReviewProgressIndicator = showReviewProgressIndicator;
+window.updateReviewProgressIndicator = updateReviewProgressIndicator;
+window.showReviewCompleteDialog = showReviewCompleteDialog;
+window.hideReviewCompleteDialog = hideReviewCompleteDialog;
+window.startNewReviewSession = startNewReviewSession;
+
+// 全局变量导出
+window.comprehensiveReviewMode = comprehensiveReviewMode;
+window.globalReviewMode = globalReviewMode;
+window.todayReviewWords = todayReviewWords;
+window.allReviewWords = allReviewWords;
+window.reviewBatchSize = reviewBatchSize;
 
 // ==================== 法律合规功能 ====================
 

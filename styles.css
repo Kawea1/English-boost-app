@@ -11668,3 +11668,443 @@ body.liquid-glass-mode .modal-header {
         padding-top: calc(18px + env(safe-area-inset-top));
     }
 }
+
+/* ==================== V9: 全局复习模式 UI 样式 ==================== */
+
+/* 复习模式选择器覆盖层 */
+.review-mode-selector-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    animation: fadeIn 0.2s ease;
+}
+
+/* 复习模式选择器卡片 */
+.review-mode-selector {
+    background: var(--white);
+    border-radius: 20px;
+    padding: 24px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease;
+}
+
+.review-mode-selector h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.review-summary-text {
+    text-align: center;
+    color: var(--gray-600);
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.review-summary-text strong {
+    color: var(--primary);
+}
+
+/* 复习模式选项列表 */
+.review-mode-options {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+/* 单个复习模式选项 */
+.review-mode-option {
+    display: flex;
+    align-items: center;
+    padding: 14px 16px;
+    background: var(--gray-50);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.review-mode-option:hover {
+    background: var(--primary-50);
+    border-color: var(--primary-light);
+    transform: translateX(4px);
+}
+
+.review-mode-option.highlight {
+    background: linear-gradient(135deg, var(--primary-50), var(--secondary));
+    background-size: 200% 200%;
+    border-color: var(--primary);
+}
+
+.review-mode-option.highlight:hover {
+    background-position: right center;
+}
+
+.mode-icon {
+    font-size: 28px;
+    margin-right: 14px;
+}
+
+.mode-info {
+    flex: 1;
+}
+
+.mode-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin-bottom: 2px;
+}
+
+.mode-count {
+    font-size: 13px;
+    color: var(--gray-500);
+}
+
+/* 批次大小设置 */
+.batch-size-setting {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 12px;
+    background: var(--gray-100);
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.batch-size-setting label {
+    font-size: 14px;
+    color: var(--gray-700);
+}
+
+.batch-size-setting select {
+    padding: 8px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 14px;
+    background: var(--white);
+    cursor: pointer;
+}
+
+/* 关闭按钮 */
+.review-mode-selector .close-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--gray-200);
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.review-mode-selector .close-btn:hover {
+    background: var(--gray-300);
+}
+
+/* 复习进度指示器 */
+.review-progress-indicator {
+    background: linear-gradient(135deg, var(--primary-50), var(--white));
+    border: 1px solid var(--primary-100);
+    border-radius: 14px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.1);
+}
+
+.progress-bar-container {
+    height: 8px;
+    background: var(--gray-200);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    border-radius: 4px;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.progress-count {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-800);
+}
+
+.progress-percent {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary);
+}
+
+.progress-stats {
+    display: flex;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.stat-correct {
+    color: var(--success);
+    font-weight: 500;
+}
+
+.stat-incorrect {
+    color: var(--danger);
+    font-weight: 500;
+}
+
+.stat-accuracy {
+    color: var(--primary);
+    font-weight: 600;
+    margin-left: auto;
+}
+
+/* 复习完成对话框 */
+.review-complete-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10001;
+    animation: fadeIn 0.3s ease;
+}
+
+.review-complete-dialog {
+    background: var(--white);
+    border-radius: 24px;
+    padding: 30px 24px;
+    width: 90%;
+    max-width: 380px;
+    text-align: center;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3);
+    animation: bounceIn 0.4s ease;
+}
+
+.complete-icon {
+    font-size: 56px;
+    margin-bottom: 12px;
+}
+
+.review-complete-dialog h3 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 20px;
+}
+
+/* 完成统计 */
+.complete-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.complete-stats .stat-item {
+    background: var(--gray-50);
+    border-radius: 12px;
+    padding: 14px 10px;
+}
+
+.complete-stats .stat-label {
+    display: block;
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-bottom: 4px;
+}
+
+.complete-stats .stat-value {
+    display: block;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* 需要加强的单词 */
+.incorrect-words {
+    background: var(--danger-light);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.incorrect-words h4 {
+    font-size: 13px;
+    color: var(--danger);
+    margin-bottom: 8px;
+}
+
+.incorrect-words .word-list {
+    font-size: 14px;
+    color: var(--gray-700);
+    line-height: 1.6;
+}
+
+.incorrect-words .more-text {
+    font-size: 12px;
+    color: var(--gray-500);
+    margin-top: 6px;
+}
+
+/* 对话框按钮 */
+.dialog-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.dialog-buttons .btn-primary {
+    flex: 1;
+    padding: 14px;
+    background: var(--gradient-primary);
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--white);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.dialog-buttons .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.dialog-buttons .btn-secondary {
+    flex: 1;
+    padding: 14px;
+    background: var(--gray-100);
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--gray-700);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.dialog-buttons .btn-secondary:hover {
+    background: var(--gray-200);
+}
+
+/* 动画 */
+@keyframes bounceIn {
+    0% { transform: scale(0.8); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 深色主题适配 */
+body.theme-dark .review-mode-selector {
+    background: var(--gray-800);
+}
+
+body.theme-dark .review-mode-selector h3 {
+    color: var(--white);
+}
+
+body.theme-dark .review-summary-text {
+    color: var(--gray-400);
+}
+
+body.theme-dark .review-mode-option {
+    background: var(--gray-700);
+}
+
+body.theme-dark .review-mode-option:hover {
+    background: rgba(99, 102, 241, 0.2);
+}
+
+body.theme-dark .mode-title {
+    color: var(--white);
+}
+
+body.theme-dark .mode-count {
+    color: var(--gray-400);
+}
+
+body.theme-dark .batch-size-setting {
+    background: var(--gray-700);
+}
+
+body.theme-dark .batch-size-setting label {
+    color: var(--gray-300);
+}
+
+body.theme-dark .batch-size-setting select {
+    background: var(--gray-600);
+    border-color: var(--gray-500);
+    color: var(--white);
+}
+
+body.theme-dark .review-progress-indicator {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), var(--gray-800));
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+body.theme-dark .progress-bar-container {
+    background: var(--gray-700);
+}
+
+body.theme-dark .progress-count {
+    color: var(--white);
+}
+
+body.theme-dark .review-complete-dialog {
+    background: var(--gray-800);
+}
+
+body.theme-dark .review-complete-dialog h3 {
+    color: var(--white);
+}
+
+body.theme-dark .complete-stats .stat-item {
+    background: var(--gray-700);
+}
+
+body.theme-dark .complete-stats .stat-label {
+    color: var(--gray-400);
+}
+
+body.theme-dark .incorrect-words {
+    background: rgba(239, 68, 68, 0.15);
+}
+
+body.theme-dark .incorrect-words .word-list {
+    color: var(--gray-300);
+}
