@@ -118,7 +118,7 @@ function showNoSentencesMessage() {
     if (exerciseDiv) {
         exerciseDiv.innerHTML = `
             <div style="text-align:center;padding:40px 20px;">
-                <div style="font-size:60px;margin-bottom:20px;">📚</div>
+                <div style="font-size:60px;margin-bottom:20px;"><svg viewBox="0 0 24 24" width="60" height="60" fill="none" stroke="#6366f1" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div>
                 <h3 style="color:#1e1b4b;margin-bottom:12px;">还没有可用的听力练习</h3>
                 <p style="color:#6b7280;margin-bottom:20px;">请先去"核心词汇"模块学习一些单词，<br>这些单词的例句将成为你的听力练习素材！</p>
                 <button onclick="closeModal('listeningModal')" style="background:var(--gradient-primary);color:white;border:none;padding:12px 24px;border-radius:12px;font-weight:600;cursor:pointer;">
@@ -165,7 +165,7 @@ function renderListeningExercise() {
                 </div>
             </div>
             <p style="text-align:center;font-size:13px;color:#94a3b8;margin:0;">
-                💡 仔细听音频，输入空白处的单词
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V16a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.3A7 7 0 0 0 12 2z"/></svg>仔细听音频，输入空白处的单词
             </p>
         `;
     }
@@ -341,7 +341,7 @@ function checkAnswerEnhanced() {
         feedback.style.borderRadius = '16px';
         feedback.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                <span style="background:linear-gradient(135deg,#10b981,#059669);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">🎉</span>
+                <span style="background:linear-gradient(135deg,#10b981,#059669);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" stroke-width="2"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg></span>
                 <div>
                     <div style="font-size:18px;font-weight:700;color:#065f46;">完全正确！</div>
                     <div style="font-size:14px;color:#047857;">太棒了，继续保持！</div>
@@ -381,23 +381,23 @@ function checkAnswerEnhanced() {
         
         feedback.innerHTML = `
             <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-                <span style="background:linear-gradient(135deg,#ef4444,#dc2626);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">💪</span>
+                <span style="background:linear-gradient(135deg,#ef4444,#dc2626);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" stroke-width="2"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M8 15h8"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg></span>
                 <div>
                     <div style="font-size:18px;font-weight:700;color:#991b1b;">再试一次！</div>
                     <div style="font-size:14px;color:#b91c1c;">不要放弃，仔细听</div>
                 </div>
             </div>
             <div style="background:white;padding:14px;border-radius:12px;margin-bottom:12px;">
-                <div style="font-size:14px;color:#6b7280;margin-bottom:6px;">💡 提示</div>
+                <div style="font-size:14px;color:#6b7280;margin-bottom:6px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7V16a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-1.3A7 7 0 0 0 12 2z"/></svg>提示</div>
                 <div style="font-size:16px;font-weight:600;color:#6366f1;">${hint}</div>
                 ${currentListeningSentence.meaningCn ? `<div style="font-size:13px;color:#6b7280;margin-top:4px;">词义: ${currentListeningSentence.meaningCn}</div>` : ''}
             </div>
             <div style="display:flex;gap:10px;margin-top:16px;">
-                <button onclick="document.getElementById('blankInput').value='';document.getElementById('blankInput').focus();document.getElementById('answerFeedback').style.display='none';" style="flex:1;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
-                    🔄 再试一次
+                <button onclick="document.getElementById('blankInput').value='';document.getElementById('blankInput').focus();document.getElementById('answerFeedback').style.display='none';" style="flex:1;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>再试一次
                 </button>
-                <button onclick="showListeningAnswer()" style="flex:1;background:linear-gradient(135deg,#6b7280,#4b5563);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;">
-                    👀 看答案
+                <button onclick="showListeningAnswer()" style="flex:1;background:linear-gradient(135deg,#6b7280,#4b5563);color:white;border:none;padding:14px;border-radius:12px;font-weight:600;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>看答案
                 </button>
             </div>
         `;
@@ -421,7 +421,7 @@ function showListeningAnswer() {
     feedback.style.color = '#92400e';
     feedback.innerHTML = `
         <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
-            <span style="background:linear-gradient(135deg,#f59e0b,#d97706);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;">📖</span>
+            <span style="background:linear-gradient(135deg,#f59e0b,#d97706);width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="white" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
             <div>
                 <div style="font-size:18px;font-weight:700;color:#92400e;">答案揭晓</div>
                 <div style="font-size:14px;color:#a16207;">下次继续努力！</div>

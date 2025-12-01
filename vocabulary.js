@@ -751,7 +751,7 @@ function updateLearningBadge() {
             badge.className = 'learning-badge';
             if (currentTimes === 0) {
                 badge.classList.add('new');
-                badge.innerHTML = '<span class="badge-icon">✨</span><span class="badge-text">新词</span>';
+                badge.innerHTML = '<span class="badge-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg></span><span class="badge-text">新词</span>';
             } else {
                 badge.classList.add('learning');
                 badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span><span class="badge-text" style="margin-left:4px;">复习中</span>';
@@ -795,7 +795,7 @@ function updateLearningProgressIndicator() {
         
         var statusText = '';
         if (progress.completed) {
-            statusText = '✅ 已掌握';
+            statusText = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#10b981" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>已掌握';
         } else {
             statusText = '第 ' + (currentTimes + 1) + '/' + requiredLearningTimes + ' 次学习';
         }

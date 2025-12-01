@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv=20251201107000"X-UA-Compatible" content="IE=edge">
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=20251201165013">
+    <link rel="stylesheet" href="styles.css?v=20251201107000">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=20251201165013" as="style">
-    <link rel="preload" href="app.js?v=20251201165014" as="script">
+    <link rel="preload" href="styles.css?v=20251201107000" as="style">
+    <link rel="preload" href="app.js?v=20251201107000" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -79,18 +79,18 @@
                         </div>
                     </div>
                     <h2>激活成功！</h2>
-                    <p class="success-subtitle">🎉 欢迎使用学术英语精进</p>
+                    <p class="success-subtitle"><span class="premium-icon celebration"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg></span> 欢迎使用学术英语精进</p>
                     <div class="success-features">
                         <div class="feature-item">
-                            <span class="feature-icon">📚</span>
+                            <span class="feature-icon premium-gradient vocab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span>
                             <span>词汇训练</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">🎧</span>
+                            <span class="feature-icon premium-gradient listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg></span>
                             <span>听力提升</span>
                         </div>
                         <div class="feature-item">
-                            <span class="feature-icon">📖</span>
+                            <span class="feature-icon premium-gradient read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></span>
                             <span>阅读精讲</span>
                         </div>
                     </div>
@@ -114,7 +114,7 @@
                     <h2 id="failureTitle">激活失败</h2>
                     <p class="failure-message" id="failureMessage">密钥无效或已过期</p>
                     <div class="failure-tips">
-                        <p>💡 请检查以下内容：</p>
+                        <p><span class="premium-icon tip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v1M12 21v1M4.22 4.22l.71.71M18.36 18.36l.71.71M1 12h1M21 12h1M4.22 19.78l.71-.71M18.36 5.64l.71-.71"/><circle cx="12" cy="12" r="5"/></svg></span> 请检查以下内容：</p>
                         <ul>
                             <li>确认密钥拼写正确</li>
                             <li>检查密钥是否已过期</li>
@@ -188,7 +188,7 @@
             </div>
             <!-- 名人名言区域 -->
             <div class="quote-card" onclick="refreshQuote()" title="点击刷新名言">
-                <div class="quote-icon">💡</div>
+                <div class="quote-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></div>
                 <p class="quote-text" id="quoteText">"学而不思则罔，思而不学则殆。"</p>
                 <span class="quote-author" id="quoteAuthor">—— 孔子</span>
             </div>
@@ -933,7 +933,7 @@
 
                     <!-- 分类统计卡片 -->
                     <div class="stats-section-title">
-                        <span class="section-icon">📈</span>
+                        <span class="section-icon premium-gradient stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span>
                         <span>分项统计</span>
                     </div>
                     
@@ -1019,28 +1019,28 @@
 
                     <!-- 复习统计 -->
                     <div class="stats-section-title">
-                        <span class="section-icon">🧠</span>
+                        <span class="section-icon premium-gradient brain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg></span>
                         <span>复习进度</span>
                     </div>
                     
                     <div class="review-stats-card">
                         <div class="review-stat-row">
                             <div class="review-stat-item">
-                                <span class="review-stat-icon mastered">✅</span>
+                                <span class="review-stat-icon mastered"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
                                 <div class="review-stat-info">
                                     <span class="review-stat-value" id="stat_mastered">0</span>
                                     <span class="review-stat-label">已掌握</span>
                                 </div>
                             </div>
                             <div class="review-stat-item">
-                                <span class="review-stat-icon reviewing">🔄</span>
+                                <span class="review-stat-icon reviewing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
                                 <div class="review-stat-info">
                                     <span class="review-stat-value" id="stat_reviewing">0</span>
                                     <span class="review-stat-label">复习中</span>
                                 </div>
                             </div>
                             <div class="review-stat-item">
-                                <span class="review-stat-icon pending">⏳</span>
+                                <span class="review-stat-icon pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
                                 <div class="review-stat-info">
                                     <span class="review-stat-value" id="stat_pending">0</span>
                                     <span class="review-stat-label">待复习</span>
@@ -1272,7 +1272,9 @@
                                     </div>
                                     <label class="toggle-modern liquid-toggle">
                                         <input type="checkbox" id="liquidGlassMode" onchange="toggleLiquidGlass(this.checked)">
-                                        <span class="toggle-slider"></span>
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
                                     </label>
                                 </div>
                             </div>
@@ -1749,16 +1751,16 @@
         </div>
     </div>
 
-    <script src="auth.js?v=48"></script>
-    <script src="vocabulary.js?v=20251201094837"></script>
-    <script src="dictionary.js?v=20251201094837"></script>
-    <script src="listening-data.js?v=20251201094837"></script>
-    <script src="listening-module.js?v=20251201094837"></script>
-    <script src="reading-data.js?v=20251201094837"></script>
-    <script src="sources.js?v=20251201094837"></script>
-    <script src="online_sources.js?v=20251201094837"></script>
-    <script src="modules.js?v=20251201165014"></script>
-    <script src="quotes.js?v=32"></script>
-    <script src="app.js?v=20251201165014"></script>
+    <script src="auth.js?v=20251201107000"></script>
+    <script src="vocabulary.js?v=20251201107000"></script>
+    <script src="dictionary.js?v=20251201107000"></script>
+    <script src="listening-data.js?v=20251201107000"></script>
+    <script src="listening-module.js?v=20251201107000"></script>
+    <script src="reading-data.js?v=20251201107000"></script>
+    <script src="sources.js?v=20251201107000"></script>
+    <script src="online_sources.js?v=20251201107000"></script>
+    <script src="modules.js?v=20251201107000"></script>
+    <script src="quotes.js?v=20251201107000"></script>
+    <script src="app.js?v=20251201107000"></script>
 </body>
 </html>

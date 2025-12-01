@@ -15,7 +15,7 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '2.8';
+    const APP_VERSION = '3.0';
     const VERSION_KEY = 'app_version';
     
     // 检查版本更新
@@ -474,17 +474,20 @@ function initSettingsBottomBar() {
     
     if (!settingsModal || !bottomBar) return;
     
-    // 找到设置模态框的滚动容器
-    const scrollContainer = settingsModal.querySelector('.modal-content') || settingsModal;
+    // 找到设置模态框的滚动容器 - 使用 .settings-content
+    const scrollContainer = settingsModal.querySelector('.settings-content');
+    
+    if (!scrollContainer) return;
     
     // 移除旧的监听器
     if (settingsScrollHandler) {
         scrollContainer.removeEventListener('scroll', settingsScrollHandler);
     }
     
-    // 重置状态
+    // 重置状态 - 默认显示底部栏
     settingsLastScrollTop = 0;
-    bottomBar.classList.remove('visible', 'hiding');
+    bottomBar.classList.remove('hiding');
+    bottomBar.classList.add('visible');
     
     let ticking = false;
     
@@ -505,27 +508,26 @@ function handleSettingsScroll(container, bottomBar) {
     const scrollTop = container.scrollTop;
     const scrollHeight = container.scrollHeight;
     const clientHeight = container.clientHeight;
-    const scrollPercent = scrollTop / (scrollHeight - clientHeight);
     
     // 向下滑动（scrollTop 增加）- 隐藏底部栏
-    if (scrollTop > settingsLastScrollTop + 5) {
+    if (scrollTop > settingsLastScrollTop + 10) {
         bottomBar.classList.add('hiding');
         bottomBar.classList.remove('visible');
     } 
     // 向上滑动（scrollTop 减少）- 显示底部栏
-    else if (scrollTop < settingsLastScrollTop - 5) {
+    else if (scrollTop < settingsLastScrollTop - 10) {
         bottomBar.classList.remove('hiding');
         bottomBar.classList.add('visible');
     }
     
-    // 在页面顶部时隐藏
-    if (scrollTop < 50) {
-        bottomBar.classList.add('hiding');
-        bottomBar.classList.remove('visible');
+    // 在页面顶部时显示
+    if (scrollTop < 30) {
+        bottomBar.classList.remove('hiding');
+        bottomBar.classList.add('visible');
     }
     
-    // 滚动到底部95%以上时显示
-    if (scrollPercent > 0.95) {
+    // 滚动到接近底部时显示
+    if (scrollTop + clientHeight >= scrollHeight - 50) {
         bottomBar.classList.remove('hiding');
         bottomBar.classList.add('visible');
     }
@@ -614,6 +616,13 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('液态玻璃模式已启用');
     } else {
         document.body.classList.remove('liquid-glass-mode');
+    }
+    
+    // 启用复习提醒（如果已设置）
+    if (settings.reviewReminder === true && typeof setupReviewReminder === 'function') {
+        setTimeout(() => {
+            setupReviewReminder();
+        }, 3000); // 延迟3秒启动，避免影响页面加载
     }
     
     if ('serviceWorker' in navigator) {
