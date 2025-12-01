@@ -12108,3 +12108,308 @@ body.theme-dark .incorrect-words {
 body.theme-dark .incorrect-words .word-list {
     color: var(--gray-300);
 }
+
+/* ==================== 智能问候系统样式 V10 ==================== */
+
+/* V3: 天体实时位置动画 */
+.celestial-body {
+    position: absolute;
+    border-radius: 50%;
+    transition: right 60s linear, top 60s linear, transform 0.5s ease, filter 0.5s ease;
+    will-change: right, top, transform;
+}
+
+/* V4: 天气氛围效果 - 朦胧光晕 */
+.celestial-body::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200%;
+    height: 200%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 220, 150, 0.3) 0%, transparent 70%);
+    animation: glow-pulse 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes glow-pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* 月亮光晕 */
+.home-header[data-time-period="evening"] .celestial-body::after,
+.home-header[data-time-period="night"] .celestial-body::after {
+    background: radial-gradient(circle, rgba(200, 200, 255, 0.2) 0%, transparent 70%);
+}
+
+/* V5: 问候语副标题样式 */
+.greeting-text h1 {
+    position: relative;
+}
+
+.greeting-text h1::after {
+    content: attr(data-subtitle);
+    display: block;
+    font-size: 12px;
+    font-weight: 400;
+    opacity: 0.7;
+    margin-top: 4px;
+    letter-spacing: 0.5px;
+}
+
+/* V8: 动态背景渐变动画 */
+.sky-layer {
+    animation: sky-shift 120s ease-in-out infinite;
+}
+
+@keyframes sky-shift {
+    0%, 100% { filter: hue-rotate(0deg) brightness(1); }
+    50% { filter: hue-rotate(5deg) brightness(1.05); }
+}
+
+/* V9: 星星增强 - 更多闪烁效果 */
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 2s ease-in-out infinite;
+}
+
+.star-1 { top: 8%; left: 5%; animation-delay: 0s; }
+.star-2 { top: 12%; left: 15%; animation-delay: 0.3s; }
+.star-3 { top: 5%; left: 25%; animation-delay: 0.6s; }
+.star-4 { top: 18%; left: 35%; animation-delay: 0.9s; }
+.star-5 { top: 8%; left: 45%; animation-delay: 1.2s; }
+.star-6 { top: 15%; left: 55%; animation-delay: 1.5s; }
+.star-7 { top: 6%; left: 65%; animation-delay: 1.8s; }
+.star-8 { top: 20%; left: 75%; animation-delay: 2.1s; }
+.star-9 { top: 10%; left: 85%; animation-delay: 2.4s; }
+.star-10 { top: 14%; left: 92%; animation-delay: 2.7s; }
+
+/* 流星效果 */
+.shooting-star {
+    position: absolute;
+    width: 100px;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 100%);
+    transform: rotate(-45deg);
+    animation: shooting 8s ease-in-out infinite;
+    opacity: 0;
+}
+
+@keyframes shooting {
+    0% { transform: translateX(0) translateY(0) rotate(-45deg); opacity: 0; }
+    5% { opacity: 1; }
+    15% { transform: translateX(-200px) translateY(200px) rotate(-45deg); opacity: 0; }
+    100% { opacity: 0; }
+}
+
+.shooting-star-1 { top: 5%; right: 10%; animation-delay: 0s; }
+.shooting-star-2 { top: 15%; right: 30%; animation-delay: 4s; }
+
+/* V9: 云朵增强 - 更多层次 */
+.cloud {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.85);
+    border-radius: 50px;
+    animation: float-cloud 25s ease-in-out infinite;
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.cloud::before,
+.cloud::after {
+    content: '';
+    position: absolute;
+    background: inherit;
+    border-radius: 50%;
+    box-shadow: inherit;
+}
+
+.cloud-1 {
+    width: 60px;
+    height: 20px;
+    top: 15%;
+    left: -10%;
+    animation-duration: 35s;
+}
+
+.cloud-1::before { width: 30px; height: 30px; top: -15px; left: 10px; }
+.cloud-1::after { width: 25px; height: 25px; top: -10px; left: 35px; }
+
+.cloud-2 {
+    width: 80px;
+    height: 25px;
+    top: 25%;
+    left: -15%;
+    animation-duration: 45s;
+    animation-delay: -15s;
+}
+
+.cloud-2::before { width: 40px; height: 40px; top: -20px; left: 15px; }
+.cloud-2::after { width: 30px; height: 30px; top: -12px; left: 45px; }
+
+.cloud-3 {
+    width: 50px;
+    height: 18px;
+    top: 35%;
+    left: -8%;
+    animation-duration: 30s;
+    animation-delay: -8s;
+    opacity: 0.7;
+}
+
+.cloud-3::before { width: 25px; height: 25px; top: -12px; left: 8px; }
+.cloud-3::after { width: 20px; height: 20px; top: -8px; left: 28px; }
+
+/* 云朵飘动动画 */
+@keyframes float-cloud {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(100vw + 100px)); }
+}
+
+/* V10: 智能建议提示样式 */
+.greeting-suggestion {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.2);
+    padding: 4px 10px;
+    border-radius: 10px;
+    backdrop-filter: blur(5px);
+    white-space: nowrap;
+}
+
+/* 深夜模式特殊提示 */
+.home-header[data-time-period="night"] .greeting-suggestion {
+    color: #ffd54f;
+    background: rgba(255, 213, 79, 0.15);
+}
+
+/* 特殊日期闪烁 */
+.greeting-text h1.special-day {
+    animation: special-glow 2s ease-in-out infinite;
+}
+
+@keyframes special-glow {
+    0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+    50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.6), 0 0 30px rgba(255, 215, 0, 0.3); }
+}
+
+/* 学霸模式高亮 */
+.greeting-text h1.study-master {
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 50%, #ffd700 100%);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shine 3s ease infinite;
+}
+
+@keyframes gradient-shine {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* 天空装饰响应式 */
+@media (max-width: 390px) {
+    .cloud { transform: scale(0.7); }
+    .star { width: 2px; height: 2px; }
+}
+
+/* 深色主题适配 */
+body.theme-dark .greeting-text h1::after {
+    opacity: 0.6;
+}
+
+body.theme-dark .cloud {
+    background: rgba(200, 200, 220, 0.15);
+}
+
+/* 液态玻璃模式适配 */
+body.liquid-glass-enabled .greeting-text h1::after {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+body.liquid-glass-enabled .celestial-body {
+    box-shadow: 
+        0 0 20px rgba(255, 255, 255, 0.4),
+        0 0 40px rgba(255, 255, 255, 0.2);
+}
+
+
+/* V9: 额外星星位置 (11-15) */
+.star-11 { top: 22%; left: 8%; animation-delay: 0.1s; width: 2px; height: 2px; }
+.star-12 { top: 28%; left: 22%; animation-delay: 0.5s; width: 4px; height: 4px; }
+.star-13 { top: 16%; left: 40%; animation-delay: 1.0s; width: 2px; height: 2px; }
+.star-14 { top: 32%; left: 60%; animation-delay: 1.4s; width: 3px; height: 3px; }
+.star-15 { top: 25%; left: 78%; animation-delay: 1.9s; width: 2px; height: 2px; }
+
+/* 星星闪烁动画 */
+@keyframes twinkle {
+    0%, 100% { 
+        opacity: 0.3; 
+        transform: scale(1);
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.2);
+    }
+}
+
+/* 大星星特殊闪烁 */
+.star-12 {
+    animation: twinkle-bright 3s ease-in-out infinite;
+}
+
+@keyframes twinkle-bright {
+    0%, 100% { 
+        opacity: 0.5; 
+        transform: scale(1);
+        box-shadow: 0 0 3px #fff;
+    }
+    50% { 
+        opacity: 1; 
+        transform: scale(1.4);
+        box-shadow: 0 0 8px #fff, 0 0 15px rgba(255,255,255,0.5);
+    }
+}
+
+/* V10: 智能建议动画 */
+.greeting-suggestion {
+    animation: suggestion-fade 0.5s ease-out;
+}
+
+@keyframes suggestion-fade {
+    from { 
+        opacity: 0; 
+        transform: translateY(10px);
+    }
+    to { 
+        opacity: 1; 
+        transform: translateY(0);
+    }
+}
+
+/* 问候语切换动画 */
+.greeting-text h1 {
+    transition: all 0.3s ease;
+}
+
+.greeting-text h1.greeting-change {
+    animation: greeting-swap 0.5s ease;
+}
+
+@keyframes greeting-swap {
+    0% { opacity: 1; transform: translateY(0); }
+    50% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+

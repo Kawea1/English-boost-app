@@ -16,9 +16,9 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '3.5.0';
-    const APP_VERSION_CODE = 350;
-    const APP_BUILD_TIME = '20251201';
+    const APP_VERSION = '3.6.0';
+    const APP_VERSION_CODE = 360;
+    const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
     const UPDATE_SKIP_KEY = 'skip_version';
@@ -1781,6 +1781,188 @@ function updateDailyProgress(module, increment) {
     renderGoalsProgress();
 }
 
+// ==================== 智能问候系统 V10 ====================
+// V1: 修正时间段划分逻辑（凌晨不再说早上好）
+// V2: 丰富问候语多样性（每个时段5-8种）
+// V3: 太阳/月亮根据实时位置移动
+// V4: 添加天气氛围效果
+// V5: 个性化问候语（基于学习状态）
+// V6: 特殊日期问候（节日、周末等）
+// V7: 学习状态感知问候
+// V8: 动态背景渐变
+// V9: 星星/云朵装饰增强
+// V10: 智能建议系统
+
+// 问候语库 - 每个时段多种表达
+var greetingLibrary = {
+    // 凌晨 00:00-04:59 - 深夜/熬夜
+    lateNight: [
+        { text: '夜深了，注意休息', emoji: '🌙', subtitle: '熬夜伤身哦' },
+        { text: '深夜学习，记得早睡', emoji: '💤', subtitle: '明天继续加油' },
+        { text: '夜猫子也要休息', emoji: '🦉', subtitle: '身体是革命的本钱' },
+        { text: '星星陪你学习', emoji: '✨', subtitle: '但也要爱护眼睛' },
+        { text: '凌晨的努力最珍贵', emoji: '🌟', subtitle: '但别太拼了' }
+    ],
+    // 清晨 05:00-06:59 - 早起
+    earlyMorning: [
+        { text: '早起的鸟儿有虫吃', emoji: '🐦', subtitle: '新的一天开始了' },
+        { text: '早安，追梦人', emoji: '🌅', subtitle: '日出而作' },
+        { text: '清晨好，世界安静', emoji: '🌄', subtitle: '最佳学习时间' },
+        { text: '晨光熹微，精神抖擞', emoji: '☀️', subtitle: '开始美好的一天' },
+        { text: '早起真棒！', emoji: '💪', subtitle: '坚持就是胜利' }
+    ],
+    // 上午 07:00-11:59 - 早上好
+    morning: [
+        { text: '早上好', emoji: '☀️', subtitle: '今天也要元气满满' },
+        { text: '美好的早晨', emoji: '🌞', subtitle: '一起来学习吧' },
+        { text: 'Good Morning', emoji: '🌤️', subtitle: '阳光正好' },
+        { text: '上午好，学霸', emoji: '📚', subtitle: '大脑最活跃的时间' },
+        { text: '早上好，加油', emoji: '💪', subtitle: '新的一天新的进步' },
+        { text: '阳光明媚的上午', emoji: '🌻', subtitle: '适合背单词' }
+    ],
+    // 中午 12:00-13:59 - 午间
+    noon: [
+        { text: '中午好', emoji: '🌤️', subtitle: '记得吃午饭' },
+        { text: '午安', emoji: '🍱', subtitle: '劳逸结合很重要' },
+        { text: '正午时分', emoji: '☀️', subtitle: '太阳当空照' },
+        { text: '午间休息一下', emoji: '😌', subtitle: '下午更有精神' },
+        { text: '午饭时间', emoji: '🍜', subtitle: '吃饱才有力气学' }
+    ],
+    // 下午 14:00-17:59 - 下午好
+    afternoon: [
+        { text: '下午好', emoji: '⛅', subtitle: '继续加油' },
+        { text: 'Good Afternoon', emoji: '🌤️', subtitle: '学习进行时' },
+        { text: '下午茶时间', emoji: '☕', subtitle: '来杯提神饮料' },
+        { text: '午后阳光', emoji: '🌇', subtitle: '静心学习' },
+        { text: '下午好，同学', emoji: '📖', subtitle: '保持专注' },
+        { text: '阳光下午', emoji: '😊', subtitle: '心情愉悦' }
+    ],
+    // 傍晚 18:00-19:59 - 黄昏
+    sunset: [
+        { text: '傍晚好', emoji: '🌇', subtitle: '夕阳西下' },
+        { text: '黄昏时分', emoji: '🌆', subtitle: '一天即将结束' },
+        { text: '晚霞真美', emoji: '🌅', subtitle: '今天学了多少？' },
+        { text: '日落时刻', emoji: '🌄', subtitle: '准备休息了吗' },
+        { text: 'Good Evening', emoji: '✨', subtitle: '傍晚的宁静' }
+    ],
+    // 晚上 20:00-22:59 - 晚安
+    evening: [
+        { text: '晚上好', emoji: '🌙', subtitle: '夜晚学习时间' },
+        { text: '夜幕降临', emoji: '🌃', subtitle: '安静的学习氛围' },
+        { text: 'Good Night', emoji: '⭐', subtitle: '最后冲刺一下' },
+        { text: '晚间学习', emoji: '📚', subtitle: '加油！' },
+        { text: '夜色温柔', emoji: '🌛', subtitle: '保护好眼睛' }
+    ],
+    // 深夜 23:00-23:59 - 该睡了
+    night: [
+        { text: '夜深了', emoji: '🌙', subtitle: '该休息了' },
+        { text: '快睡觉吧', emoji: '😴', subtitle: '明天继续' },
+        { text: '晚安，好梦', emoji: '💤', subtitle: '睡眠很重要' },
+        { text: '月亮出来了', emoji: '🌕', subtitle: '该说晚安了' },
+        { text: '深夜了，早点睡', emoji: '🛏️', subtitle: '身体是本钱' }
+    ]
+};
+
+// 特殊日期问候
+var specialDateGreetings = {
+    '01-01': { text: '新年快乐！', emoji: '🎉', subtitle: '新的一年，新的开始' },
+    '02-14': { text: '情人节快乐', emoji: '💕', subtitle: '爱与学习同在' },
+    '03-08': { text: '女神节快乐', emoji: '👑', subtitle: '最美的你' },
+    '04-01': { text: '愚人节快乐', emoji: '🤡', subtitle: '认真学习不是玩笑' },
+    '05-01': { text: '劳动节快乐', emoji: '💪', subtitle: '学习也是一种劳动' },
+    '05-04': { text: '青年节快乐', emoji: '🌟', subtitle: '年轻就是资本' },
+    '06-01': { text: '儿童节快乐', emoji: '🎈', subtitle: '保持童心' },
+    '09-10': { text: '教师节快乐', emoji: '🎓', subtitle: '感谢老师' },
+    '10-01': { text: '国庆节快乐', emoji: '🇨🇳', subtitle: '祖国万岁' },
+    '10-31': { text: 'Happy Halloween', emoji: '🎃', subtitle: '南瓜节快乐' },
+    '12-24': { text: '平安夜快乐', emoji: '🎄', subtitle: '平安喜乐' },
+    '12-25': { text: '圣诞快乐', emoji: '🎅', subtitle: 'Merry Christmas' },
+    '12-31': { text: '跨年快乐', emoji: '🎊', subtitle: '再见旧年' }
+};
+
+// 周末特别问候
+var weekendGreetings = [
+    { text: '周末愉快', emoji: '🎉', subtitle: '放松但不放纵' },
+    { text: '周末学习日', emoji: '📚', subtitle: '弯道超车的时候' },
+    { text: 'Happy Weekend', emoji: '🌈', subtitle: '劳逸结合' },
+    { text: '周末也要加油', emoji: '💪', subtitle: '坚持就是胜利' }
+];
+
+// 学习状态感知问候
+function getStudyAwareGreeting(hour, streak, todayWords) {
+    if (streak >= 30) {
+        return { text: '学习达人', emoji: '🏆', subtitle: '已连续' + streak + '天' };
+    }
+    if (streak >= 7) {
+        return { text: '坚持就是胜利', emoji: '🔥', subtitle: '已连续' + streak + '天' };
+    }
+    if (todayWords >= 50) {
+        return { text: '今日学霸', emoji: '🌟', subtitle: '已学习' + todayWords + '词' };
+    }
+    if (todayWords >= 20) {
+        return { text: '进步中', emoji: '📈', subtitle: '已学习' + todayWords + '词' };
+    }
+    return null;
+}
+
+// 获取精确时间段
+function getTimePeriod(hour, minute) {
+    // 更精确的时间划分
+    if (hour >= 0 && hour < 5) return 'lateNight';      // 00:00-04:59 深夜
+    if (hour >= 5 && hour < 7) return 'earlyMorning';   // 05:00-06:59 清晨
+    if (hour >= 7 && hour < 12) return 'morning';       // 07:00-11:59 上午
+    if (hour >= 12 && hour < 14) return 'noon';         // 12:00-13:59 中午
+    if (hour >= 14 && hour < 18) return 'afternoon';    // 14:00-17:59 下午
+    if (hour >= 18 && hour < 20) return 'sunset';       // 18:00-19:59 傍晚
+    if (hour >= 20 && hour < 23) return 'evening';      // 20:00-22:59 晚上
+    return 'night';                                      // 23:00-23:59 深夜
+}
+
+// 计算太阳/月亮位置（基于时间）
+function calculateCelestialPosition(hour, minute) {
+    var totalMinutes = hour * 60 + minute;
+    var position = {};
+    
+    // 太阳轨迹：6:00 升起（右下角）-> 12:00 最高点 -> 18:00 落下（左下角）
+    // 月亮轨迹：18:00 升起 -> 00:00 最高点 -> 06:00 落下
+    
+    if (hour >= 6 && hour < 18) {
+        // 白天 - 太阳
+        var dayMinutes = totalMinutes - 360; // 从6:00开始计算
+        var dayProgress = dayMinutes / 720;  // 12小时 = 720分钟
+        
+        // 太阳从右到左移动
+        position.right = 85 - (dayProgress * 70); // 从85%到15%
+        
+        // 太阳高度：抛物线轨迹
+        // 中午12点最高，早晚最低
+        var heightProgress = Math.abs(dayProgress - 0.5) * 2; // 0到1再到0
+        position.top = 70 - Math.sin((1 - heightProgress) * Math.PI / 2) * 55; // 15%到70%
+        
+        position.isSun = true;
+    } else {
+        // 夜晚 - 月亮
+        var nightMinutes;
+        if (hour >= 18) {
+            nightMinutes = totalMinutes - 1080; // 从18:00开始
+        } else {
+            nightMinutes = totalMinutes + 360;  // 0:00之后
+        }
+        var nightProgress = nightMinutes / 720; // 12小时周期
+        
+        // 月亮从右到左
+        position.right = 85 - (nightProgress * 70);
+        
+        // 月亮高度
+        var heightProgress = Math.abs(nightProgress - 0.5) * 2;
+        position.top = 65 - Math.sin((1 - heightProgress) * Math.PI / 2) * 45;
+        
+        position.isSun = false;
+    }
+    
+    return position;
+}
+
 // 更新问候语和日期
 function updateGreeting() {
     var greetingEl = document.getElementById('greetingText');
@@ -1792,53 +1974,120 @@ function updateGreeting() {
     var utc = now.getTime() + (now.getTimezoneOffset() * 60000);
     var beijingTime = new Date(utc + (8 * 3600000));
     var hour = beijingTime.getHours();
+    var minute = beijingTime.getMinutes();
+    var month = beijingTime.getMonth() + 1;
+    var date = beijingTime.getDate();
+    var dayOfWeek = beijingTime.getDay();
     
-    // 确定时间段
-    var timePeriod = 'morning';
-    var greeting = '你好';
+    // V1: 获取精确时间段
+    var timePeriod = getTimePeriod(hour, minute);
     
-    if (hour >= 5 && hour < 8) {
-        timePeriod = 'dawn';
-        greeting = '早安 🌅';
-    } else if (hour >= 8 && hour < 12) {
-        timePeriod = 'morning';
-        greeting = '早上好 ☀️';
-    } else if (hour >= 12 && hour < 14) {
-        timePeriod = 'noon';
-        greeting = '中午好 🌤️';
-    } else if (hour >= 14 && hour < 18) {
-        timePeriod = 'afternoon';
-        greeting = '下午好 ⛅';
-    } else if (hour >= 18 && hour < 20) {
-        timePeriod = 'sunset';
-        greeting = '傍晚好 🌇';
-    } else if (hour >= 20 && hour < 22) {
-        timePeriod = 'evening';
-        greeting = '晚上好 🌙';
-    } else {
-        timePeriod = 'night';
-        greeting = '夜深了 ✨';
+    // V6: 检查特殊日期
+    var dateKey = (month < 10 ? '0' : '') + month + '-' + (date < 10 ? '0' : '') + date;
+    var greeting = null;
+    
+    if (specialDateGreetings[dateKey]) {
+        greeting = specialDateGreetings[dateKey];
+    }
+    // V6: 周末特别问候
+    else if ((dayOfWeek === 0 || dayOfWeek === 6) && Math.random() < 0.3) {
+        greeting = weekendGreetings[Math.floor(Math.random() * weekendGreetings.length)];
     }
     
+    // V7: 学习状态感知
+    if (!greeting) {
+        var streak = calculateStreak();
+        var todayWords = getTodayLearnedWords();
+        var studyGreeting = getStudyAwareGreeting(hour, streak, todayWords);
+        if (studyGreeting && Math.random() < 0.2) {
+            greeting = studyGreeting;
+        }
+    }
+    
+    // V2: 从问候语库随机选择
+    if (!greeting) {
+        var greetings = greetingLibrary[timePeriod] || greetingLibrary.morning;
+        greeting = greetings[Math.floor(Math.random() * greetings.length)];
+    }
+    
+    // 更新UI
     if (greetingEl) {
-        greetingEl.textContent = greeting;
+        greetingEl.innerHTML = greeting.text + ' ' + greeting.emoji;
+        greetingEl.setAttribute('data-subtitle', greeting.subtitle || '');
     }
     
-    // 更新场景
-    updateTimeScene(timePeriod);
+    // V3: 更新天体位置
+    updateCelestialBody(hour, minute);
     
+    // 更新场景（映射到CSS时段）
+    var cssTimePeriod = mapToCssTimePeriod(timePeriod);
+    updateTimeScene(cssTimePeriod);
+    
+    // 更新日期
     if (dateEl) {
         var weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        var month = beijingTime.getMonth() + 1;
-        var date = beijingTime.getDate();
-        var weekday = weekdays[beijingTime.getDay()];
-        dateEl.textContent = month + '月' + date + '日 ' + weekday;
+        dateEl.textContent = month + '月' + date + '日 ' + weekdays[dayOfWeek];
     }
     
     // 计算连续学习天数
     if (streakEl) {
         var streak = calculateStreak();
         streakEl.textContent = streak;
+    }
+}
+
+// 映射问候时段到CSS时段
+function mapToCssTimePeriod(timePeriod) {
+    var mapping = {
+        'lateNight': 'night',
+        'earlyMorning': 'dawn',
+        'morning': 'morning',
+        'noon': 'noon',
+        'afternoon': 'afternoon',
+        'sunset': 'sunset',
+        'evening': 'evening',
+        'night': 'night'
+    };
+    return mapping[timePeriod] || 'morning';
+}
+
+// V3: 更新天体（太阳/月亮）位置
+function updateCelestialBody(hour, minute) {
+    var celestialEl = document.getElementById('celestialBody');
+    if (!celestialEl) return;
+    
+    var pos = calculateCelestialPosition(hour, minute);
+    
+    // 应用位置
+    celestialEl.style.right = pos.right + '%';
+    celestialEl.style.top = pos.top + '%';
+    celestialEl.style.transition = 'all 0.5s ease-out';
+    
+    // 根据高度调整亮度和大小
+    var altitudeFactor = 1 - (pos.top / 70); // 越高越亮
+    var scale = 0.8 + altitudeFactor * 0.4;
+    var brightness = 0.7 + altitudeFactor * 0.3;
+    
+    celestialEl.style.transform = 'scale(' + scale + ')';
+    celestialEl.style.filter = 'brightness(' + brightness + ')';
+}
+
+// 获取今日学习单词数
+function getTodayLearnedWords() {
+    try {
+        var today = new Date().toDateString();
+        var learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '{}');
+        var count = 0;
+        
+        for (var word in learnedWords) {
+            if (learnedWords[word] && learnedWords[word].lastReview) {
+                var lastReview = new Date(learnedWords[word].lastReview).toDateString();
+                if (lastReview === today) count++;
+            }
+        }
+        return count;
+    } catch (e) {
+        return 0;
     }
 }
 
@@ -1877,13 +2126,25 @@ function getSceneIcon(timePeriod) {
     return icons[timePeriod] || icons.morning;
 }
 
-// 获取天空装饰
+// 获取天空装饰（V9增强版）
 function getSkyDecorations(timePeriod) {
     if (['evening', 'night'].includes(timePeriod)) {
-        // 星星
-        return '<div class="star star-1"></div><div class="star star-2"></div><div class="star star-3"></div><div class="star star-4"></div><div class="star star-5"></div><div class="star star-6"></div><div class="star star-7"></div><div class="star star-8"></div><div class="star star-9"></div><div class="star star-10"></div>';
+        // 星星 + 流星
+        var stars = '';
+        for (var i = 1; i <= 15; i++) {
+            stars += '<div class="star star-' + i + '"></div>';
+        }
+        // 添加流星效果（夜间）
+        if (timePeriod === 'night') {
+            stars += '<div class="shooting-star shooting-star-1"></div>';
+            stars += '<div class="shooting-star shooting-star-2"></div>';
+        }
+        return stars;
+    } else if (timePeriod === 'sunset') {
+        // 傍晚：云朵 + 少量星星
+        return '<div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="star star-1" style="opacity:0.3"></div><div class="star star-2" style="opacity:0.2"></div>';
     } else {
-        // 云朵
+        // 白天：云朵
         return '<div class="cloud cloud-1"></div><div class="cloud cloud-2"></div><div class="cloud cloud-3"></div>';
     }
 }

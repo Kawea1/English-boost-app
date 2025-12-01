@@ -51,7 +51,7 @@ const ActivationSystem = {
         suspiciousLockDuration: 24 * 60 * 60 * 1000, // 可疑锁定时长 24小时
         
         // v4.0 新增配置
-        trialDays: 7,               // 试用期天数
+        trialDays: 30,              // 试用期天数（30天）
         enableFamilySharing: false, // 是否启用家庭共享
         familyMaxMembers: 5,        // 家庭最多成员数
         vipLevels: {                // VIP等级配置
@@ -1178,17 +1178,22 @@ const ActivationSystem = {
 
 /**
  * 激活码UI组件
- * v5.0 - 高级UI设计 (5版迭代)
+ * v10.0 - 试用功能高级UI设计 (10版迭代)
  * 
- * v1: 毛玻璃+流体渐变背景
- * v2: 3D卡片+粒子动画
- * v3: 霓虹光效+打字机效果
- * v4: 高级输入框+脉冲按钮
- * v5: 成功页面烟花+勋章系统
+ * v1: 毛玻璃+流体渐变背景+星空粒子
+ * v2: 3D卡片+全息光效边框
+ * v3: 试用倒计时圆环动画
+ * v4: 功能预览卡片轮播
+ * v5: 霓虹呼吸按钮+波纹效果
+ * v6: 试用成功烟花+礼盒开启动画
+ * v7: 功能解锁逐项展示动画
+ * v8: 进度条+倒计时组合效果
+ * v9: 社交证明+用户评价滚动
+ * v10: 深色模式+液态玻璃完美适配
  */
 const ActivationUI = {
     /**
-     * 显示激活对话框
+     * 显示激活对话框（试用优先版）
      */
     showActivationDialog() {
         // 检查是否已存在对话框
@@ -1199,173 +1204,221 @@ const ActivationUI = {
         // 检查试用状态
         const trialStatus = ActivationSystem.checkTrialStatus();
         const canTrial = trialStatus.canStartTrial;
+        const trialDays = ActivationSystem.config.trialDays;
         
         const dialog = document.createElement('div');
         dialog.id = 'activation-dialog';
         dialog.className = 'activation-overlay';
         dialog.innerHTML = `
-            <!-- v1: 流体渐变背景层 -->
+            <!-- v1: 星空粒子背景 -->
             <div class="activation-bg-gradient"></div>
+            <div class="activation-bg-stars" id="stars-container"></div>
             <div class="activation-bg-particles" id="particles-container"></div>
             
-            <div class="activation-dialog">
-                <!-- v2: 3D光效边框 -->
-                <div class="activation-glow-border"></div>
+            <div class="activation-dialog trial-mode">
+                <!-- v2: 全息光效边框 -->
+                <div class="holographic-border"></div>
                 <div class="activation-shine"></div>
                 
-                <div class="activation-header">
-                    <!-- v1: 动态图标容器 -->
-                    <div class="activation-icon-wrapper">
-                        <div class="activation-icon-ring"></div>
-                        <div class="activation-icon-ring delay-1"></div>
-                        <div class="activation-icon-ring delay-2"></div>
-                        <div class="activation-icon">
-                            <svg viewBox="0 0 100 100" class="lock-svg">
-                                <defs>
-                                    <linearGradient id="lockGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                                        <stop offset="0%" style="stop-color:#667eea"/>
-                                        <stop offset="100%" style="stop-color:#764ba2"/>
-                                    </linearGradient>
-                                </defs>
-                                <path class="lock-body" d="M25,45 L25,85 Q25,95 35,95 L65,95 Q75,95 75,85 L75,45 Q75,35 65,35 L35,35 Q25,35 25,45" fill="url(#lockGradient)"/>
-                                <path class="lock-shackle" d="M35,35 L35,25 Q35,10 50,10 Q65,10 65,25 L65,35" fill="none" stroke="url(#lockGradient)" stroke-width="8" stroke-linecap="round"/>
-                                <circle class="lock-keyhole" cx="50" cy="62" r="8" fill="#fff"/>
-                                <rect class="lock-keyhole-slot" x="47" y="62" width="6" height="15" rx="2" fill="#fff"/>
-                            </svg>
-                        </div>
-                    </div>
-                    
-                    <!-- v3: 打字机标题效果 -->
-                    <h2 class="activation-title">
-                        <span class="title-text" data-text="解锁全部功能">解锁全部功能</span>
-                        <span class="title-cursor">|</span>
-                    </h2>
-                    <p class="activation-subtitle">输入激活码，开启您的学习之旅</p>
-                    
-                    <!-- v2: 特性徽章 -->
-                    <div class="activation-badges">
-                        <span class="badge badge-secure">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
-                            </svg>
-                            安全加密
-                        </span>
-                        <span class="badge badge-devices">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1z"/>
-                            </svg>
-                            ${ActivationSystem.config.maxDevices}台设备
-                        </span>
-                        <span class="badge badge-lifetime">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm4.2 14.2L11 13V7h1.5v5.2l4.5 2.7-.8 1.3z"/>
-                            </svg>
-                            永久有效
-                        </span>
-                    </div>
-                </div>
-                
-                <div class="activation-body">
-                    <!-- v4: 高级输入框设计 -->
-                    <div class="activation-input-container">
-                        <label class="input-label">激活码</label>
-                        <div class="activation-input-group">
-                            <div class="input-icon-left">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.5">
-                                    <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
-                                </svg>
-                            </div>
-                            <input type="text" 
-                                   id="activation-code-input" 
-                                   placeholder="XXXX-XXXX-XXXX-XXXX"
-                                   maxlength="19"
-                                   autocomplete="off"
-                                   spellcheck="false">
-                            <button id="paste-code-btn" class="paste-btn" title="从剪贴板粘贴">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
-                                </svg>
-                            </button>
-                            <div class="input-glow"></div>
-                        </div>
-                        <div class="input-hint">格式: XXXX-XXXX-XXXX-XXXX</div>
-                    </div>
-                    
-                    <div id="activation-error" class="activation-error">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                ${canTrial ? `
+                <!-- ==================== 试用优先展示区 ==================== -->
+                <div class="trial-hero-section">
+                    <!-- v3: 试用倒计时圆环 -->
+                    <div class="trial-countdown-ring">
+                        <svg viewBox="0 0 200 200" class="countdown-svg">
+                            <defs>
+                                <linearGradient id="trialGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#f093fb"/>
+                                    <stop offset="50%" style="stop-color:#f5576c"/>
+                                    <stop offset="100%" style="stop-color:#4facfe"/>
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+                            <circle class="ring-bg" cx="100" cy="100" r="85" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="8"/>
+                            <circle class="ring-progress" cx="100" cy="100" r="85" fill="none" stroke="url(#trialGradient)" stroke-width="8" stroke-linecap="round" filter="url(#glow)" stroke-dasharray="534" stroke-dashoffset="0"/>
                         </svg>
-                        <span id="error-text"></span>
+                        <div class="countdown-content">
+                            <div class="countdown-gift">
+                                <div class="gift-box">
+                                    <div class="gift-lid"></div>
+                                    <div class="gift-body">🎁</div>
+                                </div>
+                            </div>
+                            <div class="countdown-days">
+                                <span class="days-number">${trialDays}</span>
+                                <span class="days-text">天</span>
+                            </div>
+                            <div class="countdown-label">免费体验</div>
+                        </div>
                     </div>
                     
-                    <!-- v4: 脉冲动画按钮 -->
-                    <button id="activate-btn" class="activation-btn">
-                        <span class="btn-bg"></span>
+                    <!-- v1: 标题区域 -->
+                    <h2 class="trial-hero-title">
+                        <span class="title-highlight">限时福利</span>
+                        <span class="title-main">免费畅享 ${trialDays} 天</span>
+                    </h2>
+                    <p class="trial-hero-subtitle">无需付费，无需激活码，立即解锁全部高级功能</p>
+                    
+                    <!-- v4: 功能预览卡片 -->
+                    <div class="feature-preview-cards">
+                        <div class="feature-card" style="--delay: 0s">
+                            <div class="feature-card-icon">📚</div>
+                            <div class="feature-card-name">核心词汇</div>
+                            <div class="feature-card-desc">5000+学术词汇</div>
+                        </div>
+                        <div class="feature-card" style="--delay: 0.1s">
+                            <div class="feature-card-icon">🎧</div>
+                            <div class="feature-card-name">精听训练</div>
+                            <div class="feature-card-desc">地道发音练习</div>
+                        </div>
+                        <div class="feature-card" style="--delay: 0.2s">
+                            <div class="feature-card-icon">💬</div>
+                            <div class="feature-card-name">口语对话</div>
+                            <div class="feature-card-desc">AI智能对练</div>
+                        </div>
+                        <div class="feature-card" style="--delay: 0.3s">
+                            <div class="feature-card-icon">📖</div>
+                            <div class="feature-card-name">阅读理解</div>
+                            <div class="feature-card-desc">学术文章精选</div>
+                        </div>
+                    </div>
+                    
+                    <!-- v5: 霓虹呼吸试用按钮 -->
+                    <button id="start-trial-btn" class="trial-hero-btn">
+                        <span class="btn-glow"></span>
+                        <span class="btn-shine"></span>
                         <span class="btn-content">
-                            <span class="btn-text">立即激活</span>
-                            <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-                            </svg>
+                            <span class="btn-icon">🚀</span>
+                            <span class="btn-text">立即开始免费体验</span>
                         </span>
-                        <span class="btn-loading" style="display:none;">
-                            <svg class="loading-spinner" width="24" height="24" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="32" stroke-linecap="round"/>
-                            </svg>
-                            验证中...
-                        </span>
-                        <span class="btn-pulse"></span>
+                        <span class="btn-ripple"></span>
                     </button>
                     
-                    ${canTrial ? `
-                        <!-- v3: 试用按钮带光效 -->
-                        <div class="trial-section">
-                            <div class="trial-divider">
-                                <span class="divider-line"></span>
-                                <span class="divider-text">或者</span>
-                                <span class="divider-line"></span>
-                            </div>
-                            <button id="start-trial-btn" class="trial-btn">
-                                <span class="trial-icon">🎁</span>
-                                <span class="trial-content">
-                                    <span class="trial-title">免费体验 ${ActivationSystem.config.trialDays} 天</span>
-                                    <span class="trial-desc">无需激活码，立即开始</span>
-                                </span>
-                                <svg class="trial-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/>
-                                </svg>
-                            </button>
+                    <!-- v9: 社交证明 -->
+                    <div class="social-proof">
+                        <div class="user-avatars">
+                            <div class="avatar" style="--i:1">👨‍🎓</div>
+                            <div class="avatar" style="--i:2">👩‍💻</div>
+                            <div class="avatar" style="--i:3">👨‍🔬</div>
+                            <div class="avatar" style="--i:4">👩‍🏫</div>
+                            <div class="avatar" style="--i:5">+</div>
                         </div>
-                    ` : ''}
+                        <div class="proof-text">
+                            <span class="proof-count">10,000+</span> 用户正在使用
+                        </div>
+                    </div>
                 </div>
                 
-                <!-- v5: 增强底部设计 -->
+                <!-- 分割线 -->
+                <div class="section-divider">
+                    <span class="divider-line"></span>
+                    <span class="divider-text">已有激活码？</span>
+                    <span class="divider-line"></span>
+                </div>
+                ` : ''}
+                
+                <!-- ==================== 激活码输入区（折叠式） ==================== -->
+                <div class="activation-section ${canTrial ? 'collapsed' : 'expanded'}" id="activation-section">
+                    ${canTrial ? `
+                    <button class="expand-activation-btn" id="expand-activation">
+                        <span>使用激活码激活</span>
+                        <svg class="expand-arrow" width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/>
+                        </svg>
+                    </button>
+                    ` : `
+                    <div class="activation-header-compact">
+                        <div class="activation-icon-small">🔐</div>
+                        <div class="activation-header-text">
+                            <h2>激活应用</h2>
+                            <p>输入激活码解锁全部功能</p>
+                        </div>
+                    </div>
+                    `}
+                    
+                    <div class="activation-form-area" id="activation-form-area">
+                        <div class="activation-input-container">
+                            <label class="input-label">激活码</label>
+                            <div class="activation-input-group">
+                                <div class="input-icon-left">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" opacity="0.5">
+                                        <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+                                    </svg>
+                                </div>
+                                <input type="text" 
+                                       id="activation-code-input" 
+                                       placeholder="XXXX-XXXX-XXXX-XXXX"
+                                       maxlength="19"
+                                       autocomplete="off"
+                                       spellcheck="false">
+                                <button id="paste-code-btn" class="paste-btn" title="从剪贴板粘贴">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
+                                    </svg>
+                                </button>
+                                <div class="input-glow"></div>
+                            </div>
+                        </div>
+                        
+                        <div id="activation-error" class="activation-error">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                            <span id="error-text"></span>
+                        </div>
+                        
+                        <button id="activate-btn" class="activation-btn">
+                            <span class="btn-bg"></span>
+                            <span class="btn-content">
+                                <span class="btn-text">立即激活</span>
+                                <svg class="btn-arrow" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+                                </svg>
+                            </span>
+                            <span class="btn-loading" style="display:none;">
+                                <svg class="loading-spinner" width="24" height="24" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="3" stroke-dasharray="32" stroke-linecap="round"/>
+                                </svg>
+                                验证中...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- 底部信息 -->
                 <div class="activation-footer">
                     <div class="footer-links">
                         <a href="#" id="get-code-link" class="footer-link primary">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                             </svg>
                             获取激活码
                         </a>
                         <span class="footer-divider">•</span>
                         <a href="#" id="migration-btn" class="footer-link">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/>
                             </svg>
                             设备迁移
                         </a>
                     </div>
                     <p class="footer-tip">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" opacity="0.6">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" opacity="0.6">
                             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
                         </svg>
-                        一个激活码最多支持 ${ActivationSystem.config.maxDevices} 台设备同时使用
+                        激活码支持 ${ActivationSystem.config.maxDevices} 台设备同时使用
                     </p>
                 </div>
                 
                 <!-- 关闭按钮 -->
                 <button class="activation-close-btn" id="activation-close">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                     </svg>
                 </button>
@@ -1399,12 +1452,26 @@ const ActivationUI = {
 
     /**
      * 绑定对话框事件
+     * v5: 增强版事件绑定
      */
     bindDialogEvents() {
         const input = document.getElementById('activation-code-input');
         const activateBtn = document.getElementById('activate-btn');
         const pasteBtn = document.getElementById('paste-code-btn');
         const getCodeLink = document.getElementById('get-code-link');
+        const closeBtn = document.getElementById('activation-close');
+        
+        // v5: 初始化粒子动画
+        this.initParticles();
+        
+        // v5: 输入框聚焦效果
+        input?.addEventListener('focus', () => {
+            input.parentElement?.classList.add('focused');
+        });
+        
+        input?.addEventListener('blur', () => {
+            input.parentElement?.classList.remove('focused');
+        });
         
         // 输入格式化
         input?.addEventListener('input', (e) => {
@@ -1418,7 +1485,11 @@ const ActivationUI = {
             e.target.value = value.substring(0, 19);
             
             // 清除错误
-            document.getElementById('activation-error').textContent = '';
+            const errorEl = document.getElementById('activation-error');
+            errorEl?.classList.remove('show');
+            
+            // v4: 输入进度指示
+            this.updateInputProgress(value);
         });
         
         // 回车激活
@@ -1435,6 +1506,9 @@ const ActivationUI = {
                 if (input) {
                     input.value = text.toUpperCase().replace(/[^A-Z0-9-]/g, '');
                     input.dispatchEvent(new Event('input'));
+                    // v4: 粘贴成功反馈
+                    pasteBtn.classList.add('paste-success');
+                    setTimeout(() => pasteBtn.classList.remove('paste-success'), 500);
                 }
             } catch (err) {
                 console.warn('无法读取剪贴板:', err);
@@ -1445,81 +1519,421 @@ const ActivationUI = {
         activateBtn?.addEventListener('click', async () => {
             const code = input?.value;
             const errorEl = document.getElementById('activation-error');
-            const btnText = activateBtn.querySelector('.btn-text');
+            const errorText = document.getElementById('error-text');
+            const btnContent = activateBtn.querySelector('.btn-content');
             const btnLoading = activateBtn.querySelector('.btn-loading');
             
+            if (!code || code.length < 19) {
+                if (errorText) errorText.textContent = '请输入完整的激活码';
+                errorEl?.classList.add('show', 'shake');
+                setTimeout(() => errorEl?.classList.remove('shake'), 500);
+                return;
+            }
+            
             // 显示加载状态
-            btnText.style.display = 'none';
-            btnLoading.style.display = 'inline';
+            if (btnContent) btnContent.style.display = 'none';
+            if (btnLoading) btnLoading.style.display = 'flex';
             activateBtn.disabled = true;
+            activateBtn.classList.add('loading');
             
             try {
                 const result = await ActivationSystem.activate(code);
                 
                 if (result.success) {
-                    // 激活成功
+                    // v5: 激活成功 - 显示高级成功动画
                     this.showSuccessAnimation();
                     setTimeout(() => {
                         this.closeActivationDialog();
                         window.dispatchEvent(new CustomEvent('activationSuccess'));
-                    }, 1500);
+                    }, 3000);
                 } else {
                     // 激活失败
-                    errorEl.textContent = result.message;
-                    errorEl.classList.add('shake');
-                    setTimeout(() => errorEl.classList.remove('shake'), 500);
+                    if (errorText) errorText.textContent = result.message;
+                    errorEl?.classList.add('show', 'shake');
+                    setTimeout(() => errorEl?.classList.remove('shake'), 500);
+                    
+                    if (btnContent) btnContent.style.display = 'flex';
+                    if (btnLoading) btnLoading.style.display = 'none';
+                    activateBtn.disabled = false;
+                    activateBtn.classList.remove('loading');
                 }
             } catch (err) {
-                errorEl.textContent = '激活失败，请稍后重试';
-            } finally {
-                btnText.style.display = 'inline';
-                btnLoading.style.display = 'none';
+                if (errorText) errorText.textContent = '激活失败，请稍后重试';
+                errorEl?.classList.add('show');
+                
+                if (btnContent) btnContent.style.display = 'flex';
+                if (btnLoading) btnLoading.style.display = 'none';
                 activateBtn.disabled = false;
+                activateBtn.classList.remove('loading');
             }
         });
         
         // 获取激活码链接
         getCodeLink?.addEventListener('click', (e) => {
             e.preventDefault();
-            // 跳转到购买页面或显示联系方式
             window.dispatchEvent(new CustomEvent('showPurchaseOptions'));
         });
         
-        // v4.0: 试用按钮
-        const trialBtn = document.getElementById('start-trial-btn');
-        trialBtn?.addEventListener('click', () => {
-            const result = ActivationSystem.startTrial();
-            if (result.success) {
-                this.showSuccessAnimation('试用已开始！', `${ActivationSystem.config.trialDays}天内免费使用全部功能`);
-                setTimeout(() => {
-                    this.closeActivationDialog();
-                    window.dispatchEvent(new CustomEvent('trialStarted'));
-                }, 1500);
+        // 关闭按钮
+        closeBtn?.addEventListener('click', () => {
+            this.closeActivationDialog();
+        });
+        
+        // v10: 展开/折叠激活码区域
+        const expandBtn = document.getElementById('expand-activation');
+        const activationSection = document.getElementById('activation-section');
+        const activationFormArea = document.getElementById('activation-form-area');
+        
+        expandBtn?.addEventListener('click', () => {
+            const isCollapsed = activationSection?.classList.contains('collapsed');
+            if (isCollapsed) {
+                activationSection.classList.remove('collapsed');
+                activationSection.classList.add('expanded');
+                expandBtn.classList.add('expanded');
             } else {
-                document.getElementById('activation-error').textContent = result.message;
+                activationSection.classList.add('collapsed');
+                activationSection.classList.remove('expanded');
+                expandBtn.classList.remove('expanded');
             }
         });
         
-        // v4.0: 设备迁移按钮
+        // v10: 试用按钮（高级版）
+        const trialBtn = document.getElementById('start-trial-btn');
+        trialBtn?.addEventListener('click', () => {
+            // 添加按钮点击动画
+            trialBtn.classList.add('clicked');
+            
+            const result = ActivationSystem.startTrial();
+            if (result.success) {
+                // v6-v8: 显示试用成功的高级动画
+                this.showTrialSuccessAnimation();
+                setTimeout(() => {
+                    this.closeActivationDialog();
+                    window.dispatchEvent(new CustomEvent('trialStarted'));
+                }, 4500);
+            } else {
+                trialBtn.classList.remove('clicked');
+                const errorEl = document.getElementById('activation-error');
+                const errorText = document.getElementById('error-text');
+                if (errorText) errorText.textContent = result.message;
+                errorEl?.classList.add('show');
+            }
+        });
+        
+        // 设备迁移按钮
         const migrationBtn = document.getElementById('migration-btn');
-        migrationBtn?.addEventListener('click', () => {
+        migrationBtn?.addEventListener('click', (e) => {
+            e.preventDefault();
             this.showMigrationDialog();
         });
     },
 
     /**
-     * 显示成功动画
+     * v10: 初始化星空背景
      */
-    showSuccessAnimation(title = '激活成功！', subtitle = '欢迎使用学术英语精进') {
+    initStars() {
+        const container = document.getElementById('stars-container');
+        if (!container) return;
+        
+        for (let i = 0; i < 100; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.cssText = `
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                width: ${1 + Math.random() * 2}px;
+                height: ${1 + Math.random() * 2}px;
+                animation-delay: ${Math.random() * 3}s;
+                animation-duration: ${2 + Math.random() * 3}s;
+            `;
+            container.appendChild(star);
+        }
+    },
+
+    /**
+     * v5: 初始化粒子动画
+     */
+    initParticles() {
+        const container = document.getElementById('particles-container');
+        if (!container) return;
+        
+        // 先初始化星空
+        this.initStars();
+        
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.cssText = `
+                left: ${Math.random() * 100}%;
+                top: ${Math.random() * 100}%;
+                animation-delay: ${Math.random() * 5}s;
+                animation-duration: ${3 + Math.random() * 4}s;
+            `;
+            container.appendChild(particle);
+        }
+    },
+
+    /**
+     * v4: 更新输入进度
+     */
+    updateInputProgress(value) {
+        const cleanValue = value.replace(/-/g, '');
+        const progress = Math.min(cleanValue.length / 16 * 100, 100);
+        const inputGroup = document.querySelector('.activation-input-group');
+        if (inputGroup) {
+            inputGroup.style.setProperty('--input-progress', `${progress}%`);
+        }
+    },
+
+    /**
+     * v6-v8: 显示试用成功的高级动画
+     */
+    showTrialSuccessAnimation() {
         const dialog = document.querySelector('.activation-dialog');
+        const trialDays = ActivationSystem.config.trialDays;
+        
         if (dialog) {
+            dialog.classList.add('success-mode', 'trial-success');
             dialog.innerHTML = `
-                <div class="activation-success">
-                    <div class="success-icon">✅</div>
-                    <h2>${title}</h2>
-                    <p>${subtitle}</p>
+                <!-- v6: 烟花爆炸效果 -->
+                <div class="fireworks-container" id="fireworks"></div>
+                <div class="confetti-container" id="confetti"></div>
+                
+                <div class="trial-success-content">
+                    <!-- v6: 礼盒开启动画 -->
+                    <div class="gift-open-animation">
+                        <div class="gift-box-wrapper">
+                            <div class="gift-lid-open">
+                                <div class="lid-top"></div>
+                                <div class="lid-ribbon"></div>
+                            </div>
+                            <div class="gift-box-open">
+                                <div class="box-front"></div>
+                                <div class="box-ribbon"></div>
+                            </div>
+                            <div class="gift-glow"></div>
+                            <div class="gift-rays">
+                                ${Array(12).fill(0).map((_, i) => `<div class="ray" style="--i:${i}"></div>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- v7: 成功文字动画 -->
+                    <div class="success-text-area">
+                        <h2 class="trial-success-title">
+                            <span class="title-line line-1">🎉 恭喜！</span>
+                            <span class="title-line line-2">试用已激活</span>
+                        </h2>
+                        
+                        <!-- v8: 倒计时显示 -->
+                        <div class="trial-countdown-display">
+                            <div class="countdown-circle">
+                                <svg viewBox="0 0 100 100">
+                                    <circle class="countdown-bg" cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="4"/>
+                                    <circle class="countdown-progress" cx="50" cy="50" r="45" fill="none" stroke="url(#successGradient2)" stroke-width="4" stroke-linecap="round" stroke-dasharray="283" stroke-dashoffset="0"/>
+                                </svg>
+                                <div class="countdown-inner">
+                                    <span class="countdown-number">${trialDays}</span>
+                                    <span class="countdown-unit">天</span>
+                                </div>
+                            </div>
+                            <div class="countdown-label">免费使用剩余</div>
+                        </div>
+                    </div>
+                    
+                    <!-- v7: 功能解锁逐项展示 -->
+                    <div class="features-unlock-list">
+                        <div class="unlock-title">已为您解锁以下功能</div>
+                        <div class="unlock-items">
+                            <div class="unlock-item" style="--delay: 0.8s">
+                                <div class="unlock-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg>
+                                </div>
+                                <span class="unlock-icon">📚</span>
+                                <span class="unlock-name">核心词汇学习</span>
+                            </div>
+                            <div class="unlock-item" style="--delay: 1.0s">
+                                <div class="unlock-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg>
+                                </div>
+                                <span class="unlock-icon">🎧</span>
+                                <span class="unlock-name">精听训练模块</span>
+                            </div>
+                            <div class="unlock-item" style="--delay: 1.2s">
+                                <div class="unlock-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg>
+                                </div>
+                                <span class="unlock-icon">💬</span>
+                                <span class="unlock-name">口语对话练习</span>
+                            </div>
+                            <div class="unlock-item" style="--delay: 1.4s">
+                                <div class="unlock-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg>
+                                </div>
+                                <span class="unlock-icon">📖</span>
+                                <span class="unlock-name">阅读理解训练</span>
+                            </div>
+                            <div class="unlock-item" style="--delay: 1.6s">
+                                <div class="unlock-check">
+                                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" fill="currentColor"/></svg>
+                                </div>
+                                <span class="unlock-icon">📊</span>
+                                <span class="unlock-name">学习进度统计</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- v8: 进度条 -->
+                    <div class="auto-enter-section">
+                        <div class="auto-enter-text">正在进入应用...</div>
+                        <div class="auto-enter-bar">
+                            <div class="bar-progress"></div>
+                        </div>
+                    </div>
                 </div>
             `;
+            
+            // v6: 启动烟花效果
+            this.startFireworks();
+            this.startConfetti();
+        }
+    },
+
+    /**
+     * v6: 烟花效果
+     */
+    startFireworks() {
+        const container = document.getElementById('fireworks');
+        if (!container) return;
+        
+        const colors = ['#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#ffecd2', '#667eea', '#764ba2'];
+        
+        const createFirework = () => {
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = `${20 + Math.random() * 60}%`;
+            firework.style.top = `${20 + Math.random() * 40}%`;
+            
+            // 创建爆炸粒子
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'fw-particle';
+                const angle = (i / 20) * Math.PI * 2;
+                const velocity = 50 + Math.random() * 50;
+                particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
+                particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                firework.appendChild(particle);
+            }
+            
+            container.appendChild(firework);
+            setTimeout(() => firework.remove(), 1500);
+        };
+        
+        // 创建多个烟花
+        for (let i = 0; i < 5; i++) {
+            setTimeout(createFirework, i * 400);
+        }
+    },
+
+    /**
+     * v5: 显示高级成功动画（激活码激活）
+     */
+    showSuccessAnimation(title = '激活成功！', subtitle = '欢迎使用学术英语精进', type = 'activation') {
+        const dialog = document.querySelector('.activation-dialog');
+        if (dialog) {
+            dialog.classList.add('success-mode');
+            dialog.innerHTML = `
+                <!-- v5: 烟花/五彩纸屑动画 -->
+                <div class="confetti-container" id="confetti"></div>
+                
+                <div class="activation-success">
+                    <!-- v5: 成功勋章 -->
+                    <div class="success-badge">
+                        <div class="badge-ring"></div>
+                        <div class="badge-ring delay-1"></div>
+                        <div class="badge-ring delay-2"></div>
+                        <div class="badge-icon ${type}">
+                            ${type === 'trial' ? `
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="40" fill="none" stroke="url(#successGradient)" stroke-width="4"/>
+                                    <text x="50" y="60" text-anchor="middle" font-size="40">🎁</text>
+                                </svg>
+                            ` : `
+                                <svg viewBox="0 0 100 100">
+                                    <defs>
+                                        <linearGradient id="successGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#10b981"/>
+                                            <stop offset="100%" style="stop-color:#059669"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="50" cy="50" r="40" fill="url(#successGradient)"/>
+                                    <path class="checkmark" d="M30 50 L45 65 L70 35" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            `}
+                        </div>
+                    </div>
+                    
+                    <!-- v5: 成功文字动画 -->
+                    <h2 class="success-title">${title}</h2>
+                    <p class="success-subtitle">${subtitle}</p>
+                    
+                    <!-- v5: 解锁功能展示 -->
+                    <div class="unlocked-features">
+                        <div class="feature-item" style="--delay: 0.2s">
+                            <span class="feature-icon">📚</span>
+                            <span>核心词汇库</span>
+                        </div>
+                        <div class="feature-item" style="--delay: 0.4s">
+                            <span class="feature-icon">🎧</span>
+                            <span>精听训练</span>
+                        </div>
+                        <div class="feature-item" style="--delay: 0.6s">
+                            <span class="feature-icon">💬</span>
+                            <span>口语练习</span>
+                        </div>
+                        <div class="feature-item" style="--delay: 0.8s">
+                            <span class="feature-icon">📖</span>
+                            <span>阅读理解</span>
+                        </div>
+                    </div>
+                    
+                    <div class="success-countdown">
+                        <span class="countdown-text">即将进入应用...</span>
+                        <div class="countdown-bar"></div>
+                    </div>
+                </div>
+            `;
+            
+            // v5: 启动五彩纸屑动画
+            this.startConfetti();
+        }
+    },
+
+    /**
+     * v5: 五彩纸屑动画
+     */
+    startConfetti() {
+        const container = document.getElementById('confetti');
+        if (!container) return;
+        
+        const colors = ['#667eea', '#764ba2', '#f093fb', '#f5576c', '#4facfe', '#00f2fe', '#43e97b', '#38f9d7', '#ffecd2', '#fcb69f'];
+        const shapes = ['square', 'circle', 'triangle'];
+        
+        for (let i = 0; i < 100; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = `confetti ${shapes[Math.floor(Math.random() * shapes.length)]}`;
+                confetti.style.cssText = `
+                    left: ${Math.random() * 100}%;
+                    background: ${colors[Math.floor(Math.random() * colors.length)]};
+                    animation-duration: ${1 + Math.random() * 2}s;
+                    animation-delay: ${Math.random() * 0.5}s;
+                `;
+                container.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 3000);
+            }, i * 30);
         }
     },
 
@@ -1976,6 +2390,7 @@ const ActivationUI = {
 
     /**
      * 注入样式
+     * v10: 试用功能高级UI样式 (10版迭代)
      */
     injectStyles() {
         if (document.getElementById('activation-styles')) return;
@@ -1983,185 +2398,1233 @@ const ActivationUI = {
         const styles = document.createElement('style');
         styles.id = 'activation-styles';
         styles.textContent = `
+            /* ==================== v1: 星空流体渐变背景 ==================== */
             .activation-overlay {
                 position: fixed;
                 top: 0;
                 left: 0;
                 right: 0;
                 bottom: 0;
-                background: rgba(0, 0, 0, 0.7);
-                backdrop-filter: blur(10px);
+                background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+                backdrop-filter: blur(20px) saturate(180%);
+                -webkit-backdrop-filter: blur(20px) saturate(180%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 z-index: 10000;
-                animation: fadeIn 0.3s ease;
+                animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                overflow: hidden;
+            }
+            
+            .activation-bg-gradient {
+                position: absolute;
+                inset: 0;
+                background: 
+                    radial-gradient(ellipse at 20% 20%, rgba(240, 147, 251, 0.3) 0%, transparent 50%),
+                    radial-gradient(ellipse at 80% 80%, rgba(79, 172, 254, 0.3) 0%, transparent 50%),
+                    radial-gradient(ellipse at 50% 50%, rgba(245, 87, 108, 0.2) 0%, transparent 40%);
+                animation: gradientShift 15s ease infinite;
+            }
+            
+            @keyframes gradientShift {
+                0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+                50% { transform: scale(1.2) rotate(10deg); opacity: 1; }
+            }
+            
+            /* v1: 星空背景 */
+            .activation-bg-stars {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            
+            .star {
+                position: absolute;
+                background: #fff;
+                border-radius: 50%;
+                animation: starTwinkle ease-in-out infinite;
+            }
+            
+            @keyframes starTwinkle {
+                0%, 100% { opacity: 0.3; transform: scale(1); }
+                50% { opacity: 1; transform: scale(1.2); }
+            }
+            
+            /* v2: 粒子动画 */
+            .activation-bg-particles {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            
+            .particle {
+                position: absolute;
+                width: 6px;
+                height: 6px;
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                border-radius: 50%;
+                animation: particleFloat linear infinite;
+                box-shadow: 0 0 10px rgba(240, 147, 251, 0.5);
+            }
+            
+            @keyframes particleFloat {
+                0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+                10% { opacity: 0.8; }
+                90% { opacity: 0.8; }
+                100% { transform: translateY(-100vh) scale(1) rotate(360deg); opacity: 0; }
             }
             
             .activation-overlay.closing {
                 animation: fadeOut 0.3s ease forwards;
             }
             
+            /* ==================== v2: 3D卡片+全息边框 ==================== */
             .activation-dialog {
-                background: linear-gradient(145deg, #ffffff, #f0f0f0);
-                border-radius: 20px;
-                padding: 40px;
-                max-width: 400px;
-                width: 90%;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                animation: slideUp 0.3s ease;
+                position: relative;
+                background: linear-gradient(180deg, 
+                    rgba(255, 255, 255, 0.98) 0%, 
+                    rgba(248, 250, 252, 0.95) 100%);
+                border-radius: 28px;
+                padding: 0;
+                max-width: 440px;
+                width: 94%;
+                max-height: 90vh;
+                overflow-y: auto;
+                box-shadow: 
+                    0 30px 60px -15px rgba(0, 0, 0, 0.5),
+                    0 0 0 1px rgba(255, 255, 255, 0.2),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+                animation: dialogEnter 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+                transform-style: preserve-3d;
             }
             
-            .activation-header {
+            .activation-dialog.trial-mode {
+                max-width: 480px;
+            }
+            
+            @keyframes dialogEnter {
+                from { 
+                    opacity: 0;
+                    transform: translateY(50px) scale(0.9) rotateX(15deg);
+                }
+                to { 
+                    opacity: 1;
+                    transform: translateY(0) scale(1) rotateX(0);
+                }
+            }
+            
+            /* v2: 全息光效边框 */
+            .holographic-border {
+                position: absolute;
+                inset: -3px;
+                background: linear-gradient(135deg, 
+                    #f093fb, #f5576c, #4facfe, #00f2fe, #43e97b, #f093fb);
+                background-size: 300% 300%;
+                border-radius: 31px;
+                z-index: -1;
+                animation: holographicShift 4s ease infinite;
+                opacity: 0.9;
+            }
+            
+            @keyframes holographicShift {
+                0%, 100% { background-position: 0% 50%; }
+                50% { background-position: 100% 50%; }
+            }
+            
+            /* v2: 闪光效果 */
+            .activation-shine {
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 50%;
+                height: 100%;
+                background: linear-gradient(
+                    90deg, 
+                    transparent, 
+                    rgba(255, 255, 255, 0.3), 
+                    transparent
+                );
+                transform: skewX(-25deg);
+                animation: shine 4s ease-in-out infinite;
+                pointer-events: none;
+                z-index: 10;
+            }
+            
+            @keyframes shine {
+                0%, 100% { left: -100%; }
+                50% { left: 150%; }
+            }
+            
+            /* ==================== v3: 试用英雄区域 ==================== */
+            .trial-hero-section {
                 text-align: center;
-                margin-bottom: 30px;
+                padding: 35px 25px 25px;
+                background: linear-gradient(180deg, 
+                    rgba(240, 147, 251, 0.1) 0%, 
+                    rgba(79, 172, 254, 0.05) 50%,
+                    transparent 100%);
             }
             
-            .activation-icon {
-                font-size: 48px;
+            /* v3: 倒计时圆环 */
+            .trial-countdown-ring {
+                position: relative;
+                width: 160px;
+                height: 160px;
+                margin: 0 auto 25px;
+            }
+            
+            .countdown-svg {
+                width: 100%;
+                height: 100%;
+                transform: rotate(-90deg);
+            }
+            
+            .ring-progress {
+                animation: ringFill 2s ease-out forwards, ringGlow 2s ease-in-out infinite 2s;
+            }
+            
+            @keyframes ringFill {
+                from { stroke-dashoffset: 534; }
+                to { stroke-dashoffset: 0; }
+            }
+            
+            @keyframes ringGlow {
+                0%, 100% { filter: url(#glow) drop-shadow(0 0 5px rgba(240, 147, 251, 0.5)); }
+                50% { filter: url(#glow) drop-shadow(0 0 15px rgba(240, 147, 251, 0.8)); }
+            }
+            
+            .countdown-content {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            /* v3: 礼盒动画 */
+            .countdown-gift {
+                margin-bottom: 5px;
+            }
+            
+            .gift-box {
+                position: relative;
+                animation: giftBounce 2s ease-in-out infinite;
+            }
+            
+            .gift-body {
+                font-size: 36px;
+                line-height: 1;
+            }
+            
+            @keyframes giftBounce {
+                0%, 100% { transform: translateY(0) scale(1); }
+                50% { transform: translateY(-5px) scale(1.1); }
+            }
+            
+            .countdown-days {
+                display: flex;
+                align-items: baseline;
+                gap: 2px;
+            }
+            
+            .days-number {
+                font-size: 42px;
+                font-weight: 800;
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                line-height: 1;
+            }
+            
+            .days-text {
+                font-size: 18px;
+                font-weight: 600;
+                color: #64748b;
+            }
+            
+            .countdown-label {
+                font-size: 14px;
+                color: #94a3b8;
+                margin-top: 2px;
+            }
+            
+            /* v1: 标题区域 */
+            .trial-hero-title {
+                margin: 0 0 10px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .title-highlight {
+                display: inline-block;
+                padding: 4px 12px;
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                color: white;
+                font-size: 12px;
+                font-weight: 600;
+                border-radius: 20px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                animation: highlightPulse 2s ease-in-out infinite;
+            }
+            
+            @keyframes highlightPulse {
+                0%, 100% { box-shadow: 0 0 0 0 rgba(240, 147, 251, 0.4); }
+                50% { box-shadow: 0 0 0 10px rgba(240, 147, 251, 0); }
+            }
+            
+            .title-main {
+                font-size: 28px;
+                font-weight: 800;
+                color: #1e293b;
+                margin-top: 8px;
+            }
+            
+            .trial-hero-subtitle {
+                margin: 0;
+                font-size: 15px;
+                color: #64748b;
+                line-height: 1.5;
+            }
+            
+            /* ==================== v4: 功能预览卡片 ==================== */
+            .feature-preview-cards {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+                margin: 25px 0;
+            }
+            
+            .feature-card {
+                background: rgba(255, 255, 255, 0.8);
+                border: 1px solid rgba(0, 0, 0, 0.05);
+                border-radius: 16px;
+                padding: 15px 8px;
+                text-align: center;
+                animation: cardSlideUp 0.5s ease both;
+                animation-delay: var(--delay);
+                transition: all 0.3s ease;
+            }
+            
+            .feature-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            }
+            
+            @keyframes cardSlideUp {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .feature-card-icon {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+            
+            .feature-card-name {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: #1e293b;
+                margin-bottom: 3px;
+            }
+            
+            .feature-card-desc {
+                display: block;
+                font-size: 10px;
+                color: #94a3b8;
+            }
+            
+            /* ==================== v5: 霓虹呼吸试用按钮 ==================== */
+            .trial-hero-btn {
+                position: relative;
+                width: 100%;
+                padding: 18px 30px;
+                background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+                color: white;
+                border: none;
+                border-radius: 16px;
+                font-size: 18px;
+                font-weight: 700;
+                cursor: pointer;
+                overflow: hidden;
+                transition: all 0.3s ease;
+            }
+            
+            .trial-hero-btn .btn-glow {
+                position: absolute;
+                inset: -4px;
+                background: linear-gradient(135deg, #f093fb, #f5576c, #4facfe, #f093fb);
+                background-size: 300% 300%;
+                border-radius: 20px;
+                z-index: -1;
+                animation: btnGlowPulse 3s ease infinite;
+                filter: blur(15px);
+                opacity: 0.6;
+            }
+            
+            @keyframes btnGlowPulse {
+                0%, 100% { background-position: 0% 50%; opacity: 0.4; }
+                50% { background-position: 100% 50%; opacity: 0.8; }
+            }
+            
+            .trial-hero-btn .btn-shine {
+                position: absolute;
+                top: 0;
+                left: -100%;
+                width: 100%;
+                height: 100%;
+                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+                animation: btnShine 3s ease infinite;
+            }
+            
+            @keyframes btnShine {
+                0%, 100% { left: -100%; }
+                50% { left: 100%; }
+            }
+            
+            .trial-hero-btn .btn-content {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                z-index: 1;
+            }
+            
+            .trial-hero-btn .btn-icon {
+                font-size: 22px;
+                animation: rocketBounce 1s ease-in-out infinite;
+            }
+            
+            @keyframes rocketBounce {
+                0%, 100% { transform: translateY(0) rotate(-15deg); }
+                50% { transform: translateY(-3px) rotate(-15deg); }
+            }
+            
+            .trial-hero-btn .btn-ripple {
+                position: absolute;
+                inset: 0;
+                border-radius: 16px;
+                animation: btnRipple 2s ease-out infinite;
+                pointer-events: none;
+            }
+            
+            @keyframes btnRipple {
+                0% { box-shadow: 0 0 0 0 rgba(240, 147, 251, 0.4); }
+                100% { box-shadow: 0 0 0 20px rgba(240, 147, 251, 0); }
+            }
+            
+            .trial-hero-btn:hover {
+                transform: translateY(-3px) scale(1.02);
+                box-shadow: 0 20px 40px rgba(240, 147, 251, 0.4);
+            }
+            
+            .trial-hero-btn:active {
+                transform: translateY(0) scale(0.98);
+            }
+            
+            .trial-hero-btn.clicked {
+                animation: btnClick 0.5s ease;
+            }
+            
+            @keyframes btnClick {
+                0% { transform: scale(1); }
+                50% { transform: scale(0.95); }
+                100% { transform: scale(1); }
+            }
+            
+            /* ==================== v9: 社交证明 ==================== */
+            .social-proof {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 12px;
+                margin-top: 20px;
+                padding-top: 15px;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
+            }
+            
+            .user-avatars {
+                display: flex;
+                align-items: center;
+            }
+            
+            .avatar {
+                width: 32px;
+                height: 32px;
+                background: linear-gradient(135deg, #f1f5f9, #e2e8f0);
+                border: 2px solid white;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 16px;
+                margin-left: calc(var(--i) * -8px);
+                animation: avatarPop 0.5s ease both;
+                animation-delay: calc(var(--i) * 0.1s);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            }
+            
+            .avatar:first-child {
+                margin-left: 0;
+            }
+            
+            .avatar:last-child {
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                color: white;
+                font-size: 12px;
+                font-weight: 600;
+            }
+            
+            @keyframes avatarPop {
+                from { opacity: 0; transform: scale(0); }
+                to { opacity: 1; transform: scale(1); }
+            }
+            
+            .proof-text {
+                font-size: 13px;
+                color: #64748b;
+            }
+            
+            .proof-count {
+                font-weight: 700;
+                color: #1e293b;
+            }
+            
+            /* ==================== 分割线 ==================== */
+            .section-divider {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 0 25px;
+                margin: 5px 0;
+            }
+            
+            .section-divider .divider-line {
+                flex: 1;
+                height: 1px;
+                background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+            }
+            
+            .section-divider .divider-text {
+                font-size: 13px;
+                color: #94a3b8;
+                white-space: nowrap;
+            }
+            
+            /* ==================== 激活码区域（可折叠） ==================== */
+            .activation-section {
+                padding: 0 25px 20px;
+            }
+            
+            .activation-section.collapsed .activation-form-area {
+                display: none;
+            }
+            
+            .activation-section.expanded .activation-form-area {
+                display: block;
+                animation: expandIn 0.3s ease;
+            }
+            
+            @keyframes expandIn {
+                from { opacity: 0; max-height: 0; }
+                to { opacity: 1; max-height: 300px; }
+            }
+            
+            .expand-activation-btn {
+                width: 100%;
+                padding: 14px 20px;
+                background: rgba(99, 102, 241, 0.08);
+                border: 1px dashed rgba(99, 102, 241, 0.3);
+                border-radius: 12px;
+                color: #667eea;
+                font-size: 14px;
+                font-weight: 500;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                transition: all 0.3s;
                 margin-bottom: 15px;
             }
             
-            .activation-header h2 {
-                margin: 0 0 10px;
-                color: #1a202c;
-                font-size: 24px;
+            .expand-activation-btn:hover {
+                background: rgba(99, 102, 241, 0.12);
+                border-color: rgba(99, 102, 241, 0.5);
             }
             
-            .activation-header p {
+            .expand-activation-btn .expand-arrow {
+                transition: transform 0.3s;
+            }
+            
+            .expand-activation-btn.expanded .expand-arrow {
+                transform: rotate(180deg);
+            }
+            
+            /* 紧凑头部（无试用时） */
+            .activation-header-compact {
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                padding: 30px 25px 20px;
+            }
+            
+            .activation-icon-small {
+                font-size: 40px;
+            }
+            
+            .activation-header-text h2 {
                 margin: 0;
-                color: #718096;
+                font-size: 22px;
+                font-weight: 700;
+                color: #1e293b;
+            }
+            
+            .activation-header-text p {
+                margin: 5px 0 0;
                 font-size: 14px;
+                color: #64748b;
+            }
+            
+            /* ==================== 输入框样式 ==================== */
+            .activation-input-container {
+                margin-bottom: 15px;
+            }
+            
+            .input-label {
+                display: block;
+                font-size: 12px;
+                font-weight: 600;
+                color: #475569;
+                margin-bottom: 8px;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             }
             
             .activation-input-group {
+                position: relative;
                 display: flex;
-                gap: 10px;
-                margin-bottom: 15px;
+                align-items: center;
+                background: #f8fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                transition: all 0.3s;
+                overflow: hidden;
+            }
+            
+            .activation-input-group::before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: var(--input-progress, 0%);
+                height: 2px;
+                background: linear-gradient(90deg, #667eea, #764ba2);
+                transition: width 0.3s;
+            }
+            
+            .activation-input-group.focused {
+                border-color: #667eea;
+                box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+                background: #fff;
+            }
+            
+            .input-icon-left {
+                padding: 0 0 0 14px;
+                color: #94a3b8;
             }
             
             #activation-code-input {
                 flex: 1;
-                padding: 15px 20px;
-                font-size: 18px;
-                font-family: 'Courier New', monospace;
+                padding: 14px 12px;
+                font-size: 16px;
+                font-family: 'SF Mono', 'Menlo', monospace;
                 letter-spacing: 2px;
-                border: 2px solid #e2e8f0;
-                border-radius: 12px;
-                text-align: center;
-                transition: all 0.3s;
+                border: none;
+                background: transparent;
+                color: #1e293b;
+                text-transform: uppercase;
+            }
+            
+            #activation-code-input::placeholder {
+                color: #cbd5e1;
+                letter-spacing: 1px;
             }
             
             #activation-code-input:focus {
                 outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
             }
             
             .paste-btn {
-                padding: 15px;
-                background: #f7fafc;
-                border: 2px solid #e2e8f0;
-                border-radius: 12px;
+                padding: 10px 14px;
+                background: transparent;
+                border: none;
+                color: #64748b;
                 cursor: pointer;
-                font-size: 18px;
-                transition: all 0.3s;
+                transition: all 0.2s;
             }
             
             .paste-btn:hover {
-                background: #edf2f7;
-                border-color: #cbd5e0;
+                color: #667eea;
+                transform: scale(1.1);
             }
             
+            .paste-btn.paste-success {
+                color: #10b981;
+                animation: pasteSuccess 0.5s ease;
+            }
+            
+            @keyframes pasteSuccess {
+                50% { transform: scale(1.3); }
+            }
+            
+            /* 错误提示 */
             .activation-error {
-                color: #e53e3e;
-                font-size: 14px;
-                min-height: 20px;
-                text-align: center;
-                margin-bottom: 15px;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                padding: 10px;
+                background: #fef2f2;
+                border-radius: 8px;
+                color: #dc2626;
+                font-size: 13px;
+                margin-bottom: 12px;
+            }
+            
+            .activation-error.show {
+                display: flex;
             }
             
             .activation-error.shake {
                 animation: shake 0.5s ease;
             }
             
+            /* 激活按钮 */
             .activation-btn {
+                position: relative;
                 width: 100%;
-                padding: 15px;
-                background: linear-gradient(135deg, #667eea, #764ba2);
+                padding: 16px 24px;
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                 color: white;
                 border: none;
                 border-radius: 12px;
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: 600;
                 cursor: pointer;
+                overflow: hidden;
                 transition: all 0.3s;
+            }
+            
+            .activation-btn .btn-bg {
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+                opacity: 0;
+                transition: opacity 0.3s;
+            }
+            
+            .activation-btn:hover .btn-bg {
+                opacity: 1;
+            }
+            
+            .activation-btn .btn-content {
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                z-index: 1;
+            }
+            
+            .activation-btn .btn-arrow {
+                transition: transform 0.3s;
+            }
+            
+            .activation-btn:hover .btn-arrow {
+                transform: translateX(4px);
+            }
+            
+            .activation-btn .btn-loading {
+                position: relative;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                z-index: 1;
+            }
+            
+            .loading-spinner {
+                animation: spin 1s linear infinite;
+            }
+            
+            @keyframes spin {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
             }
             
             .activation-btn:hover:not(:disabled) {
                 transform: translateY(-2px);
-                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+                box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
             }
             
             .activation-btn:disabled {
-                opacity: 0.7;
                 cursor: not-allowed;
-            }
-            
-            .activation-footer {
-                margin-top: 25px;
-                text-align: center;
-                color: #718096;
-                font-size: 13px;
-            }
-            
-            .activation-footer a {
-                color: #667eea;
-                text-decoration: none;
-            }
-            
-            .activation-footer a:hover {
-                text-decoration: underline;
-            }
-            
-            .activation-hint {
-                margin-top: 10px;
                 opacity: 0.7;
             }
             
-            .activation-success {
-                text-align: center;
-                padding: 20px;
+            /* ==================== 底部区域 ==================== */
+            .activation-footer {
+                padding: 15px 25px 25px;
+                background: linear-gradient(180deg, transparent, rgba(99, 102, 241, 0.03));
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
             }
             
-            .success-icon {
-                font-size: 64px;
-                animation: bounceIn 0.5s ease;
+            .footer-links {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 12px;
+                margin-bottom: 10px;
             }
             
-            .activation-success h2 {
-                color: #48bb78;
-                margin: 20px 0 10px;
+            .footer-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                color: #64748b;
+                text-decoration: none;
+                font-size: 13px;
+                transition: color 0.2s;
             }
             
-            /* 试用按钮 */
-            .trial-btn {
-                width: 100%;
-                padding: 12px;
-                background: transparent;
+            .footer-link:hover {
                 color: #667eea;
-                border: 2px solid #667eea;
-                border-radius: 12px;
-                font-size: 16px;
+            }
+            
+            .footer-link.primary {
+                color: #667eea;
+                font-weight: 500;
+            }
+            
+            .footer-divider {
+                color: #cbd5e1;
+            }
+            
+            .footer-tip {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 5px;
+                margin: 0;
+                font-size: 12px;
+                color: #94a3b8;
+            }
+            
+            /* 关闭按钮 */
+            .activation-close-btn {
+                position: absolute;
+                top: 12px;
+                right: 12px;
+                width: 32px;
+                height: 32px;
+                background: rgba(0, 0, 0, 0.05);
+                border: none;
+                border-radius: 50%;
                 cursor: pointer;
-                margin-top: 10px;
-                transition: all 0.3s;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #64748b;
+                transition: all 0.2s;
+                z-index: 20;
             }
             
-            .trial-btn:hover {
-                background: rgba(102, 126, 234, 0.1);
+            .activation-close-btn:hover {
+                background: rgba(0, 0, 0, 0.1);
+                color: #1e293b;
+                transform: rotate(90deg);
             }
             
+            /* ==================== v6-v8: 试用成功页面 ==================== */
+            .activation-dialog.trial-success {
+                background: linear-gradient(180deg, 
+                    rgba(255, 255, 255, 0.98) 0%, 
+                    rgba(240, 253, 244, 0.95) 100%);
+            }
+            
+            .fireworks-container {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: 5;
+            }
+            
+            .firework {
+                position: absolute;
+            }
+            
+            .fw-particle {
+                position: absolute;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                animation: fwExplode 1.5s ease-out forwards;
+            }
+            
+            @keyframes fwExplode {
+                0% { transform: translate(0, 0) scale(1); opacity: 1; }
+                100% { transform: translate(var(--x), var(--y)) scale(0); opacity: 0; }
+            }
+            
+            .confetti-container {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+            }
+            
+            .confetti {
+                position: absolute;
+                top: -10px;
+                width: 10px;
+                height: 10px;
+                animation: confettiFall linear forwards;
+            }
+            
+            .confetti.square { border-radius: 2px; }
+            .confetti.circle { border-radius: 50%; }
+            .confetti.triangle {
+                width: 0;
+                height: 0;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-bottom: 10px solid currentColor;
+                background: none !important;
+            }
+            
+            @keyframes confettiFall {
+                0% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; }
+                100% { transform: translateY(100vh) rotate(720deg) scale(0.5); opacity: 0; }
+            }
+            
+            .trial-success-content {
+                text-align: center;
+                padding: 40px 25px;
+                position: relative;
+                z-index: 10;
+            }
+            
+            /* v6: 礼盒开启动画 */
+            .gift-open-animation {
+                margin-bottom: 25px;
+            }
+            
+            .gift-box-wrapper {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto;
+            }
+            
+            .gift-lid-open {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                animation: lidOpen 0.8s ease-out forwards;
+            }
+            
+            @keyframes lidOpen {
+                0% { transform: translateX(-50%) translateY(0) rotate(0deg); }
+                50% { transform: translateX(-50%) translateY(-40px) rotate(-15deg); }
+                100% { transform: translateX(-50%) translateY(-30px) rotate(-10deg); }
+            }
+            
+            .lid-top {
+                width: 60px;
+                height: 20px;
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                border-radius: 8px 8px 0 0;
+            }
+            
+            .lid-ribbon {
+                position: absolute;
+                top: 5px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 12px;
+                height: 12px;
+                background: #fbbf24;
+                border-radius: 50%;
+            }
+            
+            .gift-box-open {
+                position: absolute;
+                bottom: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .box-front {
+                width: 50px;
+                height: 40px;
+                background: linear-gradient(135deg, #f5576c, #f093fb);
+                border-radius: 0 0 8px 8px;
+            }
+            
+            .box-ribbon {
+                position: absolute;
+                top: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 10px;
+                height: 100%;
+                background: #fbbf24;
+            }
+            
+            .gift-glow {
+                position: absolute;
+                inset: -20px;
+                background: radial-gradient(circle, rgba(240, 147, 251, 0.3) 0%, transparent 70%);
+                animation: giftGlow 2s ease-in-out infinite;
+            }
+            
+            @keyframes giftGlow {
+                0%, 100% { transform: scale(1); opacity: 0.5; }
+                50% { transform: scale(1.2); opacity: 1; }
+            }
+            
+            .gift-rays {
+                position: absolute;
+                inset: -30px;
+                animation: raysRotate 10s linear infinite;
+            }
+            
+            @keyframes raysRotate {
+                from { transform: rotate(0deg); }
+                to { transform: rotate(360deg); }
+            }
+            
+            .ray {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 60px;
+                height: 3px;
+                background: linear-gradient(90deg, rgba(240, 147, 251, 0.8), transparent);
+                transform-origin: left center;
+                transform: rotate(calc(var(--i) * 30deg));
+                animation: rayPulse 2s ease-in-out infinite;
+                animation-delay: calc(var(--i) * 0.1s);
+            }
+            
+            @keyframes rayPulse {
+                0%, 100% { opacity: 0.3; width: 40px; }
+                50% { opacity: 1; width: 60px; }
+            }
+            
+            /* v7: 成功文字 */
+            .success-text-area {
+                margin-bottom: 25px;
+            }
+            
+            .trial-success-title {
+                margin: 0 0 20px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+            }
+            
+            .title-line {
+                display: block;
+                animation: titleReveal 0.6s ease both;
+            }
+            
+            .title-line.line-1 {
+                font-size: 32px;
+                animation-delay: 0.3s;
+            }
+            
+            .title-line.line-2 {
+                font-size: 26px;
+                font-weight: 800;
+                background: linear-gradient(135deg, #10b981, #059669);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                animation-delay: 0.5s;
+            }
+            
+            @keyframes titleReveal {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            /* v8: 倒计时显示 */
+            .trial-countdown-display {
+                margin: 20px 0;
+            }
+            
+            .countdown-circle {
+                position: relative;
+                width: 100px;
+                height: 100px;
+                margin: 0 auto 10px;
+            }
+            
+            .countdown-circle svg {
+                width: 100%;
+                height: 100%;
+                transform: rotate(-90deg);
+            }
+            
+            .countdown-progress {
+                animation: countdownFill 1.5s ease-out forwards;
+            }
+            
+            @keyframes countdownFill {
+                from { stroke-dashoffset: 283; }
+                to { stroke-dashoffset: 0; }
+            }
+            
+            .countdown-inner {
+                position: absolute;
+                inset: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .countdown-number {
+                font-size: 36px;
+                font-weight: 800;
+                color: #10b981;
+                line-height: 1;
+            }
+            
+            .countdown-unit {
+                font-size: 14px;
+                color: #64748b;
+            }
+            
+            .countdown-label {
+                font-size: 14px;
+                color: #64748b;
+            }
+            
+            /* v7: 功能解锁列表 */
+            .features-unlock-list {
+                background: rgba(16, 185, 129, 0.05);
+                border-radius: 16px;
+                padding: 20px;
+                margin-bottom: 25px;
+            }
+            
+            .unlock-title {
+                font-size: 14px;
+                font-weight: 600;
+                color: #475569;
+                margin-bottom: 15px;
+            }
+            
+            .unlock-items {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .unlock-item {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                padding: 10px 15px;
+                background: white;
+                border-radius: 10px;
+                animation: unlockSlide 0.5s ease both;
+                animation-delay: var(--delay);
+            }
+            
+            @keyframes unlockSlide {
+                from { opacity: 0; transform: translateX(-20px); }
+                to { opacity: 1; transform: translateX(0); }
+            }
+            
+            .unlock-check {
+                width: 24px;
+                height: 24px;
+                background: linear-gradient(135deg, #10b981, #059669);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                animation: checkPop 0.3s ease both;
+                animation-delay: calc(var(--delay) + 0.3s);
+            }
+            
+            .unlock-check svg {
+                width: 14px;
+                height: 14px;
+            }
+            
+            @keyframes checkPop {
+                from { transform: scale(0); }
+                to { transform: scale(1); }
+            }
+            
+            .unlock-icon {
+                font-size: 20px;
+            }
+            
+            .unlock-name {
+                flex: 1;
+                font-size: 14px;
+                font-weight: 500;
+                color: #1e293b;
+                text-align: left;
+            }
+            
+            /* v8: 自动进入进度条 */
+            .auto-enter-section {
+                animation: fadeIn 0.5s ease 2s both;
+            }
+            
+            .auto-enter-text {
+                font-size: 14px;
+                color: #94a3b8;
+                margin-bottom: 10px;
+            }
+            
+            .auto-enter-bar {
+                height: 4px;
+                background: #e2e8f0;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+            
+            .bar-progress {
+                height: 100%;
+                background: linear-gradient(90deg, #10b981, #059669);
+                border-radius: 2px;
+                animation: progressFill 4s linear forwards;
+            }
+            
+            @keyframes progressFill {
+                from { width: 0%; }
+                to { width: 100%; }
+            }
+            
+            /* ==================== 动画关键帧 ==================== */
             @keyframes fadeIn {
                 from { opacity: 0; }
                 to { opacity: 1; }
@@ -2172,42 +3635,127 @@ const ActivationUI = {
                 to { opacity: 0; }
             }
             
-            @keyframes slideUp {
-                from { transform: translateY(30px); opacity: 0; }
-                to { transform: translateY(0); opacity: 1; }
-            }
-            
             @keyframes shake {
                 0%, 100% { transform: translateX(0); }
-                20%, 60% { transform: translateX(-10px); }
-                40%, 80% { transform: translateX(10px); }
+                20%, 60% { transform: translateX(-8px); }
+                40%, 80% { transform: translateX(8px); }
             }
             
-            @keyframes bounceIn {
-                0% { transform: scale(0); }
-                50% { transform: scale(1.2); }
-                100% { transform: scale(1); }
-            }
-            
-            /* 深色模式 */
+            /* ==================== v10: 深色模式 ==================== */
             @media (prefers-color-scheme: dark) {
                 .activation-dialog {
-                    background: linear-gradient(145deg, #2d3748, #1a202c);
+                    background: linear-gradient(180deg, 
+                        rgba(30, 41, 59, 0.98) 0%, 
+                        rgba(15, 23, 42, 0.95) 100%);
                 }
                 
-                .activation-header h2 {
-                    color: #f7fafc;
+                .trial-hero-section {
+                    background: linear-gradient(180deg, 
+                        rgba(240, 147, 251, 0.15) 0%, 
+                        rgba(79, 172, 254, 0.08) 50%,
+                        transparent 100%);
+                }
+                
+                .title-main,
+                .activation-header-text h2 {
+                    color: #f1f5f9;
+                }
+                
+                .trial-hero-subtitle,
+                .activation-header-text p,
+                .days-text,
+                .countdown-label {
+                    color: #94a3b8;
+                }
+                
+                .feature-card {
+                    background: rgba(30, 41, 59, 0.8);
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+                
+                .feature-card-name {
+                    color: #f1f5f9;
+                }
+                
+                .social-proof {
+                    border-color: rgba(255, 255, 255, 0.1);
+                }
+                
+                .proof-count {
+                    color: #f1f5f9;
+                }
+                
+                .section-divider .divider-line {
+                    background: linear-gradient(90deg, transparent, #475569, transparent);
+                }
+                
+                .expand-activation-btn {
+                    background: rgba(99, 102, 241, 0.15);
+                    border-color: rgba(99, 102, 241, 0.4);
+                }
+                
+                .input-label {
+                    color: #cbd5e1;
+                }
+                
+                .activation-input-group {
+                    background: rgba(30, 41, 59, 0.8);
+                    border-color: #475569;
+                }
+                
+                .activation-input-group.focused {
+                    background: rgba(30, 41, 59, 1);
+                    border-color: #818cf8;
                 }
                 
                 #activation-code-input {
-                    background: #2d3748;
-                    border-color: #4a5568;
-                    color: #f7fafc;
+                    color: #f1f5f9;
                 }
                 
-                .paste-btn {
-                    background: #2d3748;
-                    border-color: #4a5568;
+                #activation-code-input::placeholder {
+                    color: #64748b;
+                }
+                
+                .activation-error {
+                    background: rgba(220, 38, 38, 0.15);
+                    color: #fca5a5;
+                }
+                
+                .footer-link {
+                    color: #94a3b8;
+                }
+                
+                .footer-link:hover,
+                .footer-link.primary {
+                    color: #a5b4fc;
+                }
+                
+                .activation-close-btn {
+                    background: rgba(255, 255, 255, 0.1);
+                    color: #94a3b8;
+                }
+                
+                .activation-close-btn:hover {
+                    background: rgba(255, 255, 255, 0.15);
+                    color: #f1f5f9;
+                }
+                
+                .activation-dialog.trial-success {
+                    background: linear-gradient(180deg, 
+                        rgba(30, 41, 59, 0.98) 0%, 
+                        rgba(6, 78, 59, 0.3) 100%);
+                }
+                
+                .features-unlock-list {
+                    background: rgba(16, 185, 129, 0.1);
+                }
+                
+                .unlock-item {
+                    background: rgba(30, 41, 59, 0.8);
+                }
+                
+                .unlock-name {
+                    color: #f1f5f9;
                 }
             }
         `;
