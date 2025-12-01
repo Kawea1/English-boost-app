@@ -323,11 +323,14 @@ function togglePlayEnhanced() {
     }
     
     if ('speechSynthesis' in window) {
+        const btn = document.getElementById('playBtn');
+        
         if (isPlaying) {
             speechSynthesis.cancel();
             isPlaying = false;
-            const btn = document.getElementById('playBtn');
-            if (btn) btn.innerHTML = '▶️';
+            if (btn) {
+                btn.classList.remove('playing');
+            }
         } else {
             speechSynthesis.cancel();
             
@@ -343,14 +346,16 @@ function togglePlayEnhanced() {
             
             utterance.onend = function() {
                 isPlaying = false;
-                const btn = document.getElementById('playBtn');
-                if (btn) btn.innerHTML = '▶️';
+                if (btn) {
+                    btn.classList.remove('playing');
+                }
             };
             
             speechSynthesis.speak(utterance);
             isPlaying = true;
-            const btn = document.getElementById('playBtn');
-            if (btn) btn.innerHTML = '⏸️';
+            if (btn) {
+                btn.classList.add('playing');
+            }
             
             // 更新统计
             const count = parseInt(localStorage.getItem('stat_listen') || '0');
@@ -364,15 +369,27 @@ function togglePlayEnhanced() {
 // 调整播放速度
 function adjustSpeed(delta) {
     playbackSpeed = Math.max(0.5, Math.min(2.0, playbackSpeed + delta));
+    playbackSpeed = Math.round(playbackSpeed * 10) / 10; // 避免浮点精度问题
+    
     const speedDisplay = document.getElementById('speedDisplay');
     if (speedDisplay) {
-        speedDisplay.textContent = playbackSpeed.toFixed(1) + 'x';
+        speedDisplay.textContent = playbackSpeed.toFixed(1);
+    }
+    
+    // 更新速度条填充
+    const speedFill = document.getElementById('speedFill');
+    if (speedFill) {
+        // 0.5x -> 0%, 1.0x -> 33%, 1.5x -> 67%, 2.0x -> 100%
+        const percentage = ((playbackSpeed - 0.5) / 1.5) * 100;
+        speedFill.style.width = percentage + '%';
     }
     
     // 如果正在播放，重新播放以应用新速度
     if (isPlaying) {
         speechSynthesis.cancel();
         isPlaying = false;
+        const btn = document.getElementById('playBtn');
+        if (btn) btn.classList.remove('playing');
         setTimeout(() => togglePlayEnhanced(), 100);
     }
 }
