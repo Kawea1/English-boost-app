@@ -1,0 +1,9 @@
+<!-- 学术英语精进 - 鸿蒙版主页 -->
+<div class="container">
+    <web id="webview" 
+         src="/common/index.html"
+         onpagestart="onPageStart"
+         onpagefinish="onPageFinish"
+         onmessage="onMessage">
+    </web>
+</div>

@@ -1746,10 +1746,7 @@ svg {
 
 #goalsTotalProgress {
     font-weight: 700;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
+    fill: #6366f1;
 }
 
 /* ==================== 目标设置弹窗 ==================== */

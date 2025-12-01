@@ -799,12 +799,18 @@ function openGoalSettings() {
     if (modal) {
         modal.classList.add('active');
         
-        // 填充当前目标值
-        document.getElementById('goalVocabulary').value = dailyGoals.vocabulary || 0;
-        document.getElementById('goalListening').value = dailyGoals.listening || 0;
-        document.getElementById('goalSpeaking').value = dailyGoals.speaking || 0;
-        document.getElementById('goalReading').value = dailyGoals.reading || 0;
-        document.getElementById('goalReview').value = dailyGoals.review || 0;
+        // 填充当前目标值（安全检查元素是否存在）
+        var vocabEl = document.getElementById('goalVocabulary');
+        var listenEl = document.getElementById('goalListening');
+        var speakEl = document.getElementById('goalSpeaking');
+        var readEl = document.getElementById('goalReading');
+        var reviewEl = document.getElementById('goalReview');
+        
+        if (vocabEl) vocabEl.value = dailyGoals.vocabulary || 0;
+        if (listenEl) listenEl.value = dailyGoals.listening || 0;
+        if (speakEl) speakEl.value = dailyGoals.speaking || 0;
+        if (readEl) readEl.value = dailyGoals.reading || 0;
+        if (reviewEl) reviewEl.value = dailyGoals.review || 0;
     }
 }
 
@@ -818,11 +824,17 @@ function closeGoalSettings() {
 
 // 保存目标设置
 function saveGoalSettings() {
-    dailyGoals.vocabulary = parseInt(document.getElementById('goalVocabulary').value) || 0;
-    dailyGoals.listening = parseInt(document.getElementById('goalListening').value) || 0;
-    dailyGoals.speaking = parseInt(document.getElementById('goalSpeaking').value) || 0;
-    dailyGoals.reading = parseInt(document.getElementById('goalReading').value) || 0;
-    dailyGoals.review = parseInt(document.getElementById('goalReview').value) || 0;
+    var vocabEl = document.getElementById('goalVocabulary');
+    var listenEl = document.getElementById('goalListening');
+    var speakEl = document.getElementById('goalSpeaking');
+    var readEl = document.getElementById('goalReading');
+    var reviewEl = document.getElementById('goalReview');
+    
+    if (vocabEl) dailyGoals.vocabulary = parseInt(vocabEl.value) || 0;
+    if (listenEl) dailyGoals.listening = parseInt(listenEl.value) || 0;
+    if (speakEl) dailyGoals.speaking = parseInt(speakEl.value) || 0;
+    if (readEl) dailyGoals.reading = parseInt(readEl.value) || 0;
+    if (reviewEl) dailyGoals.review = parseInt(reviewEl.value) || 0;
     
     localStorage.setItem('dailyGoals', JSON.stringify(dailyGoals));
     
@@ -835,11 +847,17 @@ function saveGoalSettings() {
 
 // 重置目标设置
 function resetGoalSettings() {
-    document.getElementById('goalVocabulary').value = 50;
-    document.getElementById('goalListening').value = 5;
-    document.getElementById('goalSpeaking').value = 10;
-    document.getElementById('goalReading').value = 2;
-    document.getElementById('goalReview').value = 20;
+    var vocabEl = document.getElementById('goalVocabulary');
+    var listenEl = document.getElementById('goalListening');
+    var speakEl = document.getElementById('goalSpeaking');
+    var readEl = document.getElementById('goalReading');
+    var reviewEl = document.getElementById('goalReview');
+    
+    if (vocabEl) vocabEl.value = 50;
+    if (listenEl) listenEl.value = 5;
+    if (speakEl) speakEl.value = 10;
+    if (readEl) readEl.value = 2;
+    if (reviewEl) reviewEl.value = 20;
 }
 
 // 更新进度（供各模块调用）

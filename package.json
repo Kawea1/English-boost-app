@@ -15,9 +15,16 @@
     "build:linux": "electron-builder --linux",
     "build:all": "electron-builder -mwl",
     "pack": "electron-builder --dir",
-    "ios:sync": "cp index.html styles.css app.js vocabulary.js dictionary.js modules.js listening-module.js listening-data.js reading-data.js sources.js online_sources.js sw.js manifest.json auth.js www/ && npx cap sync ios",
+    "sync": "mkdir -p www && cp index.html styles.css app.js vocabulary.js dictionary.js modules.js listening-module.js listening-data.js reading-data.js sources.js online_sources.js sw.js manifest.json auth.js www/ && npx cap sync",
+    "ios:sync": "npm run sync",
     "ios:open": "npx cap open ios",
-    "ios:build": "./build-ios.sh"
+    "ios:build": "./build-ios.sh",
+    "android:sync": "npm run sync",
+    "android:open": "npx cap open android",
+    "android:build": "cd android && ./gradlew assembleDebug",
+    "mobile:sync": "npm run sync",
+    "mobile:all": "npm run sync && npx cap open ios && npx cap open android",
+    "all": "./build-all.sh"
   },
   "build": {
     "appId": "com.academic.english",
@@ -103,6 +110,7 @@
     "electron-builder": "^24.9.1"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.4",
     "@capacitor/cli": "^7.4.4",
     "@capacitor/core": "^7.4.4",
     "@capacitor/ios": "^7.4.4"
