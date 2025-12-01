@@ -507,15 +507,15 @@ function handleSettingsScroll(container, bottomBar) {
     const clientHeight = container.clientHeight;
     const scrollPercent = scrollTop / (scrollHeight - clientHeight);
     
-    // 向下滑动（scrollTop 增加）- 显示底部栏
+    // 向下滑动（scrollTop 增加）- 隐藏底部栏
     if (scrollTop > settingsLastScrollTop + 5) {
-        bottomBar.classList.remove('hiding');
-        bottomBar.classList.add('visible');
-    } 
-    // 向上滑动（scrollTop 减少）- 隐藏底部栏（缓慢动画）
-    else if (scrollTop < settingsLastScrollTop - 5) {
         bottomBar.classList.add('hiding');
         bottomBar.classList.remove('visible');
+    } 
+    // 向上滑动（scrollTop 减少）- 显示底部栏
+    else if (scrollTop < settingsLastScrollTop - 5) {
+        bottomBar.classList.remove('hiding');
+        bottomBar.classList.add('visible');
     }
     
     // 在页面顶部时隐藏
@@ -524,8 +524,8 @@ function handleSettingsScroll(container, bottomBar) {
         bottomBar.classList.remove('visible');
     }
     
-    // 滚动到底部90%以上时显示
-    if (scrollPercent > 0.9) {
+    // 滚动到底部95%以上时显示
+    if (scrollPercent > 0.95) {
         bottomBar.classList.remove('hiding');
         bottomBar.classList.add('visible');
     }
