@@ -1,0 +1,1023 @@
+/**
+ * 学术英语精进 - 激活码认证系统
+ * v1.0
+ * 
+ * 功能特性：
+ * 1. 激活码绑定用户
+ * 2. 多设备支持（限制同时在线数）
+ * 3. 设备指纹识别
+ * 4. 防分享滥用检测
+ * 5. 心跳保活机制
+ */
+
+const ActivationSystem = {
+    // 配置
+    config: {
+        maxDevices: 3,              // 最大同时在线设备数
+        heartbeatInterval: 5 * 60 * 1000,  // 心跳间隔 5分钟
+        deviceTimeout: 15 * 60 * 1000,     // 设备超时 15分钟
+        maxNewDevicesPerDay: 5,     // 每天最多新增设备数
+        apiBaseUrl: '',             // 后端API地址（需要配置）
+        storageKey: 'eb_activation',
+        deviceKey: 'eb_device_id'
+    },
+
+    // 状态
+    state: {
+        isActivated: false,
+        activationCode: null,
+        userId: null,
+        deviceId: null,
+        deviceFingerprint: null,
+        lastHeartbeat: null,
+        heartbeatTimer: null
+    },
+
+    /**
+     * 初始化激活系统
+     */
+    async init() {
+        console.log('🔐 初始化激活系统...');
+        
+        // 生成/获取设备ID
+        this.state.deviceId = await this.getOrCreateDeviceId();
+        
+        // 生成设备指纹
+        this.state.deviceFingerprint = await this.generateDeviceFingerprint();
+        
+        // 检查本地激活状态
+        const savedState = this.loadActivationState();
+        if (savedState && savedState.activationCode) {
+            // 验证激活状态
+            const isValid = await this.verifyActivation(savedState.activationCode);
+            if (isValid) {
+                this.state.isActivated = true;
+                this.state.activationCode = savedState.activationCode;
+                this.state.userId = savedState.userId;
+                this.startHeartbeat();
+                console.log('✅ 激活状态有效');
+                return true;
+            } else {
+                // 激活失效，清除本地状态
+                this.clearActivationState();
+                console.log('❌ 激活状态已失效');
+            }
+        }
+        
+        return false;
+    },
+
+    /**
+     * 生成或获取设备ID
+     */
+    async getOrCreateDeviceId() {
+        let deviceId = localStorage.getItem(this.config.deviceKey);
+        
+        if (!deviceId) {
+            // 生成新的设备ID
+            deviceId = this.generateUUID();
+            localStorage.setItem(this.config.deviceKey, deviceId);
+        }
+        
+        return deviceId;
+    },
+
+    /**
+     * 生成UUID
+     */
+    generateUUID() {
+        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            const r = Math.random() * 16 | 0;
+            const v = c === 'x' ? r : (r & 0x3 | 0x8);
+            return v.toString(16);
+        });
+    },
+
+    /**
+     * 生成设备指纹
+     * 收集多个特征生成唯一指纹，用于识别设备
+     */
+    async generateDeviceFingerprint() {
+        const components = [];
+        
+        // 1. 用户代理
+        components.push(navigator.userAgent);
+        
+        // 2. 屏幕信息
+        components.push(`${screen.width}x${screen.height}x${screen.colorDepth}`);
+        
+        // 3. 时区
+        components.push(Intl.DateTimeFormat().resolvedOptions().timeZone);
+        
+        // 4. 语言
+        components.push(navigator.language);
+        
+        // 5. 平台
+        components.push(navigator.platform);
+        
+        // 6. 硬件并发数
+        components.push(navigator.hardwareConcurrency || 'unknown');
+        
+        // 7. 设备内存 (如果可用)
+        components.push(navigator.deviceMemory || 'unknown');
+        
+        // 8. Canvas 指纹
+        try {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            ctx.textBaseline = 'top';
+            ctx.font = '14px Arial';
+            ctx.fillText('English Boost App 🎓', 2, 2);
+            components.push(canvas.toDataURL().slice(-50));
+        } catch (e) {
+            components.push('canvas-error');
+        }
+        
+        // 9. WebGL 渲染器 (如果可用)
+        try {
+            const canvas = document.createElement('canvas');
+            const gl = canvas.getContext('webgl');
+            if (gl) {
+                const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                if (debugInfo) {
+                    components.push(gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL));
+                }
+            }
+        } catch (e) {
+            components.push('webgl-error');
+        }
+        
+        // 生成哈希
+        const fingerprintString = components.join('|||');
+        const fingerprint = await this.hashString(fingerprintString);
+        
+        return fingerprint;
+    },
+
+    /**
+     * 字符串哈希
+     */
+    async hashString(str) {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(str);
+        
+        try {
+            const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        } catch (e) {
+            // 降级方案：简单哈希
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            return Math.abs(hash).toString(16);
+        }
+    },
+
+    /**
+     * 使用激活码激活
+     * @param {string} code - 激活码
+     * @returns {Promise<{success: boolean, message: string}>}
+     */
+    async activate(code) {
+        if (!code || code.trim().length === 0) {
+            return { success: false, message: '请输入激活码' };
+        }
+        
+        code = code.trim().toUpperCase();
+        
+        // 验证激活码格式
+        if (!this.validateCodeFormat(code)) {
+            return { success: false, message: '激活码格式不正确' };
+        }
+        
+        try {
+            // 调用后端API验证激活码
+            const result = await this.callActivationAPI('activate', {
+                code: code,
+                deviceId: this.state.deviceId,
+                fingerprint: this.state.deviceFingerprint,
+                deviceInfo: this.getDeviceInfo()
+            });
+            
+            if (result.success) {
+                // 保存激活状态
+                this.state.isActivated = true;
+                this.state.activationCode = code;
+                this.state.userId = result.userId;
+                this.saveActivationState();
+                
+                // 启动心跳
+                this.startHeartbeat();
+                
+                return { 
+                    success: true, 
+                    message: '激活成功！',
+                    remainingDevices: result.remainingDevices
+                };
+            } else {
+                return { 
+                    success: false, 
+                    message: result.message || '激活失败'
+                };
+            }
+        } catch (error) {
+            console.error('激活请求失败:', error);
+            
+            // 离线模式：本地验证（仅用于测试）
+            if (this.isOfflineMode()) {
+                return this.offlineActivate(code);
+            }
+            
+            return { success: false, message: '网络错误，请稍后重试' };
+        }
+    },
+
+    /**
+     * 验证激活码格式
+     * 格式: XXXX-XXXX-XXXX-XXXX (16位字母数字)
+     */
+    validateCodeFormat(code) {
+        const pattern = /^[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/;
+        return pattern.test(code);
+    },
+
+    /**
+     * 获取设备信息
+     */
+    getDeviceInfo() {
+        return {
+            platform: navigator.platform,
+            userAgent: navigator.userAgent,
+            language: navigator.language,
+            screenSize: `${screen.width}x${screen.height}`,
+            timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            timestamp: Date.now()
+        };
+    },
+
+    /**
+     * 验证当前激活状态
+     */
+    async verifyActivation(code) {
+        try {
+            const result = await this.callActivationAPI('verify', {
+                code: code,
+                deviceId: this.state.deviceId,
+                fingerprint: this.state.deviceFingerprint
+            });
+            
+            return result.valid;
+        } catch (error) {
+            console.error('验证请求失败:', error);
+            
+            // 网络错误时，给予宽限期（24小时内有效）
+            const savedState = this.loadActivationState();
+            if (savedState && savedState.lastVerified) {
+                const hoursSinceLastVerify = (Date.now() - savedState.lastVerified) / (1000 * 60 * 60);
+                return hoursSinceLastVerify < 24;
+            }
+            
+            return false;
+        }
+    },
+
+    /**
+     * 心跳保活
+     */
+    startHeartbeat() {
+        // 清除已有的心跳定时器
+        if (this.state.heartbeatTimer) {
+            clearInterval(this.state.heartbeatTimer);
+        }
+        
+        // 立即发送一次心跳
+        this.sendHeartbeat();
+        
+        // 定期发送心跳
+        this.state.heartbeatTimer = setInterval(() => {
+            this.sendHeartbeat();
+        }, this.config.heartbeatInterval);
+    },
+
+    /**
+     * 发送心跳
+     */
+    async sendHeartbeat() {
+        try {
+            const result = await this.callActivationAPI('heartbeat', {
+                code: this.state.activationCode,
+                deviceId: this.state.deviceId,
+                fingerprint: this.state.deviceFingerprint
+            });
+            
+            if (result.success) {
+                this.state.lastHeartbeat = Date.now();
+                
+                // 检查是否被踢下线
+                if (result.kicked) {
+                    this.handleKicked(result.reason);
+                }
+            } else if (result.invalid) {
+                // 激活已失效
+                this.handleDeactivated();
+            }
+        } catch (error) {
+            console.warn('心跳发送失败:', error);
+        }
+    },
+
+    /**
+     * 停止心跳
+     */
+    stopHeartbeat() {
+        if (this.state.heartbeatTimer) {
+            clearInterval(this.state.heartbeatTimer);
+            this.state.heartbeatTimer = null;
+        }
+    },
+
+    /**
+     * 处理被踢下线
+     */
+    handleKicked(reason) {
+        this.stopHeartbeat();
+        this.state.isActivated = false;
+        
+        // 显示提示
+        const messages = {
+            'too_many_devices': '您的账号在其他设备登录，当前设备已下线',
+            'suspicious_activity': '检测到异常活动，请重新激活',
+            'code_expired': '激活码已过期',
+            'code_revoked': '激活码已被撤销'
+        };
+        
+        const message = messages[reason] || '您已被下线，请重新激活';
+        
+        // 触发事件
+        window.dispatchEvent(new CustomEvent('activationKicked', { 
+            detail: { reason, message } 
+        }));
+        
+        this.showAlert(message);
+    },
+
+    /**
+     * 处理激活失效
+     */
+    handleDeactivated() {
+        this.stopHeartbeat();
+        this.state.isActivated = false;
+        this.clearActivationState();
+        
+        window.dispatchEvent(new CustomEvent('activationExpired'));
+        
+        this.showAlert('激活已失效，请重新激活');
+    },
+
+    /**
+     * 注销当前设备
+     */
+    async deactivateDevice() {
+        try {
+            await this.callActivationAPI('deactivate', {
+                code: this.state.activationCode,
+                deviceId: this.state.deviceId
+            });
+        } catch (error) {
+            console.error('注销失败:', error);
+        }
+        
+        this.stopHeartbeat();
+        this.state.isActivated = false;
+        this.clearActivationState();
+    },
+
+    /**
+     * 调用激活API
+     */
+    async callActivationAPI(action, data) {
+        // 如果没有配置API地址，使用离线模式
+        if (!this.config.apiBaseUrl) {
+            console.warn('未配置API地址，使用离线模式');
+            return this.handleOfflineAPI(action, data);
+        }
+        
+        const response = await fetch(`${this.config.apiBaseUrl}/activation/${action}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+        
+        return await response.json();
+    },
+
+    /**
+     * 离线模式API处理（用于测试和无后端场景）
+     */
+    handleOfflineAPI(action, data) {
+        // 从本地存储获取离线激活码数据
+        const offlineCodes = this.getOfflineCodes();
+        
+        switch (action) {
+            case 'activate': {
+                const codeData = offlineCodes[data.code];
+                if (!codeData) {
+                    return { success: false, message: '激活码无效' };
+                }
+                
+                if (codeData.expired && new Date(codeData.expired) < new Date()) {
+                    return { success: false, message: '激活码已过期' };
+                }
+                
+                // 检查设备数量
+                if (!codeData.devices) codeData.devices = [];
+                
+                const existingDevice = codeData.devices.find(d => d.id === data.deviceId);
+                if (!existingDevice) {
+                    if (codeData.devices.length >= this.config.maxDevices) {
+                        return { 
+                            success: false, 
+                            message: `设备数量已达上限（最多${this.config.maxDevices}台）`
+                        };
+                    }
+                    codeData.devices.push({
+                        id: data.deviceId,
+                        fingerprint: data.fingerprint,
+                        info: data.deviceInfo,
+                        addedAt: Date.now()
+                    });
+                }
+                
+                // 保存
+                this.saveOfflineCodes(offlineCodes);
+                
+                return { 
+                    success: true, 
+                    userId: codeData.userId || data.code,
+                    remainingDevices: this.config.maxDevices - codeData.devices.length
+                };
+            }
+            
+            case 'verify': {
+                const codeData = offlineCodes[data.code];
+                if (!codeData) return { valid: false };
+                
+                const device = codeData.devices?.find(d => d.id === data.deviceId);
+                return { valid: !!device };
+            }
+            
+            case 'heartbeat': {
+                return { success: true, kicked: false };
+            }
+            
+            case 'deactivate': {
+                const codeData = offlineCodes[data.code];
+                if (codeData && codeData.devices) {
+                    codeData.devices = codeData.devices.filter(d => d.id !== data.deviceId);
+                    this.saveOfflineCodes(offlineCodes);
+                }
+                return { success: true };
+            }
+            
+            default:
+                return { success: false, message: '未知操作' };
+        }
+    },
+
+    /**
+     * 离线激活（测试用）
+     */
+    offlineActivate(code) {
+        // 测试激活码（仅用于开发测试）
+        const testCodes = ['TEST-1234-5678-ABCD', 'DEMO-AAAA-BBBB-CCCC'];
+        
+        if (testCodes.includes(code)) {
+            this.state.isActivated = true;
+            this.state.activationCode = code;
+            this.state.userId = 'test_user';
+            this.saveActivationState();
+            
+            return { success: true, message: '激活成功（离线模式）' };
+        }
+        
+        return { success: false, message: '激活码无效' };
+    },
+
+    /**
+     * 检查是否离线模式
+     */
+    isOfflineMode() {
+        return !navigator.onLine || !this.config.apiBaseUrl;
+    },
+
+    /**
+     * 获取离线激活码数据
+     */
+    getOfflineCodes() {
+        try {
+            return JSON.parse(localStorage.getItem('eb_offline_codes') || '{}');
+        } catch {
+            return {};
+        }
+    },
+
+    /**
+     * 保存离线激活码数据
+     */
+    saveOfflineCodes(codes) {
+        localStorage.setItem('eb_offline_codes', JSON.stringify(codes));
+    },
+
+    /**
+     * 保存激活状态
+     */
+    saveActivationState() {
+        const state = {
+            activationCode: this.state.activationCode,
+            userId: this.state.userId,
+            deviceId: this.state.deviceId,
+            lastVerified: Date.now()
+        };
+        localStorage.setItem(this.config.storageKey, JSON.stringify(state));
+    },
+
+    /**
+     * 加载激活状态
+     */
+    loadActivationState() {
+        try {
+            return JSON.parse(localStorage.getItem(this.config.storageKey));
+        } catch {
+            return null;
+        }
+    },
+
+    /**
+     * 清除激活状态
+     */
+    clearActivationState() {
+        localStorage.removeItem(this.config.storageKey);
+        this.state.activationCode = null;
+        this.state.userId = null;
+        this.state.isActivated = false;
+    },
+
+    /**
+     * 显示提示
+     */
+    showAlert(message) {
+        if (typeof showToast === 'function') {
+            showToast(message, 'warning');
+        } else {
+            alert(message);
+        }
+    },
+
+    /**
+     * 检查是否已激活
+     */
+    isActivated() {
+        return this.state.isActivated;
+    },
+
+    /**
+     * 获取激活信息
+     */
+    getActivationInfo() {
+        return {
+            isActivated: this.state.isActivated,
+            userId: this.state.userId,
+            deviceId: this.state.deviceId
+        };
+    }
+};
+
+/**
+ * 激活码UI组件
+ */
+const ActivationUI = {
+    /**
+     * 显示激活对话框
+     */
+    showActivationDialog() {
+        // 检查是否已存在对话框
+        if (document.getElementById('activation-dialog')) {
+            return;
+        }
+        
+        const dialog = document.createElement('div');
+        dialog.id = 'activation-dialog';
+        dialog.className = 'activation-overlay';
+        dialog.innerHTML = `
+            <div class="activation-dialog">
+                <div class="activation-header">
+                    <div class="activation-icon">🔐</div>
+                    <h2>激活应用</h2>
+                    <p>请输入您的激活码以解锁全部功能</p>
+                </div>
+                
+                <div class="activation-body">
+                    <div class="activation-input-group">
+                        <input type="text" 
+                               id="activation-code-input" 
+                               placeholder="XXXX-XXXX-XXXX-XXXX"
+                               maxlength="19"
+                               autocomplete="off"
+                               spellcheck="false">
+                        <button id="paste-code-btn" class="paste-btn" title="粘贴">
+                            📋
+                        </button>
+                    </div>
+                    
+                    <div id="activation-error" class="activation-error"></div>
+                    
+                    <button id="activate-btn" class="activation-btn">
+                        <span class="btn-text">激活</span>
+                        <span class="btn-loading" style="display:none;">⏳ 验证中...</span>
+                    </button>
+                </div>
+                
+                <div class="activation-footer">
+                    <p>还没有激活码？<a href="#" id="get-code-link">获取激活码</a></p>
+                    <p class="activation-hint">一个激活码最多支持 ${ActivationSystem.config.maxDevices} 台设备同时使用</p>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(dialog);
+        
+        // 添加样式
+        this.injectStyles();
+        
+        // 绑定事件
+        this.bindDialogEvents();
+        
+        // 聚焦输入框
+        setTimeout(() => {
+            document.getElementById('activation-code-input')?.focus();
+        }, 100);
+    },
+
+    /**
+     * 关闭激活对话框
+     */
+    closeActivationDialog() {
+        const dialog = document.getElementById('activation-dialog');
+        if (dialog) {
+            dialog.classList.add('closing');
+            setTimeout(() => dialog.remove(), 300);
+        }
+    },
+
+    /**
+     * 绑定对话框事件
+     */
+    bindDialogEvents() {
+        const input = document.getElementById('activation-code-input');
+        const activateBtn = document.getElementById('activate-btn');
+        const pasteBtn = document.getElementById('paste-code-btn');
+        const getCodeLink = document.getElementById('get-code-link');
+        
+        // 输入格式化
+        input?.addEventListener('input', (e) => {
+            let value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            
+            // 自动添加连字符
+            if (value.length > 4) {
+                value = value.match(/.{1,4}/g).join('-');
+            }
+            
+            e.target.value = value.substring(0, 19);
+            
+            // 清除错误
+            document.getElementById('activation-error').textContent = '';
+        });
+        
+        // 回车激活
+        input?.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                activateBtn?.click();
+            }
+        });
+        
+        // 粘贴按钮
+        pasteBtn?.addEventListener('click', async () => {
+            try {
+                const text = await navigator.clipboard.readText();
+                if (input) {
+                    input.value = text.toUpperCase().replace(/[^A-Z0-9-]/g, '');
+                    input.dispatchEvent(new Event('input'));
+                }
+            } catch (err) {
+                console.warn('无法读取剪贴板:', err);
+            }
+        });
+        
+        // 激活按钮
+        activateBtn?.addEventListener('click', async () => {
+            const code = input?.value;
+            const errorEl = document.getElementById('activation-error');
+            const btnText = activateBtn.querySelector('.btn-text');
+            const btnLoading = activateBtn.querySelector('.btn-loading');
+            
+            // 显示加载状态
+            btnText.style.display = 'none';
+            btnLoading.style.display = 'inline';
+            activateBtn.disabled = true;
+            
+            try {
+                const result = await ActivationSystem.activate(code);
+                
+                if (result.success) {
+                    // 激活成功
+                    this.showSuccessAnimation();
+                    setTimeout(() => {
+                        this.closeActivationDialog();
+                        window.dispatchEvent(new CustomEvent('activationSuccess'));
+                    }, 1500);
+                } else {
+                    // 激活失败
+                    errorEl.textContent = result.message;
+                    errorEl.classList.add('shake');
+                    setTimeout(() => errorEl.classList.remove('shake'), 500);
+                }
+            } catch (err) {
+                errorEl.textContent = '激活失败，请稍后重试';
+            } finally {
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                activateBtn.disabled = false;
+            }
+        });
+        
+        // 获取激活码链接
+        getCodeLink?.addEventListener('click', (e) => {
+            e.preventDefault();
+            // 跳转到购买页面或显示联系方式
+            window.dispatchEvent(new CustomEvent('showPurchaseOptions'));
+        });
+    },
+
+    /**
+     * 显示成功动画
+     */
+    showSuccessAnimation() {
+        const dialog = document.querySelector('.activation-dialog');
+        if (dialog) {
+            dialog.innerHTML = `
+                <div class="activation-success">
+                    <div class="success-icon">✅</div>
+                    <h2>激活成功！</h2>
+                    <p>欢迎使用学术英语精进</p>
+                </div>
+            `;
+        }
+    },
+
+    /**
+     * 注入样式
+     */
+    injectStyles() {
+        if (document.getElementById('activation-styles')) return;
+        
+        const styles = document.createElement('style');
+        styles.id = 'activation-styles';
+        styles.textContent = `
+            .activation-overlay {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                backdrop-filter: blur(10px);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            }
+            
+            .activation-overlay.closing {
+                animation: fadeOut 0.3s ease forwards;
+            }
+            
+            .activation-dialog {
+                background: linear-gradient(145deg, #ffffff, #f0f0f0);
+                border-radius: 20px;
+                padding: 40px;
+                max-width: 400px;
+                width: 90%;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                animation: slideUp 0.3s ease;
+            }
+            
+            .activation-header {
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            
+            .activation-icon {
+                font-size: 48px;
+                margin-bottom: 15px;
+            }
+            
+            .activation-header h2 {
+                margin: 0 0 10px;
+                color: #1a202c;
+                font-size: 24px;
+            }
+            
+            .activation-header p {
+                margin: 0;
+                color: #718096;
+                font-size: 14px;
+            }
+            
+            .activation-input-group {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 15px;
+            }
+            
+            #activation-code-input {
+                flex: 1;
+                padding: 15px 20px;
+                font-size: 18px;
+                font-family: 'Courier New', monospace;
+                letter-spacing: 2px;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                text-align: center;
+                transition: all 0.3s;
+            }
+            
+            #activation-code-input:focus {
+                outline: none;
+                border-color: #667eea;
+                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            }
+            
+            .paste-btn {
+                padding: 15px;
+                background: #f7fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
+                cursor: pointer;
+                font-size: 18px;
+                transition: all 0.3s;
+            }
+            
+            .paste-btn:hover {
+                background: #edf2f7;
+                border-color: #cbd5e0;
+            }
+            
+            .activation-error {
+                color: #e53e3e;
+                font-size: 14px;
+                min-height: 20px;
+                text-align: center;
+                margin-bottom: 15px;
+            }
+            
+            .activation-error.shake {
+                animation: shake 0.5s ease;
+            }
+            
+            .activation-btn {
+                width: 100%;
+                padding: 15px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 18px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.3s;
+            }
+            
+            .activation-btn:hover:not(:disabled) {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            }
+            
+            .activation-btn:disabled {
+                opacity: 0.7;
+                cursor: not-allowed;
+            }
+            
+            .activation-footer {
+                margin-top: 25px;
+                text-align: center;
+                color: #718096;
+                font-size: 13px;
+            }
+            
+            .activation-footer a {
+                color: #667eea;
+                text-decoration: none;
+            }
+            
+            .activation-footer a:hover {
+                text-decoration: underline;
+            }
+            
+            .activation-hint {
+                margin-top: 10px;
+                opacity: 0.7;
+            }
+            
+            .activation-success {
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .success-icon {
+                font-size: 64px;
+                animation: bounceIn 0.5s ease;
+            }
+            
+            .activation-success h2 {
+                color: #48bb78;
+                margin: 20px 0 10px;
+            }
+            
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            @keyframes fadeOut {
+                from { opacity: 1; }
+                to { opacity: 0; }
+            }
+            
+            @keyframes slideUp {
+                from { transform: translateY(30px); opacity: 0; }
+                to { transform: translateY(0); opacity: 1; }
+            }
+            
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                20%, 60% { transform: translateX(-10px); }
+                40%, 80% { transform: translateX(10px); }
+            }
+            
+            @keyframes bounceIn {
+                0% { transform: scale(0); }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); }
+            }
+            
+            /* 深色模式 */
+            @media (prefers-color-scheme: dark) {
+                .activation-dialog {
+                    background: linear-gradient(145deg, #2d3748, #1a202c);
+                }
+                
+                .activation-header h2 {
+                    color: #f7fafc;
+                }
+                
+                #activation-code-input {
+                    background: #2d3748;
+                    border-color: #4a5568;
+                    color: #f7fafc;
+                }
+                
+                .paste-btn {
+                    background: #2d3748;
+                    border-color: #4a5568;
+                }
+            }
+        `;
+        
+        document.head.appendChild(styles);
+    }
+};
+
+// 导出
+window.ActivationSystem = ActivationSystem;
+window.ActivationUI = ActivationUI;
+
+// 自动初始化
+document.addEventListener('DOMContentLoaded', () => {
+    ActivationSystem.init().then(isActivated => {
+        if (!isActivated) {
+            // 未激活，显示激活对话框
+            // ActivationUI.showActivationDialog();
+        }
+    });
+});

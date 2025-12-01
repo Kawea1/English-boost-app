@@ -1,14 +1,19 @@
 {
-  "version": "3.3.0",
-  "versionCode": 330,
+  "version": "3.4.0",
+  "versionCode": 340,
   "releaseDate": "2025-12-01",
   "minVersion": "3.0.0",
   "forceUpdate": false,
+  "importance": "normal",
+  "updateSize": "2.1 MB",
   "changelog": [
-    "🎯 进度圈百分比完美居中显示",
-    "📚 词库扩充至更多学术词汇",
-    "🔧 修复已知问题，提升稳定性",
-    "✨ 界面细节优化"
+    "🔄 自动更新系统升级至 v6-v8",
+    "✨ 新增关闭按钮和点击背景关闭",
+    "📊 Web版更新进度条显示",
+    "🏷️ 支持更新重要性标签（普通/重要/紧急）",
+    "🎨 Toast提示支持多种类型",
+    "⚡ 优化更新检查性能（超时控制）",
+    "📱 移动端触觉反馈"
   ],
   "downloadUrls": {
     "web": "https://kawea1.github.io/English-boost-app/",
@@ -21,6 +26,7 @@
   "features": {
     "silentCheck": true,
     "checkInterval": 3600000,
-    "showChangelog": true
+    "showChangelog": true,
+    "remindLaterInterval": 1800000
   }
 }

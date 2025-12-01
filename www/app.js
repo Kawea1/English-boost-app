@@ -15,12 +15,14 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '3.3.0';
-    const APP_VERSION_CODE = 330;
+    const APP_VERSION = '3.4.0';
+    const APP_VERSION_CODE = 340;
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
     const UPDATE_SKIP_KEY = 'skip_version';
+    const UPDATE_REMIND_KEY = 'update_remind_time';
     const CHECK_INTERVAL = 60 * 60 * 1000; // 1小时检查一次
+    const REMIND_LATER_INTERVAL = 30 * 60 * 1000; // 30分钟后提醒
     
     // 远程版本检查地址（多个备用）
     const VERSION_URLS = [
@@ -55,13 +57,20 @@ var currentModule = null;
         return 0;
     }
     
-    // 静默检查更新（用户无感知）
-    async function silentCheckUpdate() {
+    // 静默检查更新（用户无感知）- v6改进：增加稍后提醒时间控制
+    async function silentCheckUpdate(forceCheck = false) {
         const lastCheck = localStorage.getItem(UPDATE_CHECK_KEY);
+        const remindTime = localStorage.getItem(UPDATE_REMIND_KEY);
         const now = Date.now();
         
+        // 检查稍后提醒时间
+        if (remindTime && now < parseInt(remindTime)) {
+            console.log('[Update] User requested remind later, waiting...');
+            return;
+        }
+        
         // 检查是否需要检查（间隔控制）
-        if (lastCheck && (now - parseInt(lastCheck)) < CHECK_INTERVAL) {
+        if (!forceCheck && lastCheck && (now - parseInt(lastCheck)) < CHECK_INTERVAL) {
             console.log('[Update] Skip check, last check was recent');
             return;
         }
@@ -71,10 +80,16 @@ var currentModule = null;
         
         for (const url of VERSION_URLS) {
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+                
                 const response = await fetch(url + '?t=' + now, {
                     cache: 'no-store',
-                    headers: { 'Cache-Control': 'no-cache' }
+                    headers: { 'Cache-Control': 'no-cache' },
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
                 
                 if (!response.ok) continue;
                 
@@ -82,7 +97,7 @@ var currentModule = null;
                 processUpdateInfo(data);
                 return;
             } catch (e) {
-                console.log('[Update] Failed to fetch from:', url);
+                console.log('[Update] Failed to fetch from:', url, e.message);
             }
         }
         console.log('[Update] All version check URLs failed');
@@ -108,7 +123,7 @@ var currentModule = null;
         }
     }
     
-    // 显示更新弹窗 - 版本5: 终极精美版
+    // 显示更新弹窗 - v6-v8: 终极高级版
     function showUpdateDialog(data) {
         // 移除已存在的弹窗
         const existing = document.getElementById('updateDialog');
@@ -118,13 +133,46 @@ var currentModule = null;
         const downloadUrl = data.downloadUrls?.[platform] || data.downloadUrls?.web;
         const isForce = data.forceUpdate;
         const changelog = data.changelog || [];
+        const updateSize = data.updateSize || '';
+        const importance = data.importance || 'normal'; // normal, important, critical
         
         const dialog = document.createElement('div');
         dialog.id = 'updateDialog';
-        dialog.className = 'update-dialog-overlay' + (isForce ? ' force-update' : '');
+        dialog.className = 'update-dialog-overlay' + (isForce ? ' force-update' : '') + ` importance-${importance}`;
+        
+        // v6: 计算更新大小显示
+        const sizeDisplay = updateSize ? `<span class="update-size">${updateSize}</span>` : '';
+        
+        // v7: 重要性标签
+        const importanceLabels = {
+            normal: '',
+            important: '<span class="importance-badge important">重要更新</span>',
+            critical: '<span class="importance-badge critical">紧急修复</span>'
+        };
+        const importanceBadge = importanceLabels[importance] || '';
+        
+        // v8: 更新进度显示（用于下载进度）
+        const progressBar = platform === 'web' ? `
+            <div class="update-progress-container" id="updateProgressContainer" style="display:none;">
+                <div class="update-progress-bar">
+                    <div class="update-progress-fill" id="updateProgressFill"></div>
+                </div>
+                <span class="update-progress-text" id="updateProgressText">准备更新...</span>
+            </div>
+        ` : '';
         
         dialog.innerHTML = `
             <div class="update-dialog">
+                <!-- v6: 关闭按钮（非强制更新时显示） -->
+                ${!isForce ? `
+                <button class="update-close-btn" onclick="window.appUpdate.close()" aria-label="关闭">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                    </svg>
+                </button>
+                ` : ''}
+                
                 <!-- 头部装饰 -->
                 <div class="update-header">
                     <div class="update-header-bg">
@@ -152,18 +200,28 @@ var currentModule = null;
                 
                 <!-- 内容区 -->
                 <div class="update-content">
-                    <h2 class="update-title">发现新版本</h2>
+                    <h2 class="update-title">发现新版本 ${importanceBadge}</h2>
                     <div class="update-version-info">
                         <span class="version-current">v${APP_VERSION}</span>
                         <svg class="version-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                         <span class="version-new">v${data.version}</span>
+                        ${sizeDisplay}
                     </div>
                     
                     ${changelog.length > 0 ? `
                     <div class="update-changelog">
-                        <h3>更新内容</h3>
+                        <h3>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <polyline points="14 2 14 8 20 8"/>
+                                <line x1="16" y1="13" x2="8" y2="13"/>
+                                <line x1="16" y1="17" x2="8" y2="17"/>
+                                <polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                            更新内容
+                        </h3>
                         <ul>
                             ${changelog.map(item => `<li>${item}</li>`).join('')}
                         </ul>
@@ -189,11 +247,13 @@ var currentModule = null;
                             ${platform === 'web' ? 'Web版' : platform === 'ios' ? 'iOS' : platform === 'android' ? 'Android' : platform === 'mac' ? 'macOS' : platform === 'win' ? 'Windows' : 'Linux'}
                         </span>
                     </div>
+                    
+                    ${progressBar}
                 </div>
                 
                 <!-- 按钮区 -->
                 <div class="update-actions">
-                    <button class="update-btn primary" onclick="window.appUpdate.doUpdate('${downloadUrl}')">
+                    <button class="update-btn primary" id="updatePrimaryBtn" onclick="window.appUpdate.doUpdate('${downloadUrl}')">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
                             <polyline points="7 10 12 15 17 10"/>
@@ -204,14 +264,29 @@ var currentModule = null;
                     ${!isForce ? `
                     <div class="update-secondary-actions">
                         <button class="update-btn secondary" onclick="window.appUpdate.skipVersion('${data.version}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/>
+                            </svg>
                             跳过此版本
                         </button>
                         <button class="update-btn tertiary" onclick="window.appUpdate.remindLater()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
                             稍后提醒
                         </button>
                     </div>
                     ` : `
-                    <p class="force-update-tip">此版本为重要更新，需要立即更新才能继续使用</p>
+                    <p class="force-update-tip">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <line x1="12" y1="8" x2="12" y2="12"/>
+                            <line x1="12" y1="16" x2="12.01" y2="16"/>
+                        </svg>
+                        此版本为重要更新，需要立即更新才能继续使用
+                    </p>
                     `}
                 </div>
             </div>
@@ -219,51 +294,111 @@ var currentModule = null;
         
         document.body.appendChild(dialog);
         
-        // 入场动画
+        // v7: 入场动画 + 触觉反馈
         requestAnimationFrame(() => {
             dialog.classList.add('show');
+            // 尝试触觉反馈（移动端）
+            if (navigator.vibrate) {
+                navigator.vibrate(50);
+            }
         });
+        
+        // v8: 点击背景关闭（非强制更新）
+        if (!isForce) {
+            dialog.addEventListener('click', (e) => {
+                if (e.target === dialog) {
+                    closeUpdateDialog();
+                }
+            });
+        }
     }
     
-    // 执行更新
+    // v6改进: 执行更新 - 添加进度显示
     function doUpdate(url) {
         const platform = getPlatform();
+        const btn = document.getElementById('updatePrimaryBtn');
         
-        if (platform === 'web') {
-            // Web版：刷新页面
-            if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
-            }
-            setTimeout(() => window.location.reload(true), 500);
-        } else if (platform === 'ios' || platform === 'android') {
-            // 移动端：跳转到应用商店
-            window.open(url, '_blank');
-        } else {
-            // 桌面端：打开下载页面
-            if (window.electron?.shell) {
-                window.electron.shell.openExternal(url);
-            } else {
-                window.open(url, '_blank');
-            }
+        // 禁用按钮，显示加载状态
+        if (btn) {
+            btn.disabled = true;
+            btn.innerHTML = `
+                <svg class="update-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20"/>
+                </svg>
+                <span>正在更新...</span>
+            `;
         }
         
-        closeUpdateDialog();
+        if (platform === 'web') {
+            // v8: Web版：显示进度条
+            const progressContainer = document.getElementById('updateProgressContainer');
+            const progressFill = document.getElementById('updateProgressFill');
+            const progressText = document.getElementById('updateProgressText');
+            
+            if (progressContainer) {
+                progressContainer.style.display = 'block';
+                let progress = 0;
+                const progressInterval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 90) progress = 90;
+                    if (progressFill) progressFill.style.width = progress + '%';
+                    if (progressText) progressText.textContent = `更新中... ${Math.floor(progress)}%`;
+                }, 200);
+                
+                // 清理缓存
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
+                }
+                
+                // 完成并刷新
+                setTimeout(() => {
+                    clearInterval(progressInterval);
+                    if (progressFill) progressFill.style.width = '100%';
+                    if (progressText) progressText.textContent = '更新完成，正在刷新...';
+                    setTimeout(() => window.location.reload(true), 500);
+                }, 1500);
+            } else {
+                // 无进度条时直接刷新
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
+                }
+                setTimeout(() => window.location.reload(true), 500);
+            }
+        } else if (platform === 'ios' || platform === 'android') {
+            // 移动端：跳转到应用商店
+            showToast('正在跳转到应用商店...');
+            setTimeout(() => {
+                window.open(url, '_blank');
+                closeUpdateDialog();
+            }, 500);
+        } else {
+            // 桌面端：打开下载页面
+            showToast('正在打开下载页面...');
+            setTimeout(() => {
+                if (window.electron?.shell) {
+                    window.electron.shell.openExternal(url);
+                } else {
+                    window.open(url, '_blank');
+                }
+                closeUpdateDialog();
+            }, 500);
+        }
     }
     
     // 跳过此版本
     function skipVersion(version) {
         localStorage.setItem(UPDATE_SKIP_KEY, version);
+        localStorage.removeItem(UPDATE_REMIND_KEY);
         closeUpdateDialog();
-        showToast('已跳过此版本，下个版本时会再次提醒');
+        showToast('已跳过此版本，下个版本时会再次提醒', 'info');
     }
     
-    // 稍后提醒
+    // v6改进: 稍后提醒 - 使用独立的提醒时间
     function remindLater() {
-        // 重置检查时间，30分钟后再提醒
-        const laterTime = Date.now() - CHECK_INTERVAL + (30 * 60 * 1000);
-        localStorage.setItem(UPDATE_CHECK_KEY, laterTime.toString());
+        const remindTime = Date.now() + REMIND_LATER_INTERVAL;
+        localStorage.setItem(UPDATE_REMIND_KEY, remindTime.toString());
         closeUpdateDialog();
-        showToast('好的，30分钟后再提醒您');
+        showToast('好的，30分钟后再提醒您', 'info');
     }
     
     // 关闭更新弹窗
@@ -275,11 +410,22 @@ var currentModule = null;
         }
     }
     
-    // 简单的 toast 提示
-    function showToast(message) {
+    // v7改进: Toast提示 - 支持不同类型
+    function showToast(message, type = 'success') {
+        // 移除已存在的 toast
+        const existing = document.querySelector('.update-toast');
+        if (existing) existing.remove();
+        
+        const icons = {
+            success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+            info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+            warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+            error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>'
+        };
+        
         const toast = document.createElement('div');
-        toast.className = 'update-toast';
-        toast.textContent = message;
+        toast.className = `update-toast toast-${type}`;
+        toast.innerHTML = `${icons[type] || icons.info}<span>${message}</span>`;
         document.body.appendChild(toast);
         
         requestAnimationFrame(() => toast.classList.add('show'));
@@ -290,13 +436,28 @@ var currentModule = null;
         }, 2500);
     }
     
+    // v8: 手动检查更新（设置页面调用）
+    function manualCheckUpdate() {
+        showToast('正在检查更新...', 'info');
+        silentCheckUpdate(true).then(() => {
+            // 如果没有弹窗显示，说明已是最新
+            setTimeout(() => {
+                if (!document.getElementById('updateDialog')) {
+                    showToast('当前已是最新版本 v' + APP_VERSION, 'success');
+                }
+            }, 1000);
+        });
+    }
+    
     // 暴露更新 API
     window.appUpdate = {
         check: silentCheckUpdate,
+        manualCheck: manualCheckUpdate,
         doUpdate,
         skipVersion,
         remindLater,
         close: closeUpdateDialog,
+        showToast,
         version: APP_VERSION,
         versionCode: APP_VERSION_CODE
     };
