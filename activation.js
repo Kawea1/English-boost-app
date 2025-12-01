@@ -1,13 +1,31 @@
 /**
  * 学术英语精进 - 激活码认证系统
- * v1.0
+ * v4.0 - 防分享增强版
  * 
  * 功能特性：
  * 1. 激活码绑定用户
  * 2. 多设备支持（限制同时在线数）
- * 3. 设备指纹识别
+ * 3. 设备指纹识别（增强版）
  * 4. 防分享滥用检测
  * 5. 心跳保活机制
+ * 
+ * v2.0 新增：
+ * - IP地理位置异常检测
+ * - 设备信任等级系统
+ * - 短信/邮箱二次验证
+ * - 设备命名与管理
+ * 
+ * v3.0 新增：
+ * - 行为分析防分享
+ * - 使用时段分析
+ * - 设备切换频率监控
+ * - 可疑活动自动锁定
+ * 
+ * v4.0 新增：
+ * - 试用期支持
+ * - VIP等级系统
+ * - 家庭共享模式
+ * - 设备迁移功能
  */
 
 const ActivationSystem = {
@@ -19,7 +37,29 @@ const ActivationSystem = {
         maxNewDevicesPerDay: 5,     // 每天最多新增设备数
         apiBaseUrl: '',             // 后端API地址（需要配置）
         storageKey: 'eb_activation',
-        deviceKey: 'eb_device_id'
+        deviceKey: 'eb_device_id',
+        
+        // v2.0 新增配置
+        enableGeoCheck: true,       // 启用地理位置检测
+        maxCitiesSimultaneous: 2,   // 同时允许的最大城市数
+        trustScoreThreshold: 60,    // 信任分数阈值
+        requireVerification: false,  // 是否需要二次验证
+        
+        // v3.0 新增配置
+        enableBehaviorAnalysis: true,  // 启用行为分析
+        maxSwitchesPerHour: 10,        // 每小时最大设备切换次数
+        suspiciousLockDuration: 24 * 60 * 60 * 1000, // 可疑锁定时长 24小时
+        
+        // v4.0 新增配置
+        trialDays: 7,               // 试用期天数
+        enableFamilySharing: false, // 是否启用家庭共享
+        familyMaxMembers: 5,        // 家庭最多成员数
+        vipLevels: {                // VIP等级配置
+            free: { maxDevices: 1, features: ['basic'] },
+            basic: { maxDevices: 3, features: ['basic', 'sync'] },
+            premium: { maxDevices: 5, features: ['basic', 'sync', 'offline', 'priority'] },
+            family: { maxDevices: 10, features: ['basic', 'sync', 'offline', 'priority', 'family'] }
+        }
     },
 
     // 状态
@@ -30,7 +70,25 @@ const ActivationSystem = {
         deviceId: null,
         deviceFingerprint: null,
         lastHeartbeat: null,
-        heartbeatTimer: null
+        heartbeatTimer: null,
+        
+        // v2.0 新增状态
+        deviceName: null,           // 设备名称
+        trustScore: 100,            // 信任分数 (0-100)
+        lastLocation: null,         // 上次位置
+        isVerified: false,          // 是否已二次验证
+        
+        // v3.0 新增状态
+        behaviorProfile: null,      // 行为特征
+        switchHistory: [],          // 设备切换历史
+        isSuspicious: false,        // 是否可疑
+        lockUntil: null,            // 锁定截止时间
+        
+        // v4.0 新增状态
+        vipLevel: 'free',           // VIP等级
+        trialStartDate: null,       // 试用开始日期
+        familyId: null,             // 家庭组ID
+        deviceMigrationToken: null  // 设备迁移令牌
     },
 
     /**
@@ -546,6 +604,11 @@ const ActivationSystem = {
             activationCode: this.state.activationCode,
             userId: this.state.userId,
             deviceId: this.state.deviceId,
+            deviceName: this.state.deviceName,
+            trustScore: this.state.trustScore,
+            vipLevel: this.state.vipLevel,
+            trialStartDate: this.state.trialStartDate,
+            familyId: this.state.familyId,
             lastVerified: Date.now()
         };
         localStorage.setItem(this.config.storageKey, JSON.stringify(state));
@@ -570,6 +633,8 @@ const ActivationSystem = {
         this.state.activationCode = null;
         this.state.userId = null;
         this.state.isActivated = false;
+        this.state.vipLevel = 'free';
+        this.state.trustScore = 100;
     },
 
     /**
@@ -597,7 +662,516 @@ const ActivationSystem = {
         return {
             isActivated: this.state.isActivated,
             userId: this.state.userId,
-            deviceId: this.state.deviceId
+            deviceId: this.state.deviceId,
+            deviceName: this.state.deviceName,
+            vipLevel: this.state.vipLevel,
+            trustScore: this.state.trustScore
+        };
+    },
+
+    // ==================== v2.0 新增功能 ====================
+
+    /**
+     * 获取当前IP地理位置
+     */
+    async getGeoLocation() {
+        try {
+            // 使用免费IP定位API
+            const response = await fetch('https://ipapi.co/json/', { 
+                timeout: 5000 
+            });
+            const data = await response.json();
+            return {
+                ip: data.ip,
+                city: data.city,
+                region: data.region,
+                country: data.country_name,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                timezone: data.timezone
+            };
+        } catch (error) {
+            console.warn('获取地理位置失败:', error);
+            return null;
+        }
+    },
+
+    /**
+     * 检测地理位置异常
+     */
+    async checkGeoAnomaly() {
+        if (!this.config.enableGeoCheck) return { suspicious: false };
+        
+        const currentLocation = await this.getGeoLocation();
+        if (!currentLocation) return { suspicious: false };
+        
+        const lastLocation = this.state.lastLocation;
+        this.state.lastLocation = currentLocation;
+        
+        if (!lastLocation) return { suspicious: false };
+        
+        // 计算两地距离
+        const distance = this.calculateDistance(
+            lastLocation.latitude, lastLocation.longitude,
+            currentLocation.latitude, currentLocation.longitude
+        );
+        
+        // 计算时间差（小时）
+        const timeDiff = (Date.now() - (this.state.lastHeartbeat || Date.now())) / (1000 * 60 * 60);
+        
+        // 如果距离超过500km且时间少于2小时，可疑
+        if (distance > 500 && timeDiff < 2) {
+            return {
+                suspicious: true,
+                reason: 'impossible_travel',
+                details: `${timeDiff.toFixed(1)}小时内从${lastLocation.city}移动到${currentLocation.city}（${distance.toFixed(0)}km）`
+            };
+        }
+        
+        return { suspicious: false };
+    },
+
+    /**
+     * 计算两点间距离（km）
+     */
+    calculateDistance(lat1, lon1, lat2, lon2) {
+        const R = 6371; // 地球半径(km)
+        const dLat = (lat2 - lat1) * Math.PI / 180;
+        const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                  Math.sin(dLon/2) * Math.sin(dLon/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+        return R * c;
+    },
+
+    /**
+     * 设置设备名称
+     */
+    async setDeviceName(name) {
+        this.state.deviceName = name;
+        this.saveActivationState();
+        
+        // 同步到服务器
+        try {
+            await this.callActivationAPI('updateDevice', {
+                code: this.state.activationCode,
+                deviceId: this.state.deviceId,
+                deviceName: name
+            });
+        } catch (error) {
+            console.warn('同步设备名称失败:', error);
+        }
+    },
+
+    /**
+     * 获取自动设备名称
+     */
+    getAutoDeviceName() {
+        const platform = navigator.platform;
+        const ua = navigator.userAgent;
+        
+        // 检测设备类型
+        if (/iPhone/.test(ua)) return 'iPhone';
+        if (/iPad/.test(ua)) return 'iPad';
+        if (/Android/.test(ua)) {
+            const match = ua.match(/\(([^)]+)\)/);
+            if (match) {
+                const parts = match[1].split(';');
+                const model = parts[parts.length - 1]?.trim();
+                if (model && model !== 'wv') return model;
+            }
+            return 'Android设备';
+        }
+        if (/Mac/.test(platform)) return 'Mac电脑';
+        if (/Win/.test(platform)) return 'Windows电脑';
+        if (/Linux/.test(platform)) return 'Linux电脑';
+        
+        return '未知设备';
+    },
+
+    /**
+     * 更新信任分数
+     */
+    updateTrustScore(delta, reason) {
+        const oldScore = this.state.trustScore;
+        this.state.trustScore = Math.max(0, Math.min(100, this.state.trustScore + delta));
+        
+        console.log(`信任分数: ${oldScore} → ${this.state.trustScore} (${reason})`);
+        
+        // 信任分数过低，触发二次验证
+        if (this.state.trustScore < this.config.trustScoreThreshold && !this.state.isVerified) {
+            this.requireVerification();
+        }
+        
+        this.saveActivationState();
+    },
+
+    /**
+     * 要求二次验证
+     */
+    requireVerification() {
+        window.dispatchEvent(new CustomEvent('activationRequireVerification', {
+            detail: { trustScore: this.state.trustScore }
+        }));
+    },
+
+    /**
+     * 完成二次验证
+     */
+    completeVerification(code) {
+        // 验证码逻辑（需要后端支持）
+        this.state.isVerified = true;
+        this.updateTrustScore(30, '完成二次验证');
+    },
+
+    // ==================== v3.0 新增功能 ====================
+
+    /**
+     * 记录设备切换
+     */
+    recordDeviceSwitch() {
+        const now = Date.now();
+        this.state.switchHistory.push(now);
+        
+        // 只保留最近1小时的记录
+        const oneHourAgo = now - 60 * 60 * 1000;
+        this.state.switchHistory = this.state.switchHistory.filter(t => t > oneHourAgo);
+        
+        // 检查切换频率
+        if (this.state.switchHistory.length > this.config.maxSwitchesPerHour) {
+            this.flagSuspicious('excessive_switching', 
+                `1小时内切换设备${this.state.switchHistory.length}次`);
+        }
+    },
+
+    /**
+     * 标记为可疑
+     */
+    flagSuspicious(reason, details) {
+        this.state.isSuspicious = true;
+        this.state.lockUntil = Date.now() + this.config.suspiciousLockDuration;
+        this.updateTrustScore(-30, `可疑活动: ${reason}`);
+        
+        window.dispatchEvent(new CustomEvent('activationSuspicious', {
+            detail: { reason, details, lockUntil: this.state.lockUntil }
+        }));
+        
+        // 通知服务器
+        this.callActivationAPI('reportSuspicious', {
+            code: this.state.activationCode,
+            deviceId: this.state.deviceId,
+            reason,
+            details
+        }).catch(() => {});
+    },
+
+    /**
+     * 分析使用行为
+     */
+    analyzeBehavior() {
+        const now = new Date();
+        const hour = now.getHours();
+        const dayOfWeek = now.getDay();
+        
+        // 获取历史行为特征
+        let profile = this.state.behaviorProfile || {
+            activeHours: {},      // 活跃时段分布
+            activeDays: {},       // 活跃日期分布
+            sessionDurations: [], // 会话时长
+            lastAnalysis: null
+        };
+        
+        // 更新活跃时段
+        profile.activeHours[hour] = (profile.activeHours[hour] || 0) + 1;
+        profile.activeDays[dayOfWeek] = (profile.activeDays[dayOfWeek] || 0) + 1;
+        profile.lastAnalysis = Date.now();
+        
+        this.state.behaviorProfile = profile;
+        
+        // 保存到本地
+        localStorage.setItem('eb_behavior_profile', JSON.stringify(profile));
+        
+        return profile;
+    },
+
+    /**
+     * 检测异常行为模式
+     */
+    detectAnomalousBehavior() {
+        const profile = this.state.behaviorProfile;
+        if (!profile || !profile.lastAnalysis) return false;
+        
+        const now = new Date();
+        const hour = now.getHours();
+        
+        // 计算总活跃次数
+        const totalActivity = Object.values(profile.activeHours).reduce((a, b) => a + b, 0);
+        if (totalActivity < 10) return false; // 数据不足
+        
+        // 检查当前时段是否异常
+        const currentHourActivity = profile.activeHours[hour] || 0;
+        const avgActivity = totalActivity / 24;
+        
+        // 如果当前时段活跃度远低于平均值的10%，可能是异常
+        if (currentHourActivity < avgActivity * 0.1 && avgActivity > 1) {
+            return {
+                anomaly: true,
+                reason: 'unusual_time',
+                details: `通常不在${hour}点使用`
+            };
+        }
+        
+        return { anomaly: false };
+    },
+
+    /**
+     * 检查是否被锁定
+     */
+    isLocked() {
+        if (!this.state.lockUntil) return false;
+        if (Date.now() > this.state.lockUntil) {
+            this.state.lockUntil = null;
+            this.state.isSuspicious = false;
+            return false;
+        }
+        return true;
+    },
+
+    /**
+     * 获取剩余锁定时间
+     */
+    getRemainingLockTime() {
+        if (!this.state.lockUntil) return 0;
+        return Math.max(0, this.state.lockUntil - Date.now());
+    },
+
+    // ==================== v4.0 新增功能 ====================
+
+    /**
+     * 开始试用
+     */
+    startTrial() {
+        if (this.state.trialStartDate) {
+            return { success: false, message: '已使用过试用' };
+        }
+        
+        this.state.trialStartDate = Date.now();
+        this.state.isActivated = true;
+        this.state.vipLevel = 'basic'; // 试用期享受基础VIP
+        this.saveActivationState();
+        
+        return { 
+            success: true, 
+            message: `试用已开始，${this.config.trialDays}天内免费使用`,
+            expiresAt: this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000
+        };
+    },
+
+    /**
+     * 检查试用状态
+     */
+    checkTrialStatus() {
+        if (!this.state.trialStartDate) {
+            return { inTrial: false, canStartTrial: true };
+        }
+        
+        const trialEnd = this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000;
+        const now = Date.now();
+        
+        if (now < trialEnd) {
+            const remainingDays = Math.ceil((trialEnd - now) / (24 * 60 * 60 * 1000));
+            return { 
+                inTrial: true, 
+                remainingDays,
+                expiresAt: trialEnd
+            };
+        }
+        
+        return { inTrial: false, expired: true, canStartTrial: false };
+    },
+
+    /**
+     * 获取VIP等级配置
+     */
+    getVipConfig() {
+        return this.config.vipLevels[this.state.vipLevel] || this.config.vipLevels.free;
+    },
+
+    /**
+     * 检查功能权限
+     */
+    hasFeature(feature) {
+        const config = this.getVipConfig();
+        return config.features.includes(feature);
+    },
+
+    /**
+     * 获取当前最大设备数
+     */
+    getCurrentMaxDevices() {
+        const config = this.getVipConfig();
+        return config.maxDevices;
+    },
+
+    /**
+     * 创建家庭组
+     */
+    async createFamily(familyName) {
+        if (!this.config.enableFamilySharing) {
+            return { success: false, message: '未启用家庭共享功能' };
+        }
+        
+        if (!this.hasFeature('family')) {
+            return { success: false, message: '请升级到家庭版以使用此功能' };
+        }
+        
+        try {
+            const result = await this.callActivationAPI('createFamily', {
+                code: this.state.activationCode,
+                familyName,
+                ownerId: this.state.userId
+            });
+            
+            if (result.success) {
+                this.state.familyId = result.familyId;
+                this.saveActivationState();
+            }
+            
+            return result;
+        } catch (error) {
+            return { success: false, message: '创建家庭组失败' };
+        }
+    },
+
+    /**
+     * 邀请家庭成员
+     */
+    async inviteFamilyMember(email) {
+        if (!this.state.familyId) {
+            return { success: false, message: '请先创建家庭组' };
+        }
+        
+        try {
+            return await this.callActivationAPI('inviteFamily', {
+                familyId: this.state.familyId,
+                email,
+                inviterId: this.state.userId
+            });
+        } catch (error) {
+            return { success: false, message: '邀请失败' };
+        }
+    },
+
+    /**
+     * 生成设备迁移令牌
+     */
+    async generateMigrationToken() {
+        const token = this.generateUUID().substring(0, 8).toUpperCase();
+        const expires = Date.now() + 10 * 60 * 1000; // 10分钟有效
+        
+        this.state.deviceMigrationToken = {
+            token,
+            expires,
+            fromDevice: this.state.deviceId
+        };
+        
+        // 保存到服务器
+        try {
+            await this.callActivationAPI('createMigration', {
+                code: this.state.activationCode,
+                token,
+                fromDeviceId: this.state.deviceId,
+                expires
+            });
+        } catch (error) {
+            console.warn('保存迁移令牌失败:', error);
+        }
+        
+        return { token, expires };
+    },
+
+    /**
+     * 使用迁移令牌
+     */
+    async useMigrationToken(token) {
+        try {
+            const result = await this.callActivationAPI('useMigration', {
+                token: token.toUpperCase(),
+                newDeviceId: this.state.deviceId,
+                newFingerprint: this.state.deviceFingerprint,
+                newDeviceInfo: this.getDeviceInfo()
+            });
+            
+            if (result.success) {
+                this.state.isActivated = true;
+                this.state.activationCode = result.code;
+                this.state.userId = result.userId;
+                this.state.vipLevel = result.vipLevel;
+                this.saveActivationState();
+                this.startHeartbeat();
+            }
+            
+            return result;
+        } catch (error) {
+            return { success: false, message: '迁移令牌无效或已过期' };
+        }
+    },
+
+    /**
+     * 获取我的设备列表
+     */
+    async getMyDevices() {
+        try {
+            const result = await this.callActivationAPI('devices', {
+                code: this.state.activationCode
+            });
+            return result.devices || [];
+        } catch (error) {
+            return [];
+        }
+    },
+
+    /**
+     * 远程登出设备
+     */
+    async logoutDevice(deviceId) {
+        try {
+            const result = await this.callActivationAPI('kick', {
+                code: this.state.activationCode,
+                deviceIdToKick: deviceId
+            });
+            return result;
+        } catch (error) {
+            return { success: false, message: '操作失败' };
+        }
+    },
+
+    /**
+     * 获取激活状态摘要
+     */
+    getStatusSummary() {
+        const trialStatus = this.checkTrialStatus();
+        const vipConfig = this.getVipConfig();
+        
+        return {
+            isActivated: this.state.isActivated,
+            vipLevel: this.state.vipLevel,
+            vipLevelName: {
+                free: '免费版',
+                basic: '基础版',
+                premium: '高级版',
+                family: '家庭版'
+            }[this.state.vipLevel] || '免费版',
+            maxDevices: vipConfig.maxDevices,
+            features: vipConfig.features,
+            inTrial: trialStatus.inTrial,
+            trialRemainingDays: trialStatus.remainingDays,
+            trustScore: this.state.trustScore,
+            isLocked: this.isLocked(),
+            lockRemainingTime: this.getRemainingLockTime(),
+            deviceName: this.state.deviceName || this.getAutoDeviceName(),
+            familyId: this.state.familyId
         };
     }
 };
