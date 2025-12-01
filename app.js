@@ -15,21 +15,41 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
+    // ==================== 版本与更新配置 ====================
     const APP_VERSION = '3.5.0';
     const APP_VERSION_CODE = 350;
+    const APP_BUILD_TIME = '20251201';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
     const UPDATE_SKIP_KEY = 'skip_version';
     const UPDATE_REMIND_KEY = 'update_remind_time';
-    const CHECK_INTERVAL = 60 * 60 * 1000; // 1小时检查一次
+    const UPDATE_RETRY_KEY = 'update_retry_count';
+    const UPDATE_INTEGRITY_KEY = 'update_integrity_check';
+    const CHECK_INTERVAL = 30 * 60 * 1000; // 30分钟检查一次（更频繁）
     const REMIND_LATER_INTERVAL = 30 * 60 * 1000; // 30分钟后提醒
+    const MAX_RETRY_COUNT = 3; // 最大重试次数
+    const FETCH_TIMEOUT = 15000; // 请求超时时间
     
-    // 远程版本检查地址（多个备用）
+    // 远程版本检查地址（多个备用源 - 优先级从高到低）
     const VERSION_URLS = [
-        'https://raw.githubusercontent.com/Kawea1/English-boost-app/main/version.json',
+        // 主源：GitHub Pages（CDN加速）
         'https://kawea1.github.io/English-boost-app/version.json',
+        // 备用源1：GitHub Raw（直接访问）
+        'https://raw.githubusercontent.com/Kawea1/English-boost-app/main/version.json',
+        // 备用源2：jsDelivr CDN（中国友好）
+        'https://cdn.jsdelivr.net/gh/Kawea1/English-boost-app@main/version.json',
+        // 备用源3：Statically CDN
+        'https://cdn.statically.io/gh/Kawea1/English-boost-app/main/version.json',
+        // 本地源：离线备份
         './version.json'
     ];
+    
+    // 资源更新源（用于验证更新完整性）
+    const RESOURCE_URLS = {
+        primary: 'https://kawea1.github.io/English-boost-app/',
+        cdn: 'https://cdn.jsdelivr.net/gh/Kawea1/English-boost-app@main/',
+        raw: 'https://raw.githubusercontent.com/Kawea1/English-boost-app/main/'
+    };
     
     // 获取当前平台
     function getPlatform() {
@@ -57,69 +77,201 @@ var currentModule = null;
         return 0;
     }
     
-    // 静默检查更新（用户无感知）- v6改进：增加稍后提醒时间控制
+    // ==================== V3: 增强版本检测 ====================
+    // 带超时的fetch
+    async function fetchWithTimeout(url, options = {}, timeout = FETCH_TIMEOUT) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        
+        try {
+            const response = await fetch(url, {
+                ...options,
+                signal: controller.signal
+            });
+            clearTimeout(timeoutId);
+            return response;
+        } catch (error) {
+            clearTimeout(timeoutId);
+            throw error;
+        }
+    }
+    
+    // 验证版本数据有效性
+    function validateVersionData(data) {
+        if (!data || typeof data !== 'object') return false;
+        if (!data.version || typeof data.version !== 'string') return false;
+        if (!/^\d+\.\d+\.\d+$/.test(data.version)) return false;
+        if (data.versionCode && typeof data.versionCode !== 'number') return false;
+        return true;
+    }
+    
+    // 静默检查更新（用户无感知）- V2-V5增强版
     async function silentCheckUpdate(forceCheck = false) {
         const lastCheck = localStorage.getItem(UPDATE_CHECK_KEY);
         const remindTime = localStorage.getItem(UPDATE_REMIND_KEY);
+        const retryCount = parseInt(localStorage.getItem(UPDATE_RETRY_KEY) || '0');
         const now = Date.now();
         
         // 检查稍后提醒时间
-        if (remindTime && now < parseInt(remindTime)) {
+        if (remindTime && now < parseInt(remindTime) && !forceCheck) {
             console.log('[Update] User requested remind later, waiting...');
             return;
         }
         
-        // 检查是否需要检查（间隔控制）
-        if (!forceCheck && lastCheck && (now - parseInt(lastCheck)) < CHECK_INTERVAL) {
+        // 检查是否需要检查（间隔控制）- 失败重试时缩短间隔
+        const effectiveInterval = retryCount > 0 ? CHECK_INTERVAL / 4 : CHECK_INTERVAL;
+        if (!forceCheck && lastCheck && (now - parseInt(lastCheck)) < effectiveInterval) {
             console.log('[Update] Skip check, last check was recent');
             return;
         }
         
-        console.log('[Update] Silent checking for updates...');
+        console.log(`[Update] Checking for updates... (retry: ${retryCount})`);
         localStorage.setItem(UPDATE_CHECK_KEY, now.toString());
         
-        for (const url of VERSION_URLS) {
+        // V4: 多源并发检测（取最快响应）
+        let versionData = null;
+        let successSource = null;
+        
+        // 尝试并发请求所有源
+        const fetchPromises = VERSION_URLS.map(async (url, index) => {
             try {
-                const controller = new AbortController();
-                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10秒超时
+                const response = await fetchWithTimeout(
+                    url + '?t=' + now + '&r=' + Math.random(),
+                    {
+                        cache: 'no-store',
+                        headers: { 
+                            'Cache-Control': 'no-cache, no-store, must-revalidate',
+                            'Pragma': 'no-cache'
+                        }
+                    },
+                    FETCH_TIMEOUT
+                );
                 
-                const response = await fetch(url + '?t=' + now, {
-                    cache: 'no-store',
-                    headers: { 'Cache-Control': 'no-cache' },
-                    signal: controller.signal
-                });
-                
-                clearTimeout(timeoutId);
-                
-                if (!response.ok) continue;
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
                 
                 const data = await response.json();
-                processUpdateInfo(data);
-                return;
+                
+                // 验证数据有效性
+                if (!validateVersionData(data)) {
+                    throw new Error('Invalid version data');
+                }
+                
+                return { data, url, index };
             } catch (e) {
-                console.log('[Update] Failed to fetch from:', url, e.message);
+                console.log(`[Update] Source ${index + 1} failed:`, url, e.message);
+                return null;
+            }
+        });
+        
+        // 使用 Promise.any 获取第一个成功的结果
+        try {
+            const results = await Promise.allSettled(fetchPromises);
+            const successResults = results
+                .filter(r => r.status === 'fulfilled' && r.value)
+                .map(r => r.value)
+                .sort((a, b) => a.index - b.index); // 按优先级排序
+            
+            if (successResults.length > 0) {
+                versionData = successResults[0].data;
+                successSource = successResults[0].url;
+                console.log(`[Update] Got version from: ${successSource}`);
+                
+                // V5: 交叉验证（如果有多个成功源，验证版本一致性）
+                if (successResults.length > 1) {
+                    const versions = successResults.map(r => r.data.version);
+                    const allSame = versions.every(v => v === versions[0]);
+                    if (!allSame) {
+                        console.warn('[Update] Version mismatch across sources:', versions);
+                        // 使用最高版本（安全起见）
+                        versionData = successResults.reduce((max, curr) => 
+                            compareVersion(curr.data.version, max.data.version) > 0 ? curr : max
+                        ).data;
+                    }
+                }
+                
+                // 重置重试计数
+                localStorage.setItem(UPDATE_RETRY_KEY, '0');
+            }
+        } catch (e) {
+            console.error('[Update] All sources failed');
+        }
+        
+        // 处理结果
+        if (versionData) {
+            processUpdateInfo(versionData, successSource);
+        } else {
+            // V4: 失败重试机制
+            const newRetryCount = retryCount + 1;
+            if (newRetryCount <= MAX_RETRY_COUNT) {
+                console.log(`[Update] Will retry later (${newRetryCount}/${MAX_RETRY_COUNT})`);
+                localStorage.setItem(UPDATE_RETRY_KEY, newRetryCount.toString());
+            } else {
+                console.log('[Update] Max retries reached, giving up for now');
+                localStorage.setItem(UPDATE_RETRY_KEY, '0');
             }
         }
-        console.log('[Update] All version check URLs failed');
     }
     
-    // 处理更新信息
-    function processUpdateInfo(data) {
+    // 处理更新信息 - V3增强
+    function processUpdateInfo(data, source = '') {
         const remoteVersion = data.version;
         const skipVersion = localStorage.getItem(UPDATE_SKIP_KEY);
+        const minVersion = data.minVersion;
+        
+        // V3: 最低版本检查（强制更新旧版本）
+        if (minVersion && compareVersion(APP_VERSION, minVersion) < 0) {
+            console.log('[Update] Current version below minimum, forcing update');
+            data.forceUpdate = true;
+        }
         
         // 检查是否有新版本
         if (compareVersion(remoteVersion, APP_VERSION) > 0) {
-            // 检查是否已跳过此版本
+            // 检查是否已跳过此版本（强制更新时忽略）
             if (skipVersion === remoteVersion && !data.forceUpdate) {
                 console.log('[Update] User skipped this version:', remoteVersion);
                 return;
             }
             
-            console.log('[Update] New version available:', remoteVersion);
+            console.log('[Update] New version available:', remoteVersion, 'from', source);
+            
+            // V5: 记录更新源，用于下载时优先使用
+            data._updateSource = source;
+            
             showUpdateDialog(data);
         } else {
             console.log('[Update] Current version is up to date:', APP_VERSION);
+            
+            // V5: 版本一致时验证本地资源完整性
+            verifyLocalResources();
+        }
+    }
+    
+    // V5: 验证本地资源完整性
+    async function verifyLocalResources() {
+        const lastIntegrityCheck = localStorage.getItem(UPDATE_INTEGRITY_KEY);
+        const now = Date.now();
+        
+        // 每天检查一次
+        if (lastIntegrityCheck && (now - parseInt(lastIntegrityCheck)) < 24 * 60 * 60 * 1000) {
+            return;
+        }
+        
+        console.log('[Update] Verifying local resources integrity...');
+        localStorage.setItem(UPDATE_INTEGRITY_KEY, now.toString());
+        
+        try {
+            // 检查 Service Worker 是否正常
+            if ('serviceWorker' in navigator) {
+                const registration = await navigator.serviceWorker.getRegistration();
+                if (registration && registration.active) {
+                    // 请求 SW 检查更新
+                    registration.active.postMessage({ type: 'CHECK_UPDATE' });
+                }
+            }
+        } catch (e) {
+            console.log('[Update] Integrity check error:', e);
         }
     }
     
@@ -313,8 +465,9 @@ var currentModule = null;
         }
     }
     
-    // v6改进: 执行更新 - 添加进度显示
-    function doUpdate(url) {
+    // ==================== V5: 增强版更新执行 ====================
+    // 执行更新 - 添加确认、进度和回滚保护
+    async function doUpdate(url) {
         const platform = getPlatform();
         const btn = document.getElementById('updatePrimaryBtn');
         
@@ -325,45 +478,13 @@ var currentModule = null;
                 <svg class="update-spinner" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="10" stroke-dasharray="60" stroke-dashoffset="20"/>
                 </svg>
-                <span>正在更新...</span>
+                <span>正在准备更新...</span>
             `;
         }
         
         if (platform === 'web') {
-            // v8: Web版：显示进度条
-            const progressContainer = document.getElementById('updateProgressContainer');
-            const progressFill = document.getElementById('updateProgressFill');
-            const progressText = document.getElementById('updateProgressText');
-            
-            if (progressContainer) {
-                progressContainer.style.display = 'block';
-                let progress = 0;
-                const progressInterval = setInterval(() => {
-                    progress += Math.random() * 15;
-                    if (progress > 90) progress = 90;
-                    if (progressFill) progressFill.style.width = progress + '%';
-                    if (progressText) progressText.textContent = `更新中... ${Math.floor(progress)}%`;
-                }, 200);
-                
-                // 清理缓存
-                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
-                }
-                
-                // 完成并刷新
-                setTimeout(() => {
-                    clearInterval(progressInterval);
-                    if (progressFill) progressFill.style.width = '100%';
-                    if (progressText) progressText.textContent = '更新完成，正在刷新...';
-                    setTimeout(() => window.location.reload(true), 500);
-                }, 1500);
-            } else {
-                // 无进度条时直接刷新
-                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                    navigator.serviceWorker.controller.postMessage('CLEAR_CACHE');
-                }
-                setTimeout(() => window.location.reload(true), 500);
-            }
+            // V5: Web版增强更新流程
+            await performWebUpdate(btn);
         } else if (platform === 'ios' || platform === 'android') {
             // 移动端：跳转到应用商店
             showToast('正在跳转到应用商店...');
@@ -376,6 +497,185 @@ var currentModule = null;
             showToast('正在打开下载页面...');
             setTimeout(() => {
                 if (window.electron?.shell) {
+                    window.electron.shell.openExternal(url);
+                } else {
+                    window.open(url, '_blank');
+                }
+                closeUpdateDialog();
+            }, 500);
+        }
+    }
+    
+    // V5: Web版增强更新流程
+    async function performWebUpdate(btn) {
+        const progressContainer = document.getElementById('updateProgressContainer');
+        const progressFill = document.getElementById('updateProgressFill');
+        const progressText = document.getElementById('updateProgressText');
+        
+        // 显示进度容器
+        if (progressContainer) {
+            progressContainer.style.display = 'block';
+        }
+        
+        const updateProgress = (percent, text) => {
+            if (progressFill) progressFill.style.width = percent + '%';
+            if (progressText) progressText.textContent = text;
+            if (btn) btn.querySelector('span').textContent = text;
+        };
+        
+        try {
+            // 阶段1: 备份当前版本信息（用于回滚检测）
+            updateProgress(10, '备份当前状态...');
+            const backupData = {
+                version: APP_VERSION,
+                timestamp: Date.now(),
+                url: window.location.href
+            };
+            localStorage.setItem('update_backup', JSON.stringify(backupData));
+            await sleep(300);
+            
+            // 阶段2: 注销旧 Service Worker
+            updateProgress(25, '清理旧版本...');
+            if ('serviceWorker' in navigator) {
+                const registrations = await navigator.serviceWorker.getRegistrations();
+                for (const reg of registrations) {
+                    // 发送强制更新消息
+                    if (reg.active) {
+                        reg.active.postMessage({ type: 'FORCE_UPDATE' });
+                    }
+                    await reg.unregister();
+                    console.log('[Update] Unregistered SW:', reg.scope);
+                }
+            }
+            await sleep(500);
+            
+            // 阶段3: 清理所有缓存
+            updateProgress(45, '清理缓存...');
+            if ('caches' in window) {
+                const cacheNames = await caches.keys();
+                for (const name of cacheNames) {
+                    await caches.delete(name);
+                    console.log('[Update] Deleted cache:', name);
+                }
+            }
+            await sleep(300);
+            
+            // 阶段4: 预获取新版本关键资源
+            updateProgress(60, '获取新版本...');
+            const criticalResources = ['app.js', 'styles.css', 'index.html'];
+            const fetchResults = await Promise.allSettled(
+                criticalResources.map(res => 
+                    fetchWithTimeout(res + '?v=' + Date.now(), { cache: 'no-store' }, 10000)
+                )
+            );
+            
+            const allFetched = fetchResults.every(r => r.status === 'fulfilled' && r.value?.ok);
+            if (!allFetched) {
+                console.warn('[Update] Some resources failed to prefetch');
+            }
+            await sleep(300);
+            
+            // 阶段5: 重新注册 Service Worker
+            updateProgress(80, '安装新版本...');
+            if ('serviceWorker' in navigator) {
+                try {
+                    const registration = await navigator.serviceWorker.register('/sw.js', {
+                        updateViaCache: 'none'
+                    });
+                    console.log('[Update] New SW registered:', registration.scope);
+                    
+                    // 等待新 SW 激活
+                    if (registration.installing || registration.waiting) {
+                        await new Promise(resolve => {
+                            const sw = registration.installing || registration.waiting;
+                            sw.addEventListener('statechange', () => {
+                                if (sw.state === 'activated') resolve();
+                            });
+                            // 超时保护
+                            setTimeout(resolve, 3000);
+                        });
+                    }
+                } catch (e) {
+                    console.log('[Update] SW registration failed:', e);
+                }
+            }
+            await sleep(500);
+            
+            // 阶段6: 完成并刷新
+            updateProgress(100, '更新完成，正在刷新...');
+            
+            // 记录更新成功
+            localStorage.setItem('update_success', JSON.stringify({
+                fromVersion: APP_VERSION,
+                timestamp: Date.now()
+            }));
+            localStorage.removeItem('update_backup');
+            
+            // 延迟刷新，让用户看到完成状态
+            await sleep(800);
+            
+            // 强制刷新（清除缓存）
+            window.location.href = window.location.pathname + '?updated=' + Date.now();
+            
+        } catch (error) {
+            console.error('[Update] Update failed:', error);
+            updateProgress(0, '更新失败');
+            
+            // 恢复按钮
+            if (btn) {
+                btn.disabled = false;
+                btn.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    <span>重试更新</span>
+                `;
+            }
+            
+            showToast('更新失败，请检查网络后重试', 'error');
+        }
+    }
+    
+    // 辅助函数：延迟
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+    
+    // V5: 检查更新后的版本验证
+    function checkUpdateSuccess() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('updated')) {
+            const updateSuccess = localStorage.getItem('update_success');
+            if (updateSuccess) {
+                const data = JSON.parse(updateSuccess);
+                if (compareVersion(APP_VERSION, data.fromVersion) > 0) {
+                    console.log('[Update] Successfully updated from', data.fromVersion, 'to', APP_VERSION);
+                    showToast(`已更新到 v${APP_VERSION}`, 'success');
+                } else if (APP_VERSION === data.fromVersion) {
+                    console.warn('[Update] Version unchanged, update may have failed');
+                    showToast('更新可能未生效，请手动刷新', 'warning');
+                }
+                localStorage.removeItem('update_success');
+            }
+            
+            // 清理 URL 参数
+            const cleanUrl = window.location.pathname + window.location.hash;
+            window.history.replaceState({}, '', cleanUrl);
+        }
+        
+        // 检查是否有失败的更新需要回滚
+        const backup = localStorage.getItem('update_backup');
+        if (backup) {
+            const data = JSON.parse(backup);
+            // 如果备份存在超过5分钟，说明更新失败了
+            if (Date.now() - data.timestamp > 5 * 60 * 1000) {
+                console.warn('[Update] Found stale backup, previous update may have failed');
+                localStorage.removeItem('update_backup');
+            }
+        }
+    }
                     window.electron.shell.openExternal(url);
                 } else {
                     window.open(url, '_blank');
@@ -560,6 +860,9 @@ var currentModule = null;
         });
     }
     
+    // V5: 启动时检查更新结果
+    checkUpdateSuccess();
+    
     // 页面加载时检查版本
     checkVersion();
     
@@ -574,6 +877,33 @@ var currentModule = null;
             silentCheckUpdate();
         }
     });
+    
+    // V4: 监听 Service Worker 更新消息
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', (event) => {
+            const { type, version } = event.data || {};
+            
+            if (type === 'SW_UPDATED') {
+                console.log('[Update] SW updated to version:', version);
+                // 如果 SW 版本比 App 版本新，提示用户刷新
+                if (version && compareVersion(version, APP_VERSION) > 0) {
+                    showToast('检测到新版本，点击刷新', 'info', 5000, () => {
+                        window.location.reload(true);
+                    });
+                }
+            } else if (type === 'CACHE_CLEARED') {
+                console.log('[Update] Cache cleared by SW');
+            }
+        });
+        
+        // V5: 定期检查 SW 更新
+        setInterval(async () => {
+            const registration = await navigator.serviceWorker.getRegistration();
+            if (registration) {
+                registration.update().catch(console.log);
+            }
+        }, 30 * 60 * 1000); // 每30分钟检查一次
+    }
     
     // 暴露清理函数供手动调用
     window.clearAppCache = clearAppCache;

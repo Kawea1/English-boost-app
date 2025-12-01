@@ -1,6 +1,7 @@
 {
   "version": "3.5.0",
   "versionCode": 350,
+  "buildTime": "20251201",
   "releaseDate": "2025-12-01",
   "minVersion": "3.0.0",
   "forceUpdate": false,
@@ -13,7 +14,7 @@
     "📚 v3: 智能引导 - 新手教程和功能提示",
     "🏆 v4: 成就系统 - 解锁徽章和等级系统",
     "🎨 v5: 个性化体验 - 学习分析和智能提醒",
-    "🎉 五彩纸屑庆祝动画",
+    "🔄 更新系统大幅增强",
     "📈 等级提升特效"
   ],
   "downloadUrls": {
@@ -26,8 +27,25 @@
   },
   "features": {
     "silentCheck": true,
-    "checkInterval": 3600000,
+    "checkInterval": 1800000,
     "showChangelog": true,
-    "remindLaterInterval": 1800000
+    "remindLaterInterval": 1800000,
+    "multiSourceVerify": true,
+    "integrityCheck": true
+  },
+  "updateSources": {
+    "primary": "https://kawea1.github.io/English-boost-app/",
+    "cdn": "https://cdn.jsdelivr.net/gh/Kawea1/English-boost-app@main/",
+    "raw": "https://raw.githubusercontent.com/Kawea1/English-boost-app/main/"
+  },
+  "criticalResources": [
+    "app.js",
+    "styles.css", 
+    "index.html",
+    "sw.js"
+  ],
+  "integrity": {
+    "checkEnabled": true,
+    "algorithm": "sha256"
   }
 }
