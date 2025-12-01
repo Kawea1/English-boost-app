@@ -1,19 +1,20 @@
 {
-  "version": "3.4.0",
-  "versionCode": 340,
+  "version": "3.5.0",
+  "versionCode": 350,
   "releaseDate": "2025-12-01",
   "minVersion": "3.0.0",
   "forceUpdate": false,
-  "importance": "normal",
-  "updateSize": "2.1 MB",
+  "importance": "important",
+  "updateSize": "2.3 MB",
   "changelog": [
-    "🔄 自动更新系统升级至 v6-v8",
-    "✨ 新增关闭按钮和点击背景关闭",
-    "📊 Web版更新进度条显示",
-    "🏷️ 支持更新重要性标签（普通/重要/紧急）",
-    "🎨 Toast提示支持多种类型",
-    "⚡ 优化更新检查性能（超时控制）",
-    "📱 移动端触觉反馈"
+    "✨ 用户体验全面升级5个版本",
+    "🎯 v1: 微交互增强 - 涟漪/弹跳/翻转动画",
+    "💝 v2: 情感化设计 - 智能Toast和鼓励系统",
+    "📚 v3: 智能引导 - 新手教程和功能提示",
+    "🏆 v4: 成就系统 - 解锁徽章和等级系统",
+    "🎨 v5: 个性化体验 - 学习分析和智能提醒",
+    "🎉 五彩纸屑庆祝动画",
+    "📈 等级提升特效"
   ],
   "downloadUrls": {
     "web": "https://kawea1.github.io/English-boost-app/",

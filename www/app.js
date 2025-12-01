@@ -15,8 +15,8 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '3.4.0';
-    const APP_VERSION_CODE = 340;
+    const APP_VERSION = '3.5.0';
+    const APP_VERSION_CODE = 350;
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
     const UPDATE_SKIP_KEY = 'skip_version';

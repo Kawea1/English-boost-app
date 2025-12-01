@@ -433,9 +433,129 @@ A: 每天新增设备数有上限（默认5台），超过会触发限制。
 
 ## 更新日志
 
+### v4.0 (2024-01) - 家庭共享与设备迁移
+- 🏠 **家庭共享功能**
+  - 创建家庭组，共享设备池
+  - 邀请家人加入
+  - 家庭成员管理
+- 🔄 **设备迁移**
+  - 生成迁移令牌
+  - 跨设备无缝迁移
+  - 10分钟有效期防滥用
+- 🎨 **增强UI**
+  - 设备管理界面
+  - VIP状态展示
+  - 试用激活对话框
+  - 迁移操作界面
+
+### v3.0 (2024-01) - VIP体系与试用系统
+- 👑 **VIP等级体系**
+  - free: 1设备
+  - basic: 3设备
+  - premium: 5设备
+  - family: 10设备
+- 🎁 **试用系统**
+  - 7天免费试用
+  - 试用状态检测
+  - 试用到期提醒
+- 🔒 **失败锁定**
+  - 5次失败后锁定15分钟
+  - 防止暴力破解
+
+### v2.0 (2024-01) - 信任评分与异常检测
+- 📊 **信任评分系统**
+  - 0-100分评分
+  - 连续使用加分
+  - 异常行为减分
+  - 低于30分触发额外验证
+- 🌍 **地理异常检测**
+  - IP地理位置追踪
+  - 异常移动检测（>500km/h）
+  - 位置跳跃警告
+
 ### v1.0 (2024-01)
 - 初始版本
 - 基本激活流程
 - 设备指纹识别
 - 心跳保活机制
 - 管理接口
+
+---
+
+## v2.0-v4.0 新功能使用
+
+### 信任评分查看
+
+```javascript
+const trustScore = ActivationSystem.state.trustScore;
+console.log(`当前信任评分: ${trustScore}`);
+
+// 检查是否需要额外验证
+const needsVerify = !ActivationSystem.checkTrustScore();
+```
+
+### VIP等级管理
+
+```javascript
+// 查看当前VIP配置
+const vipConfig = ActivationSystem.getVipConfig();
+console.log(`VIP等级: ${vipConfig.name}, 最大设备数: ${vipConfig.maxDevices}`);
+
+// 升级VIP（需要后端支持）
+const result = await ActivationSystem.upgradeVip('premium');
+```
+
+### 试用功能
+
+```javascript
+// 检查试用状态
+const trialStatus = ActivationSystem.checkTrialStatus();
+if (trialStatus.canStartTrial) {
+    // 开始试用
+    const result = ActivationSystem.startTrial();
+}
+
+// 试用剩余天数
+console.log(`试用剩余: ${trialStatus.remainingDays}天`);
+```
+
+### 家庭共享
+
+```javascript
+// 创建家庭组
+const result = ActivationSystem.createFamilyGroup('我的家庭');
+const inviteCode = result.inviteCode;
+
+// 加入家庭组
+await ActivationSystem.joinFamilyGroup(inviteCode);
+
+// 查看家庭成员
+const members = ActivationSystem.state.familyMembers;
+```
+
+### 设备迁移
+
+```javascript
+// 在旧设备上生成迁移令牌
+const token = ActivationSystem.generateMigrationToken();
+console.log(`迁移令牌: ${token.token}`); // 有效期10分钟
+
+// 在新设备上使用令牌
+const result = await ActivationSystem.useMigrationToken(token.token);
+```
+
+### 显示增强UI
+
+```javascript
+// 设备管理界面
+ActivationUI.showDeviceManagementDialog();
+
+// VIP状态
+ActivationUI.showVipStatusDialog();
+
+// 试用激活
+ActivationUI.showTrialActivation();
+
+// 设备迁移
+ActivationUI.showMigrationDialog();
+```

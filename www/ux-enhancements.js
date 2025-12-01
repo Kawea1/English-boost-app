@@ -1,0 +1,891 @@
+// ==================== 用户体验增强模块 v1-v5 ====================
+// 让用户爱上这款软件的高级交互体验
+
+(function() {
+    'use strict';
+    
+    // ========== 版本1: 微交互与动画增强 ==========
+    
+    // 触觉反馈系统（支持所有平台）
+    const HapticFeedback = {
+        // 检测是否支持震动
+        isSupported: 'vibrate' in navigator,
+        
+        // 轻触反馈
+        light() {
+            if (this.isSupported) navigator.vibrate(10);
+            this.playSound('tap');
+        },
+        
+        // 中等反馈
+        medium() {
+            if (this.isSupported) navigator.vibrate(20);
+            this.playSound('click');
+        },
+        
+        // 成功反馈
+        success() {
+            if (this.isSupported) navigator.vibrate([10, 50, 10]);
+            this.playSound('success');
+        },
+        
+        // 错误反馈
+        error() {
+            if (this.isSupported) navigator.vibrate([50, 100, 50]);
+            this.playSound('error');
+        },
+        
+        // 播放音效（可选）
+        playSound(type) {
+            if (!window.uxSettings?.soundEnabled) return;
+            // 使用 Web Audio API 生成简单音效
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                
+                const sounds = {
+                    tap: { freq: 800, duration: 0.05 },
+                    click: { freq: 600, duration: 0.08 },
+                    success: { freq: 880, duration: 0.15 },
+                    error: { freq: 300, duration: 0.2 }
+                };
+                
+                const sound = sounds[type] || sounds.tap;
+                osc.frequency.value = sound.freq;
+                gain.gain.value = 0.1;
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + sound.duration);
+                
+                osc.start();
+                osc.stop(ctx.currentTime + sound.duration);
+            } catch (e) {}
+        }
+    };
+    
+    // 涟漪效果（Material Design风格）
+    function createRipple(event, element) {
+        const ripple = document.createElement('span');
+        ripple.className = 'ux-ripple';
+        
+        const rect = element.getBoundingClientRect();
+        const size = Math.max(rect.width, rect.height);
+        const x = event.clientX - rect.left - size / 2;
+        const y = event.clientY - rect.top - size / 2;
+        
+        ripple.style.cssText = `
+            width: ${size}px;
+            height: ${size}px;
+            left: ${x}px;
+            top: ${y}px;
+        `;
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        ripple.addEventListener('animationend', () => ripple.remove());
+    }
+    
+    // 按钮弹跳效果
+    function addBounceEffect(element) {
+        element.classList.add('ux-bounce');
+        setTimeout(() => element.classList.remove('ux-bounce'), 300);
+    }
+    
+    // 卡片翻转效果
+    function addFlipEffect(element) {
+        element.classList.add('ux-flip');
+        setTimeout(() => element.classList.remove('ux-flip'), 600);
+    }
+    
+    // 成功庆祝动画
+    function celebrateSuccess(element) {
+        // 创建五彩纸屑
+        const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
+        const container = document.createElement('div');
+        container.className = 'ux-confetti-container';
+        
+        for (let i = 0; i < 30; i++) {
+            const confetti = document.createElement('div');
+            confetti.className = 'ux-confetti';
+            confetti.style.cssText = `
+                --x: ${Math.random() * 200 - 100}px;
+                --y: ${Math.random() * -200 - 50}px;
+                --r: ${Math.random() * 720 - 360}deg;
+                --delay: ${Math.random() * 0.3}s;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                left: ${50 + Math.random() * 20 - 10}%;
+            `;
+            container.appendChild(confetti);
+        }
+        
+        element.style.position = 'relative';
+        element.appendChild(container);
+        setTimeout(() => container.remove(), 2000);
+    }
+    
+    // 进度脉冲动画
+    function pulseProgress(element) {
+        element.classList.add('ux-pulse');
+        setTimeout(() => element.classList.remove('ux-pulse'), 1000);
+    }
+    
+    // ========== 版本2: 情感化设计与反馈 ==========
+    
+    // 鼓励消息系统
+    const EncouragementSystem = {
+        messages: {
+            start: [
+                '开始新的学习旅程！💪',
+                '今天又是充满希望的一天！✨',
+                '准备好挑战自己了吗？🚀',
+                '让我们开始吧！🎯'
+            ],
+            progress: [
+                '太棒了，继续保持！🌟',
+                '你做得很好！👏',
+                '进步神速！🔥',
+                '离目标又近了一步！📈'
+            ],
+            milestone: [
+                '🎉 重大突破！你太厉害了！',
+                '🏆 恭喜达成里程碑！',
+                '⭐ 你是学习之星！',
+                '🌈 你的努力正在开花结果！'
+            ],
+            streak: [
+                '🔥 连续学习{days}天！太强了！',
+                '💪 {days}天坚持不懈，你真棒！',
+                '🎯 已连续打卡{days}天，继续加油！',
+                '⚡ {days}天连胜！势不可挡！'
+            ],
+            comeback: [
+                '欢迎回来！我们想你了 🥰',
+                '休息好了吗？让我们继续前进！💫',
+                '新的开始，新的可能！🌱',
+                '准备好了就出发吧！🚀'
+            ],
+            night: [
+                '夜深了，注意休息哦 🌙',
+                '今天辛苦了，明天继续！😴',
+                '学习很重要，睡眠也很重要 💤',
+                '晚安，明天见！🌟'
+            ]
+        },
+        
+        getRandom(category) {
+            const msgs = this.messages[category];
+            return msgs[Math.floor(Math.random() * msgs.length)];
+        },
+        
+        getStreakMessage(days) {
+            return this.getRandom('streak').replace('{days}', days);
+        }
+    };
+    
+    // 智能Toast系统（带表情和动画）
+    function showSmartToast(message, type = 'info', duration = 3000) {
+        const existing = document.querySelector('.ux-smart-toast');
+        if (existing) existing.remove();
+        
+        const icons = {
+            success: '✅',
+            error: '❌',
+            warning: '⚠️',
+            info: 'ℹ️',
+            achievement: '🏆',
+            streak: '🔥',
+            level: '⬆️',
+            reward: '🎁'
+        };
+        
+        const toast = document.createElement('div');
+        toast.className = `ux-smart-toast ux-toast-${type}`;
+        toast.innerHTML = `
+            <span class="ux-toast-icon">${icons[type] || icons.info}</span>
+            <span class="ux-toast-message">${message}</span>
+            <div class="ux-toast-progress"></div>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // 触发动画
+        requestAnimationFrame(() => {
+            toast.classList.add('ux-toast-show');
+            toast.querySelector('.ux-toast-progress').style.animation = 
+                `uxToastProgress ${duration}ms linear forwards`;
+        });
+        
+        // 自动关闭
+        setTimeout(() => {
+            toast.classList.remove('ux-toast-show');
+            toast.classList.add('ux-toast-hide');
+            setTimeout(() => toast.remove(), 300);
+        }, duration);
+        
+        // 支持点击关闭
+        toast.addEventListener('click', () => {
+            toast.classList.remove('ux-toast-show');
+            toast.classList.add('ux-toast-hide');
+            setTimeout(() => toast.remove(), 300);
+        });
+        
+        HapticFeedback.light();
+    }
+    
+    // 情感化加载动画
+    function showLoadingWithMessage(message = '加载中...') {
+        let loader = document.getElementById('uxLoader');
+        if (!loader) {
+            loader = document.createElement('div');
+            loader.id = 'uxLoader';
+            loader.className = 'ux-loader-overlay';
+            document.body.appendChild(loader);
+        }
+        
+        const tips = [
+            '知识就是力量 💪',
+            '每天进步一点点 📈',
+            '坚持就是胜利 🏆',
+            '你比想象中更强大 ⭐',
+            '学习使人快乐 🎉'
+        ];
+        const tip = tips[Math.floor(Math.random() * tips.length)];
+        
+        loader.innerHTML = `
+            <div class="ux-loader-content">
+                <div class="ux-loader-spinner">
+                    <div class="ux-loader-ring"></div>
+                    <div class="ux-loader-ring"></div>
+                    <div class="ux-loader-ring"></div>
+                </div>
+                <p class="ux-loader-message">${message}</p>
+                <p class="ux-loader-tip">${tip}</p>
+            </div>
+        `;
+        loader.classList.add('ux-loader-visible');
+    }
+    
+    function hideLoading() {
+        const loader = document.getElementById('uxLoader');
+        if (loader) {
+            loader.classList.remove('ux-loader-visible');
+        }
+    }
+    
+    // ========== 版本3: 智能引导与提示系统 ==========
+    
+    // 功能引导气泡
+    function showGuide(targetSelector, message, position = 'bottom') {
+        const target = document.querySelector(targetSelector);
+        if (!target) return;
+        
+        // 移除已有引导
+        document.querySelectorAll('.ux-guide-bubble').forEach(g => g.remove());
+        
+        const guide = document.createElement('div');
+        guide.className = `ux-guide-bubble ux-guide-${position}`;
+        guide.innerHTML = `
+            <div class="ux-guide-content">
+                <p>${message}</p>
+                <button class="ux-guide-btn" onclick="this.parentElement.parentElement.remove()">知道了</button>
+            </div>
+            <div class="ux-guide-arrow"></div>
+        `;
+        
+        const rect = target.getBoundingClientRect();
+        const scrollTop = window.pageYOffset;
+        
+        switch (position) {
+            case 'top':
+                guide.style.left = `${rect.left + rect.width / 2}px`;
+                guide.style.top = `${rect.top + scrollTop - 10}px`;
+                break;
+            case 'bottom':
+                guide.style.left = `${rect.left + rect.width / 2}px`;
+                guide.style.top = `${rect.bottom + scrollTop + 10}px`;
+                break;
+            case 'left':
+                guide.style.left = `${rect.left - 10}px`;
+                guide.style.top = `${rect.top + scrollTop + rect.height / 2}px`;
+                break;
+            case 'right':
+                guide.style.left = `${rect.right + 10}px`;
+                guide.style.top = `${rect.top + scrollTop + rect.height / 2}px`;
+                break;
+        }
+        
+        document.body.appendChild(guide);
+        
+        // 高亮目标元素
+        target.classList.add('ux-guide-highlight');
+        guide.addEventListener('click', () => {
+            target.classList.remove('ux-guide-highlight');
+        });
+        
+        HapticFeedback.light();
+    }
+    
+    // 新功能提示徽章
+    function addNewBadge(targetSelector, text = 'NEW') {
+        const target = document.querySelector(targetSelector);
+        if (!target || target.querySelector('.ux-new-badge')) return;
+        
+        const badge = document.createElement('span');
+        badge.className = 'ux-new-badge';
+        badge.textContent = text;
+        target.style.position = 'relative';
+        target.appendChild(badge);
+    }
+    
+    // 工具提示增强
+    function addTooltip(element, content, position = 'top') {
+        element.setAttribute('data-ux-tooltip', content);
+        element.setAttribute('data-ux-tooltip-pos', position);
+        element.classList.add('ux-has-tooltip');
+    }
+    
+    // 键盘快捷键提示
+    function showShortcutHint(key, action) {
+        const hint = document.createElement('div');
+        hint.className = 'ux-shortcut-hint';
+        hint.innerHTML = `
+            <kbd>${key}</kbd>
+            <span>${action}</span>
+        `;
+        document.body.appendChild(hint);
+        
+        setTimeout(() => {
+            hint.classList.add('ux-shortcut-hide');
+            setTimeout(() => hint.remove(), 300);
+        }, 2000);
+    }
+    
+    // 首次使用引导流程
+    const OnboardingFlow = {
+        steps: [
+            { target: '.module-card:first-child', message: '点击这里开始词汇学习 📚', position: 'bottom' },
+            { target: '.streak-badge', message: '这里显示你的连续学习天数 🔥', position: 'bottom' },
+            { target: '.nav-item[data-tab="stats"]', message: '点击这里查看学习统计 📊', position: 'top' },
+            { target: '.nav-item[data-tab="settings"]', message: '这里可以个性化设置 ⚙️', position: 'top' }
+        ],
+        currentStep: 0,
+        
+        start() {
+            if (localStorage.getItem('onboardingComplete')) return;
+            this.currentStep = 0;
+            this.showStep();
+        },
+        
+        showStep() {
+            if (this.currentStep >= this.steps.length) {
+                this.complete();
+                return;
+            }
+            
+            const step = this.steps[this.currentStep];
+            showGuide(step.target, step.message, step.position);
+            
+            // 监听关闭并进入下一步
+            const guide = document.querySelector('.ux-guide-bubble');
+            if (guide) {
+                guide.querySelector('.ux-guide-btn').addEventListener('click', () => {
+                    this.currentStep++;
+                    setTimeout(() => this.showStep(), 500);
+                });
+            }
+        },
+        
+        complete() {
+            localStorage.setItem('onboardingComplete', 'true');
+            showSmartToast('引导完成！开始你的学习之旅吧！', 'success');
+        },
+        
+        reset() {
+            localStorage.removeItem('onboardingComplete');
+            this.currentStep = 0;
+        }
+    };
+    
+    // ========== 版本4: 成就系统与激励机制 ==========
+    
+    // 成就定义
+    const Achievements = {
+        list: {
+            'first_word': { name: '初出茅庐', desc: '学习第一个单词', icon: '🌱', points: 10 },
+            'word_10': { name: '小有所成', desc: '累计学习10个单词', icon: '📚', points: 20 },
+            'word_50': { name: '学富五车', desc: '累计学习50个单词', icon: '🎓', points: 50 },
+            'word_100': { name: '百词斩', desc: '累计学习100个单词', icon: '💯', points: 100 },
+            'word_500': { name: '词汇大师', desc: '累计学习500个单词', icon: '👑', points: 200 },
+            'streak_3': { name: '三日之约', desc: '连续学习3天', icon: '🔥', points: 30 },
+            'streak_7': { name: '一周坚持', desc: '连续学习7天', icon: '⚡', points: 70 },
+            'streak_30': { name: '月度冠军', desc: '连续学习30天', icon: '🏆', points: 300 },
+            'perfect_quiz': { name: '满分王', desc: '测验获得满分', icon: '⭐', points: 50 },
+            'early_bird': { name: '早起鸟儿', desc: '早上6点前学习', icon: '🐦', points: 30 },
+            'night_owl': { name: '夜猫子', desc: '凌晨学习', icon: '🦉', points: 30 },
+            'speed_learner': { name: '神速学习', desc: '1分钟内记住5个单词', icon: '⚡', points: 40 },
+            'review_master': { name: '复习达人', desc: '复习100个单词', icon: '🔄', points: 80 }
+        },
+        
+        // 检查并解锁成就
+        check(achievementId) {
+            const unlocked = this.getUnlocked();
+            if (unlocked.includes(achievementId)) return false;
+            
+            const achievement = this.list[achievementId];
+            if (!achievement) return false;
+            
+            // 解锁成就
+            unlocked.push(achievementId);
+            localStorage.setItem('unlockedAchievements', JSON.stringify(unlocked));
+            
+            // 增加积分
+            this.addPoints(achievement.points);
+            
+            // 显示解锁动画
+            this.showUnlockAnimation(achievement);
+            
+            return true;
+        },
+        
+        getUnlocked() {
+            try {
+                return JSON.parse(localStorage.getItem('unlockedAchievements') || '[]');
+            } catch {
+                return [];
+            }
+        },
+        
+        getPoints() {
+            return parseInt(localStorage.getItem('achievementPoints') || '0');
+        },
+        
+        addPoints(points) {
+            const current = this.getPoints();
+            localStorage.setItem('achievementPoints', current + points);
+        },
+        
+        // 成就解锁动画
+        showUnlockAnimation(achievement) {
+            const overlay = document.createElement('div');
+            overlay.className = 'ux-achievement-overlay';
+            overlay.innerHTML = `
+                <div class="ux-achievement-card">
+                    <div class="ux-achievement-glow"></div>
+                    <div class="ux-achievement-icon">${achievement.icon}</div>
+                    <div class="ux-achievement-content">
+                        <div class="ux-achievement-label">🎉 成就解锁！</div>
+                        <div class="ux-achievement-name">${achievement.name}</div>
+                        <div class="ux-achievement-desc">${achievement.desc}</div>
+                        <div class="ux-achievement-points">+${achievement.points} 积分</div>
+                    </div>
+                    <div class="ux-achievement-particles">
+                        ${Array(20).fill('<span></span>').join('')}
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            HapticFeedback.success();
+            
+            // 自动关闭
+            setTimeout(() => {
+                overlay.classList.add('ux-achievement-hide');
+                setTimeout(() => overlay.remove(), 500);
+            }, 3500);
+            
+            // 点击关闭
+            overlay.addEventListener('click', () => {
+                overlay.classList.add('ux-achievement-hide');
+                setTimeout(() => overlay.remove(), 500);
+            });
+        },
+        
+        // 检查各种成就条件
+        checkWordCount(count) {
+            if (count >= 1) this.check('first_word');
+            if (count >= 10) this.check('word_10');
+            if (count >= 50) this.check('word_50');
+            if (count >= 100) this.check('word_100');
+            if (count >= 500) this.check('word_500');
+        },
+        
+        checkStreak(days) {
+            if (days >= 3) this.check('streak_3');
+            if (days >= 7) this.check('streak_7');
+            if (days >= 30) this.check('streak_30');
+        },
+        
+        checkTime() {
+            const hour = new Date().getHours();
+            if (hour >= 5 && hour < 6) this.check('early_bird');
+            if (hour >= 0 && hour < 5) this.check('night_owl');
+        }
+    };
+    
+    // 等级系统
+    const LevelSystem = {
+        levels: [
+            { level: 1, name: '学习新手', minPoints: 0, icon: '🌱' },
+            { level: 2, name: '初级学者', minPoints: 100, icon: '📖' },
+            { level: 3, name: '中级学者', minPoints: 300, icon: '📚' },
+            { level: 4, name: '高级学者', minPoints: 600, icon: '🎓' },
+            { level: 5, name: '学术精英', minPoints: 1000, icon: '⭐' },
+            { level: 6, name: '知识大师', minPoints: 1500, icon: '👑' },
+            { level: 7, name: '学术泰斗', minPoints: 2500, icon: '🏆' },
+            { level: 8, name: '传奇学者', minPoints: 4000, icon: '💎' },
+            { level: 9, name: '至尊宗师', minPoints: 6000, icon: '🌟' },
+            { level: 10, name: '学神', minPoints: 10000, icon: '👼' }
+        ],
+        
+        getCurrentLevel() {
+            const points = Achievements.getPoints();
+            let currentLevel = this.levels[0];
+            
+            for (const level of this.levels) {
+                if (points >= level.minPoints) {
+                    currentLevel = level;
+                }
+            }
+            
+            return currentLevel;
+        },
+        
+        getNextLevel() {
+            const current = this.getCurrentLevel();
+            const nextIndex = this.levels.findIndex(l => l.level === current.level) + 1;
+            return this.levels[nextIndex] || null;
+        },
+        
+        getProgress() {
+            const points = Achievements.getPoints();
+            const current = this.getCurrentLevel();
+            const next = this.getNextLevel();
+            
+            if (!next) return 100;
+            
+            const levelPoints = points - current.minPoints;
+            const levelRange = next.minPoints - current.minPoints;
+            
+            return Math.min(100, Math.round((levelPoints / levelRange) * 100));
+        },
+        
+        checkLevelUp() {
+            const savedLevel = parseInt(localStorage.getItem('currentLevel') || '1');
+            const currentLevel = this.getCurrentLevel().level;
+            
+            if (currentLevel > savedLevel) {
+                localStorage.setItem('currentLevel', currentLevel);
+                this.showLevelUpAnimation(this.getCurrentLevel());
+                return true;
+            }
+            return false;
+        },
+        
+        showLevelUpAnimation(level) {
+            const overlay = document.createElement('div');
+            overlay.className = 'ux-levelup-overlay';
+            overlay.innerHTML = `
+                <div class="ux-levelup-card">
+                    <div class="ux-levelup-rays"></div>
+                    <div class="ux-levelup-icon">${level.icon}</div>
+                    <div class="ux-levelup-content">
+                        <div class="ux-levelup-label">⬆️ 等级提升！</div>
+                        <div class="ux-levelup-level">Lv.${level.level}</div>
+                        <div class="ux-levelup-name">${level.name}</div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            HapticFeedback.success();
+            
+            setTimeout(() => {
+                overlay.classList.add('ux-levelup-hide');
+                setTimeout(() => overlay.remove(), 500);
+            }, 3000);
+        }
+    };
+    
+    // ========== 版本5: 个性化体验优化 ==========
+    
+    // 学习数据分析
+    const LearningAnalytics = {
+        // 记录学习时间分布
+        recordSession() {
+            const hour = new Date().getHours();
+            const sessions = this.getSessions();
+            sessions[hour] = (sessions[hour] || 0) + 1;
+            localStorage.setItem('learningSessions', JSON.stringify(sessions));
+        },
+        
+        getSessions() {
+            try {
+                return JSON.parse(localStorage.getItem('learningSessions') || '{}');
+            } catch {
+                return {};
+            }
+        },
+        
+        // 获取最佳学习时间
+        getBestTime() {
+            const sessions = this.getSessions();
+            let maxHour = -1;
+            let maxCount = 0;
+            
+            for (const hour in sessions) {
+                if (sessions[hour] > maxCount) {
+                    maxCount = sessions[hour];
+                    maxHour = parseInt(hour);
+                }
+            }
+            
+            if (maxHour === -1) return null;
+            
+            const timeRanges = {
+                morning: [5, 12],
+                afternoon: [12, 18],
+                evening: [18, 22],
+                night: [22, 5]
+            };
+            
+            for (const range in timeRanges) {
+                const [start, end] = timeRanges[range];
+                if (range === 'night') {
+                    if (maxHour >= start || maxHour < end) return range;
+                } else {
+                    if (maxHour >= start && maxHour < end) return range;
+                }
+            }
+            return null;
+        },
+        
+        // 获取学习效率分析
+        getEfficiencyTip() {
+            const bestTime = this.getBestTime();
+            const tips = {
+                morning: '你是晨型学习者！早上是你的黄金学习时间 🌅',
+                afternoon: '下午是你的高效时段，继续保持！ ☀️',
+                evening: '傍晚学习效果最佳，安排好复习时间 🌆',
+                night: '你喜欢夜间学习，记得适当休息哦 🌙'
+            };
+            return tips[bestTime] || '还没有足够的数据，继续学习吧！ 📊';
+        }
+    };
+    
+    // 智能提醒系统
+    const SmartReminder = {
+        // 检查是否该提醒复习
+        checkReviewReminder() {
+            const lastReview = localStorage.getItem('lastReviewTime');
+            if (!lastReview) return;
+            
+            const hoursSince = (Date.now() - parseInt(lastReview)) / (1000 * 60 * 60);
+            
+            if (hoursSince >= 24) {
+                this.showReminder('review', '已经24小时没复习了，记忆正在消退 😢');
+            } else if (hoursSince >= 12) {
+                this.showReminder('gentle', '该复习一下今天学的单词了 📚');
+            }
+        },
+        
+        // 检查学习目标
+        checkGoalReminder() {
+            const todayWords = parseInt(localStorage.getItem('todayWords') || '0');
+            const dailyGoal = parseInt(localStorage.getItem('dailyWordGoal') || '20');
+            const progress = (todayWords / dailyGoal) * 100;
+            
+            if (progress < 50 && new Date().getHours() >= 18) {
+                this.showReminder('goal', `今日目标完成${Math.round(progress)}%，加油完成剩余任务！ 💪`);
+            }
+        },
+        
+        showReminder(type, message) {
+            // 检查是否最近已提醒过
+            const lastReminder = localStorage.getItem(`lastReminder_${type}`);
+            if (lastReminder && Date.now() - parseInt(lastReminder) < 4 * 60 * 60 * 1000) {
+                return; // 4小时内不重复提醒
+            }
+            
+            localStorage.setItem(`lastReminder_${type}`, Date.now());
+            showSmartToast(message, 'info', 5000);
+        }
+    };
+    
+    // 手势交互增强
+    const GestureEnhancer = {
+        init() {
+            // 下拉刷新
+            this.initPullToRefresh();
+            // 滑动返回
+            this.initSwipeBack();
+            // 双击顶部回到顶部
+            this.initDoubleTopTap();
+        },
+        
+        initPullToRefresh() {
+            let startY = 0;
+            let pulling = false;
+            
+            document.addEventListener('touchstart', (e) => {
+                if (window.scrollY === 0) {
+                    startY = e.touches[0].pageY;
+                    pulling = true;
+                }
+            }, { passive: true });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!pulling) return;
+                const currentY = e.touches[0].pageY;
+                const diff = currentY - startY;
+                
+                if (diff > 100 && window.scrollY === 0) {
+                    // 触发刷新
+                    HapticFeedback.medium();
+                    pulling = false;
+                }
+            }, { passive: true });
+            
+            document.addEventListener('touchend', () => {
+                pulling = false;
+            }, { passive: true });
+        },
+        
+        initSwipeBack() {
+            let startX = 0;
+            let startY = 0;
+            
+            document.addEventListener('touchstart', (e) => {
+                startX = e.touches[0].pageX;
+                startY = e.touches[0].pageY;
+            }, { passive: true });
+            
+            document.addEventListener('touchend', (e) => {
+                const endX = e.changedTouches[0].pageX;
+                const endY = e.changedTouches[0].pageY;
+                const diffX = endX - startX;
+                const diffY = Math.abs(endY - startY);
+                
+                // 从左边缘开始的右滑
+                if (startX < 30 && diffX > 80 && diffY < 50) {
+                    const modal = document.querySelector('.modal.active');
+                    if (modal && typeof closeModule === 'function') {
+                        HapticFeedback.light();
+                        closeModule();
+                    }
+                }
+            }, { passive: true });
+        },
+        
+        initDoubleTopTap() {
+            let lastTap = 0;
+            const header = document.querySelector('header, .home-header');
+            
+            if (header) {
+                header.addEventListener('click', () => {
+                    const now = Date.now();
+                    if (now - lastTap < 300) {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        HapticFeedback.light();
+                    }
+                    lastTap = now;
+                });
+            }
+        }
+    };
+    
+    // 主题随时间变化
+    const AdaptiveTheme = {
+        update() {
+            const hour = new Date().getHours();
+            const body = document.body;
+            
+            // 根据时间自动调整主题色调
+            if (hour >= 6 && hour < 12) {
+                body.setAttribute('data-time-theme', 'morning');
+            } else if (hour >= 12 && hour < 18) {
+                body.setAttribute('data-time-theme', 'afternoon');
+            } else if (hour >= 18 && hour < 22) {
+                body.setAttribute('data-time-theme', 'evening');
+            } else {
+                body.setAttribute('data-time-theme', 'night');
+            }
+        }
+    };
+    
+    // ========== 初始化与事件绑定 ==========
+    
+    // 全局设置
+    window.uxSettings = {
+        soundEnabled: localStorage.getItem('uxSoundEnabled') !== 'false',
+        hapticEnabled: localStorage.getItem('uxHapticEnabled') !== 'false',
+        animationsEnabled: localStorage.getItem('uxAnimationsEnabled') !== 'false'
+    };
+    
+    // 初始化
+    function initUXEnhancements() {
+        // 添加涟漪效果到所有按钮
+        document.addEventListener('click', (e) => {
+            const target = e.target.closest('button, .module-card, .nav-item, .setting-item, .quiz-option, .answer-option');
+            if (target && window.uxSettings.animationsEnabled) {
+                createRipple(e, target);
+                HapticFeedback.light();
+            }
+        });
+        
+        // 初始化手势
+        GestureEnhancer.init();
+        
+        // 更新主题
+        AdaptiveTheme.update();
+        setInterval(() => AdaptiveTheme.update(), 60000);
+        
+        // 记录学习会话
+        LearningAnalytics.recordSession();
+        
+        // 检查提醒
+        setTimeout(() => {
+            SmartReminder.checkReviewReminder();
+            SmartReminder.checkGoalReminder();
+        }, 5000);
+        
+        // 检查成就
+        Achievements.checkTime();
+        
+        console.log('[UX] Enhancements v1-v5 initialized');
+    }
+    
+    // DOM 加载后初始化
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initUXEnhancements);
+    } else {
+        initUXEnhancements();
+    }
+    
+    // 暴露 API
+    window.UX = {
+        HapticFeedback,
+        createRipple,
+        addBounceEffect,
+        addFlipEffect,
+        celebrateSuccess,
+        pulseProgress,
+        showSmartToast,
+        showLoadingWithMessage,
+        hideLoading,
+        showGuide,
+        addNewBadge,
+        addTooltip,
+        showShortcutHint,
+        OnboardingFlow,
+        Achievements,
+        LevelSystem,
+        LearningAnalytics,
+        SmartReminder,
+        EncouragementSystem,
+        settings: window.uxSettings
+    };
+    
+})();

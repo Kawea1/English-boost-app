@@ -926,6 +926,21 @@ function rateWord(rating) {
                 if (typeof updateDailyProgress === 'function') {
                     updateDailyProgress('vocabulary', 1);
                 }
+                
+                // v3.5.0: 触发成就检查
+                if (window.UX && window.UX.Achievements) {
+                    window.UX.Achievements.checkWordCount(learnedWords.length);
+                    // 显示鼓励消息
+                    if (learnedWords.length % 10 === 0) {
+                        const msg = window.UX.EncouragementSystem.getRandom('milestone');
+                        window.UX.showSmartToast(msg, 'achievement');
+                    } else if (Math.random() < 0.3) {
+                        const msg = window.UX.EncouragementSystem.getRandom('progress');
+                        window.UX.showSmartToast(msg, 'success');
+                    }
+                    // 检查等级提升
+                    window.UX.LevelSystem.checkLevelUp();
+                }
             }
             
             // 如果评分为简单，标记为已掌握

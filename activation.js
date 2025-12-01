@@ -1178,6 +1178,7 @@ const ActivationSystem = {
 
 /**
  * 激活码UI组件
+ * v4.0 - 完整UI组件
  */
 const ActivationUI = {
     /**
@@ -1188,6 +1189,10 @@ const ActivationUI = {
         if (document.getElementById('activation-dialog')) {
             return;
         }
+        
+        // 检查试用状态
+        const trialStatus = ActivationSystem.checkTrialStatus();
+        const canTrial = trialStatus.canStartTrial;
         
         const dialog = document.createElement('div');
         dialog.id = 'activation-dialog';
@@ -1219,11 +1224,22 @@ const ActivationUI = {
                         <span class="btn-text">激活</span>
                         <span class="btn-loading" style="display:none;">⏳ 验证中...</span>
                     </button>
+                    
+                    ${canTrial ? `
+                        <button id="start-trial-btn" class="trial-btn">
+                            🎁 免费试用 ${ActivationSystem.config.trialDays} 天
+                        </button>
+                    ` : ''}
                 </div>
                 
                 <div class="activation-footer">
                     <p>还没有激活码？<a href="#" id="get-code-link">获取激活码</a></p>
-                    <p class="activation-hint">一个激活码最多支持 ${ActivationSystem.config.maxDevices} 台设备同时使用</p>
+                    <p class="activation-hint">
+                        一个激活码最多支持 ${ActivationSystem.config.maxDevices} 台设备同时使用
+                    </p>
+                    <p class="activation-hint">
+                        <a href="#" id="migration-btn">已有激活？换设备迁移 →</a>
+                    </p>
                 </div>
             </div>
         `;
@@ -1340,22 +1356,494 @@ const ActivationUI = {
             // 跳转到购买页面或显示联系方式
             window.dispatchEvent(new CustomEvent('showPurchaseOptions'));
         });
+        
+        // v4.0: 试用按钮
+        const trialBtn = document.getElementById('start-trial-btn');
+        trialBtn?.addEventListener('click', () => {
+            const result = ActivationSystem.startTrial();
+            if (result.success) {
+                this.showSuccessAnimation('试用已开始！', `${ActivationSystem.config.trialDays}天内免费使用全部功能`);
+                setTimeout(() => {
+                    this.closeActivationDialog();
+                    window.dispatchEvent(new CustomEvent('trialStarted'));
+                }, 1500);
+            } else {
+                document.getElementById('activation-error').textContent = result.message;
+            }
+        });
+        
+        // v4.0: 设备迁移按钮
+        const migrationBtn = document.getElementById('migration-btn');
+        migrationBtn?.addEventListener('click', () => {
+            this.showMigrationDialog();
+        });
     },
 
     /**
      * 显示成功动画
      */
-    showSuccessAnimation() {
+    showSuccessAnimation(title = '激活成功！', subtitle = '欢迎使用学术英语精进') {
         const dialog = document.querySelector('.activation-dialog');
         if (dialog) {
             dialog.innerHTML = `
                 <div class="activation-success">
                     <div class="success-icon">✅</div>
-                    <h2>激活成功！</h2>
-                    <p>欢迎使用学术英语精进</p>
+                    <h2>${title}</h2>
+                    <p>${subtitle}</p>
                 </div>
             `;
         }
+    },
+
+    // ==================== v2.0 新增UI ====================
+
+    /**
+     * 显示设备管理界面
+     */
+    async showDeviceManager() {
+        const overlay = document.createElement('div');
+        overlay.id = 'device-manager-overlay';
+        overlay.className = 'activation-overlay';
+        
+        const devices = await ActivationSystem.getMyDevices();
+        const currentDeviceId = ActivationSystem.state.deviceId;
+        const maxDevices = ActivationSystem.getCurrentMaxDevices();
+        
+        overlay.innerHTML = `
+            <div class="device-manager-dialog">
+                <div class="dm-header">
+                    <h2>📱 设备管理</h2>
+                    <button class="dm-close-btn" id="dm-close">✕</button>
+                </div>
+                
+                <div class="dm-info">
+                    <div class="dm-stat">
+                        <span class="dm-stat-value">${devices.length}</span>
+                        <span class="dm-stat-label">/ ${maxDevices} 台设备</span>
+                    </div>
+                    <div class="dm-trust-score">
+                        <span>信任分数</span>
+                        <div class="dm-trust-bar">
+                            <div class="dm-trust-fill" style="width: ${ActivationSystem.state.trustScore}%"></div>
+                        </div>
+                        <span class="dm-trust-value">${ActivationSystem.state.trustScore}</span>
+                    </div>
+                </div>
+                
+                <div class="dm-devices-list">
+                    ${devices.map(device => `
+                        <div class="dm-device-item ${device.deviceId === currentDeviceId ? 'current' : ''} ${device.isActive ? 'active' : 'inactive'}">
+                            <div class="dm-device-icon">${this.getDeviceIcon(device.info)}</div>
+                            <div class="dm-device-info">
+                                <div class="dm-device-name">${device.info?.deviceName || this.getDeviceNameFromInfo(device.info)}</div>
+                                <div class="dm-device-detail">
+                                    ${device.deviceId === currentDeviceId ? '当前设备 · ' : ''}
+                                    ${device.isActive ? '🟢 在线' : '⚪ 离线'}
+                                    ${device.lastActive ? ' · ' + this.formatTime(device.lastActive) : ''}
+                                </div>
+                            </div>
+                            ${device.deviceId !== currentDeviceId ? `
+                                <button class="dm-kick-btn" data-device-id="${device.deviceId}">
+                                    登出
+                                </button>
+                            ` : ''}
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="dm-actions">
+                    <button class="dm-action-btn" id="dm-rename-btn">
+                        ✏️ 修改设备名称
+                    </button>
+                    <button class="dm-action-btn" id="dm-migration-btn">
+                        🔄 迁移到新设备
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        this.injectDeviceManagerStyles();
+        
+        // 绑定事件
+        document.getElementById('dm-close')?.addEventListener('click', () => {
+            overlay.remove();
+        });
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.remove();
+        });
+        
+        // 登出按钮
+        overlay.querySelectorAll('.dm-kick-btn').forEach(btn => {
+            btn.addEventListener('click', async (e) => {
+                const deviceId = e.target.dataset.deviceId;
+                if (confirm('确定要登出此设备吗？')) {
+                    const result = await ActivationSystem.logoutDevice(deviceId);
+                    if (result.success) {
+                        e.target.closest('.dm-device-item').remove();
+                    }
+                }
+            });
+        });
+        
+        // 修改设备名称
+        document.getElementById('dm-rename-btn')?.addEventListener('click', () => {
+            this.showRenameDialog();
+        });
+        
+        // 设备迁移
+        document.getElementById('dm-migration-btn')?.addEventListener('click', () => {
+            this.showMigrationDialog();
+        });
+    },
+
+    /**
+     * 获取设备图标
+     */
+    getDeviceIcon(info) {
+        if (!info) return '📱';
+        const platform = info.platform || '';
+        const ua = info.userAgent || '';
+        
+        if (/iPhone/.test(ua)) return '📱';
+        if (/iPad/.test(ua)) return '📱';
+        if (/Android/.test(ua)) return '📱';
+        if (/Mac/.test(platform)) return '💻';
+        if (/Win/.test(platform)) return '🖥️';
+        if (/Linux/.test(platform)) return '🐧';
+        return '📱';
+    },
+
+    /**
+     * 从设备信息获取名称
+     */
+    getDeviceNameFromInfo(info) {
+        if (!info) return '未知设备';
+        return ActivationSystem.getAutoDeviceName();
+    },
+
+    /**
+     * 格式化时间
+     */
+    formatTime(timestamp) {
+        const date = new Date(timestamp);
+        const now = new Date();
+        const diff = now - date;
+        
+        if (diff < 60000) return '刚刚';
+        if (diff < 3600000) return `${Math.floor(diff / 60000)}分钟前`;
+        if (diff < 86400000) return `${Math.floor(diff / 3600000)}小时前`;
+        return `${Math.floor(diff / 86400000)}天前`;
+    },
+
+    /**
+     * 显示重命名对话框
+     */
+    showRenameDialog() {
+        const currentName = ActivationSystem.state.deviceName || ActivationSystem.getAutoDeviceName();
+        const newName = prompt('请输入设备名称：', currentName);
+        if (newName && newName !== currentName) {
+            ActivationSystem.setDeviceName(newName);
+            if (typeof showToast === 'function') {
+                showToast('设备名称已更新', 'success');
+            }
+        }
+    },
+
+    // ==================== v3.0 新增UI ====================
+
+    /**
+     * 显示可疑活动警告
+     */
+    showSuspiciousWarning(reason, details, lockUntil) {
+        const overlay = document.createElement('div');
+        overlay.id = 'suspicious-warning';
+        overlay.className = 'activation-overlay';
+        
+        const remainingTime = lockUntil ? Math.ceil((lockUntil - Date.now()) / (60 * 60 * 1000)) : 0;
+        
+        overlay.innerHTML = `
+            <div class="suspicious-dialog">
+                <div class="suspicious-icon">⚠️</div>
+                <h2>检测到异常活动</h2>
+                <p class="suspicious-reason">${details}</p>
+                <p class="suspicious-lock">账号已被临时锁定 ${remainingTime} 小时</p>
+                <div class="suspicious-actions">
+                    <button class="suspicious-btn" id="suspicious-verify">验证身份解锁</button>
+                    <button class="suspicious-btn secondary" id="suspicious-contact">联系客服</button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        document.getElementById('suspicious-verify')?.addEventListener('click', () => {
+            this.showVerificationDialog();
+            overlay.remove();
+        });
+        
+        document.getElementById('suspicious-contact')?.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('contactSupport'));
+        });
+    },
+
+    /**
+     * 显示二次验证对话框
+     */
+    showVerificationDialog() {
+        const overlay = document.createElement('div');
+        overlay.id = 'verification-dialog';
+        overlay.className = 'activation-overlay';
+        
+        overlay.innerHTML = `
+            <div class="verification-dialog">
+                <h2>🔒 身份验证</h2>
+                <p>为保护您的账号安全，请完成验证</p>
+                
+                <div class="verification-methods">
+                    <button class="verify-method-btn" id="verify-email">
+                        📧 邮箱验证码
+                    </button>
+                    <button class="verify-method-btn" id="verify-sms">
+                        📱 短信验证码
+                    </button>
+                </div>
+                
+                <div class="verification-input" style="display:none;">
+                    <input type="text" id="verify-code-input" placeholder="请输入验证码" maxlength="6">
+                    <button class="verify-submit-btn" id="verify-submit">验证</button>
+                </div>
+                
+                <button class="verify-cancel-btn" id="verify-cancel">取消</button>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        const inputSection = overlay.querySelector('.verification-input');
+        
+        document.getElementById('verify-email')?.addEventListener('click', () => {
+            inputSection.style.display = 'block';
+            // TODO: 发送邮箱验证码
+        });
+        
+        document.getElementById('verify-sms')?.addEventListener('click', () => {
+            inputSection.style.display = 'block';
+            // TODO: 发送短信验证码
+        });
+        
+        document.getElementById('verify-submit')?.addEventListener('click', () => {
+            const code = document.getElementById('verify-code-input')?.value;
+            if (code?.length === 6) {
+                ActivationSystem.completeVerification(code);
+                overlay.remove();
+                if (typeof showToast === 'function') {
+                    showToast('验证成功', 'success');
+                }
+            }
+        });
+        
+        document.getElementById('verify-cancel')?.addEventListener('click', () => {
+            overlay.remove();
+        });
+    },
+
+    // ==================== v4.0 新增UI ====================
+
+    /**
+     * 显示VIP状态面板
+     */
+    showVipStatusPanel() {
+        const status = ActivationSystem.getStatusSummary();
+        
+        const overlay = document.createElement('div');
+        overlay.id = 'vip-status-panel';
+        overlay.className = 'activation-overlay';
+        
+        const trialInfo = status.inTrial ? `
+            <div class="vip-trial-badge">试用中</div>
+            <p class="vip-trial-remaining">剩余 ${status.trialRemainingDays} 天</p>
+        ` : '';
+        
+        overlay.innerHTML = `
+            <div class="vip-panel">
+                <button class="vip-close-btn" id="vip-close">✕</button>
+                
+                <div class="vip-header">
+                    <div class="vip-avatar">👤</div>
+                    <h2>${status.deviceName}</h2>
+                    <div class="vip-level vip-level-${status.vipLevel}">
+                        ${this.getVipBadge(status.vipLevel)}
+                        ${status.vipLevelName}
+                    </div>
+                    ${trialInfo}
+                </div>
+                
+                <div class="vip-stats">
+                    <div class="vip-stat">
+                        <div class="vip-stat-icon">📱</div>
+                        <div class="vip-stat-value">${status.maxDevices}</div>
+                        <div class="vip-stat-label">设备上限</div>
+                    </div>
+                    <div class="vip-stat">
+                        <div class="vip-stat-icon">⭐</div>
+                        <div class="vip-stat-value">${status.trustScore}</div>
+                        <div class="vip-stat-label">信任分数</div>
+                    </div>
+                    <div class="vip-stat">
+                        <div class="vip-stat-icon">🎯</div>
+                        <div class="vip-stat-value">${status.features.length}</div>
+                        <div class="vip-stat-label">可用功能</div>
+                    </div>
+                </div>
+                
+                <div class="vip-features">
+                    <h3>可用功能</h3>
+                    <div class="vip-features-list">
+                        ${this.renderFeatures(status.features)}
+                    </div>
+                </div>
+                
+                ${status.vipLevel !== 'family' ? `
+                    <button class="vip-upgrade-btn" id="vip-upgrade">
+                        🚀 升级会员
+                    </button>
+                ` : ''}
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        this.injectVipPanelStyles();
+        
+        document.getElementById('vip-close')?.addEventListener('click', () => {
+            overlay.remove();
+        });
+        
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) overlay.remove();
+        });
+        
+        document.getElementById('vip-upgrade')?.addEventListener('click', () => {
+            window.dispatchEvent(new CustomEvent('showPurchaseOptions'));
+        });
+    },
+
+    /**
+     * 获取VIP徽章
+     */
+    getVipBadge(level) {
+        const badges = {
+            free: '🆓',
+            basic: '🔹',
+            premium: '💎',
+            family: '👨‍👩‍👧‍👦'
+        };
+        return badges[level] || '🆓';
+    },
+
+    /**
+     * 渲染功能列表
+     */
+    renderFeatures(features) {
+        const featureNames = {
+            basic: '基础学习',
+            sync: '云同步',
+            offline: '离线使用',
+            priority: '优先客服',
+            family: '家庭共享'
+        };
+        
+        return features.map(f => `
+            <div class="vip-feature-item">
+                <span class="vip-feature-check">✓</span>
+                <span>${featureNames[f] || f}</span>
+            </div>
+        `).join('');
+    },
+
+    /**
+     * 显示设备迁移对话框
+     */
+    async showMigrationDialog() {
+        const overlay = document.createElement('div');
+        overlay.id = 'migration-dialog';
+        overlay.className = 'activation-overlay';
+        
+        overlay.innerHTML = `
+            <div class="migration-dialog">
+                <h2>🔄 设备迁移</h2>
+                
+                <div class="migration-tabs">
+                    <button class="migration-tab active" data-tab="generate">生成迁移码</button>
+                    <button class="migration-tab" data-tab="use">使用迁移码</button>
+                </div>
+                
+                <div class="migration-content">
+                    <div class="migration-panel" id="panel-generate">
+                        <p>在新设备上输入此迁移码，即可将激活状态迁移到新设备</p>
+                        <button class="migration-generate-btn" id="migration-generate">
+                            生成迁移码
+                        </button>
+                        <div class="migration-code-display" id="migration-code-display" style="display:none;">
+                            <div class="migration-code" id="migration-code"></div>
+                            <div class="migration-expires">10分钟内有效</div>
+                        </div>
+                    </div>
+                    
+                    <div class="migration-panel" id="panel-use" style="display:none;">
+                        <p>请输入旧设备上生成的迁移码</p>
+                        <input type="text" id="migration-input" placeholder="请输入迁移码" maxlength="8">
+                        <button class="migration-use-btn" id="migration-use">
+                            迁移到此设备
+                        </button>
+                    </div>
+                </div>
+                
+                <button class="migration-close-btn" id="migration-close">关闭</button>
+            </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        this.injectMigrationStyles();
+        
+        // Tab切换
+        overlay.querySelectorAll('.migration-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                overlay.querySelectorAll('.migration-tab').forEach(t => t.classList.remove('active'));
+                overlay.querySelectorAll('.migration-panel').forEach(p => p.style.display = 'none');
+                tab.classList.add('active');
+                document.getElementById(`panel-${tab.dataset.tab}`).style.display = 'block';
+            });
+        });
+        
+        // 生成迁移码
+        document.getElementById('migration-generate')?.addEventListener('click', async () => {
+            const result = await ActivationSystem.generateMigrationToken();
+            document.getElementById('migration-code').textContent = result.token;
+            document.getElementById('migration-code-display').style.display = 'block';
+        });
+        
+        // 使用迁移码
+        document.getElementById('migration-use')?.addEventListener('click', async () => {
+            const code = document.getElementById('migration-input')?.value;
+            if (code) {
+                const result = await ActivationSystem.useMigrationToken(code);
+                if (result.success) {
+                    overlay.remove();
+                    if (typeof showToast === 'function') {
+                        showToast('迁移成功！', 'success');
+                    }
+                    window.dispatchEvent(new CustomEvent('activationSuccess'));
+                } else {
+                    alert(result.message);
+                }
+            }
+        });
+        
+        document.getElementById('migration-close')?.addEventListener('click', () => {
+            overlay.remove();
+        });
     },
 
     /**
@@ -1528,6 +2016,24 @@ const ActivationUI = {
                 margin: 20px 0 10px;
             }
             
+            /* 试用按钮 */
+            .trial-btn {
+                width: 100%;
+                padding: 12px;
+                background: transparent;
+                color: #667eea;
+                border: 2px solid #667eea;
+                border-radius: 12px;
+                font-size: 16px;
+                cursor: pointer;
+                margin-top: 10px;
+                transition: all 0.3s;
+            }
+            
+            .trial-btn:hover {
+                background: rgba(102, 126, 234, 0.1);
+            }
+            
             @keyframes fadeIn {
                 from { opacity: 0; }
                 to { opacity: 1; }
@@ -1574,6 +2080,480 @@ const ActivationUI = {
                 .paste-btn {
                     background: #2d3748;
                     border-color: #4a5568;
+                }
+            }
+        `;
+        
+        document.head.appendChild(styles);
+    },
+
+    /**
+     * 注入设备管理样式
+     */
+    injectDeviceManagerStyles() {
+        if (document.getElementById('device-manager-styles')) return;
+        
+        const styles = document.createElement('style');
+        styles.id = 'device-manager-styles';
+        styles.textContent = `
+            .device-manager-dialog {
+                background: #fff;
+                border-radius: 20px;
+                padding: 24px;
+                max-width: 450px;
+                width: 90%;
+                max-height: 80vh;
+                overflow-y: auto;
+                animation: slideUp 0.3s ease;
+            }
+            
+            .dm-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+            
+            .dm-header h2 {
+                margin: 0;
+                font-size: 20px;
+            }
+            
+            .dm-close-btn {
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                opacity: 0.5;
+            }
+            
+            .dm-close-btn:hover { opacity: 1; }
+            
+            .dm-info {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 15px;
+                background: #f7fafc;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .dm-stat-value {
+                font-size: 24px;
+                font-weight: bold;
+                color: #667eea;
+            }
+            
+            .dm-stat-label {
+                color: #718096;
+            }
+            
+            .dm-trust-score {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 13px;
+                color: #718096;
+            }
+            
+            .dm-trust-bar {
+                width: 60px;
+                height: 6px;
+                background: #e2e8f0;
+                border-radius: 3px;
+                overflow: hidden;
+            }
+            
+            .dm-trust-fill {
+                height: 100%;
+                background: linear-gradient(90deg, #48bb78, #38a169);
+                border-radius: 3px;
+                transition: width 0.3s;
+            }
+            
+            .dm-device-item {
+                display: flex;
+                align-items: center;
+                padding: 15px;
+                border-radius: 12px;
+                margin-bottom: 10px;
+                background: #f7fafc;
+                transition: all 0.2s;
+            }
+            
+            .dm-device-item.current {
+                background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+                border: 2px solid #667eea;
+            }
+            
+            .dm-device-item.inactive {
+                opacity: 0.6;
+            }
+            
+            .dm-device-icon {
+                font-size: 28px;
+                margin-right: 12px;
+            }
+            
+            .dm-device-info {
+                flex: 1;
+            }
+            
+            .dm-device-name {
+                font-weight: 600;
+                margin-bottom: 4px;
+            }
+            
+            .dm-device-detail {
+                font-size: 12px;
+                color: #718096;
+            }
+            
+            .dm-kick-btn {
+                padding: 6px 12px;
+                background: #fed7d7;
+                color: #c53030;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+            
+            .dm-kick-btn:hover {
+                background: #fc8181;
+                color: white;
+            }
+            
+            .dm-actions {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .dm-action-btn {
+                flex: 1;
+                padding: 12px;
+                background: #f7fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                cursor: pointer;
+                font-size: 13px;
+                transition: all 0.2s;
+            }
+            
+            .dm-action-btn:hover {
+                border-color: #667eea;
+                background: rgba(102, 126, 234, 0.05);
+            }
+            
+            @media (prefers-color-scheme: dark) {
+                .device-manager-dialog {
+                    background: #2d3748;
+                    color: #f7fafc;
+                }
+                
+                .dm-info, .dm-device-item, .dm-action-btn {
+                    background: #4a5568;
+                }
+            }
+        `;
+        
+        document.head.appendChild(styles);
+    },
+
+    /**
+     * 注入VIP面板样式
+     */
+    injectVipPanelStyles() {
+        if (document.getElementById('vip-panel-styles')) return;
+        
+        const styles = document.createElement('style');
+        styles.id = 'vip-panel-styles';
+        styles.textContent = `
+            .vip-panel {
+                background: linear-gradient(145deg, #667eea, #764ba2);
+                border-radius: 24px;
+                padding: 30px;
+                max-width: 380px;
+                width: 90%;
+                color: white;
+                position: relative;
+                animation: slideUp 0.3s ease;
+            }
+            
+            .vip-close-btn {
+                position: absolute;
+                top: 15px;
+                right: 15px;
+                background: rgba(255,255,255,0.2);
+                border: none;
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                color: white;
+                font-size: 18px;
+                cursor: pointer;
+            }
+            
+            .vip-header {
+                text-align: center;
+                margin-bottom: 25px;
+            }
+            
+            .vip-avatar {
+                width: 80px;
+                height: 80px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 40px;
+                margin: 0 auto 15px;
+            }
+            
+            .vip-header h2 {
+                margin: 0 0 10px;
+                font-size: 20px;
+            }
+            
+            .vip-level {
+                display: inline-block;
+                padding: 6px 16px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 20px;
+                font-size: 14px;
+            }
+            
+            .vip-level-premium {
+                background: linear-gradient(90deg, #f6e05e, #d69e2e);
+                color: #744210;
+            }
+            
+            .vip-level-family {
+                background: linear-gradient(90deg, #68d391, #38a169);
+            }
+            
+            .vip-trial-badge {
+                display: inline-block;
+                padding: 4px 12px;
+                background: #f6e05e;
+                color: #744210;
+                border-radius: 12px;
+                font-size: 12px;
+                margin-top: 10px;
+            }
+            
+            .vip-trial-remaining {
+                font-size: 13px;
+                opacity: 0.8;
+                margin-top: 5px;
+            }
+            
+            .vip-stats {
+                display: flex;
+                justify-content: space-around;
+                padding: 20px 0;
+                border-top: 1px solid rgba(255,255,255,0.2);
+                border-bottom: 1px solid rgba(255,255,255,0.2);
+                margin-bottom: 20px;
+            }
+            
+            .vip-stat {
+                text-align: center;
+            }
+            
+            .vip-stat-icon {
+                font-size: 24px;
+                margin-bottom: 5px;
+            }
+            
+            .vip-stat-value {
+                font-size: 24px;
+                font-weight: bold;
+            }
+            
+            .vip-stat-label {
+                font-size: 12px;
+                opacity: 0.8;
+            }
+            
+            .vip-features h3 {
+                font-size: 14px;
+                margin: 0 0 10px;
+                opacity: 0.8;
+            }
+            
+            .vip-features-list {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+            
+            .vip-feature-item {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+            }
+            
+            .vip-feature-check {
+                color: #68d391;
+            }
+            
+            .vip-upgrade-btn {
+                width: 100%;
+                padding: 14px;
+                background: white;
+                color: #667eea;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 20px;
+                transition: all 0.3s;
+            }
+            
+            .vip-upgrade-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            }
+        `;
+        
+        document.head.appendChild(styles);
+    },
+
+    /**
+     * 注入迁移对话框样式
+     */
+    injectMigrationStyles() {
+        if (document.getElementById('migration-styles')) return;
+        
+        const styles = document.createElement('style');
+        styles.id = 'migration-styles';
+        styles.textContent = `
+            .migration-dialog {
+                background: white;
+                border-radius: 20px;
+                padding: 30px;
+                max-width: 380px;
+                width: 90%;
+                animation: slideUp 0.3s ease;
+            }
+            
+            .migration-dialog h2 {
+                margin: 0 0 20px;
+                text-align: center;
+            }
+            
+            .migration-tabs {
+                display: flex;
+                gap: 10px;
+                margin-bottom: 20px;
+            }
+            
+            .migration-tab {
+                flex: 1;
+                padding: 10px;
+                background: #f7fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                cursor: pointer;
+                font-size: 14px;
+                transition: all 0.2s;
+            }
+            
+            .migration-tab.active {
+                background: #667eea;
+                border-color: #667eea;
+                color: white;
+            }
+            
+            .migration-panel {
+                text-align: center;
+            }
+            
+            .migration-panel p {
+                color: #718096;
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+            
+            .migration-generate-btn, .migration-use-btn {
+                padding: 12px 24px;
+                background: linear-gradient(135deg, #667eea, #764ba2);
+                color: white;
+                border: none;
+                border-radius: 10px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+            
+            .migration-code-display {
+                margin-top: 20px;
+                padding: 20px;
+                background: #f7fafc;
+                border-radius: 12px;
+            }
+            
+            .migration-code {
+                font-size: 32px;
+                font-family: 'Courier New', monospace;
+                letter-spacing: 4px;
+                color: #667eea;
+                font-weight: bold;
+            }
+            
+            .migration-expires {
+                font-size: 12px;
+                color: #718096;
+                margin-top: 10px;
+            }
+            
+            #migration-input {
+                width: 100%;
+                padding: 15px;
+                font-size: 20px;
+                text-align: center;
+                border: 2px solid #e2e8f0;
+                border-radius: 10px;
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 3px;
+            }
+            
+            .migration-close-btn {
+                width: 100%;
+                padding: 12px;
+                background: #f7fafc;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                margin-top: 20px;
+                color: #718096;
+            }
+            
+            @media (prefers-color-scheme: dark) {
+                .migration-dialog {
+                    background: #2d3748;
+                    color: #f7fafc;
+                }
+                
+                .migration-tab {
+                    background: #4a5568;
+                    border-color: #4a5568;
+                }
+                
+                .migration-code-display {
+                    background: #4a5568;
+                }
+                
+                #migration-input {
+                    background: #4a5568;
+                    border-color: #4a5568;
+                    color: #f7fafc;
                 }
             }
         `;
