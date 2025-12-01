@@ -4254,7 +4254,7 @@ body.liquid-glass-mode .settings-action-btn.save {
     max-width: 360px;
     margin: 0 auto;
     padding: 8px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     display: flex;
@@ -4263,23 +4263,18 @@ body.liquid-glass-mode .settings-action-btn.save {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(255, 255, 255, 0.5);
     border-radius: 20px;
-    transform: translateY(150%);
-    opacity: 0;
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), 
-                opacity 0.4s ease;
-    visibility: hidden;
-}
-
-.settings-bottom-bar.visible {
     transform: translateY(0);
     opacity: 1;
     visibility: visible;
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease;
 }
 
-.settings-bottom-bar.hiding {
+/* 滚动时隐藏底部栏 */
+.settings-bottom-bar.hidden-bar {
     transform: translateY(150%);
     opacity: 0;
-    transition: transform 0.4s ease-in, opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .settings-action-btn {

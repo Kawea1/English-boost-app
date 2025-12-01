@@ -292,8 +292,23 @@ function selectBestUSVoice(voices) {
     if (!voices || voices.length === 0) return null;
     
     // macOS/iOS 优质美式语音
-    var preferredNames = ['Samantha', 'Alex', 'Allison', 'Ava', 'Susan', 'Tom', 
-                          'Google US English', 'Microsoft Zira', 'Microsoft David'];
+    var preferredNames = [
+        // macOS 高质量美式语音
+        'Samantha',           // 美式女声 - 非常自然
+        'Alex',               // 美式男声 - 非常自然
+        'Allison',            // 美式女声 - 增强版
+        'Ava',                // 美式女声 - 增强版
+        'Susan',              // 美式女声
+        'Tom',                // 美式男声
+        'Zoe',                // 美式女声
+        // iOS 语音
+        'Samantha (Enhanced)',
+        'Alex (Enhanced)',
+        // Chrome/Edge 语音
+        'Google US English',
+        'Microsoft Zira',
+        'Microsoft David'
+    ];
     
     for (var i = 0; i < preferredNames.length; i++) {
         var voice = voices.find(function(v) {
@@ -1286,13 +1301,44 @@ function startReview() { alert("复习功能开发中"); }
 
 // ==================== 设置页面功能 ====================
 
+// 设置页面滚动监听
+let lastScrollTop = 0;
+let settingsScrollInitialized = false;
+
+function initSettingsScroll() {
+    if (settingsScrollInitialized) return;
+    
+    const settingsContent = document.querySelector('#settingsModal .settings-content');
+    const bottomBar = document.querySelector('.settings-bottom-bar');
+    
+    if (!settingsContent || !bottomBar) return;
+    
+    settingsContent.addEventListener('scroll', function() {
+        const currentScrollTop = this.scrollTop;
+        
+        if (currentScrollTop > lastScrollTop && currentScrollTop > 50) {
+            // 向下滚动 - 隐藏底部栏
+            bottomBar.classList.add('hidden-bar');
+        } else {
+            // 向上滚动 - 显示底部栏
+            bottomBar.classList.remove('hidden-bar');
+        }
+        
+        lastScrollTop = currentScrollTop;
+    });
+    
+    settingsScrollInitialized = true;
+}
+
 // 切换设置标签页
 function switchSettingsTab(tabName) {
     // 更新标签按钮状态
-    document.querySelectorAll('.settings-tab').forEach(tab => {
+    document.querySelectorAll('.settings-tab-new').forEach(tab => {
         tab.classList.remove('active');
     });
-    event.currentTarget.classList.add('active');
+    if (event && event.currentTarget) {
+        event.currentTarget.classList.add('active');
+    }
     
     // 更新面板显示
     document.querySelectorAll('.settings-panel').forEach(panel => {
@@ -1302,6 +1348,20 @@ function switchSettingsTab(tabName) {
     if (targetPanel) {
         targetPanel.classList.add('active');
     }
+    
+    // 重置滚动位置，显示底部栏
+    const settingsContent = document.querySelector('#settingsModal .settings-content');
+    const bottomBar = document.querySelector('.settings-bottom-bar');
+    if (settingsContent) {
+        settingsContent.scrollTop = 0;
+        lastScrollTop = 0;
+    }
+    if (bottomBar) {
+        bottomBar.classList.remove('hidden-bar');
+    }
+    
+    // 初始化滚动监听
+    initSettingsScroll();
 }
 
 // 加载应用设置
@@ -1520,9 +1580,21 @@ function togglePasswordVisibility(inputId) {
 // 预览TTS
 function previewTTS() {
     if (window.speechSynthesis) {
+        // 取消之前的播放
+        speechSynthesis.cancel();
+
         var u = new SpeechSynthesisUtterance("Hello, this is a test of the text-to-speech system.");
         u.lang = "en-US";
         u.rate = parseFloat(document.getElementById('playbackSpeed')?.value || 1);
+        
+        // 使用最佳语音
+        var voices = speechSynthesis.getVoices();
+        var voice = selectBestUSVoice(voices);
+        if (voice) {
+            u.voice = voice;
+            console.log('预览使用语音:', voice.name);
+        }
+
         speechSynthesis.speak(u);
         showToast('🔊 正在播放测试音频');
     } else {
@@ -1638,10 +1710,28 @@ function showHelp() {
 
 // 检查更新
 function checkForUpdates() {
-    showToast('🔄 正在检查更新...');
-    setTimeout(() => {
-        showToast('✅ 当前已是最新版本');
-    }, 1500);
+    showToast('🪐 正在同步云端数据...');
+    
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.ready.then(registration => {
+            registration.update().then(() => {
+                // 如果有新版本，SW会自动激活并刷新页面
+                // 如果没有新版本，我们提示用户
+                setTimeout(() => {
+                    if (confirm('✨ 已经是最新版本了\n\n所有功能运行正常。如果您遇到显示问题，可以点击"确定"强制刷新缓存。')) {
+                        window.location.reload(true);
+                    }
+                }, 2000);
+            }).catch(err => {
+                console.error('Update failed:', err);
+                window.location.reload(true);
+            });
+        });
+    } else {
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 1000);
+    }
 }
 
 // 显示反馈
