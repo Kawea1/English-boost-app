@@ -2389,17 +2389,26 @@ svg {
     fill: #6366f1;
 }
 
-/* ====== 版本1-3改进：进度圈横向百分比显示 ====== */
+/* ====== 居中改进 v1-3：进度圈百分比完全居中 ====== */
+
+/* 版本1: 使用绝对定位实现完美居中 */
 .progress-ring-text-overlay {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+/* 版本2: 内部容器确保数字+%作为整体居中 */
+.progress-ring-text-overlay .progress-inner {
     display: flex;
     align-items: baseline;
     justify-content: center;
-    gap: 1px;
-    white-space: nowrap;
 }
 
 /* 版本1: 基础横向布局 - 数字和百分号分离显示 */
@@ -2413,11 +2422,14 @@ svg {
 }
 
 .progress-percent {
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
     color: #8b5cf6;
     line-height: 1;
     margin-left: 1px;
+    /* 版本3: 微调百分号位置，视觉上更协调 */
+    position: relative;
+    top: -1px;
 }
 
 /* 版本2: 两位数时的自适应 */
@@ -2427,15 +2439,18 @@ svg {
 
 /* 版本3: 三位数(100%)时的特殊样式 */
 .progress-number.three-digits {
-    font-size: 15px;
-    letter-spacing: -1px;
+    font-size: 14px;
+    letter-spacing: -0.5px;
 }
 
+.progress-number.three-digits + .progress-percent {
+    font-size: 9px;
+    top: -2px;
+}
+
+/* 完成状态样式 */
 .progress-ring-text-overlay.completed {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%);
-    border-radius: 50%;
-    width: 54px;
-    height: 54px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0.05) 70%, transparent 100%);
 }
 
 .progress-ring-text-overlay.completed .progress-number {
