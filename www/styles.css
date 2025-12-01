@@ -590,6 +590,27 @@ body.liquid-glass-mode .dictation-card-new::before {
     pointer-events: none;
     border-radius: inherit;
     z-index: 0;
+    animation: none !important;
+}
+
+/* 液态玻璃模式 - 播放按钮高级版 */
+body.liquid-glass-mode .play-btn-premium {
+    background: linear-gradient(145deg, rgba(59, 130, 246, 0.9), rgba(37, 99, 235, 0.95));
+    box-shadow: 
+        0 8px 32px rgba(37, 99, 235, 0.3),
+        inset 0 2px 0 rgba(255, 255, 255, 0.2);
+}
+
+body.liquid-glass-mode .speed-btn-new {
+    background: var(--liquid-glass-bg);
+    border-color: var(--liquid-glass-border);
+    backdrop-filter: blur(10px);
+}
+
+body.liquid-glass-mode .speed-indicator {
+    background: var(--liquid-glass-bg);
+    border-color: var(--liquid-glass-border);
+    backdrop-filter: blur(10px);
 }
 
 /* 口语模块 - 句子卡片和结果卡片 */

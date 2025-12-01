@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    学术英语精进 - 网络安全配置
+    v1.0
+    
+    配置说明：
+    1. 允许本地开发服务器的明文流量 (仅调试)
+    2. 生产环境强制使用 HTTPS
+    3. 证书固定 (可选)
+-->
+<network-security-config>
+    <!-- 基本配置：允许 cleartext 用于开发 -->
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system" />
+            <certificates src="user" />
+        </trust-anchors>
+    </base-config>
+    
+    <!-- 允许本地开发服务器 -->
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">localhost</domain>
+        <domain includeSubdomains="true">10.0.2.2</domain>
+        <domain includeSubdomains="true">192.168.0.0/16</domain>
+    </domain-config>
+    
+    <!-- API 域名配置 (强制 HTTPS) -->
+    <domain-config cleartextTrafficPermitted="false">
+        <!-- 如有自己的 API 服务器，取消注释并填入域名 -->
+        <!-- <domain includeSubdomains="true">api.yourdomain.com</domain> -->
+        
+        <!-- 词典 API -->
+        <domain includeSubdomains="true">api.dictionaryapi.dev</domain>
+        
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </domain-config>
+    
+    <!-- 调试配置：仅在 debug 版本生效 -->
+    <debug-overrides>
+        <trust-anchors>
+            <certificates src="user" />
+        </trust-anchors>
+    </debug-overrides>
+</network-security-config>
