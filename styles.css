@@ -4271,10 +4271,18 @@ body.liquid-glass-mode .settings-action-btn.save {
 }
 
 /* 滚动时隐藏底部栏 */
+.settings-bottom-bar.hiding,
 .settings-bottom-bar.hidden-bar {
     transform: translateY(150%);
     opacity: 0;
     pointer-events: none;
+}
+
+/* 显示时的状态 */
+.settings-bottom-bar.visible {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
 }
 
 .settings-action-btn {

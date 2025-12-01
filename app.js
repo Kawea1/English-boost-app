@@ -15,7 +15,7 @@ var currentModule = null;
         console.error('Error applying liquid glass mode:', e);
     }
     
-    const APP_VERSION = '2.8';
+    const APP_VERSION = '3.0';
     const VERSION_KEY = 'app_version';
     
     // 检查版本更新
