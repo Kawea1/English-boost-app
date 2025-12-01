@@ -14,7 +14,10 @@
     "build:win": "electron-builder --win",
     "build:linux": "electron-builder --linux",
     "build:all": "electron-builder -mwl",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "ios:sync": "cp index.html styles.css app.js vocabulary.js dictionary.js modules.js listening-module.js listening-data.js reading-data.js sources.js online_sources.js sw.js manifest.json auth.js www/ && npx cap sync ios",
+    "ios:open": "npx cap open ios",
+    "ios:build": "./build-ios.sh"
   },
   "build": {
     "appId": "com.academic.english",
@@ -40,7 +43,9 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "universal"
+          ]
         }
       ],
       "darkModeSupport": true
@@ -50,18 +55,25 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ]
     },
     "linux": {
       "icon": "assets/icon.png",
       "category": "Education",
-      "target": ["AppImage", "deb"]
+      "target": [
+        "AppImage",
+        "deb"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -89,5 +101,10 @@
   "devDependencies": {
     "electron": "^28.0.0",
     "electron-builder": "^24.9.1"
+  },
+  "dependencies": {
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4",
+    "@capacitor/ios": "^7.4.4"
   }
 }
