@@ -1304,6 +1304,255 @@ function renderOnlineResources() {
 // 艾宾浩斯复习间隔（天数）
 const EBBINGHAUS_INTERVALS = [1, 2, 4, 7, 15, 30, 60]; // 第1次复习在1天后，第2次在2天后...
 
+// 复习模式
+const REVIEW_MODES = {
+    QUICK: 'quick',      // 快速复习 - 只看单词和释义
+    DEEP: 'deep',        // 深度复习 - 包含拼写测试
+    LISTENING: 'listen'  // 听力复习 - 听音辨词
+};
+
+// 当前复习设置
+let currentReviewMode = REVIEW_MODES.QUICK;
+let reviewHistory = JSON.parse(localStorage.getItem('reviewHistory') || '[]');
+let reviewStreak = parseInt(localStorage.getItem('reviewStreak') || '0');
+let lastReviewDate = localStorage.getItem('lastReviewDate') || '';
+
+// 收藏的重点单词
+let starredWords = JSON.parse(localStorage.getItem('starredWords') || '[]');
+
+// 收藏/取消收藏单词
+function toggleStarWord(word) {
+    const index = starredWords.indexOf(word);
+    if (index === -1) {
+        starredWords.push(word);
+        showToast('⭐ 已收藏');
+    } else {
+        starredWords.splice(index, 1);
+        showToast('已取消收藏');
+    }
+    localStorage.setItem('starredWords', JSON.stringify(starredWords));
+    return starredWords.includes(word);
+}
+
+// 检查单词是否已收藏
+function isWordStarred(word) {
+    return starredWords.includes(word);
+}
+
+// 获取所有收藏的单词
+function getStarredWords() {
+    return starredWords;
+}
+
+// 获取艾宾浩斯记忆曲线数据（用于可视化）
+function getEbbinghausCurveData(word) {
+    const wordStats = JSON.parse(localStorage.getItem('wordStats') || '{}');
+    const stat = wordStats[word];
+    
+    if (!stat || !stat.reviewCount) {
+        return null;
+    }
+    
+    // 计算当前记忆保持率（基于艾宾浩斯遗忘曲线公式）
+    // R = e^(-t/S) 其中 R 是记忆保持率，t 是时间，S 是记忆强度
+    const now = new Date();
+    const lastReview = stat.lastReviewDate ? new Date(stat.lastReviewDate) : now;
+    const daysSinceReview = Math.max(0, (now - lastReview) / (1000 * 60 * 60 * 24));
+    
+    // 记忆强度基于复习次数和难度
+    let memoryStrength = stat.reviewCount * (stat.difficulty === 'easy' ? 1.5 : stat.difficulty === 'hard' ? 0.7 : 1);
+    memoryStrength = Math.max(1, memoryStrength);
+    
+    // 计算当前记忆保持率
+    const retentionRate = Math.round(100 * Math.exp(-daysSinceReview / memoryStrength));
+    
+    return {
+        word: word,
+        reviewCount: stat.reviewCount,
+        difficulty: stat.difficulty,
+        lastReviewDate: stat.lastReviewDate,
+        nextReviewDate: stat.nextReviewDate,
+        daysSinceReview: Math.floor(daysSinceReview),
+        retentionRate: Math.max(0, Math.min(100, retentionRate)),
+        memoryStrength: memoryStrength
+    };
+}
+
+// 获取智能推荐复习时间
+function getRecommendedReviewTime() {
+    const now = new Date();
+    const hour = now.getHours();
+    
+    // 基于认知科学研究的最佳复习时间
+    // 早晨(7-9): 适合学习新知识
+    // 上午(10-12): 适合困难内容复习
+    // 下午(14-17): 适合一般复习
+    // 晚上(20-22): 适合睡前巩固
+    
+    let recommendation = {
+        currentBest: '',
+        nextBest: '',
+        tip: ''
+    };
+    
+    if (hour >= 7 && hour < 9) {
+        recommendation.currentBest = '现在适合学习新单词';
+        recommendation.nextBest = '10-12点适合复习困难单词';
+        recommendation.tip = '💡 早晨记忆效果最好，建议学习新内容';
+    } else if (hour >= 10 && hour < 12) {
+        recommendation.currentBest = '现在适合深度复习';
+        recommendation.nextBest = '14-17点可进行一般复习';
+        recommendation.tip = '💡 上午精力充沛，适合挑战困难单词';
+    } else if (hour >= 14 && hour < 17) {
+        recommendation.currentBest = '现在适合快速复习';
+        recommendation.nextBest = '20-22点适合睡前巩固';
+        recommendation.tip = '💡 下午适合复习已学内容，巩固记忆';
+    } else if (hour >= 20 && hour < 22) {
+        recommendation.currentBest = '现在适合睡前巩固';
+        recommendation.nextBest = '明早7-9点学习新单词';
+        recommendation.tip = '💡 睡前复习有助于记忆巩固到长期记忆';
+    } else {
+        recommendation.currentBest = '可以进行简单复习';
+        recommendation.nextBest = '建议在7-9点或20-22点集中学习';
+        recommendation.tip = '💡 选择固定时间学习，养成习惯效果更好';
+    }
+    
+    return recommendation;
+}
+
+// 获取单词记忆状态分析
+function getMemoryStatusAnalysis() {
+    const wordStats = JSON.parse(localStorage.getItem('wordStats') || '{}');
+    const learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    
+    const analysis = {
+        total: learnedWords.length,
+        newWords: 0,      // 新学（复习次数<2）
+        learning: 0,      // 学习中（复习次数2-4）
+        familiar: 0,      // 熟悉（复习次数5-7）
+        mastered: 0,      // 已掌握（复习次数>=8且difficulty为easy）
+        hardWords: [],    // 困难单词列表
+        needUrgentReview: 0  // 急需复习（记忆保持率<50%）
+    };
+    
+    learnedWords.forEach(word => {
+        const stat = wordStats[word] || { reviewCount: 0, difficulty: 'medium' };
+        const curveData = getEbbinghausCurveData(word);
+        
+        if (stat.reviewCount < 2) {
+            analysis.newWords++;
+        } else if (stat.reviewCount < 5) {
+            analysis.learning++;
+        } else if (stat.reviewCount < 8) {
+            analysis.familiar++;
+        } else if (stat.difficulty === 'easy') {
+            analysis.mastered++;
+        } else {
+            analysis.familiar++;
+        }
+        
+        if (stat.difficulty === 'hard') {
+            analysis.hardWords.push(word);
+        }
+        
+        if (curveData && curveData.retentionRate < 50) {
+            analysis.needUrgentReview++;
+        }
+    });
+    
+    return analysis;
+}
+
+// 检查并更新连续复习天数
+function updateReviewStreak() {
+    const today = new Date().toDateString();
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = yesterday.toDateString();
+    
+    if (lastReviewDate === today) {
+        // 今天已经复习过
+        return reviewStreak;
+    } else if (lastReviewDate === yesterdayStr) {
+        // 昨天复习过，连续天数+1
+        reviewStreak++;
+        localStorage.setItem('reviewStreak', reviewStreak.toString());
+        localStorage.setItem('lastReviewDate', today);
+        return reviewStreak;
+    } else if (lastReviewDate !== today) {
+        // 超过一天没复习，重置
+        if (lastReviewDate && lastReviewDate !== today) {
+            const lastDate = new Date(lastReviewDate);
+            const todayDate = new Date(today);
+            const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+            if (diffDays > 1) {
+                reviewStreak = 1;
+            } else {
+                reviewStreak++;
+            }
+        } else {
+            reviewStreak = 1;
+        }
+        localStorage.setItem('reviewStreak', reviewStreak.toString());
+        localStorage.setItem('lastReviewDate', today);
+        return reviewStreak;
+    }
+    return reviewStreak;
+}
+
+// 记录复习历史
+function addReviewHistory(wordsCount, correctCount, mode) {
+    const record = {
+        date: new Date().toISOString(),
+        wordsCount: wordsCount,
+        correctCount: correctCount,
+        mode: mode,
+        accuracy: wordsCount > 0 ? Math.round((correctCount / wordsCount) * 100) : 0
+    };
+    
+    reviewHistory.unshift(record);
+    // 只保留最近30天的记录
+    if (reviewHistory.length > 30) {
+        reviewHistory = reviewHistory.slice(0, 30);
+    }
+    localStorage.setItem('reviewHistory', JSON.stringify(reviewHistory));
+}
+
+// 获取本周复习统计
+function getWeeklyReviewStats() {
+    const today = new Date();
+    const weekAgo = new Date(today);
+    weekAgo.setDate(today.getDate() - 7);
+    
+    let totalWords = 0;
+    let totalCorrect = 0;
+    let daysWithReview = 0;
+    const dailyStats = {};
+    
+    reviewHistory.forEach(record => {
+        const recordDate = new Date(record.date);
+        if (recordDate >= weekAgo) {
+            const dateStr = recordDate.toDateString();
+            if (!dailyStats[dateStr]) {
+                dailyStats[dateStr] = { words: 0, correct: 0 };
+                daysWithReview++;
+            }
+            dailyStats[dateStr].words += record.wordsCount;
+            dailyStats[dateStr].correct += record.correctCount;
+            totalWords += record.wordsCount;
+            totalCorrect += record.correctCount;
+        }
+    });
+    
+    return {
+        totalWords,
+        totalCorrect,
+        daysWithReview,
+        avgAccuracy: totalWords > 0 ? Math.round((totalCorrect / totalWords) * 100) : 0,
+        dailyStats
+    };
+}
+
 // 获取待复习的单词
 function getWordsToReview() {
     const wordStats = JSON.parse(localStorage.getItem('wordStats') || '{}');
@@ -1393,9 +1642,22 @@ function updateReviewStats() {
     const needReviewEl = document.getElementById('needReview');
     const masteredEl = document.getElementById('mastered');
     
-    if (totalLearnedEl) totalLearnedEl.textContent = totalLearned;
-    if (needReviewEl) needReviewEl.textContent = needReview;
-    if (masteredEl) masteredEl.textContent = mastered;
+    if (totalLearnedEl) {
+        totalLearnedEl.textContent = totalLearned;
+        // 添加动画效果
+        totalLearnedEl.classList.add('stat-update');
+        setTimeout(() => totalLearnedEl.classList.remove('stat-update'), 300);
+    }
+    if (needReviewEl) {
+        needReviewEl.textContent = needReview;
+        needReviewEl.classList.add('stat-update');
+        setTimeout(() => needReviewEl.classList.remove('stat-update'), 300);
+    }
+    if (masteredEl) {
+        masteredEl.textContent = mastered;
+        masteredEl.classList.add('stat-update');
+        setTimeout(() => masteredEl.classList.remove('stat-update'), 300);
+    }
     
     // 更新复习计划列表
     updateScheduleList();
@@ -1471,11 +1733,121 @@ function startReview() {
         return;
     }
     
+    // 显示复习模式选择
+    showReviewModeSelector();
+}
+
+// 显示复习模式选择器
+function showReviewModeSelector() {
+    const container = document.querySelector('.review-content-new');
+    if (!container) return;
+    
+    const wordCount = currentReviewWords.length;
+    const weeklyStats = getWeeklyReviewStats();
+    const memoryStatus = getMemoryStatusAnalysis();
+    const recommendation = getRecommendedReviewTime();
+    
+    container.innerHTML = `
+        <div class="review-mode-selector">
+            <div class="mode-header">
+                <h3>选择复习模式</h3>
+                <p>今天有 <span class="highlight">${wordCount}</span> 个单词待复习</p>
+            </div>
+            
+            <!-- 智能推荐提示 -->
+            <div class="smart-tip">
+                <div class="tip-icon">💡</div>
+                <div class="tip-content">${recommendation.tip}</div>
+            </div>
+            
+            <div class="streak-display ${reviewStreak >= 7 ? 'fire' : ''}">
+                <div class="streak-icon">${reviewStreak >= 7 ? '🔥' : '📅'}</div>
+                <div class="streak-info">
+                    <span class="streak-count">${reviewStreak}</span>
+                    <span class="streak-label">连续复习天数</span>
+                </div>
+            </div>
+            
+            <!-- 记忆状态概览 -->
+            <div class="memory-overview">
+                <div class="memory-bar">
+                    <div class="memory-segment new" style="width: ${memoryStatus.total > 0 ? (memoryStatus.newWords / memoryStatus.total * 100) : 0}%" title="新学"></div>
+                    <div class="memory-segment learning" style="width: ${memoryStatus.total > 0 ? (memoryStatus.learning / memoryStatus.total * 100) : 0}%" title="学习中"></div>
+                    <div class="memory-segment familiar" style="width: ${memoryStatus.total > 0 ? (memoryStatus.familiar / memoryStatus.total * 100) : 0}%" title="熟悉"></div>
+                    <div class="memory-segment mastered" style="width: ${memoryStatus.total > 0 ? (memoryStatus.mastered / memoryStatus.total * 100) : 0}%" title="已掌握"></div>
+                </div>
+                <div class="memory-legend">
+                    <span class="legend-item"><i class="dot new"></i>新学 ${memoryStatus.newWords}</span>
+                    <span class="legend-item"><i class="dot learning"></i>学习中 ${memoryStatus.learning}</span>
+                    <span class="legend-item"><i class="dot familiar"></i>熟悉 ${memoryStatus.familiar}</span>
+                    <span class="legend-item"><i class="dot mastered"></i>掌握 ${memoryStatus.mastered}</span>
+                </div>
+            </div>
+            
+            <div class="mode-cards">
+                <div class="mode-card quick" onclick="selectReviewMode('quick')">
+                    <div class="mode-icon">⚡</div>
+                    <div class="mode-name">快速复习</div>
+                    <div class="mode-desc">看单词 → 显示释义 → 评价记忆</div>
+                    <div class="mode-time">预计 ${Math.ceil(wordCount * 0.3)} 分钟</div>
+                </div>
+                
+                <div class="mode-card deep" onclick="selectReviewMode('deep')">
+                    <div class="mode-icon">📝</div>
+                    <div class="mode-name">深度复习</div>
+                    <div class="mode-desc">看释义 → 拼写单词 → 验证正确性</div>
+                    <div class="mode-time">预计 ${Math.ceil(wordCount * 0.5)} 分钟</div>
+                </div>
+                
+                <div class="mode-card listen" onclick="selectReviewMode('listen')">
+                    <div class="mode-icon">🎧</div>
+                    <div class="mode-name">听力复习</div>
+                    <div class="mode-desc">听发音 → 选择正确释义</div>
+                    <div class="mode-time">预计 ${Math.ceil(wordCount * 0.4)} 分钟</div>
+                </div>
+            </div>
+            
+            <div class="weekly-summary">
+                <div class="weekly-title">📊 本周复习</div>
+                <div class="weekly-stats-row">
+                    <div class="weekly-stat">
+                        <span class="weekly-value">${weeklyStats.totalWords}</span>
+                        <span class="weekly-label">复习单词</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-value">${weeklyStats.daysWithReview}/7</span>
+                        <span class="weekly-label">活跃天数</span>
+                    </div>
+                    <div class="weekly-stat">
+                        <span class="weekly-value">${weeklyStats.avgAccuracy}%</span>
+                        <span class="weekly-label">平均正确率</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <button onclick="backToReviewPlan()" class="btn-back-plan">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            返回复习计划
+        </button>
+    `;
+    
+    addReviewModeStyles();
+}
+
+// 选择复习模式
+function selectReviewMode(mode) {
+    currentReviewMode = mode;
     currentReviewIndex = 0;
     reviewSessionStats = { correct: 0, wrong: 0 };
     
-    // 显示复习界面
-    showReviewInterface();
+    if (mode === 'quick') {
+        showReviewInterface();
+    } else if (mode === 'deep') {
+        showDeepReviewInterface();
+    } else if (mode === 'listen') {
+        showListeningReviewInterface();
+    }
 }
 
 // 显示复习界面
@@ -1492,14 +1864,18 @@ function showReviewInterface() {
                 <div class="review-progress-fill" style="width: ${(current / total) * 100}%"></div>
             </div>
             <div class="review-progress-text">
-                <span>复习进度</span>
+                <span>⚡ 快速复习</span>
                 <span class="review-progress-count">${current} / ${total}</span>
             </div>
         </div>
         
         <div class="review-word-card" id="reviewWordCard">
+            <button class="star-btn" id="starBtn" onclick="toggleCurrentWordStar(event)">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </button>
             <div class="review-word-main" id="reviewWordMain">加载中...</div>
             <div class="review-word-phonetic" id="reviewWordPhonetic"></div>
+            <div class="review-word-memory-bar" id="reviewMemoryBar"></div>
             <div class="review-word-meaning hidden" id="reviewWordMeaning">
                 <div class="meaning-cn" id="reviewMeaningCn"></div>
                 <div class="meaning-en" id="reviewMeaningEn"></div>
@@ -1525,7 +1901,7 @@ function showReviewInterface() {
                     <span class="rate-emoji">🤔</span>
                     <span class="rate-text">模糊</span>
                 </button>
-                <button class="review-rate-btn remember" onclick="rateReviewWord('remember')">
+                <button class="review-rate-btn remember" onclick="rateReviewWord('remember')">>
                     <span class="rate-emoji">😊</span>
                     <span class="rate-text">记得</span>
                 </button>
@@ -1545,6 +1921,31 @@ function showReviewInterface() {
     showCurrentReviewWord();
 }
 
+// 切换当前单词的收藏状态
+function toggleCurrentWordStar(event) {
+    if (event) event.stopPropagation();
+    
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    if (!wordInfo) return;
+    
+    const isStarred = toggleStarWord(wordInfo.word);
+    updateStarButton(isStarred);
+}
+
+// 更新收藏按钮状态
+function updateStarButton(isStarred) {
+    const starBtn = document.getElementById('starBtn');
+    if (starBtn) {
+        if (isStarred) {
+            starBtn.classList.add('starred');
+            starBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        } else {
+            starBtn.classList.remove('starred');
+            starBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+        }
+    }
+}
+
 // 显示当前复习单词
 function showCurrentReviewWord() {
     if (currentReviewIndex >= currentReviewWords.length) {
@@ -1561,6 +1962,9 @@ function showCurrentReviewWord() {
         wordData = window.vocabularyData.find(w => w.word === word);
     }
     
+    // 获取记忆曲线数据
+    const curveData = getEbbinghausCurveData(word);
+    
     const wordMainEl = document.getElementById('reviewWordMain');
     const phoneticEl = document.getElementById('reviewWordPhonetic');
     const meaningEl = document.getElementById('reviewWordMeaning');
@@ -1570,12 +1974,30 @@ function showCurrentReviewWord() {
     const showBtn = document.getElementById('reviewShowBtn');
     const rateButtons = document.getElementById('reviewRateButtons');
     const hintEl = document.getElementById('reviewWordHint');
+    const memoryBarEl = document.getElementById('reviewMemoryBar');
     
     if (wordMainEl) wordMainEl.textContent = word;
     if (phoneticEl) phoneticEl.textContent = wordData ? wordData.phonetic : '';
     if (meaningCnEl) meaningCnEl.textContent = wordData ? wordData.meaningCn : wordInfo.meaningCn || '';
     if (meaningEnEl) meaningEnEl.textContent = wordData ? wordData.meaningEn : wordInfo.meaningEn || '';
     if (exampleEl) exampleEl.textContent = wordData ? `"${wordData.example}"` : '';
+    
+    // 显示记忆保持率条
+    if (memoryBarEl && curveData) {
+        const retentionColor = curveData.retentionRate >= 70 ? '#10b981' : 
+                              curveData.retentionRate >= 40 ? '#f59e0b' : '#ef4444';
+        memoryBarEl.innerHTML = `
+            <div class="memory-retention-bar">
+                <div class="retention-fill" style="width: ${curveData.retentionRate}%; background: ${retentionColor}"></div>
+            </div>
+            <span class="retention-text">记忆保持率 ${curveData.retentionRate}%</span>
+        `;
+    } else if (memoryBarEl) {
+        memoryBarEl.innerHTML = '';
+    }
+    
+    // 更新收藏按钮状态
+    updateStarButton(isWordStarred(word));
     
     // 重置显示状态
     if (meaningEl) meaningEl.classList.add('hidden');
@@ -1594,7 +2016,9 @@ function showCurrentReviewWord() {
     // 绑定点击播放
     const wordCard = document.getElementById('reviewWordCard');
     if (wordCard) {
-        wordCard.onclick = function() {
+        wordCard.onclick = function(e) {
+            // 如果点击的是收藏按钮，不播放发音
+            if (e.target.closest('.star-btn')) return;
             speakReviewWord(word);
         };
     }
@@ -1609,6 +2033,437 @@ function speakReviewWord(word) {
         utterance.rate = 0.9;
         speechSynthesis.speak(utterance);
     }
+}
+
+// ========== 深度复习模式 ==========
+function showDeepReviewInterface() {
+    const container = document.querySelector('.review-content-new');
+    if (!container) return;
+    
+    const total = currentReviewWords.length;
+    const current = currentReviewIndex + 1;
+    
+    container.innerHTML = `
+        <div class="review-session-card deep-mode">
+            <div class="review-progress-bar">
+                <div class="review-progress-fill" style="width: ${(current / total) * 100}%"></div>
+            </div>
+            <div class="review-progress-text">
+                <span>📝 深度复习</span>
+                <span class="review-progress-count">${current} / ${total}</span>
+            </div>
+        </div>
+        
+        <div class="deep-review-card" id="deepReviewCard">
+            <div class="deep-meaning-display" id="deepMeaning">加载中...</div>
+            <div class="deep-phonetic" id="deepPhonetic"></div>
+            <div class="deep-input-wrap">
+                <input type="text" id="deepSpellInput" class="deep-spell-input" placeholder="输入单词拼写..." autocomplete="off" autocapitalize="off">
+                <button class="deep-hint-btn" onclick="showDeepHint()" id="deepHintBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                    提示
+                </button>
+            </div>
+            <div class="deep-result hidden" id="deepResult">
+                <div class="deep-correct-word" id="deepCorrectWord"></div>
+                <div class="deep-example" id="deepExample"></div>
+            </div>
+        </div>
+        
+        <div class="review-actions">
+            <button class="review-check-btn" id="deepCheckBtn" onclick="checkDeepSpelling()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                检查拼写
+            </button>
+            <div class="review-rate-buttons hidden" id="deepRateButtons">
+                <button class="review-rate-btn forgot" onclick="rateReviewWord('forgot')">
+                    <span class="rate-emoji">😰</span>
+                    <span class="rate-text">忘了</span>
+                </button>
+                <button class="review-rate-btn vague" onclick="rateReviewWord('vague')">
+                    <span class="rate-emoji">🤔</span>
+                    <span class="rate-text">模糊</span>
+                </button>
+                <button class="review-rate-btn remember" onclick="rateReviewWord('remember')">
+                    <span class="rate-emoji">😊</span>
+                    <span class="rate-text">记得</span>
+                </button>
+            </div>
+        </div>
+        
+        <button class="review-quit-btn" onclick="quitReview()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            退出复习
+        </button>
+    `;
+    
+    addReviewStyles();
+    showCurrentDeepWord();
+    
+    // 绑定输入框回车事件
+    const input = document.getElementById('deepSpellInput');
+    if (input) {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkDeepSpelling();
+            }
+        });
+        input.focus();
+    }
+}
+
+// 显示当前深度复习单词
+function showCurrentDeepWord() {
+    if (currentReviewIndex >= currentReviewWords.length) {
+        showReviewComplete();
+        return;
+    }
+    
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    const word = wordInfo.word;
+    
+    let wordData = null;
+    if (window.vocabularyData) {
+        wordData = window.vocabularyData.find(w => w.word === word);
+    }
+    
+    const meaningEl = document.getElementById('deepMeaning');
+    const phoneticEl = document.getElementById('deepPhonetic');
+    const inputEl = document.getElementById('deepSpellInput');
+    const resultEl = document.getElementById('deepResult');
+    const checkBtn = document.getElementById('deepCheckBtn');
+    const rateButtons = document.getElementById('deepRateButtons');
+    const hintBtn = document.getElementById('deepHintBtn');
+    
+    const meaningCn = wordData ? wordData.meaningCn : wordInfo.meaningCn || '暂无释义';
+    if (meaningEl) meaningEl.textContent = meaningCn;
+    if (phoneticEl) phoneticEl.textContent = `(${word.length} 个字母)`;
+    if (inputEl) {
+        inputEl.value = '';
+        inputEl.disabled = false;
+        inputEl.focus();
+    }
+    if (resultEl) resultEl.classList.add('hidden');
+    if (checkBtn) checkBtn.classList.remove('hidden');
+    if (rateButtons) rateButtons.classList.add('hidden');
+    if (hintBtn) {
+        hintBtn.classList.remove('hidden');
+        hintBtn.dataset.hintShown = 'false';
+    }
+    
+    // 更新进度
+    const total = currentReviewWords.length;
+    const current = currentReviewIndex + 1;
+    const progressFill = document.querySelector('.review-progress-fill');
+    const progressCount = document.querySelector('.review-progress-count');
+    if (progressFill) progressFill.style.width = `${(current / total) * 100}%`;
+    if (progressCount) progressCount.textContent = `${current} / ${total}`;
+}
+
+// 显示拼写提示
+function showDeepHint() {
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    const word = wordInfo.word;
+    const hintBtn = document.getElementById('deepHintBtn');
+    const inputEl = document.getElementById('deepSpellInput');
+    
+    if (hintBtn && hintBtn.dataset.hintShown !== 'true') {
+        // 显示首字母
+        if (inputEl) inputEl.placeholder = `${word[0]}${'_'.repeat(word.length - 1)}`;
+        hintBtn.dataset.hintShown = 'true';
+        hintBtn.innerHTML = `
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+            发音
+        `;
+        hintBtn.onclick = function() { speakReviewWord(word); };
+    }
+}
+
+// 检查深度复习拼写
+function checkDeepSpelling() {
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    const word = wordInfo.word;
+    const inputEl = document.getElementById('deepSpellInput');
+    const resultEl = document.getElementById('deepResult');
+    const correctWordEl = document.getElementById('deepCorrectWord');
+    const exampleEl = document.getElementById('deepExample');
+    const checkBtn = document.getElementById('deepCheckBtn');
+    const rateButtons = document.getElementById('deepRateButtons');
+    
+    if (!inputEl) return;
+    
+    const userInput = inputEl.value.trim().toLowerCase();
+    const isCorrect = userInput === word.toLowerCase();
+    
+    let wordData = null;
+    if (window.vocabularyData) {
+        wordData = window.vocabularyData.find(w => w.word === word);
+    }
+    
+    if (resultEl) {
+        resultEl.classList.remove('hidden');
+        resultEl.classList.remove('correct', 'wrong');
+        resultEl.classList.add(isCorrect ? 'correct' : 'wrong');
+    }
+    
+    if (correctWordEl) {
+        correctWordEl.innerHTML = `
+            <span class="result-icon">${isCorrect ? '✓' : '✗'}</span>
+            <span class="result-word">${word}</span>
+            ${!isCorrect ? `<span class="user-input">你的答案: ${userInput || '(空)'}</span>` : ''}
+        `;
+    }
+    
+    if (exampleEl && wordData) {
+        exampleEl.textContent = wordData.example || '';
+    }
+    
+    if (inputEl) inputEl.disabled = true;
+    if (checkBtn) checkBtn.classList.add('hidden');
+    if (rateButtons) rateButtons.classList.remove('hidden');
+    
+    // 播放发音
+    speakReviewWord(word);
+}
+
+// ========== 听力复习模式 ==========
+let listeningOptions = [];
+
+function showListeningReviewInterface() {
+    const container = document.querySelector('.review-content-new');
+    if (!container) return;
+    
+    const total = currentReviewWords.length;
+    const current = currentReviewIndex + 1;
+    
+    container.innerHTML = `
+        <div class="review-session-card listen-mode">
+            <div class="review-progress-bar">
+                <div class="review-progress-fill" style="width: ${(current / total) * 100}%"></div>
+            </div>
+            <div class="review-progress-text">
+                <span>🎧 听力复习</span>
+                <span class="review-progress-count">${current} / ${total}</span>
+            </div>
+        </div>
+        
+        <div class="listen-review-card" id="listenReviewCard">
+            <div class="listen-play-area" id="listenPlayArea" onclick="playListeningWord()">
+                <div class="listen-icon">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                </div>
+                <div class="listen-hint">点击播放发音</div>
+            </div>
+            <div class="listen-options" id="listenOptions">
+                <!-- 选项将动态生成 -->
+            </div>
+            <div class="listen-result hidden" id="listenResult">
+                <div class="listen-answer" id="listenAnswer"></div>
+            </div>
+        </div>
+        
+        <div class="review-actions">
+            <button class="review-next-btn hidden" id="listenNextBtn" onclick="nextListeningWord()">
+                下一个
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+        </div>
+        
+        <button class="review-quit-btn" onclick="quitReview()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            退出复习
+        </button>
+    `;
+    
+    addReviewStyles();
+    showCurrentListeningWord();
+}
+
+// 显示当前听力复习单词
+function showCurrentListeningWord() {
+    if (currentReviewIndex >= currentReviewWords.length) {
+        showReviewComplete();
+        return;
+    }
+    
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    const word = wordInfo.word;
+    
+    // 生成选项（1个正确答案 + 3个干扰项）
+    listeningOptions = generateListeningOptions(word);
+    
+    const optionsEl = document.getElementById('listenOptions');
+    const resultEl = document.getElementById('listenResult');
+    const nextBtn = document.getElementById('listenNextBtn');
+    
+    if (optionsEl) {
+        let html = '';
+        listeningOptions.forEach((opt, index) => {
+            html += `
+                <div class="listen-option" data-word="${opt.word}" onclick="selectListeningOption(this, '${opt.word}')">
+                    <span class="option-letter">${String.fromCharCode(65 + index)}</span>
+                    <span class="option-meaning">${opt.meaning}</span>
+                </div>
+            `;
+        });
+        optionsEl.innerHTML = html;
+    }
+    
+    if (resultEl) resultEl.classList.add('hidden');
+    if (nextBtn) nextBtn.classList.add('hidden');
+    
+    // 更新进度
+    const total = currentReviewWords.length;
+    const current = currentReviewIndex + 1;
+    const progressFill = document.querySelector('.review-progress-fill');
+    const progressCount = document.querySelector('.review-progress-count');
+    if (progressFill) progressFill.style.width = `${(current / total) * 100}%`;
+    if (progressCount) progressCount.textContent = `${current} / ${total}`;
+    
+    // 自动播放发音
+    setTimeout(() => playListeningWord(), 500);
+}
+
+// 生成听力选项
+function generateListeningOptions(correctWord) {
+    const options = [];
+    
+    // 获取正确答案的释义
+    let correctWordData = null;
+    if (window.vocabularyData) {
+        correctWordData = window.vocabularyData.find(w => w.word === correctWord);
+    }
+    const correctMeaning = correctWordData ? correctWordData.meaningCn : '暂无释义';
+    
+    options.push({ word: correctWord, meaning: correctMeaning, isCorrect: true });
+    
+    // 从其他待复习单词中选择干扰项
+    const otherWords = currentReviewWords.filter(w => w.word !== correctWord);
+    const shuffledOthers = otherWords.sort(() => Math.random() - 0.5).slice(0, 3);
+    
+    shuffledOthers.forEach(w => {
+        let wordData = null;
+        if (window.vocabularyData) {
+            wordData = window.vocabularyData.find(wd => wd.word === w.word);
+        }
+        const meaning = wordData ? wordData.meaningCn : '暂无释义';
+        options.push({ word: w.word, meaning: meaning, isCorrect: false });
+    });
+    
+    // 如果干扰项不足，从词库中随机选择
+    while (options.length < 4 && window.vocabularyData) {
+        const randomWord = window.vocabularyData[Math.floor(Math.random() * window.vocabularyData.length)];
+        if (!options.find(o => o.word === randomWord.word)) {
+            options.push({ word: randomWord.word, meaning: randomWord.meaningCn, isCorrect: false });
+        }
+    }
+    
+    // 打乱顺序
+    return options.sort(() => Math.random() - 0.5);
+}
+
+// 播放听力单词发音
+function playListeningWord() {
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    if (wordInfo) {
+        speakReviewWord(wordInfo.word);
+        
+        // 播放动画
+        const playArea = document.getElementById('listenPlayArea');
+        if (playArea) {
+            playArea.classList.add('playing');
+            setTimeout(() => playArea.classList.remove('playing'), 800);
+        }
+    }
+}
+
+// 选择听力选项
+function selectListeningOption(element, selectedWord) {
+    const wordInfo = currentReviewWords[currentReviewIndex];
+    const correctWord = wordInfo.word;
+    const isCorrect = selectedWord === correctWord;
+    
+    // 禁用所有选项
+    document.querySelectorAll('.listen-option').forEach(opt => {
+        opt.onclick = null;
+        opt.classList.add('disabled');
+        if (opt.dataset.word === correctWord) {
+            opt.classList.add('correct');
+        } else if (opt === element && !isCorrect) {
+            opt.classList.add('wrong');
+        }
+    });
+    
+    // 显示结果
+    const resultEl = document.getElementById('listenResult');
+    const answerEl = document.getElementById('listenAnswer');
+    const nextBtn = document.getElementById('listenNextBtn');
+    
+    if (resultEl) resultEl.classList.remove('hidden');
+    if (answerEl) {
+        let wordData = null;
+        if (window.vocabularyData) {
+            wordData = window.vocabularyData.find(w => w.word === correctWord);
+        }
+        answerEl.innerHTML = `
+            <div class="answer-word">${correctWord}</div>
+            <div class="answer-phonetic">${wordData ? wordData.phonetic : ''}</div>
+            <div class="answer-meaning">${wordData ? wordData.meaningCn : ''}</div>
+        `;
+    }
+    if (nextBtn) nextBtn.classList.remove('hidden');
+    
+    // 更新统计
+    if (isCorrect) {
+        reviewSessionStats.correct++;
+    } else {
+        reviewSessionStats.wrong++;
+    }
+    
+    // 更新单词状态
+    updateWordReviewStats(correctWord, isCorrect ? 'remember' : 'forgot');
+}
+
+// 下一个听力单词
+function nextListeningWord() {
+    currentReviewIndex++;
+    showCurrentListeningWord();
+}
+
+// 更新单词复习统计（听力模式专用）
+function updateWordReviewStats(word, rating) {
+    const wordStats = JSON.parse(localStorage.getItem('wordStats') || '{}');
+    if (!wordStats[word]) {
+        wordStats[word] = {
+            reviewCount: 0,
+            difficulty: 'medium',
+            lastReviewDate: null,
+            nextReviewDate: null
+        };
+    }
+    
+    const stat = wordStats[word];
+    stat.reviewCount = (stat.reviewCount || 0) + 1;
+    stat.lastReviewDate = new Date().toISOString();
+    
+    let intervalIndex = Math.min(stat.reviewCount - 1, EBBINGHAUS_INTERVALS.length - 1);
+    
+    if (rating === 'forgot') {
+        intervalIndex = 0;
+        stat.difficulty = 'hard';
+    } else if (rating === 'vague') {
+        stat.difficulty = 'medium';
+    } else {
+        intervalIndex = Math.min(intervalIndex + 1, EBBINGHAUS_INTERVALS.length - 1);
+        stat.difficulty = 'easy';
+    }
+    
+    const nextDate = new Date();
+    nextDate.setDate(nextDate.getDate() + EBBINGHAUS_INTERVALS[intervalIndex]);
+    stat.nextReviewDate = nextDate.toISOString();
+    
+    wordStats[word] = stat;
+    localStorage.setItem('wordStats', JSON.stringify(wordStats));
 }
 
 // 显示复习单词释义
@@ -1683,16 +2538,48 @@ function showReviewComplete() {
     const total = reviewSessionStats.correct + reviewSessionStats.wrong;
     const accuracy = total > 0 ? Math.round((reviewSessionStats.correct / total) * 100) : 0;
     
+    // 更新连续复习天数
+    updateReviewStreak();
+    
+    // 记录复习历史
+    addReviewHistory(total, reviewSessionStats.correct, currentReviewMode);
+    
     // 更新今日复习进度
     if (typeof updateDailyProgress === 'function') {
         updateDailyProgress('review', total);
     }
     
+    // 生成鼓励语
+    let encourageText = '';
+    let encourageEmoji = '';
+    if (accuracy >= 90) {
+        encourageText = '完美！你的记忆力超群！';
+        encourageEmoji = '🏆';
+    } else if (accuracy >= 80) {
+        encourageText = '太棒了！继续保持！';
+        encourageEmoji = '🌟';
+    } else if (accuracy >= 60) {
+        encourageText = '不错！再接再厉！';
+        encourageEmoji = '💪';
+    } else {
+        encourageText = '加油！多复习几遍会更好！';
+        encourageEmoji = '📚';
+    }
+    
+    // 生成模式标签
+    const modeLabels = {
+        'quick': '⚡ 快速复习',
+        'deep': '📝 深度复习',
+        'listen': '🎧 听力复习'
+    };
+    const modeLabel = modeLabels[currentReviewMode] || '复习';
+
     container.innerHTML = `
         <div class="review-complete-card">
-            <div class="complete-icon">🎉</div>
+            <div class="complete-confetti"></div>
+            <div class="complete-icon">${encourageEmoji}</div>
             <h3>复习完成！</h3>
-            <p class="complete-subtitle">今天的复习任务已完成</p>
+            <p class="complete-subtitle">${modeLabel}已完成</p>
             
             <div class="complete-stats">
                 <div class="complete-stat">
@@ -1727,21 +2614,59 @@ function showReviewComplete() {
                 <span class="accuracy-label">正确率</span>
             </div>
             
+            <div class="streak-badge ${reviewStreak >= 7 ? 'fire' : ''}">
+                <span class="streak-fire">${reviewStreak >= 7 ? '🔥' : '📅'}</span>
+                <span>连续复习 <strong>${reviewStreak}</strong> 天</span>
+            </div>
+            
             <div class="complete-message">
-                ${accuracy >= 80 ? '🌟 太棒了！记忆力超群！' : 
-                  accuracy >= 60 ? '💪 不错！继续保持！' : 
-                  '📚 加油！多复习几遍会更好！'}
+                ${encourageText}
             </div>
         </div>
         
-        <button onclick="backToReviewPlan()" class="btn-start-review">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-            返回复习计划
-        </button>
+        <div class="complete-actions">
+            <button onclick="continueReview()" class="btn-continue-review" ${getWordsToReview().length === 0 ? 'disabled' : ''}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                继续复习
+            </button>
+            <button onclick="backToReviewPlan()" class="btn-back-plan">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                返回计划
+            </button>
+        </div>
     `;
+    
+    // 添加庆祝动画
+    addCelebrationEffect();
     
     // 更新统计
     updateReviewStats();
+}
+
+// 继续复习
+function continueReview() {
+    currentReviewWords = getWordsToReview();
+    if (currentReviewWords.length === 0) {
+        showToast('🎉 今天的复习任务全部完成！');
+        return;
+    }
+    showReviewModeSelector();
+}
+
+// 添加庆祝效果
+function addCelebrationEffect() {
+    const confetti = document.querySelector('.complete-confetti');
+    if (!confetti) return;
+    
+    // 创建彩纸效果
+    for (let i = 0; i < 30; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.backgroundColor = ['#f59e0b', '#10b981', '#6366f1', '#ec4899', '#3b82f6'][Math.floor(Math.random() * 5)];
+        confetti.appendChild(piece);
+    }
 }
 
 // 退出复习
@@ -1759,6 +2684,11 @@ function backToReviewPlan() {
     const container = document.querySelector('.review-content-new');
     if (!container) return;
     
+    const memoryStatus = getMemoryStatusAnalysis();
+    const weeklyStats = getWeeklyReviewStats();
+    const recommendation = getRecommendedReviewTime();
+    const starredCount = getStarredWords().length;
+    
     container.innerHTML = `
         <div class="review-plan-card">
             <div class="plan-header">
@@ -1772,13 +2702,268 @@ function backToReviewPlan() {
             </div>
             <div id="scheduleList" class="schedule-list-new"></div>
         </div>
+        
+        <!-- 学习数据可视化 -->
+        <div class="review-analytics">
+            <div class="analytics-header">
+                <span>📊 学习数据</span>
+            </div>
+            
+            <div class="analytics-chart">
+                <div class="weekly-chart">
+                    ${generateWeeklyChart(weeklyStats)}
+                </div>
+            </div>
+            
+            <div class="analytics-stats">
+                <div class="analytics-item">
+                    <span class="analytics-value">${weeklyStats.totalWords}</span>
+                    <span class="analytics-label">本周复习</span>
+                </div>
+                <div class="analytics-item">
+                    <span class="analytics-value">${weeklyStats.avgAccuracy}%</span>
+                    <span class="analytics-label">正确率</span>
+                </div>
+                <div class="analytics-item">
+                    <span class="analytics-value">${memoryStatus.needUrgentReview}</span>
+                    <span class="analytics-label">急需复习</span>
+                </div>
+                <div class="analytics-item starred">
+                    <span class="analytics-value">⭐ ${starredCount}</span>
+                    <span class="analytics-label">收藏单词</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 智能建议 -->
+        <div class="smart-suggestion">
+            <div class="suggestion-icon">💡</div>
+            <div class="suggestion-text">${recommendation.currentBest}</div>
+        </div>
+        
         <button onclick="startReview()" class="btn-start-review">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
             开始复习
         </button>
+        
+        ${starredCount > 0 ? `
+        <button onclick="reviewStarredWords()" class="btn-review-starred">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#f59e0b" stroke="#f59e0b" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            复习收藏 (${starredCount}词)
+        </button>
+        ` : ''}
     `;
     
     updateReviewStats();
+    addReviewAnalyticsStyles();
+}
+
+// 生成本周图表
+function generateWeeklyChart(weeklyStats) {
+    const days = [];
+    const today = new Date();
+    
+    for (let i = 6; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateStr = date.toDateString();
+        const dayStats = weeklyStats.dailyStats[dateStr] || { words: 0 };
+        const dayNames = ['日', '一', '二', '三', '四', '五', '六'];
+        days.push({
+            label: dayNames[date.getDay()],
+            value: dayStats.words,
+            isToday: i === 0
+        });
+    }
+    
+    const maxValue = Math.max(...days.map(d => d.value), 10);
+    
+    return days.map(day => `
+        <div class="chart-bar ${day.isToday ? 'today' : ''} ${day.value > 0 ? 'has-value' : ''}">
+            <div class="bar-fill" style="height: ${day.value > 0 ? Math.max(10, (day.value / maxValue) * 100) : 0}%">
+                ${day.value > 0 ? `<span class="bar-value">${day.value}</span>` : ''}
+            </div>
+            <span class="bar-label">${day.label}</span>
+        </div>
+    `).join('');
+}
+
+// 复习收藏的单词
+function reviewStarredWords() {
+    const starred = getStarredWords();
+    if (starred.length === 0) {
+        showToast('还没有收藏任何单词');
+        return;
+    }
+    
+    // 将收藏的单词转换为复习格式
+    currentReviewWords = starred.map(word => {
+        const wordStats = JSON.parse(localStorage.getItem('wordStats') || '{}');
+        return {
+            word: word,
+            ...(wordStats[word] || {})
+        };
+    });
+    
+    currentReviewIndex = 0;
+    reviewSessionStats = { correct: 0, wrong: 0 };
+    
+    showReviewModeSelector();
+}
+
+// 添加数据分析样式
+function addReviewAnalyticsStyles() {
+    if (document.getElementById('reviewAnalyticsStyles')) return;
+    
+    const style = document.createElement('style');
+    style.id = 'reviewAnalyticsStyles';
+    style.textContent = `
+        .review-analytics {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .analytics-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 16px;
+        }
+        
+        .weekly-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 80px;
+            padding: 0 10px;
+            margin-bottom: 16px;
+        }
+        
+        .chart-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            width: 12%;
+        }
+        
+        .bar-fill {
+            width: 100%;
+            min-height: 0;
+            background: #e5e7eb;
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: height 0.5s ease;
+        }
+        
+        .chart-bar.has-value .bar-fill {
+            background: linear-gradient(180deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .chart-bar.today .bar-fill {
+            background: linear-gradient(180deg, #f59e0b 0%, #f97316 100%);
+        }
+        
+        .bar-value {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            font-weight: 700;
+            color: #6366f1;
+        }
+        
+        .chart-bar.today .bar-value {
+            color: #f59e0b;
+        }
+        
+        .bar-label {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .chart-bar.today .bar-label {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+        
+        .analytics-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        
+        .analytics-item {
+            text-align: center;
+            padding: 10px 4px;
+            background: #f9fafb;
+            border-radius: 10px;
+        }
+        
+        .analytics-item.starred {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        .analytics-value {
+            font-size: 18px;
+            font-weight: 800;
+            color: #1e1b4b;
+            display: block;
+        }
+        
+        .analytics-label {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+        
+        .smart-suggestion {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+        
+        .suggestion-icon {
+            font-size: 24px;
+        }
+        
+        .suggestion-text {
+            font-size: 14px;
+            color: #92400e;
+            font-weight: 600;
+        }
+        
+        .btn-review-starred {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #f59e0b;
+            border: 2px solid #fde68a;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-review-starred:hover {
+            background: #fef3c7;
+            border-color: #f59e0b;
+        }
+    `;
+    document.head.appendChild(style);
 }
 
 // 添加复习界面样式
@@ -1788,6 +2973,751 @@ function addReviewStyles() {
     const style = document.createElement('style');
     style.id = 'reviewStyles';
     style.textContent = `
+        /* 复习模式选择器样式 */
+        .review-mode-selector {
+            padding: 10px 0;
+        }
+        
+        .mode-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .mode-header h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+        }
+        
+        .mode-header p {
+            font-size: 15px;
+            color: #6b7280;
+        }
+        
+        .mode-header .highlight {
+            color: #f59e0b;
+            font-weight: 700;
+        }
+        
+        .streak-display {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 16px;
+            margin-bottom: 20px;
+        }
+        
+        .streak-display.fire {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        .streak-icon {
+            font-size: 32px;
+        }
+        
+        .streak-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .streak-count {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+        
+        .streak-label {
+            font-size: 13px;
+            color: #6b7280;
+        }
+        
+        /* 智能提示样式 */
+        .smart-tip {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border-left: 3px solid #10b981;
+        }
+        
+        .tip-icon {
+            font-size: 20px;
+        }
+        
+        .tip-content {
+            font-size: 14px;
+            color: #166534;
+            font-weight: 500;
+        }
+        
+        /* 记忆状态概览 */
+        .memory-overview {
+            background: white;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .memory-bar {
+            height: 10px;
+            background: #e5e7eb;
+            border-radius: 5px;
+            overflow: hidden;
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .memory-segment {
+            height: 100%;
+            transition: width 0.5s ease;
+        }
+        
+        .memory-segment.new { background: #fde68a; }
+        .memory-segment.learning { background: #93c5fd; }
+        .memory-segment.familiar { background: #86efac; }
+        .memory-segment.mastered { background: #10b981; }
+        
+        .memory-legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 12px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #6b7280;
+        }
+        
+        .legend-item .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .legend-item .dot.new { background: #fde68a; }
+        .legend-item .dot.learning { background: #93c5fd; }
+        .legend-item .dot.familiar { background: #86efac; }
+        .legend-item .dot.mastered { background: #10b981; }
+        
+        /* 收藏按钮 */
+        .star-btn {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #f3f4f6;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .star-btn:hover {
+            background: #e5e7eb;
+            transform: scale(1.1);
+        }
+        
+        .star-btn.starred {
+            background: #fef3c7;
+        }
+        
+        .star-btn svg {
+            color: #9ca3af;
+        }
+        
+        .star-btn.starred svg {
+            color: #f59e0b;
+        }
+        
+        /* 记忆保持率条 */
+        .review-word-memory-bar {
+            margin: 12px 0;
+        }
+        
+        .memory-retention-bar {
+            height: 6px;
+            background: #e5e7eb;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 6px;
+        }
+        
+        .retention-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .retention-text {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .mode-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .mode-card {
+            padding: 20px;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .mode-card:active {
+            transform: scale(0.98);
+        }
+        
+        .mode-card.quick {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        .mode-card.quick:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.2);
+        }
+        
+        .mode-card.deep {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        }
+        
+        .mode-card.deep:hover {
+            border-color: #6366f1;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.2);
+        }
+        
+        .mode-card.listen {
+            background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+        }
+        
+        .mode-card.listen:hover {
+            border-color: #06b6d4;
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.2);
+        }
+        
+        .mode-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .mode-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 4px;
+        }
+        
+        .mode-desc {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+        
+        .mode-time {
+            font-size: 12px;
+            color: #9ca3af;
+            font-weight: 600;
+        }
+        
+        .weekly-summary {
+            background: white;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .weekly-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 12px;
+        }
+        
+        .weekly-stats-row {
+            display: flex;
+            justify-content: space-around;
+        }
+        
+        .weekly-stat {
+            text-align: center;
+        }
+        
+        .weekly-value {
+            font-size: 20px;
+            font-weight: 800;
+            color: #1e1b4b;
+            display: block;
+        }
+        
+        .weekly-label {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .btn-back-plan {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #6b7280;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-back-plan:hover {
+            border-color: #d1d5db;
+            color: #374151;
+        }
+        
+        /* 深度复习样式 */
+        .deep-review-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .deep-meaning-display {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1e1b4b;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .deep-phonetic {
+            font-size: 14px;
+            color: #9ca3af;
+            margin-bottom: 24px;
+        }
+        
+        .deep-input-wrap {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .deep-spell-input {
+            flex: 1;
+            padding: 14px 18px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            text-align: center;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+        }
+        
+        .deep-spell-input:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .deep-hint-btn {
+            padding: 14px 16px;
+            background: #f3f4f6;
+            border: none;
+            border-radius: 12px;
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .deep-hint-btn:hover {
+            background: #e5e7eb;
+        }
+        
+        .deep-result {
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 16px;
+        }
+        
+        .deep-result.correct {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+        }
+        
+        .deep-result.wrong {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+        }
+        
+        .deep-correct-word {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .deep-correct-word .result-icon {
+            font-size: 24px;
+            font-weight: 800;
+        }
+        
+        .deep-result.correct .result-icon {
+            color: #10b981;
+        }
+        
+        .deep-result.wrong .result-icon {
+            color: #ef4444;
+        }
+        
+        .deep-correct-word .result-word {
+            font-size: 24px;
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+        
+        .deep-correct-word .user-input {
+            width: 100%;
+            font-size: 14px;
+            color: #6b7280;
+            margin-top: 8px;
+        }
+        
+        .deep-example {
+            font-size: 14px;
+            color: #6b7280;
+            font-style: italic;
+            margin-top: 12px;
+        }
+        
+        .review-check-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .review-check-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        /* 听力复习样式 */
+        .listen-review-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+        
+        .listen-play-area {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .listen-play-area:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+        
+        .listen-play-area.playing {
+            animation: pulse 0.8s ease;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+        
+        .listen-icon {
+            color: #0891b2;
+            margin-bottom: 8px;
+        }
+        
+        .listen-hint {
+            font-size: 13px;
+            color: #0891b2;
+            font-weight: 600;
+        }
+        
+        .listen-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .listen-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #f9fafb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .listen-option:hover:not(.disabled) {
+            background: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+        
+        .listen-option.disabled {
+            cursor: default;
+        }
+        
+        .listen-option.correct {
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            border-color: #10b981;
+        }
+        
+        .listen-option.wrong {
+            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            border-color: #ef4444;
+        }
+        
+        .option-letter {
+            width: 32px;
+            height: 32px;
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: #6b7280;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .option-meaning {
+            flex: 1;
+            font-size: 15px;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .listen-result {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .answer-word {
+            font-size: 28px;
+            font-weight: 800;
+            color: #1e1b4b;
+        }
+        
+        .answer-phonetic {
+            font-size: 16px;
+            color: #6b7280;
+            margin: 4px 0;
+        }
+        
+        .answer-meaning {
+            font-size: 16px;
+            color: #374151;
+            font-weight: 600;
+        }
+        
+        .review-next-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .review-next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(6, 182, 212, 0.3);
+        }
+        
+        /* 复习进度条主题样式 */
+        .review-session-card.deep-mode {
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+        }
+        
+        .review-session-card.deep-mode .review-progress-text {
+            color: #3730a3;
+        }
+        
+        .review-session-card.deep-mode .review-progress-fill {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+        }
+        
+        .review-session-card.listen-mode {
+            background: linear-gradient(135deg, #cffafe 0%, #a5f3fc 100%);
+        }
+        
+        .review-session-card.listen-mode .review-progress-text {
+            color: #0e7490;
+        }
+        
+        .review-session-card.listen-mode .review-progress-fill {
+            background: linear-gradient(90deg, #06b6d4 0%, #0891b2 100%);
+        }
+        
+        /* 完成界面增强 */
+        .complete-actions {
+            display: flex;
+            gap: 12px;
+        }
+        
+        .btn-continue-review {
+            flex: 1;
+            padding: 16px;
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-continue-review:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-continue-review:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .complete-actions .btn-back-plan {
+            flex: 1;
+            margin-top: 0;
+        }
+        
+        .streak-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            background: #f3f4f6;
+            border-radius: 30px;
+            font-size: 14px;
+            color: #374151;
+            margin-bottom: 16px;
+        }
+        
+        .streak-badge.fire {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #92400e;
+        }
+        
+        .streak-badge strong {
+            font-weight: 800;
+        }
+        
+        /* 彩纸动画 */
+        .complete-confetti {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confetti-fall 2s ease-out forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(200px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+        
+        /* 统计更新动画 */
+        .stat-update {
+            animation: stat-pop 0.3s ease;
+        }
+        
+        @keyframes stat-pop {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
         .review-session-card {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
             border-radius: 16px;
@@ -1823,6 +3753,7 @@ function addReviewStyles() {
         }
         
         .review-word-card {
+            position: relative;
             background: white;
             border-radius: 20px;
             padding: 40px 30px;
@@ -2158,6 +4089,12 @@ function addReviewStyles() {
         }
     `;
     document.head.appendChild(style);
+}
+
+// 添加复习模式选择器样式
+function addReviewModeStyles() {
+    // 复习模式样式已包含在 addReviewStyles 中
+    addReviewStyles();
 }
 
 // ==================== 设置页面功能 ====================

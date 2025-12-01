@@ -527,6 +527,321 @@ body.theme-dark.liquid-glass-mode {
     --liquid-glass-refraction: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 40%);
 }
 
+/* ==================== 液态玻璃 - 各模块专属样式 ==================== */
+
+/* 首页模块 - 名言卡片 */
+body.liquid-glass-mode .quote-card,
+body.liquid-glass-mode .daily-goals-card {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(var(--liquid-glass-blur)) saturate(var(--liquid-glass-saturate));
+    -webkit-backdrop-filter: blur(var(--liquid-glass-blur)) saturate(var(--liquid-glass-saturate));
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: var(--liquid-glass-shadow), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+}
+
+/* 词汇模块 - 单词卡片 */
+body.liquid-glass-mode .word-card,
+body.liquid-glass-mode .word-card-inner {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.1),
+        inset 0 1px 2px rgba(255, 255, 255, 0.8),
+        inset 0 -1px 1px rgba(255, 255, 255, 0.3);
+}
+
+body.liquid-glass-mode .word-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* 听力模块 - 播放器和听写卡片 */
+body.liquid-glass-mode .audio-player-card-new,
+body.liquid-glass-mode .dictation-card-new,
+body.liquid-glass-mode .listening-card {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+body.liquid-glass-mode .audio-player-card-new::before,
+body.liquid-glass-mode .dictation-card-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 45%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* 口语模块 - 句子卡片和结果卡片 */
+body.liquid-glass-mode .sentence-card-new,
+body.liquid-glass-mode .result-card-new {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(255, 255, 255, 0.7);
+    position: relative;
+    overflow: hidden;
+}
+
+body.liquid-glass-mode .sentence-card-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* 阅读模块 - 文章卡片和问题卡片 */
+body.liquid-glass-mode .passage-card-new,
+body.liquid-glass-mode .questions-card-new,
+body.liquid-glass-mode .reading-list {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: 
+        0 15px 50px rgba(0, 0, 0, 0.08),
+        inset 0 1px 2px rgba(255, 255, 255, 0.7);
+    position: relative;
+    overflow: hidden;
+}
+
+body.liquid-glass-mode .passage-card-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+/* 答案选项 - 液态玻璃效果 */
+body.liquid-glass-mode .answer-option,
+body.liquid-glass-mode .quiz-option {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(15px) saturate(150%);
+    -webkit-backdrop-filter: blur(15px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.6) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+body.liquid-glass-mode .answer-option:hover,
+body.liquid-glass-mode .quiz-option:hover {
+    background: rgba(255, 255, 255, 0.7) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+body.liquid-glass-mode .answer-option.selected,
+body.liquid-glass-mode .quiz-option.selected {
+    background: rgba(99, 102, 241, 0.15) !important;
+    border-color: rgba(99, 102, 241, 0.4) !important;
+}
+
+body.liquid-glass-mode .answer-option.correct {
+    background: rgba(16, 185, 129, 0.15) !important;
+    border-color: rgba(16, 185, 129, 0.4) !important;
+}
+
+body.liquid-glass-mode .answer-option.incorrect {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-color: rgba(239, 68, 68, 0.4) !important;
+}
+
+/* 复习模块 - 复习计划卡片 */
+body.liquid-glass-mode .review-plan-card,
+body.liquid-glass-mode .review-stats-card {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: var(--liquid-glass-shadow), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* 统计模块 - 统计卡片 */
+body.liquid-glass-mode .stats-overview-card,
+body.liquid-glass-mode .stat-card-new {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: var(--liquid-glass-shadow), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+    position: relative;
+    overflow: hidden;
+}
+
+body.liquid-glass-mode .stat-card-new::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0) 100%);
+    pointer-events: none;
+    border-radius: inherit;
+    z-index: 0;
+}
+
+body.liquid-glass-mode .stat-card-new:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--liquid-glass-shadow-hover), inset 0 1px 3px rgba(255, 255, 255, 0.8);
+}
+
+/* 设置模块 - 设置卡片 */
+body.liquid-glass-mode .settings-card-modern {
+    background: var(--liquid-glass-bg) !important;
+    backdrop-filter: blur(25px) saturate(180%);
+    -webkit-backdrop-filter: blur(25px) saturate(180%);
+    border: 1px solid var(--liquid-glass-border) !important;
+    box-shadow: var(--liquid-glass-shadow), inset 0 1px 2px rgba(255, 255, 255, 0.7);
+}
+
+/* 设置页面底部栏 - 液态玻璃 */
+body.liquid-glass-mode .settings-bottom-bar {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 模态框头部 - 液态玻璃 */
+body.liquid-glass-mode .modal-header {
+    background: rgba(255, 255, 255, 0.7) !important;
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+/* 底部导航栏 - 液态玻璃 */
+body.liquid-glass-mode #bottomNav,
+body.liquid-glass-mode .bottom-nav {
+    background: rgba(255, 255, 255, 0.75) !important;
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border-top: 1px solid rgba(255, 255, 255, 0.6);
+    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.06);
+}
+
+/* 控制按钮组 - 液态玻璃 */
+body.liquid-glass-mode .control-buttons button,
+body.liquid-glass-mode .action-buttons button {
+    background: rgba(255, 255, 255, 0.6) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.5) !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+}
+
+body.liquid-glass-mode .control-buttons button:hover,
+body.liquid-glass-mode .action-buttons button:hover {
+    background: rgba(255, 255, 255, 0.8) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* 主操作按钮 - 渐变液态玻璃 */
+body.liquid-glass-mode .btn-record,
+body.liquid-glass-mode .btn-play,
+body.liquid-glass-mode .btn-check {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.9) 0%, rgba(139, 92, 246, 0.9) 100%) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: 
+        0 8px 25px rgba(99, 102, 241, 0.35),
+        inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+body.liquid-glass-mode .btn-record:hover,
+body.liquid-glass-mode .btn-play:hover,
+body.liquid-glass-mode .btn-check:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 
+        0 12px 35px rgba(99, 102, 241, 0.45),
+        inset 0 1px 3px rgba(255, 255, 255, 0.5);
+}
+
+/* 进度条 - 液态玻璃 */
+body.liquid-glass-mode .progress-bar-container {
+    background: rgba(255, 255, 255, 0.4) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+body.liquid-glass-mode .progress-bar-fill {
+    background: linear-gradient(90deg, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.8)) !important;
+    box-shadow: 0 2px 10px rgba(99, 102, 241, 0.3);
+}
+
+/* 头像选择器 - 液态玻璃 */
+body.liquid-glass-mode .avatar-picker-modal {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15);
+}
+
+/* 设置标签页 - 液态玻璃 */
+body.liquid-glass-mode .settings-tabs-top {
+    background: rgba(255, 255, 255, 0.5) !important;
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+}
+
+body.liquid-glass-mode .settings-tab-new {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+body.liquid-glass-mode .settings-tab-new.active {
+    background: rgba(99, 102, 241, 0.15);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+/* 激活结果弹窗 - 液态玻璃 */
+body.liquid-glass-mode .activation-result-modal {
+    background: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(30px) saturate(200%);
+    -webkit-backdrop-filter: blur(30px) saturate(200%);
+}
+
 /* 确保100vh在移动端正确工作 */
 @supports (-webkit-touch-callout: none) {
     body {
