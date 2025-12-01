@@ -255,9 +255,9 @@
                                     </linearGradient>
                                 </defs>
                             </svg>
-                            <!-- 居中改进v1-3：完全居中的百分比显示 -->
+                            <!-- 居中改进v6：使用内联包装器确保整体居中 -->
                             <div class="progress-ring-text-overlay" id="progressTextOverlay">
-                                <span class="progress-number" id="goalsTotalProgressNum">0</span><span class="progress-percent">%</span>
+                                <span class="progress-text-inner"><span class="progress-number" id="goalsTotalProgressNum">0</span><span class="progress-percent">%</span></span>
                             </div>
                         </div>
                         <div class="progress-summary">
@@ -474,8 +474,13 @@
                     <!-- 音频控制卡片 -->
                     <div class="audio-player-card-new">
                         <div class="audio-header">
-                            <div class="audio-icon-wrap">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor"/></svg>
+                            <div class="audio-icon-wrap audio-icon-animated">
+                                <div class="audio-icon-pulse"></div>
+                                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+                                    <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                                </svg>
                             </div>
                             <div class="audio-info">
                                 <h3 id="audioTitle" class="audio-title">听音填词</h3>
@@ -483,18 +488,42 @@
                             </div>
                         </div>
                         <div class="audio-controls-new">
-                            <button onclick="adjustSpeed(-0.1)" class="speed-btn-new" aria-label="减速">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5"/></svg>
+                            <button onclick="adjustSpeed(-0.1)" class="speed-btn-new speed-btn-minus" aria-label="减速">
+                                <span class="speed-btn-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14"/></svg>
+                                </span>
+                                <span class="speed-btn-label">慢速</span>
                             </button>
-                            <button id="playBtn" onclick="togglePlayEnhanced()" class="play-btn-new">
-                                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                            <button id="playBtn" onclick="togglePlayEnhanced()" class="play-btn-premium">
+                                <div class="play-btn-glow"></div>
+                                <div class="play-btn-ripple"></div>
+                                <div class="play-btn-inner">
+                                    <svg class="play-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                                        <polygon points="6 4 20 12 6 20 6 4"/>
+                                    </svg>
+                                    <svg class="pause-icon" width="32" height="32" viewBox="0 0 24 24" fill="currentColor" style="display:none;">
+                                        <rect x="6" y="4" width="4" height="16" rx="1"/>
+                                        <rect x="14" y="4" width="4" height="16" rx="1"/>
+                                    </svg>
+                                </div>
+                                <div class="play-btn-sound-waves">
+                                    <span></span><span></span><span></span>
+                                </div>
                             </button>
-                            <button onclick="adjustSpeed(0.1)" class="speed-btn-new" aria-label="加速">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                            <button onclick="adjustSpeed(0.1)" class="speed-btn-new speed-btn-plus" aria-label="加速">
+                                <span class="speed-btn-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+                                </span>
+                                <span class="speed-btn-label">快速</span>
                             </button>
                         </div>
                         <div class="speed-display-new">
-                            <span class="speed-badge-new"><span id="speedDisplay">1.0</span>x</span>
+                            <div class="speed-indicator">
+                                <div class="speed-track">
+                                    <div class="speed-fill" id="speedFill"></div>
+                                </div>
+                                <span class="speed-badge-new"><span id="speedDisplay">1.0</span>x</span>
+                            </div>
                         </div>
                     </div>
                     

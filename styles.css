@@ -2392,37 +2392,49 @@ svg {
 /* ====== 居中改进 v4-8：进度圈百分比完全居中（彻底修复） ====== */
 
 /* 版本4: 确保容器是定位上下文 */
+/* 居中改进v8: 最终完美居中方案 */
 .progress-ring-container {
     position: relative !important;
-    width: 80px;
-    height: 80px;
+    width: 80px !important;
+    height: 80px !important;
     flex-shrink: 0;
+    box-sizing: border-box !important;
 }
 
-/* 版本5: SVG不要transform影响文字层 */
+/* SVG进度环 - 占满容器 */
 .progress-ring-container .progress-ring {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 80px;
-    height: 80px;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
 }
 
-/* 版本6: 文字覆盖层 - 绝对居中 */
+/* 居中改进v8: 文字覆盖层 - 使用全覆盖+flex居中 */
 .progress-ring-text-overlay {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     z-index: 10;
     pointer-events: none;
+    box-sizing: border-box !important;
 }
 
-/* 版本7: 数字样式 */
+/* 居中改进v8: 内联包装器 - 作为一个整体居中 */
+.progress-text-inner {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+}
+
+/* 版本8: 数字样式 */
 .progress-number {
     font-size: 18px;
     font-weight: 800;
@@ -2430,7 +2442,7 @@ svg {
     line-height: 1;
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
     letter-spacing: -0.3px;
-    display: inline-block;
+    display: inline !important;
 }
 
 /* 版本7: 百分号样式 - 与数字同行 */
@@ -2439,10 +2451,9 @@ svg {
     font-weight: 700;
     color: #8b5cf6;
     line-height: 1;
-    display: inline-block;
+    display: inline !important;
     margin-left: 1px;
-    vertical-align: top;
-    margin-top: 2px;
+    vertical-align: baseline !important;
 }
 
 /* 版本8: 不同位数的自适应 */
@@ -2457,7 +2468,6 @@ svg {
 
 .progress-number.three-digits + .progress-percent {
     font-size: 8px;
-    margin-top: 1px;
 }
 
 /* 完成状态样式 */
@@ -4975,9 +4985,15 @@ body.liquid-glass-mode .settings-action-btn.save {
     
     .goals-title-text h3 { font-size: 16px; }
     
+    /* 居中改进v4: 小屏响应式 */
     .progress-ring-container {
         width: 70px;
         height: 70px;
+    }
+    
+    .progress-ring-container .progress-ring {
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .progress-ring {
@@ -5186,9 +5202,15 @@ body.liquid-glass-mode .settings-action-btn.save {
         gap: 30px;
     }
     
+    /* 居中改进v4: 大屏响应式 */
     .progress-ring-container {
         width: 100px;
         height: 100px;
+    }
+    
+    .progress-ring-container .progress-ring {
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .progress-ring {
@@ -5303,9 +5325,15 @@ body.liquid-glass-mode .settings-action-btn.save {
         gap: 15px;
     }
     
+    /* 居中改进v4: 横屏小屏响应式 */
     .progress-ring-container {
         width: 60px;
         height: 60px;
+    }
+    
+    .progress-ring-container .progress-ring {
+        width: 100% !important;
+        height: 100% !important;
     }
     
     .goals-progress-container {
