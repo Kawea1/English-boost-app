@@ -59,3 +59,13 @@ words_backup*.json
 .env
 .env.local
 .env.*.local
+
+# 构建产物 - 太大无法上传 GitHub
+dist/
+node_modules/
+*.dmg
+*.exe
+*.AppImage
+android/.gradle/
+ios/Pods/
+

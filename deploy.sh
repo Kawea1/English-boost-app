@@ -40,8 +40,18 @@ sed -i '' "s/online_sources\.js?v=[0-9]*/online_sources.js?v=$VERSION/g" index.h
 
 echo -e "${GREEN}   ✓ 版本号已更新为: $VERSION${NC}"
 
-# 2. 更新 Service Worker 版本（清除PWA缓存）
-echo -e "${YELLOW}📦 步骤 2/5: 更新 Service Worker...${NC}"
+# 2. 同步 www 目录（移动端资源）
+echo -e "${YELLOW}📦 步骤 2/6: 同步移动端资源...${NC}"
+mkdir -p www
+cp index.html styles.css app.js vocabulary.js dictionary.js modules.js \
+   listening-module.js listening-data.js reading-data.js sources.js \
+   online_sources.js sw.js manifest.json auth.js download.html www/ 2>/dev/null || true
+cp -r assets www/ 2>/dev/null || true
+cp words.json word_definitions.json word_chinese.json www/ 2>/dev/null || true
+echo -e "${GREEN}   ✓ www 目录已同步${NC}"
+
+# 3. 更新 Service Worker 版本（清除PWA缓存）
+echo -e "${YELLOW}📦 步骤 3/6: 更新 Service Worker...${NC}"
 
 if [ -f "sw.js" ]; then
     # 更新缓存版本号
@@ -52,8 +62,8 @@ else
     echo -e "${RED}   ⚠ sw.js 不存在，跳过${NC}"
 fi
 
-# 3. 更新 manifest.json 版本
-echo -e "${YELLOW}📦 步骤 3/5: 更新 Manifest...${NC}"
+# 4. 更新 manifest.json 版本
+echo -e "${YELLOW}📦 步骤 4/6: 更新 Manifest...${NC}"
 
 if [ -f "manifest.json" ]; then
     # 如果manifest中有版本号就更新
@@ -63,8 +73,8 @@ if [ -f "manifest.json" ]; then
     echo -e "${GREEN}   ✓ Manifest 已更新${NC}"
 fi
 
-# 4. Git 提交和推送
-echo -e "${YELLOW}📦 步骤 4/5: Git 提交和推送...${NC}"
+# 5. Git 提交和推送
+echo -e "${YELLOW}📦 步骤 5/6: Git 提交和推送...${NC}"
 
 # 检查是否有变更
 if git diff --quiet && git diff --staged --quiet; then
@@ -90,8 +100,8 @@ else
     echo -e "${GREEN}   ✓ 已推送到 GitHub${NC}"
 fi
 
-# 5. 显示部署信息
-echo -e "${YELLOW}📦 步骤 5/5: 生成部署报告...${NC}"
+# 6. 显示部署信息
+echo -e "${YELLOW}📦 步骤 6/6: 生成部署报告...${NC}"
 
 echo ""
 echo -e "${GREEN}╔════════════════════════════════════════════════════╗${NC}"
@@ -100,13 +110,11 @@ echo -e "${GREEN}╠════════════════════
 echo -e "${GREEN}║  版本号: ${NC}$VERSION"
 echo -e "${GREEN}║  时间:   ${NC}$(date '+%Y-%m-%d %H:%M:%S')"
 echo -e "${GREEN}╠════════════════════════════════════════════════════╣${NC}"
-echo -e "${GREEN}║  📱 访问地址:                                        ║${NC}"
-echo -e "${GREEN}║  • 本地: ${NC}http://localhost:8000"
+echo -e "${GREEN}║  📱 用户访问方式:                                    ║${NC}"
 
-# 获取GitHub Pages地址（如果有）
+# 获取GitHub Pages地址
 REMOTE_URL=$(git remote get-url origin 2>/dev/null || echo "")
 if [[ "$REMOTE_URL" == *"github.com"* ]]; then
-    # 提取用户名和仓库名
     if [[ "$REMOTE_URL" == git@github.com:* ]]; then
         REPO_PATH=$(echo "$REMOTE_URL" | sed 's/git@github.com://' | sed 's/.git$//')
     else
@@ -114,11 +122,13 @@ if [[ "$REMOTE_URL" == *"github.com"* ]]; then
     fi
     USERNAME=$(echo "$REPO_PATH" | cut -d'/' -f1)
     REPONAME=$(echo "$REPO_PATH" | cut -d'/' -f2)
-    echo -e "${GREEN}║  • GitHub Pages: ${NC}https://$USERNAME.github.io/$REPONAME"
+    PAGES_URL="https://$USERNAME.github.io/$REPONAME"
+    echo -e "${GREEN}║  • 网页版: ${NC}$PAGES_URL"
+    echo -e "${GREEN}║  • 下载页: ${NC}$PAGES_URL/download.html"
 fi
 
 echo -e "${GREEN}╠════════════════════════════════════════════════════╣${NC}"
-echo -e "${GREEN}║  💡 用户需要刷新页面或清除浏览器缓存来获取更新        ║${NC}"
+echo -e "${GREEN}║  🔄 更新已自动推送，用户刷新页面即可获取最新版本      ║${NC}"
 echo -e "${GREEN}╚════════════════════════════════════════════════════╝${NC}"
 echo ""
 
