@@ -3889,6 +3889,24 @@ body.liquid-glass-mode .liquid-glass-settings {
     box-shadow: 0 4px 12px rgba(220, 38, 38, 0.35);
 }
 
+/* 选择性清除按钮样式 */
+.data-btn.selective {
+    background: linear-gradient(135deg, #f5f3ff 0%, #ede9fe 100%);
+    border-color: #c4b5fd;
+}
+
+.data-btn.selective:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(99, 102, 241, 0.25);
+    border-color: #a78bfa;
+}
+
+.data-btn-icon-wrap.selective {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+}
+
 .data-btn-text {
     font-size: 14px;
     color: var(--gray-700);

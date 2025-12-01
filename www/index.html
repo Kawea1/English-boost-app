@@ -7,7 +7,7 @@
     <title>学术英语精进</title>
     
     <!-- PWA & 移动端优化 -->
-    <link rel="stylesheet" href="styles.css?v=20251202210000">
+    <link rel="stylesheet" href="styles.css?v=20251202220000">
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#6366f1">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -21,8 +21,8 @@
     <meta name="supported-color-schemes" content="light">
     
     <!-- 预加载关键资源 -->
-    <link rel="preload" href="styles.css?v=20251202210000" as="style">
-    <link rel="preload" href="app.js?v=20251202210000" as="script">
+    <link rel="preload" href="styles.css?v=20251202220000" as="style">
+    <link rel="preload" href="app.js?v=20251202220000" as="script">
 </head>
 <body>
     <!-- 登录页面 -->
@@ -1610,6 +1610,15 @@
                                     </div>
                                     <span class="data-btn-text">清除缓存</span>
                                 </button>
+                                <button class="data-btn selective" onclick="confirmResetSelective()">
+                                    <div class="data-btn-icon-wrap selective">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                                            <circle cx="12" cy="12" r="3"/>
+                                        </svg>
+                                    </div>
+                                    <span class="data-btn-text">选择清除</span>
+                                </button>
                                 <button class="data-btn danger-full" onclick="confirmResetAll()">
                                     <div class="data-btn-icon-wrap danger-full">
                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1618,7 +1627,7 @@
                                             <line x1="9" y1="9" x2="15" y2="15"/>
                                         </svg>
                                     </div>
-                                    <span class="data-btn-text">重置数据</span>
+                                    <span class="data-btn-text">重置全部</span>
                                 </button>
                             </div>
                         </div>
@@ -1879,18 +1888,18 @@
         </div>
     </div>
 
-    <script src="auth.js?v=20251202210000"></script>
-    <script src="subscription.js?v=20251202210000"></script>
-    <script src="vocabulary.js?v=20251202210000"></script>
-    <script src="dictionary.js?v=20251202210000"></script>
-    <script src="listening-data.js?v=20251202210000"></script>
-    <script src="listening-module.js?v=20251202210000"></script>
-    <script src="reading-data.js?v=20251202210000"></script>
-    <script src="sources.js?v=20251202210000"></script>
-    <script src="online_sources.js?v=20251202210000"></script>
-    <script src="modules.js?v=20251202210000"></script>
-    <script src="quotes.js?v=20251202210000"></script>
-    <script src="app.js?v=20251202210000"></script>
+    <script src="auth.js?v=20251202220000"></script>
+    <script src="subscription.js?v=20251202220000"></script>
+    <script src="vocabulary.js?v=20251202220000"></script>
+    <script src="dictionary.js?v=20251202220000"></script>
+    <script src="listening-data.js?v=20251202220000"></script>
+    <script src="listening-module.js?v=20251202220000"></script>
+    <script src="reading-data.js?v=20251202220000"></script>
+    <script src="sources.js?v=20251202220000"></script>
+    <script src="online_sources.js?v=20251202220000"></script>
+    <script src="modules.js?v=20251202220000"></script>
+    <script src="quotes.js?v=20251202220000"></script>
+    <script src="app.js?v=20251202220000"></script>
 
     <!-- 隐私政策弹窗 -->
     <div id="privacyPolicyModal" class="legal-modal" style="display:none;">

@@ -1211,197 +1211,6 @@ function nextSentence() {
     updateSentenceInfo();
 }
 
-// 按住录音 - 开始 v3.0
-function startHoldRecording(event) {
-    if (event && event.preventDefault) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
-    console.log('[录音v3] 按下录音按钮');
-    
-    if (isRecording) {
-        console.log('[录音v3] 已在录音中，忽略');
-        return;
-    }
-    
-    // 检查浏览器支持
-    var SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-        showToast('❌ 您的浏览器不支持语音识别');
-        alert('请使用Chrome、Safari或Edge浏览器');
-        return;
-    }
-    
-    // 跳过权限说明（直接请求麦克风）
-    startRecordingDirect();
-}
-
-// 直接开始录音 v3.0
-function startRecordingDirect() {
-    console.log('[录音v3] 开始录音流程');
-    
-    // 每次录音都重新初始化，确保状态清洁
-    recognition = null;
-    if (!initSpeechRecognition()) {
-        showToast('❌ 语音识别初始化失败');
-        return;
-    }
-    
-    isRecording = true;
-    recognizedText = '';
-    recordingStartTime = Date.now();
-    
-    // 更新UI
-    updateRecordingUI(true);
-    
-    // 震动反馈
-    if (navigator.vibrate) {
-        navigator.vibrate(50);
-    }
-    
-    // 设置最大录音时长
-    recordingTimer = setTimeout(function() {
-        if (isRecording) {
-            console.log('[录音v3] 达到最大时长，自动停止');
-            stopHoldRecording(null);
-        }
-    }, MAX_RECORDING_TIME);
-    
-    // 启动识别
-    try {
-        recognition.start();
-        console.log('[录音v3] 语音识别启动成功');
-    } catch (e) {
-        console.log('[录音v3] 启动失败:', e.message);
-        
-        // 如果是"already started"错误，先停止再重启
-        if (e.message && e.message.includes('already started')) {
-            try {
-                recognition.stop();
-                setTimeout(function() {
-                    recognition.start();
-                }, 100);
-            } catch (e2) {
-                console.log('[录音v3] 重启也失败:', e2);
-                isRecording = false;
-                updateRecordingUI(false);
-                showToast('❌ 录音启动失败，请重试');
-            }
-        } else {
-            isRecording = false;
-            updateRecordingUI(false);
-            showToast('❌ 录音启动失败: ' + e.message);
-        }
-    }
-}
-
-// 更新录音UI v3.0
-function updateRecordingUI(recording) {
-    var recordBtn = document.getElementById("recordBtn");
-    var recordText = document.getElementById("recordText");
-    var indicator = document.getElementById("recordingIndicator");
-    
-    if (recording) {
-        if (recordBtn) {
-            recordBtn.style.background = 'linear-gradient(135deg,#10b981,#059669)';
-            recordBtn.style.transform = 'scale(0.95)';
-            recordBtn.style.boxShadow = '0 2px 10px rgba(16,185,129,0.4)';
-        }
-        if (recordText) recordText.textContent = '正在录音...';
-        if (indicator) indicator.classList.remove('hidden');
-    } else {
-        if (recordBtn) {
-            recordBtn.style.background = 'linear-gradient(135deg,#ef4444,#dc2626)';
-            recordBtn.style.transform = 'scale(1)';
-            recordBtn.style.boxShadow = '0 6px 25px rgba(239,68,68,0.4)';
-        }
-        if (recordText) recordText.textContent = '按住录音';
-        if (indicator) indicator.classList.add('hidden');
-    }
-}
-
-// 按住录音 - 结束 v3.0
-function stopHoldRecording(event) {
-    if (event && event.preventDefault) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-    
-    console.log('[录音v3] 松开录音按钮, isRecording:', isRecording);
-    
-    if (!isRecording) {
-        console.log('[录音v3] 未在录音，忽略');
-        return;
-    }
-    
-    // 清除计时器
-    if (recordingTimer) {
-        clearTimeout(recordingTimer);
-        recordingTimer = null;
-    }
-    
-    // 震动反馈
-    if (navigator.vibrate) {
-        navigator.vibrate(30);
-    }
-    
-    // 计算录音时长
-    var duration = Date.now() - recordingStartTime;
-    console.log('[录音v3] 录音时长:', duration, 'ms');
-    
-    // 录音太短
-    if (duration < 500) {
-        console.log('[录音v3] 录音太短');
-        isRecording = false;
-        updateRecordingUI(false);
-        
-        if (recognition) {
-            try { recognition.abort(); } catch(e) {}
-        }
-        
-        showToast('⚠️ 录音时间太短，请按住说完整句话');
-        return;
-    }
-    
-    // 停止识别
-    if (recognition) {
-        try {
-            recognition.stop();
-            console.log('[录音v3] 已请求停止识别');
-        } catch (e) {
-            console.log('[录音v3] 停止识别异常:', e);
-            isRecording = false;
-            updateRecordingUI(false);
-        }
-    } else {
-        isRecording = false;
-        updateRecordingUI(false);
-    }
-}
-
-// 保留原来的toggleRecording兼容性
-function toggleRecording() {
-    if (isRecording) {
-        stopHoldRecording(null);
-    } else {
-        startHoldRecording(null);
-    }
-}
-
-// stopRecordingUI v3.0 - 使用updateRecordingUI
-function stopRecordingUI() {
-    isRecording = false;
-    
-    // 清除计时器
-    if (recordingTimer) {
-        clearTimeout(recordingTimer);
-        recordingTimer = null;
-    }
-    
-    updateRecordingUI(false);
-}
-
 function showSpeakingResult(transcript) {
     // v5.0 改进：获取当前显示的目标文本
     var targetText = '';
@@ -5920,6 +5729,185 @@ function confirmResetAll() {
     document.body.appendChild(overlay);
 }
 
+// ====== 版本1改进：添加选择性清除功能 ======
+function confirmResetSelective() {
+    const overlay = document.createElement('div');
+    overlay.id = 'selectiveDeleteOverlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:10001;display:flex;align-items:center;justify-content:center;padding:20px;';
+    
+    // 获取当前数据统计
+    const stats = getDataStatistics();
+    
+    overlay.innerHTML = `
+        <div style="background:white;border-radius:20px;max-width:420px;width:100%;overflow:hidden;box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+            <div style="padding:24px;">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;">
+                    <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:flex;align-items:center;justify-content:center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/>
+                            <circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 style="margin:0;font-size:18px;color:#1f2937;">选择性清除数据</h3>
+                        <p style="margin:4px 0 0;font-size:13px;color:#6b7280;">选择要清除的数据类型</p>
+                    </div>
+                </div>
+                
+                <div style="background:#f8fafc;border-radius:12px;padding:16px;margin-bottom:16px;">
+                    <label style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb;cursor:pointer;">
+                        <input type="checkbox" id="delVocab" checked style="width:18px;height:18px;accent-color:#6366f1;">
+                        <div style="flex:1;">
+                            <div style="font-weight:600;color:#374151;">核心单词进度</div>
+                            <div style="font-size:12px;color:#9ca3af;">已学 ${stats.learnedWords} 词，评分 ${stats.wordRatings} 条</div>
+                        </div>
+                        <span style="font-size:12px;color:#6366f1;font-weight:600;">${stats.vocabSize}</span>
+                    </label>
+                    
+                    <label style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb;cursor:pointer;">
+                        <input type="checkbox" id="delListening" checked style="width:18px;height:18px;accent-color:#6366f1;">
+                        <div style="flex:1;">
+                            <div style="font-weight:600;color:#374151;">听力练习记录</div>
+                            <div style="font-size:12px;color:#9ca3af;">练习历史和成绩</div>
+                        </div>
+                        <span style="font-size:12px;color:#10b981;font-weight:600;">${stats.listeningSize}</span>
+                    </label>
+                    
+                    <label style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid #e5e7eb;cursor:pointer;">
+                        <input type="checkbox" id="delDaily" checked style="width:18px;height:18px;accent-color:#6366f1;">
+                        <div style="flex:1;">
+                            <div style="font-weight:600;color:#374151;">每日目标与统计</div>
+                            <div style="font-size:12px;color:#9ca3af;">连续学习天数、目标设置</div>
+                        </div>
+                        <span style="font-size:12px;color:#f59e0b;font-weight:600;">${stats.dailySize}</span>
+                    </label>
+                    
+                    <label style="display:flex;align-items:center;gap:12px;padding:10px 0;cursor:pointer;">
+                        <input type="checkbox" id="delSettings" style="width:18px;height:18px;accent-color:#6366f1;">
+                        <div style="flex:1;">
+                            <div style="font-weight:600;color:#374151;">应用设置</div>
+                            <div style="font-size:12px;color:#9ca3af;">激活状态、偏好设置</div>
+                        </div>
+                        <span style="font-size:12px;color:#ef4444;font-weight:600;">${stats.settingsSize}</span>
+                    </label>
+                </div>
+                
+                <div style="display:flex;gap:12px;">
+                    <button onclick="document.getElementById('selectiveDeleteOverlay').remove();" style="flex:1;padding:14px;background:#f3f4f6;border:none;border-radius:12px;font-size:15px;font-weight:600;color:#374151;cursor:pointer;">取消</button>
+                    <button onclick="executeSelectiveDeletion()" style="flex:1;padding:14px;background:linear-gradient(135deg,#6366f1,#8b5cf6);border:none;border-radius:12px;font-size:15px;font-weight:600;color:white;cursor:pointer;">确认清除</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(overlay);
+}
+
+// 获取数据统计
+function getDataStatistics() {
+    const getSize = (keys) => {
+        let size = 0;
+        keys.forEach(key => {
+            const val = localStorage.getItem(key);
+            if (val) size += val.length * 2;
+        });
+        if (size < 1024) return size + 'B';
+        if (size < 1024 * 1024) return (size / 1024).toFixed(1) + 'KB';
+        return (size / 1024 / 1024).toFixed(2) + 'MB';
+    };
+    
+    const learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
+    const wordRatings = JSON.parse(localStorage.getItem('wordRatings') || '{}');
+    
+    return {
+        learnedWords: learnedWords.length,
+        wordRatings: Object.keys(wordRatings).length,
+        vocabSize: getSize(['learnedWords', 'wordRatings', 'wordLearningProgress', 'learnedCount', 'masteredCount']),
+        listeningSize: getSize(['listeningHistory', 'listeningScores', 'listeningProgress']),
+        dailySize: getSize(['dailyGoals', 'dailyProgress', 'streak', 'lastStudyDate', 'studyHistory']),
+        settingsSize: getSize(['activated', 'activationCode', 'wordsPerSession', 'requiredLearningTimes', 'theme', 'agreementAcceptedAt'])
+    };
+}
+
+// 执行选择性删除
+function executeSelectiveDeletion() {
+    const delVocab = document.getElementById('delVocab')?.checked;
+    const delListening = document.getElementById('delListening')?.checked;
+    const delDaily = document.getElementById('delDaily')?.checked;
+    const delSettings = document.getElementById('delSettings')?.checked;
+    
+    let deletedItems = [];
+    
+    // 版本2改进：显示删除进度动画
+    showDeletionProgress();
+    
+    setTimeout(() => {
+        if (delVocab) {
+            ['learnedWords', 'wordRatings', 'wordLearningProgress', 'learnedCount', 'masteredCount'].forEach(key => localStorage.removeItem(key));
+            // 重置内存变量
+            try {
+                if (typeof learnedWords !== 'undefined') learnedWords = [];
+                if (typeof wordRatings !== 'undefined') wordRatings = {};
+                if (typeof wordLearningProgress !== 'undefined') wordLearningProgress = {};
+                if (typeof sessionWordProgress !== 'undefined') sessionWordProgress = {};
+                if (typeof sessionWords !== 'undefined') sessionWords = [];
+                if (typeof learningQueue !== 'undefined') learningQueue = [];
+            } catch(e) {}
+            deletedItems.push('核心单词');
+        }
+        
+        if (delListening) {
+            ['listeningHistory', 'listeningScores', 'listeningProgress'].forEach(key => localStorage.removeItem(key));
+            deletedItems.push('听力记录');
+        }
+        
+        if (delDaily) {
+            ['dailyGoals', 'dailyProgress', 'streak', 'lastStudyDate', 'studyHistory'].forEach(key => localStorage.removeItem(key));
+            deletedItems.push('每日统计');
+        }
+        
+        if (delSettings) {
+            ['activated', 'activationCode', 'wordsPerSession', 'requiredLearningTimes', 'theme', 'agreementAcceptedAt', 'ageRatingShown'].forEach(key => localStorage.removeItem(key));
+            deletedItems.push('应用设置');
+        }
+        
+        // 移除弹窗
+        document.getElementById('selectiveDeleteOverlay')?.remove();
+        hideDeletionProgress();
+        
+        if (deletedItems.length > 0) {
+            showToast('✅ 已清除: ' + deletedItems.join('、'));
+            setTimeout(() => location.reload(), 1500);
+        } else {
+            showToast('⚠️ 未选择任何数据');
+        }
+    }, 800);
+}
+
+// ====== 版本2改进：删除进度动画 ======
+function showDeletionProgress() {
+    const progress = document.createElement('div');
+    progress.id = 'deletionProgressOverlay';
+    progress.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:10002;display:flex;align-items:center;justify-content:center;';
+    progress.innerHTML = `
+        <div style="background:white;border-radius:20px;padding:40px;text-align:center;box-shadow:0 25px 50px rgba(0,0,0,0.3);">
+            <div style="width:60px;height:60px;border:4px solid #e5e7eb;border-top-color:#6366f1;border-radius:50%;margin:0 auto 20px;animation:spin 1s linear infinite;"></div>
+            <div style="font-size:16px;font-weight:600;color:#374151;">正在清除数据...</div>
+            <div style="font-size:13px;color:#9ca3af;margin-top:8px;">请稍候</div>
+        </div>
+        <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+    `;
+    document.body.appendChild(progress);
+}
+
+function hideDeletionProgress() {
+    document.getElementById('deletionProgressOverlay')?.remove();
+}
+
+// 导出选择性删除函数
+window.confirmResetSelective = confirmResetSelective;
+window.executeSelectiveDeletion = executeSelectiveDeletion;
+
 // 执行数据删除
 function executeDataDeletion() {
     // 记录删除操作日志（合规留痕，存储后立即清除）
@@ -5930,40 +5918,46 @@ function executeDataDeletion() {
     };
     console.log('Data deletion executed:', deletionLog);
     
-    // 清除所有 localStorage 数据
-    localStorage.clear();
+    // 版本2改进：显示删除进度
+    showDeletionProgress();
     
-    // 重置核心单词学习数据（内存中的变量）
-    if (typeof window.learnedWords !== 'undefined') window.learnedWords = [];
-    if (typeof window.wordRatings !== 'undefined') window.wordRatings = {};
-    if (typeof window.wordLearningProgress !== 'undefined') window.wordLearningProgress = {};
-    if (typeof window.sessionWordProgress !== 'undefined') window.sessionWordProgress = {};
-    if (typeof window.sessionWords !== 'undefined') window.sessionWords = [];
-    if (typeof window.learningQueue !== 'undefined') window.learningQueue = [];
-    if (typeof window.currentQueueIndex !== 'undefined') window.currentQueueIndex = 0;
-    if (typeof window.currentWordIndex !== 'undefined') window.currentWordIndex = 0;
-    
-    // 通过全局变量重置（vocabulary.js 中的变量）
-    try {
-        if (typeof learnedWords !== 'undefined') learnedWords = [];
-        if (typeof wordRatings !== 'undefined') wordRatings = {};
-        if (typeof wordLearningProgress !== 'undefined') wordLearningProgress = {};
-        if (typeof sessionWordProgress !== 'undefined') sessionWordProgress = {};
-        if (typeof sessionWords !== 'undefined') sessionWords = [];
-        if (typeof learningQueue !== 'undefined') learningQueue = [];
-        if (typeof currentQueueIndex !== 'undefined') currentQueueIndex = 0;
-        if (typeof currentWordIndex !== 'undefined') currentWordIndex = 0;
-    } catch(e) {
-        console.log('Variable reset skipped:', e);
-    }
-    
-    // 移除弹窗
-    const overlay = document.getElementById('dataDeleteOverlay');
-    if (overlay) overlay.remove();
-    
-    // 显示提示并刷新
-    showToast('✅ 所有数据已删除（包括核心单词进度）');
-    setTimeout(() => location.reload(), 1500);
+    setTimeout(() => {
+        // 清除所有 localStorage 数据
+        localStorage.clear();
+        
+        // 重置核心单词学习数据（内存中的变量）
+        if (typeof window.learnedWords !== 'undefined') window.learnedWords = [];
+        if (typeof window.wordRatings !== 'undefined') window.wordRatings = {};
+        if (typeof window.wordLearningProgress !== 'undefined') window.wordLearningProgress = {};
+        if (typeof window.sessionWordProgress !== 'undefined') window.sessionWordProgress = {};
+        if (typeof window.sessionWords !== 'undefined') window.sessionWords = [];
+        if (typeof window.learningQueue !== 'undefined') window.learningQueue = [];
+        if (typeof window.currentQueueIndex !== 'undefined') window.currentQueueIndex = 0;
+        if (typeof window.currentWordIndex !== 'undefined') window.currentWordIndex = 0;
+        
+        // 通过全局变量重置（vocabulary.js 中的变量）
+        try {
+            if (typeof learnedWords !== 'undefined') learnedWords = [];
+            if (typeof wordRatings !== 'undefined') wordRatings = {};
+            if (typeof wordLearningProgress !== 'undefined') wordLearningProgress = {};
+            if (typeof sessionWordProgress !== 'undefined') sessionWordProgress = {};
+            if (typeof sessionWords !== 'undefined') sessionWords = [];
+            if (typeof learningQueue !== 'undefined') learningQueue = [];
+            if (typeof currentQueueIndex !== 'undefined') currentQueueIndex = 0;
+            if (typeof currentWordIndex !== 'undefined') currentWordIndex = 0;
+        } catch(e) {
+            console.log('Variable reset skipped:', e);
+        }
+        
+        // 移除弹窗
+        const overlay = document.getElementById('dataDeleteOverlay');
+        if (overlay) overlay.remove();
+        hideDeletionProgress();
+        
+        // 显示提示并刷新
+        showToast('✅ 所有数据已删除（包括核心单词进度）');
+        setTimeout(() => location.reload(), 1500);
+    }, 800);
 }
 
 // 导出删除函数
