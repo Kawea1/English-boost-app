@@ -952,6 +952,9 @@ function showMeaning() {
     // V11: 获取同义词/反义词
     var relations = getWordRelations(wordData.word);
     
+    // V12: 获取助记词
+    var mnemonic = getWordMnemonic(wordData.word);
+    
     // 构建释义HTML（中英文双语）
     var meaningHtml = '';
     
@@ -969,6 +972,36 @@ function showMeaning() {
     
     meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
     meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
+    
+    // V12: 智能助记词显示
+    if (mnemonic) {
+        meaningHtml += '<div class="word-mnemonic" style="margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fdf4ff 0%,#fae8ff 100%);border-radius:12px;border:1px solid rgba(192,132,252,0.2);">';
+        meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#a855f7 0%,#9333ea 100%);border-radius:8px;box-shadow:0 2px 6px rgba(168,85,247,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>';
+        meaningHtml += '<div style="flex:1;">';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+        meaningHtml += '<span style="font-weight:700;color:#7e22ce;font-size:13px;">💡 记忆技巧</span>';
+        // 助记类型标签
+        var typeColors = {
+            '词根分解': { bg: '#dcfce7', color: '#166534', border: '#bbf7d0' },
+            '联想记忆': { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe' },
+            '谐音记忆': { bg: '#fef3c7', color: '#92400e', border: '#fde68a' }
+        };
+        var typeStyle = typeColors[mnemonic.type] || { bg: '#f3f4f6', color: '#374151', border: '#e5e7eb' };
+        meaningHtml += '<span style="display:inline-block;padding:2px 8px;background:' + typeStyle.bg + ';border-radius:4px;font-size:11px;color:' + typeStyle.color + ';border:1px solid ' + typeStyle.border + ';font-weight:600;">' + (mnemonic.type || '记忆法') + '</span>';
+        meaningHtml += '</div>';
+        // 助记内容
+        meaningHtml += '<div style="font-size:15px;color:#581c87;line-height:1.6;font-weight:500;">' + mnemonic.mnemonic + '</div>';
+        // 词根信息
+        if (mnemonic.roots) {
+            meaningHtml += '<div style="margin-top:8px;font-size:12px;color:#9333ea;">📚 词根: ' + mnemonic.roots + '</div>';
+        }
+        // 联想提示
+        if (mnemonic.association) {
+            meaningHtml += '<div style="margin-top:4px;font-size:12px;color:#a855f7;">🔗 联想: ' + mnemonic.association + '</div>';
+        }
+        meaningHtml += '</div></div></div>';
+    }
     
     // V11: 同义词/反义词显示
     if (relations) {

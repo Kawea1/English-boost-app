@@ -1224,77 +1224,67 @@ const ActivationUI = {
                 <!-- ==================== V1-V10 友好试用页面重构 ==================== -->
                 <div class="trial-hero-section" id="trial-hero-section">
                     
-                    <!-- V1: 温馨欢迎图标 -->
-                    <div class="welcome-mascot">
-                        <div class="mascot-glow"></div>
-                        <div class="mascot-emoji">📖</div>
-                        <div class="mascot-sparkles">
-                            <span class="sparkle" style="--i:0">✨</span>
-                            <span class="sparkle" style="--i:1">⭐</span>
-                            <span class="sparkle" style="--i:2">✨</span>
+                    <!-- V1-V5 真诚体验优化 -->
+                    
+                    <!-- 简洁的欢迎 -->
+                    <div class="welcome-header">
+                        <div class="welcome-emoji">📖</div>
+                        <h2 class="welcome-title">学术英语精进</h2>
+                        <p class="welcome-desc">GRE · TOEFL · 学术写作</p>
+                    </div>
+                    
+                    <!-- V1: 学习目标选择（让用户感到被尊重） -->
+                    <div class="goal-selection">
+                        <p class="goal-label">你的学习目标是？</p>
+                        <div class="goal-options">
+                            <label class="goal-option">
+                                <input type="radio" name="goal" value="gre" checked>
+                                <span class="goal-card">
+                                    <span class="goal-icon">🎯</span>
+                                    <span class="goal-name">GRE备考</span>
+                                </span>
+                            </label>
+                            <label class="goal-option">
+                                <input type="radio" name="goal" value="toefl">
+                                <span class="goal-card">
+                                    <span class="goal-icon">🌍</span>
+                                    <span class="goal-name">TOEFL备考</span>
+                                </span>
+                            </label>
+                            <label class="goal-option">
+                                <input type="radio" name="goal" value="academic">
+                                <span class="goal-card">
+                                    <span class="goal-icon">📝</span>
+                                    <span class="goal-name">学术提升</span>
+                                </span>
+                            </label>
                         </div>
                     </div>
                     
-                    <!-- V2: 真诚友好的标题 -->
-                    <h2 class="trial-welcome-title">
-                        <span class="welcome-wave">👋</span>
-                        <span class="welcome-text">欢迎来到学术英语精进</span>
-                    </h2>
-                    
-                    <!-- V3: 温和的副标题 -->
-                    <p class="trial-welcome-subtitle">
-                        我们为你准备了 <strong>${trialDays} 天</strong> 的完整体验<br>
-                        <span class="subtle-note">无需付费，无需信用卡</span>
-                    </p>
-                    
-                    <!-- V4: 清爽的功能预览 -->
-                    <div class="feature-showcase">
-                        <div class="feature-item" style="--delay: 0.1s">
-                            <div class="feature-icon-wrap"><span class="feature-icon">📚</span></div>
-                            <div class="feature-info">
-                                <div class="feature-name">词汇学习</div>
-                                <div class="feature-desc">5000+ GRE/TOEFL 核心词汇</div>
-                            </div>
-                        </div>
-                        <div class="feature-item" style="--delay: 0.2s">
-                            <div class="feature-icon-wrap"><span class="feature-icon">🎧</span></div>
-                            <div class="feature-info">
-                                <div class="feature-name">听力训练</div>
-                                <div class="feature-desc">学术讲座精听填空</div>
-                            </div>
-                        </div>
-                        <div class="feature-item" style="--delay: 0.3s">
-                            <div class="feature-icon-wrap"><span class="feature-icon">💬</span></div>
-                            <div class="feature-info">
-                                <div class="feature-name">口语对话</div>
-                                <div class="feature-desc">AI 智能发音评测</div>
-                            </div>
-                        </div>
-                        <div class="feature-item" style="--delay: 0.4s">
-                            <div class="feature-icon-wrap"><span class="feature-icon">📖</span></div>
-                            <div class="feature-info">
-                                <div class="feature-name">阅读理解</div>
-                                <div class="feature-desc">学术文章精读练习</div>
-                            </div>
-                        </div>
+                    <!-- V2: 体验内容预览（透明告知） -->
+                    <div class="trial-preview">
+                        <p class="preview-title">${trialDays} 天体验包含</p>
+                        <ul class="preview-list">
+                            <li><span class="check">✓</span> 全部词汇库访问</li>
+                            <li><span class="check">✓</span> 听力精听练习</li>
+                            <li><span class="check">✓</span> AI发音评测</li>
+                            <li><span class="check">✓</span> 阅读理解训练</li>
+                        </ul>
                     </div>
                     
-                    <!-- V5: 简洁的开始按钮 -->
+                    <!-- V3: 简洁开始按钮 -->
                     <button id="start-trial-btn" class="trial-start-btn" type="button">
-                        <span class="btn-text">开始体验</span>
-                        <span class="btn-arrow">→</span>
+                        <span class="btn-text">开始学习</span>
                     </button>
                     
-                    <!-- V6: 温馨的小提示 -->
-                    <div class="trial-note">
-                        <span class="note-icon">💡</span>
-                        <span class="note-text">体验期结束后，可随时选择激活完整版</span>
+                    <!-- V4: 隐私与透明声明 -->
+                    <div class="privacy-note">
+                        <span class="privacy-icon">🔒</span>
+                        <span class="privacy-text">无需付款信息 · 随时可取消 · 数据本地存储</span>
                     </div>
                     
-                    <!-- V7: 真诚的APP介绍（替代假评价） -->
-                    <div class="app-intro">
-                        <div class="intro-text">专注学术英语，助力留学考试</div>
-                    </div>
+                    <!-- V5: 简化的底部信息 -->
+                    <p class="footer-note">体验结束后可选择激活完整版</p>
                 </div>
                 
                 <!-- 分割线 -->
@@ -2977,186 +2967,173 @@ const ActivationUI = {
                 50%, 100% { transform: rotate(0deg); }
             }
             
-            .welcome-text {
-                background: linear-gradient(135deg, #1e293b, #475569);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-            }
+            /* ==================== V1-V5 真诚体验优化样式 ==================== */
             
-            /* V3: 温和的副标题 */
-            .trial-welcome-subtitle {
+            /* 简洁欢迎头部 */
+            .welcome-header {
                 text-align: center;
-                font-size: 15px;
-                color: #64748b;
-                line-height: 1.7;
-                margin: 0 0 25px;
+                margin-bottom: 25px;
             }
             
-            .trial-welcome-subtitle strong {
-                color: #6366f1;
+            .welcome-emoji {
+                font-size: 48px;
+                margin-bottom: 12px;
+            }
+            
+            .welcome-title {
+                font-size: 24px;
                 font-weight: 700;
+                color: #1e293b;
+                margin: 0 0 6px;
             }
             
-            .subtle-note {
-                display: inline-block;
-                margin-top: 5px;
-                font-size: 13px;
+            .welcome-desc {
+                font-size: 14px;
                 color: #94a3b8;
+                margin: 0;
+                letter-spacing: 2px;
             }
             
-            /* V4: 清爽的功能预览 */
-            .feature-showcase {
+            /* V1: 学习目标选择 */
+            .goal-selection {
+                margin-bottom: 25px;
+            }
+            
+            .goal-label {
+                font-size: 14px;
+                color: #64748b;
+                text-align: center;
+                margin: 0 0 12px;
+            }
+            
+            .goal-options {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+            
+            .goal-option {
+                cursor: pointer;
+            }
+            
+            .goal-option input {
+                display: none;
+            }
+            
+            .goal-card {
                 display: flex;
                 flex-direction: column;
-                gap: 12px;
-                margin: 0 0 25px;
-                padding: 0 5px;
-            }
-            
-            .feature-item {
-                display: flex;
                 align-items: center;
-                gap: 14px;
-                padding: 14px 16px;
-                background: linear-gradient(145deg, #ffffff, #f8fafc);
-                border: 1px solid rgba(99, 102, 241, 0.1);
-                border-radius: 14px;
-                animation: featureSlide 0.5s ease-out both;
-                animation-delay: var(--delay);
+                gap: 6px;
+                padding: 14px 8px;
+                background: #f8fafc;
+                border: 2px solid #e2e8f0;
+                border-radius: 12px;
                 transition: all 0.2s ease;
             }
             
-            .feature-item:active {
-                transform: scale(0.98);
-                background: linear-gradient(145deg, #f8fafc, #f1f5f9);
+            .goal-option input:checked + .goal-card {
+                background: linear-gradient(145deg, #eef2ff, #e0e7ff);
+                border-color: #6366f1;
             }
             
-            @keyframes featureSlide {
-                from { opacity: 0; transform: translateX(-20px); }
-                to { opacity: 1; transform: translateX(0); }
+            .goal-icon {
+                font-size: 24px;
             }
             
-            .feature-icon-wrap {
-                width: 44px;
-                height: 44px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: linear-gradient(135deg, #6366f1, #8b5cf6);
-                border-radius: 12px;
-                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.25);
+            .goal-name {
+                font-size: 12px;
+                font-weight: 600;
+                color: #475569;
             }
             
-            .feature-icon {
-                font-size: 22px;
-                filter: grayscale(1) brightness(10);
+            .goal-option input:checked + .goal-card .goal-name {
+                color: #4f46e5;
             }
             
-            .feature-info {
-                flex: 1;
+            /* V2: 体验内容预览 */
+            .trial-preview {
+                background: #f8fafc;
+                border-radius: 14px;
+                padding: 18px 20px;
+                margin-bottom: 20px;
             }
             
-            .feature-name {
-                font-size: 15px;
+            .preview-title {
+                font-size: 14px;
                 font-weight: 600;
                 color: #1e293b;
-                margin-bottom: 2px;
+                text-align: center;
+                margin: 0 0 14px;
             }
             
-            .feature-desc {
-                font-size: 13px;
-                color: #94a3b8;
+            .preview-list {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 20px;
             }
             
-            /* V5: 简洁的开始按钮 */
-            .trial-start-btn {
-                position: relative;
+            .preview-list li {
                 display: flex;
                 align-items: center;
-                justify-content: center;
-                gap: 10px;
+                gap: 8px;
+                font-size: 13px;
+                color: #475569;
+            }
+            
+            .preview-list .check {
+                color: #10b981;
+                font-weight: bold;
+            }
+            
+            /* V3: 简洁开始按钮 */
+            .trial-start-btn {
                 width: 100%;
-                padding: 18px 24px;
+                padding: 16px 24px;
                 background: linear-gradient(135deg, #6366f1, #8b5cf6);
                 color: white;
                 border: none;
-                border-radius: 16px;
-                font-size: 18px;
+                border-radius: 14px;
+                font-size: 17px;
                 font-weight: 600;
                 cursor: pointer;
-                overflow: hidden;
-                transition: all 0.3s ease;
-                box-shadow: 0 8px 25px rgba(99, 102, 241, 0.35);
+                transition: all 0.2s ease;
+                box-shadow: 0 6px 20px rgba(99, 102, 241, 0.3);
                 -webkit-tap-highlight-color: transparent;
                 touch-action: manipulation;
-                z-index: 10;
-            }
-            
-            .trial-start-btn::before {
-                content: '';
-                position: absolute;
-                top: 0;
-                left: -100%;
-                width: 100%;
-                height: 100%;
-                background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-                transition: left 0.5s ease;
-            }
-            
-            .trial-start-btn:hover::before {
-                left: 100%;
-            }
-            
-            .trial-start-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 12px 35px rgba(99, 102, 241, 0.45);
             }
             
             .trial-start-btn:active {
-                transform: translateY(0) scale(0.98);
+                transform: scale(0.98);
             }
             
-            .trial-start-btn .btn-arrow {
-                font-size: 20px;
-                transition: transform 0.3s ease;
-            }
-            
-            .trial-start-btn:hover .btn-arrow {
-                transform: translateX(5px);
-            }
-            
-            /* V6: 温馨的小提示 */
-            .trial-note {
+            /* V4: 隐私声明 */
+            .privacy-note {
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 8px;
-                margin-top: 20px;
-                padding: 12px 16px;
-                background: rgba(99, 102, 241, 0.05);
-                border-radius: 12px;
+                margin-top: 16px;
             }
             
-            .note-icon {
-                font-size: 16px;
+            .privacy-icon {
+                font-size: 14px;
             }
             
-            .note-text {
-                font-size: 13px;
-                color: #64748b;
-            }
-            
-            /* V7: 简洁的APP介绍（替代虚假评价） */
-            .app-intro {
-                margin-top: 20px;
-                text-align: center;
-            }
-            
-            .intro-text {
-                font-size: 13px;
+            .privacy-text {
+                font-size: 12px;
                 color: #94a3b8;
-                letter-spacing: 0.5px;
+            }
+            
+            /* V5: 底部说明 */
+            .footer-note {
+                text-align: center;
+                font-size: 12px;
+                color: #cbd5e1;
+                margin: 20px 0 0;
             }
             
             /* 保留旧样式兼容 */
