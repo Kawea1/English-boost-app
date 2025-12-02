@@ -1258,12 +1258,50 @@ const ActivationUI = {
                         </div>
                     </div>
                     
+                    <!-- v12: 紧迫感徽章 -->
+                    <div class="urgency-badge">
+                        <span class="urgency-dot"></span>
+                        <span>限时优惠进行中</span>
+                    </div>
+                    
+                    <!-- v11: 打字机欢迎效果 -->
+                    <div class="typewriter-container">
+                        <span class="typewriter-text">欢迎来到学术英语精进！</span>
+                    </div>
+                    
                     <!-- v1: 标题区域 -->
                     <h2 class="trial-hero-title">
                         <span class="title-highlight">限时福利</span>
                         <span class="title-main">免费畅享 ${trialDays} 天</span>
                     </h2>
-                    <p class="trial-hero-subtitle">无需付费，无需激活码，立即解锁全部高级功能</p>
+                    
+                    <!-- v11: 动态标语轮播 -->
+                    <div class="slogan-carousel">
+                        <div class="slogan-track">
+                            <div class="slogan-item"><span class="slogan-icon">🎯</span> 科学记忆，事半功倍</div>
+                            <div class="slogan-item"><span class="slogan-icon">📈</span> 每天进步一点点</div>
+                            <div class="slogan-item"><span class="slogan-icon">🏆</span> 已帮助10万+学员提升</div>
+                            <div class="slogan-item"><span class="slogan-icon">✨</span> 开启你的英语之旅</div>
+                        </div>
+                    </div>
+                    
+                    <!-- v12: 实时倒计时 -->
+                    <div class="live-countdown" id="live-countdown">
+                        <div class="countdown-block">
+                            <div class="countdown-value" id="countdown-hours">23</div>
+                            <div class="countdown-label-small">小时</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-block">
+                            <div class="countdown-value" id="countdown-minutes">59</div>
+                            <div class="countdown-label-small">分钟</div>
+                        </div>
+                        <div class="countdown-separator">:</div>
+                        <div class="countdown-block">
+                            <div class="countdown-value" id="countdown-seconds">59</div>
+                            <div class="countdown-label-small">秒</div>
+                        </div>
+                    </div>
                     
                     <!-- v4: 功能预览卡片 -->
                     <div class="feature-preview-cards">
@@ -1287,6 +1325,12 @@ const ActivationUI = {
                             <div class="feature-card-name">阅读理解</div>
                             <div class="feature-card-desc">学术文章精选</div>
                         </div>
+                    </div>
+                    
+                    <!-- v12: 限量名额提示 -->
+                    <div class="limited-spots">
+                        <span class="spots-icon">🔥</span>
+                        <span class="spots-text">今日剩余名额: <span class="spots-number" id="spots-number">86</span></span>
                     </div>
                     
                     <!-- v5: 霓虹呼吸试用按钮 -->
@@ -1605,6 +1649,8 @@ const ActivationUI = {
             
             const result = ActivationSystem.startTrial();
             if (result.success) {
+                // v13: 显示欢迎动画
+                this.showWelcomeConfetti();
                 // v6-v8: 显示试用成功的高级动画
                 this.showTrialSuccessAnimation();
                 setTimeout(() => {
@@ -1626,6 +1672,207 @@ const ActivationUI = {
             e.preventDefault();
             this.showMigrationDialog();
         });
+        
+        // v12: 启动实时倒计时
+        this.startLiveCountdown();
+        
+        // v12: 启动限量名额动画
+        this.startSpotsAnimation();
+        
+        // v13: 首次用户引导检查
+        this.checkFirstTimeUser();
+    },
+    
+    /**
+     * v12: 实时倒计时
+     */
+    startLiveCountdown() {
+        const hoursEl = document.getElementById('countdown-hours');
+        const minutesEl = document.getElementById('countdown-minutes');
+        const secondsEl = document.getElementById('countdown-seconds');
+        
+        if (!hoursEl || !minutesEl || !secondsEl) return;
+        
+        // 设置今日截止时间
+        const now = new Date();
+        const endOfDay = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59);
+        
+        const updateCountdown = () => {
+            const now = new Date();
+            const diff = endOfDay - now;
+            
+            if (diff <= 0) {
+                hoursEl.textContent = '00';
+                minutesEl.textContent = '00';
+                secondsEl.textContent = '00';
+                return;
+            }
+            
+            const hours = Math.floor(diff / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // 添加翻转动画
+            if (secondsEl.textContent !== seconds.toString().padStart(2, '0')) {
+                secondsEl.classList.add('flip');
+                setTimeout(() => secondsEl.classList.remove('flip'), 500);
+            }
+            
+            hoursEl.textContent = hours.toString().padStart(2, '0');
+            minutesEl.textContent = minutes.toString().padStart(2, '0');
+            secondsEl.textContent = seconds.toString().padStart(2, '0');
+        };
+        
+        updateCountdown();
+        this.countdownInterval = setInterval(updateCountdown, 1000);
+    },
+    
+    /**
+     * v12: 限量名额动画
+     */
+    startSpotsAnimation() {
+        const spotsEl = document.getElementById('spots-number');
+        if (!spotsEl) return;
+        
+        // 随机减少名额，营造紧迫感
+        let spots = parseInt(spotsEl.textContent) || 86;
+        
+        const decreaseSpots = () => {
+            if (spots > 10 && Math.random() > 0.7) {
+                spots -= Math.floor(Math.random() * 3) + 1;
+                spotsEl.textContent = spots;
+                spotsEl.style.transform = 'scale(1.2)';
+                setTimeout(() => spotsEl.style.transform = 'scale(1)', 200);
+            }
+        };
+        
+        setInterval(decreaseSpots, 5000);
+    },
+    
+    /**
+     * v13: 检查首次用户
+     */
+    checkFirstTimeUser() {
+        const hasSeenOnboarding = localStorage.getItem('activation_onboarding_seen');
+        if (!hasSeenOnboarding) {
+            setTimeout(() => this.showOnboarding(), 1500);
+        }
+    },
+    
+    /**
+     * v13: 显示引导
+     */
+    showOnboarding() {
+        const steps = [
+            {
+                target: '.trial-hero-section',
+                title: '🎁 免费试用',
+                text: '点击下方按钮，立即开始30天免费体验，无需付费！',
+                position: 'bottom'
+            },
+            {
+                target: '.feature-preview-cards',
+                title: '✨ 丰富功能',
+                text: '词汇、听力、口语、阅读，全方位提升你的英语能力。',
+                position: 'top'
+            },
+            {
+                target: '#start-trial-btn',
+                title: '🚀 立即开始',
+                text: '点击这个按钮，开始你的英语学习之旅！',
+                position: 'top'
+            }
+        ];
+        
+        let currentStep = 0;
+        
+        const showStep = (stepIndex) => {
+            if (stepIndex >= steps.length) {
+                localStorage.setItem('activation_onboarding_seen', 'true');
+                document.querySelector('.onboarding-overlay')?.remove();
+                return;
+            }
+            
+            const step = steps[stepIndex];
+            const targetEl = document.querySelector(step.target);
+            if (!targetEl) {
+                showStep(stepIndex + 1);
+                return;
+            }
+            
+            const rect = targetEl.getBoundingClientRect();
+            
+            // 移除旧的overlay
+            document.querySelector('.onboarding-overlay')?.remove();
+            
+            const overlay = document.createElement('div');
+            overlay.className = 'onboarding-overlay';
+            overlay.innerHTML = `
+                <div class="onboarding-spotlight" style="
+                    left: ${rect.left - 10}px;
+                    top: ${rect.top - 10}px;
+                    width: ${rect.width + 20}px;
+                    height: ${rect.height + 20}px;
+                "></div>
+                <div class="onboarding-tooltip" style="
+                    left: 50%;
+                    transform: translateX(-50%);
+                    ${step.position === 'top' ? `bottom: ${window.innerHeight - rect.top + 20}px;` : `top: ${rect.bottom + 20}px;`}
+                ">
+                    <div class="tooltip-arrow ${step.position}"></div>
+                    <h3 class="onboarding-title">${step.title}</h3>
+                    <p class="onboarding-text">${step.text}</p>
+                    <div class="onboarding-step">
+                        <div class="step-dots">
+                            ${steps.map((_, i) => `<div class="step-dot ${i === stepIndex ? 'active' : ''}"></div>`).join('')}
+                        </div>
+                        <button class="onboarding-next">${stepIndex === steps.length - 1 ? '开始使用' : '下一步'}</button>
+                    </div>
+                </div>
+                <div class="gesture-hint">
+                    <span class="gesture-hand">👆</span>
+                    <span class="gesture-text">点击继续</span>
+                </div>
+            `;
+            
+            document.body.appendChild(overlay);
+            
+            overlay.querySelector('.onboarding-next').addEventListener('click', () => {
+                showStep(stepIndex + 1);
+            });
+            
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    showStep(stepIndex + 1);
+                }
+            });
+        };
+        
+        showStep(0);
+    },
+    
+    /**
+     * v13: 欢迎纸屑动画
+     */
+    showWelcomeConfetti() {
+        const container = document.createElement('div');
+        container.className = 'welcome-confetti';
+        document.body.appendChild(container);
+        
+        const emojis = ['🎉', '🎊', '✨', '🌟', '💫', '🎁', '🏆', '👏', '🔥', '💪'];
+        
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const emoji = document.createElement('div');
+                emoji.className = 'welcome-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = `${Math.random() * 100}%`;
+                emoji.style.animationDelay = `${Math.random() * 0.5}s`;
+                container.appendChild(emoji);
+            }, i * 100);
+        }
+        
+        setTimeout(() => container.remove(), 4000);
     },
 
     /**
@@ -3756,6 +4003,416 @@ const ActivationUI = {
                 
                 .unlock-name {
                     color: #f1f5f9;
+                }
+            }
+            
+            /* ==================== v11: 打字机欢迎效果 ==================== */
+            .typewriter-container {
+                overflow: hidden;
+                margin-bottom: 15px;
+            }
+            
+            .typewriter-text {
+                display: inline-block;
+                overflow: hidden;
+                border-right: 3px solid #f093fb;
+                white-space: nowrap;
+                animation: 
+                    typing 2.5s steps(20, end) forwards,
+                    blinkCursor 0.75s step-end infinite;
+                font-size: 18px;
+                font-weight: 600;
+                color: #667eea;
+                max-width: 0;
+            }
+            
+            @keyframes typing {
+                from { max-width: 0; }
+                to { max-width: 100%; }
+            }
+            
+            @keyframes blinkCursor {
+                from, to { border-color: transparent; }
+                50% { border-color: #f093fb; }
+            }
+            
+            /* v11: 动态标语轮播 */
+            .slogan-carousel {
+                height: 24px;
+                overflow: hidden;
+                margin-top: 10px;
+            }
+            
+            .slogan-track {
+                animation: sloganScroll 12s ease-in-out infinite;
+            }
+            
+            .slogan-item {
+                height: 24px;
+                line-height: 24px;
+                font-size: 14px;
+                color: #94a3b8;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+            }
+            
+            .slogan-icon {
+                animation: sloganIconBounce 1s ease-in-out infinite;
+            }
+            
+            @keyframes sloganScroll {
+                0%, 20% { transform: translateY(0); }
+                25%, 45% { transform: translateY(-24px); }
+                50%, 70% { transform: translateY(-48px); }
+                75%, 95% { transform: translateY(-72px); }
+                100% { transform: translateY(0); }
+            }
+            
+            @keyframes sloganIconBounce {
+                0%, 100% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+            }
+            
+            /* ==================== v12: 紧迫感设计 ==================== */
+            .urgency-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 6px 14px;
+                background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+                color: white;
+                font-size: 12px;
+                font-weight: 600;
+                border-radius: 20px;
+                animation: urgencyPulse 1.5s ease-in-out infinite;
+                margin-bottom: 15px;
+            }
+            
+            .urgency-badge .urgency-dot {
+                width: 8px;
+                height: 8px;
+                background: white;
+                border-radius: 50%;
+                animation: urgencyDot 1s ease-in-out infinite;
+            }
+            
+            @keyframes urgencyPulse {
+                0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4); }
+                50% { transform: scale(1.02); box-shadow: 0 0 0 8px rgba(255, 107, 107, 0); }
+            }
+            
+            @keyframes urgencyDot {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            
+            /* v12: 实时倒计时 */
+            .live-countdown {
+                display: flex;
+                justify-content: center;
+                gap: 8px;
+                margin: 20px 0;
+            }
+            
+            .countdown-block {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                min-width: 50px;
+            }
+            
+            .countdown-value {
+                font-size: 28px;
+                font-weight: 800;
+                color: #1e293b;
+                background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+                padding: 8px 12px;
+                border-radius: 10px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                min-width: 45px;
+                text-align: center;
+            }
+            
+            .countdown-value.flip {
+                animation: flipNumber 0.5s ease;
+            }
+            
+            @keyframes flipNumber {
+                0% { transform: rotateX(0deg); }
+                50% { transform: rotateX(90deg); }
+                100% { transform: rotateX(0deg); }
+            }
+            
+            .countdown-separator {
+                font-size: 24px;
+                font-weight: bold;
+                color: #94a3b8;
+                align-self: center;
+                animation: separatorBlink 1s step-end infinite;
+            }
+            
+            @keyframes separatorBlink {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+            
+            .countdown-label-small {
+                font-size: 11px;
+                color: #94a3b8;
+                margin-top: 5px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            
+            /* v12: 限量名额 */
+            .limited-spots {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                padding: 12px 20px;
+                background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(238, 90, 36, 0.1));
+                border-radius: 12px;
+                margin: 15px 0;
+            }
+            
+            .spots-icon {
+                font-size: 20px;
+                animation: spotsShake 2s ease-in-out infinite;
+            }
+            
+            @keyframes spotsShake {
+                0%, 100% { transform: rotate(0deg); }
+                25% { transform: rotate(-10deg); }
+                75% { transform: rotate(10deg); }
+            }
+            
+            .spots-text {
+                font-size: 14px;
+                color: #dc2626;
+                font-weight: 600;
+            }
+            
+            .spots-number {
+                font-size: 18px;
+                font-weight: 800;
+                color: #dc2626;
+            }
+            
+            /* ==================== v13: 首次用户引导 ==================== */
+            .onboarding-overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.8);
+                z-index: 10000;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                animation: onboardingFadeIn 0.5s ease;
+            }
+            
+            @keyframes onboardingFadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+            
+            .onboarding-spotlight {
+                position: absolute;
+                border-radius: 20px;
+                box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75);
+                animation: spotlightPulse 2s ease-in-out infinite;
+            }
+            
+            @keyframes spotlightPulse {
+                0%, 100% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), 0 0 30px rgba(240, 147, 251, 0.5); }
+                50% { box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.75), 0 0 50px rgba(240, 147, 251, 0.8); }
+            }
+            
+            .onboarding-tooltip {
+                position: absolute;
+                background: white;
+                padding: 20px 25px;
+                border-radius: 16px;
+                max-width: 280px;
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+                animation: tooltipBounce 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            }
+            
+            @keyframes tooltipBounce {
+                from { opacity: 0; transform: scale(0.8) translateY(20px); }
+                to { opacity: 1; transform: scale(1) translateY(0); }
+            }
+            
+            .tooltip-arrow {
+                position: absolute;
+                width: 16px;
+                height: 16px;
+                background: white;
+                transform: rotate(45deg);
+            }
+            
+            .tooltip-arrow.top { top: -8px; left: 50%; margin-left: -8px; }
+            .tooltip-arrow.bottom { bottom: -8px; left: 50%; margin-left: -8px; }
+            .tooltip-arrow.left { left: -8px; top: 50%; margin-top: -8px; }
+            .tooltip-arrow.right { right: -8px; top: 50%; margin-top: -8px; }
+            
+            .onboarding-title {
+                font-size: 18px;
+                font-weight: 700;
+                color: #1e293b;
+                margin: 0 0 10px;
+            }
+            
+            .onboarding-text {
+                font-size: 14px;
+                color: #64748b;
+                line-height: 1.5;
+                margin: 0 0 15px;
+            }
+            
+            .onboarding-step {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            
+            .step-dots {
+                display: flex;
+                gap: 6px;
+            }
+            
+            .step-dot {
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: #e2e8f0;
+                transition: all 0.3s;
+            }
+            
+            .step-dot.active {
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                width: 20px;
+                border-radius: 4px;
+            }
+            
+            .onboarding-next {
+                padding: 8px 16px;
+                background: linear-gradient(135deg, #f093fb, #f5576c);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .onboarding-next:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 20px rgba(240, 147, 251, 0.4);
+            }
+            
+            /* v13: 手势引导 */
+            .gesture-hint {
+                position: absolute;
+                bottom: 30px;
+                left: 50%;
+                transform: translateX(-50%);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                animation: gestureHintFade 3s ease-in-out infinite;
+            }
+            
+            @keyframes gestureHintFade {
+                0%, 100% { opacity: 0.6; }
+                50% { opacity: 1; }
+            }
+            
+            .gesture-hand {
+                font-size: 32px;
+                animation: gestureSwipe 2s ease-in-out infinite;
+            }
+            
+            @keyframes gestureSwipe {
+                0%, 100% { transform: translateY(0); }
+                50% { transform: translateY(-15px); }
+            }
+            
+            .gesture-text {
+                font-size: 13px;
+                color: white;
+                background: rgba(0, 0, 0, 0.6);
+                padding: 6px 14px;
+                border-radius: 20px;
+            }
+            
+            /* v13: 新手欢迎动画 */
+            .welcome-confetti {
+                position: fixed;
+                inset: 0;
+                pointer-events: none;
+                z-index: 10001;
+            }
+            
+            .welcome-emoji {
+                position: absolute;
+                font-size: 30px;
+                animation: emojiFloat 3s ease-out forwards;
+            }
+            
+            @keyframes emojiFloat {
+                0% { 
+                    opacity: 1; 
+                    transform: translateY(100vh) rotate(0deg) scale(0.5); 
+                }
+                100% { 
+                    opacity: 0; 
+                    transform: translateY(-20vh) rotate(360deg) scale(1.2); 
+                }
+            }
+            
+            /* v11-v13 深色模式适配 */
+            @media (prefers-color-scheme: dark) {
+                .typewriter-text {
+                    color: #a5b4fc;
+                    border-right-color: #a5b4fc;
+                }
+                
+                .slogan-item {
+                    color: #94a3b8;
+                }
+                
+                .countdown-value {
+                    background: linear-gradient(180deg, #334155 0%, #1e293b 100%);
+                    color: #f1f5f9;
+                }
+                
+                .limited-spots {
+                    background: linear-gradient(135deg, rgba(255, 107, 107, 0.15), rgba(238, 90, 36, 0.15));
+                }
+                
+                .onboarding-tooltip {
+                    background: #1e293b;
+                }
+                
+                .onboarding-title {
+                    color: #f1f5f9;
+                }
+                
+                .onboarding-text {
+                    color: #94a3b8;
+                }
+                
+                .tooltip-arrow {
+                    background: #1e293b;
+                }
+                
+                .step-dot {
+                    background: #475569;
                 }
             }
         `;
