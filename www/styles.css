@@ -1071,17 +1071,24 @@ svg {
     align-items: center;
 }
 
+/* V1-V5: 修复输入框显示问题 */
 .login-input-v2 {
     width: 100%;
     padding: 14px 50px 14px 16px;
     border: 2px solid var(--gray-200);
     border-radius: 12px;
-    font-size: 16px;
-    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
-    letter-spacing: 1px;
-    text-transform: uppercase;
+    font-size: 18px;
+    /* V1: 使用系统默认字体，避免兼容性问题 */
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* V2: 移除 text-transform，用 JS 处理大写转换 */
+    /* V3: 适当的字符间距 */
+    letter-spacing: 0.5px;
     transition: all 0.3s;
     background: var(--gray-50);
+    /* V4: 确保文本清晰可见 */
+    color: var(--gray-900);
+    -webkit-appearance: none;
+    appearance: none;
 }
 
 .login-input-v2:focus {
@@ -1091,10 +1098,11 @@ svg {
     box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
+/* V5: placeholder 样式 */
 .login-input-v2::placeholder {
-    text-transform: none;
     letter-spacing: normal;
     color: var(--gray-400);
+    font-size: 15px;
 }
 
 .paste-btn-v2 {
