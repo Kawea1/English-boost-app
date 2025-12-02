@@ -59,6 +59,49 @@ const ActivationSystem = {
             basic: { maxDevices: 3, features: ['basic', 'sync'] },
             premium: { maxDevices: 5, features: ['basic', 'sync', 'offline', 'priority'] },
             family: { maxDevices: 10, features: ['basic', 'sync', 'offline', 'priority', 'family'] }
+        },
+        
+        // V5.1-V5.5: 设备记忆配置
+        deviceMemoryKey: 'eb_device_memory',      // 设备记忆存储键
+        activationMemoryKey: 'eb_activation_memory', // 激活记忆存储键
+        autoLoginEnabled: true,                    // 启用自动登录
+        rememberDeviceDays: 365,                   // 记住设备天数
+        
+        // V2.1-V2.10: 学习目标配置
+        learningGoalKey: 'eb_learning_goal',      // 学习目标存储键
+        goalConfigs: {
+            gre: {
+                name: 'GRE备考',
+                icon: '🎯',
+                color: '#667eea',
+                features: ['gre_vocabulary', 'gre_reading', 'gre_writing', 'analytical_writing'],
+                vocabFocus: ['gre_core', 'academic_advanced'],
+                readingTopics: ['academic', 'science', 'humanities'],
+                dailyWords: 30,
+                description: 'GRE高频词汇 + 逻辑阅读 + 分析性写作'
+            },
+            toefl: {
+                name: 'TOEFL备考',
+                icon: '🌍',
+                color: '#10b981',
+                features: ['toefl_vocabulary', 'toefl_listening', 'toefl_speaking', 'toefl_writing'],
+                vocabFocus: ['toefl_core', 'academic_basic'],
+                listeningTopics: ['lecture', 'conversation', 'academic'],
+                speakingTasks: ['independent', 'integrated'],
+                dailyWords: 25,
+                description: 'TOEFL四项技能全面提升'
+            },
+            academic: {
+                name: '学术英语',
+                icon: '📝',
+                color: '#8b5cf6',
+                features: ['academic_vocabulary', 'academic_reading', 'academic_writing', 'research_skills'],
+                vocabFocus: ['awl', 'academic_phrases'],
+                writingFocus: ['essay', 'research_paper', 'abstract'],
+                readingTopics: ['journal', 'research', 'thesis'],
+                dailyWords: 20,
+                description: '学术论文阅读写作能力提升'
+            }
         }
     },
 
@@ -88,20 +131,54 @@ const ActivationSystem = {
         vipLevel: 'free',           // VIP等级
         trialStartDate: null,       // 试用开始日期
         familyId: null,             // 家庭组ID
-        deviceMigrationToken: null  // 设备迁移令牌
+        deviceMigrationToken: null, // 设备迁移令牌
+        
+        // V5.1-V5.5: 设备记忆状态
+        isDeviceRemembered: false,  // 设备是否已记住
+        lastActivationTime: null,   // 上次激活时间
+        activationCount: 0,         // 激活次数
+        
+        // V2.1-V2.10: 学习目标状态
+        learningGoal: null,         // 当前学习目标 (gre/toefl/academic)
+        goalSetDate: null,          // 目标设置日期
+        goalProgress: {}            // 目标进度
     },
 
     /**
      * 初始化激活系统
+     * V5.1-V5.5: 增强版初始化，支持设备记忆自动恢复
      */
     async init() {
-        console.log('🔐 初始化激活系统...');
+        console.log('🔐 初始化激活系统 V5.1...');
         
         // 生成/获取设备ID
         this.state.deviceId = await this.getOrCreateDeviceId();
         
         // 生成设备指纹
         this.state.deviceFingerprint = await this.generateDeviceFingerprint();
+        
+        // V2.1: 加载学习目标
+        this.getLearningGoal();
+        console.log('📚 学习目标:', this.state.learningGoal || '未设置');
+        
+        // V5.1: 首先检查设备记忆，尝试自动恢复
+        const autoRestored = await this.autoRestoreActivation();
+        if (autoRestored) {
+            console.log('✅ V5.1: 设备已记忆，自动恢复激活状态');
+            // 检查试用期或激活码是否仍然有效
+            const trialStatus = this.checkTrialStatus();
+            if (trialStatus.isActive || this.state.activationCode) {
+                this.startHeartbeat();
+                // 触发自动登录事件
+                window.dispatchEvent(new CustomEvent('autoLoginSuccess', {
+                    detail: { 
+                        deviceRemembered: true,
+                        learningGoal: this.state.learningGoal
+                    }
+                }));
+                return true;
+            }
+        }
         
         // 检查本地激活状态
         const savedState = this.loadActivationState();
@@ -112,6 +189,8 @@ const ActivationSystem = {
                 this.state.isActivated = true;
                 this.state.activationCode = savedState.activationCode;
                 this.state.userId = savedState.userId;
+                // V5.2: 保存设备记忆
+                this.saveDeviceMemory();
                 this.startHeartbeat();
                 console.log('✅ 激活状态有效');
                 return true;
@@ -120,6 +199,16 @@ const ActivationSystem = {
                 this.clearActivationState();
                 console.log('❌ 激活状态已失效');
             }
+        }
+        
+        // V5.3: 检查是否有试用期
+        const trialStatus = this.checkTrialStatus();
+        if (trialStatus.isActive) {
+            console.log('✅ V5.3: 试用期有效，剩余', trialStatus.daysRemaining, '天');
+            this.state.isActivated = true;
+            // 保存设备记忆
+            this.saveDeviceMemory();
+            return true;
         }
         
         return false;
@@ -609,9 +698,18 @@ const ActivationSystem = {
             vipLevel: this.state.vipLevel,
             trialStartDate: this.state.trialStartDate,
             familyId: this.state.familyId,
-            lastVerified: Date.now()
+            lastVerified: Date.now(),
+            // V5.2: 保存设备记忆
+            lastActivationTime: Date.now(),
+            activationCount: (this.state.activationCount || 0) + 1,
+            // V2.2: 保存学习目标
+            learningGoal: this.state.learningGoal,
+            goalSetDate: this.state.goalSetDate
         };
         localStorage.setItem(this.config.storageKey, JSON.stringify(state));
+        
+        // V5.3: 同时保存设备记忆
+        this.saveDeviceMemory();
     },
 
     /**
@@ -619,7 +717,15 @@ const ActivationSystem = {
      */
     loadActivationState() {
         try {
-            return JSON.parse(localStorage.getItem(this.config.storageKey));
+            const state = JSON.parse(localStorage.getItem(this.config.storageKey));
+            // V5.4: 同时加载设备记忆和学习目标
+            if (state) {
+                this.state.lastActivationTime = state.lastActivationTime;
+                this.state.activationCount = state.activationCount || 0;
+                this.state.learningGoal = state.learningGoal;
+                this.state.goalSetDate = state.goalSetDate;
+            }
+            return state;
         } catch {
             return null;
         }
@@ -635,6 +741,221 @@ const ActivationSystem = {
         this.state.isActivated = false;
         this.state.vipLevel = 'free';
         this.state.trustScore = 100;
+        // 注意：不清除设备记忆和学习目标
+    },
+
+    // ==================== V5.1-V5.5: 设备记忆功能 ====================
+    
+    /**
+     * V5.1: 保存设备记忆
+     * 记住此设备已激活，下次无需重复激活
+     */
+    saveDeviceMemory() {
+        const memory = {
+            deviceId: this.state.deviceId,
+            deviceFingerprint: this.state.deviceFingerprint,
+            activationCode: this.state.activationCode,
+            userId: this.state.userId,
+            firstActivation: this.loadDeviceMemory()?.firstActivation || Date.now(),
+            lastActivation: Date.now(),
+            activationCount: (this.state.activationCount || 0) + 1,
+            isRemembered: true,
+            expiresAt: Date.now() + (this.config.rememberDeviceDays * 24 * 60 * 60 * 1000),
+            // V5.2: 包含学习目标
+            learningGoal: this.state.learningGoal
+        };
+        localStorage.setItem(this.config.deviceMemoryKey, JSON.stringify(memory));
+        console.log('V5.1: 设备记忆已保存', memory.deviceId);
+    },
+    
+    /**
+     * V5.2: 加载设备记忆
+     */
+    loadDeviceMemory() {
+        try {
+            const memory = JSON.parse(localStorage.getItem(this.config.deviceMemoryKey));
+            if (memory && memory.expiresAt > Date.now()) {
+                return memory;
+            }
+            return null;
+        } catch {
+            return null;
+        }
+    },
+    
+    /**
+     * V5.3: 检查设备是否已记住
+     * @returns {boolean} 设备是否已被记住
+     */
+    isDeviceRemembered() {
+        const memory = this.loadDeviceMemory();
+        if (memory && memory.isRemembered && memory.expiresAt > Date.now()) {
+            console.log('V5.3: 设备已被记住，无需重复激活');
+            return true;
+        }
+        return false;
+    },
+    
+    /**
+     * V5.4: 自动恢复激活状态
+     * 如果设备已记住，自动恢复激活状态
+     * @returns {Promise<boolean>} 是否成功恢复
+     */
+    async autoRestoreActivation() {
+        const memory = this.loadDeviceMemory();
+        if (!memory || !memory.isRemembered) {
+            console.log('V5.4: 无设备记忆，需要激活');
+            return false;
+        }
+        
+        // 检查记忆是否过期
+        if (memory.expiresAt < Date.now()) {
+            console.log('V5.4: 设备记忆已过期');
+            localStorage.removeItem(this.config.deviceMemoryKey);
+            return false;
+        }
+        
+        // 恢复激活状态
+        this.state.isActivated = true;
+        this.state.activationCode = memory.activationCode;
+        this.state.userId = memory.userId;
+        this.state.deviceId = memory.deviceId;
+        this.state.isDeviceRemembered = true;
+        this.state.learningGoal = memory.learningGoal;
+        
+        // 加载完整的激活状态
+        const savedState = this.loadActivationState();
+        if (savedState) {
+            this.state.trialStartDate = savedState.trialStartDate;
+            this.state.vipLevel = savedState.vipLevel || 'free';
+        }
+        
+        console.log('V5.4: 设备记忆恢复成功，自动登录');
+        return true;
+    },
+    
+    /**
+     * V5.5: 清除设备记忆（用户主动登出时调用）
+     */
+    clearDeviceMemory() {
+        localStorage.removeItem(this.config.deviceMemoryKey);
+        this.state.isDeviceRemembered = false;
+        console.log('V5.5: 设备记忆已清除');
+    },
+
+    // ==================== V2.1-V2.10: 学习目标系统 ====================
+    
+    /**
+     * V2.1: 设置学习目标
+     * @param {string} goal - 学习目标 (gre/toefl/academic)
+     */
+    setLearningGoal(goal) {
+        if (!this.config.goalConfigs[goal]) {
+            console.error('V2.1: 无效的学习目标:', goal);
+            return false;
+        }
+        
+        this.state.learningGoal = goal;
+        this.state.goalSetDate = Date.now();
+        this.state.goalProgress = {};
+        
+        // 保存到本地存储
+        localStorage.setItem(this.config.learningGoalKey, JSON.stringify({
+            goal: goal,
+            setDate: this.state.goalSetDate,
+            progress: {}
+        }));
+        
+        console.log('V2.1: 学习目标已设置为:', goal);
+        
+        // 触发目标变更事件
+        window.dispatchEvent(new CustomEvent('learningGoalChanged', { 
+            detail: { goal, config: this.config.goalConfigs[goal] }
+        }));
+        
+        return true;
+    },
+    
+    /**
+     * V2.2: 获取当前学习目标
+     */
+    getLearningGoal() {
+        if (!this.state.learningGoal) {
+            // 尝试从本地存储加载
+            try {
+                const saved = JSON.parse(localStorage.getItem(this.config.learningGoalKey));
+                if (saved) {
+                    this.state.learningGoal = saved.goal;
+                    this.state.goalSetDate = saved.setDate;
+                    this.state.goalProgress = saved.progress || {};
+                }
+            } catch {}
+        }
+        return this.state.learningGoal;
+    },
+    
+    /**
+     * V2.3: 获取学习目标配置
+     */
+    getGoalConfig(goal = null) {
+        const targetGoal = goal || this.getLearningGoal() || 'academic';
+        return this.config.goalConfigs[targetGoal];
+    },
+    
+    /**
+     * V2.4: 获取目标专属词汇列表
+     */
+    getGoalVocabularyFocus() {
+        const config = this.getGoalConfig();
+        return config ? config.vocabFocus : ['academic_basic'];
+    },
+    
+    /**
+     * V2.5: 获取目标每日单词数
+     */
+    getGoalDailyWords() {
+        const config = this.getGoalConfig();
+        return config ? config.dailyWords : 20;
+    },
+    
+    /**
+     * V2.6: 获取目标专属功能列表
+     */
+    getGoalFeatures() {
+        const config = this.getGoalConfig();
+        return config ? config.features : ['basic'];
+    },
+    
+    /**
+     * V2.7: 检查功能是否对当前目标可用
+     */
+    isFeatureAvailableForGoal(featureName) {
+        const features = this.getGoalFeatures();
+        return features.includes(featureName) || features.includes('basic');
+    },
+    
+    /**
+     * V2.8: 获取目标阅读主题
+     */
+    getGoalReadingTopics() {
+        const config = this.getGoalConfig();
+        return config?.readingTopics || ['general'];
+    },
+    
+    /**
+     * V2.9: 获取目标听力主题 (TOEFL)
+     */
+    getGoalListeningTopics() {
+        const config = this.getGoalConfig();
+        return config?.listeningTopics || ['general'];
+    },
+    
+    /**
+     * V2.10: 获取目标写作重点
+     */
+    getGoalWritingFocus() {
+        const config = this.getGoalConfig();
+        return config?.writingFocus || ['essay'];
     },
 
     /**
@@ -1843,6 +2164,7 @@ const ActivationUI = {
         });
         
         // V1-V20优化: 简化的试用按钮绑定
+        // V2.1: 增加学习目标保存
         const trialBtn = document.getElementById('start-trial-btn');
         if (trialBtn) {
             // 确保按钮可点击
@@ -1863,6 +2185,14 @@ const ActivationUI = {
                     return;
                 }
                 trialBtn.classList.add('processing');
+                
+                // V2.1: 保存用户选择的学习目标
+                const selectedGoal = document.querySelector('input[name="goal"]:checked');
+                if (selectedGoal) {
+                    const goalValue = selectedGoal.value;
+                    console.log('V2.1: 用户选择的学习目标:', goalValue);
+                    ActivationSystem.setLearningGoal(goalValue);
+                }
                 
                 // 点击音效
                 this.playSound('click');
@@ -1885,6 +2215,10 @@ const ActivationUI = {
                     // 显示试用成功动画
                     this.showTrialSuccessAnimation();
                     
+                    // V5.1: 保存设备记忆，下次无需重复激活
+                    console.log('V5.1: 保存设备记忆...');
+                    ActivationSystem.saveDeviceMemory();
+                    
                     // V15-V20: 改进的页面跳转逻辑
                     setTimeout(() => {
                         console.log('🚀 V16: 准备进入应用...');
@@ -1897,6 +2231,14 @@ const ActivationUI = {
                         
                         // V18: 多种方式尝试进入应用
                         const enterSuccess = this.forceEnterApp();
+                        
+                        // V2.3: 触发目标初始化事件
+                        const goal = ActivationSystem.getLearningGoal();
+                        if (goal) {
+                            window.dispatchEvent(new CustomEvent('initGoalContent', {
+                                detail: { goal, config: ActivationSystem.getGoalConfig() }
+                            }));
+                        }
                         
                         // V19: 如果所有方法都失败，刷新页面
                         if (!enterSuccess) {
@@ -1923,6 +2265,23 @@ const ActivationUI = {
         } else {
             console.warn('⚠️ 未找到试用按钮 #start-trial-btn');
         }
+        
+        // V2.4: 绑定学习目标选择变化事件
+        document.querySelectorAll('input[name="goal"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                const goal = e.target.value;
+                console.log('V2.4: 用户切换学习目标:', goal);
+                // 更新预览描述
+                const config = ActivationSystem.config.goalConfigs[goal];
+                if (config) {
+                    const previewList = document.querySelector('.preview-list');
+                    if (previewList) {
+                        // 根据目标更新预览内容
+                        this.updateGoalPreview(goal, config);
+                    }
+                }
+            });
+        });
         
         // 设备迁移按钮
         const migrationBtn = document.getElementById('migration-btn');

@@ -2452,3 +2452,3248 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log('✅ 写作数据模块加载完成 (V1-V35)');
+
+// ==================== V36: 英文拼写检查系统 ====================
+/**
+ * AI 写作辅助模块 - 拼写检查
+ * 功能：实时检测英文拼写错误并提供纠正建议
+ */
+
+// 常见拼写错误词典（正确拼写 -> 常见错误形式）
+const COMMON_MISSPELLINGS = {
+  // 常见混淆词
+  'receive': ['recieve', 'recive', 'receeve'],
+  'believe': ['beleive', 'belive', 'beleave'],
+  'achieve': ['acheive', 'achive', 'acheeve'],
+  'separate': ['seperate', 'seprate', 'separete'],
+  'definitely': ['definately', 'definitly', 'deffinitely', 'definetly'],
+  'occurrence': ['occurence', 'occurance', 'occurrance'],
+  'accommodate': ['accomodate', 'acommodate', 'accomadate'],
+  'necessary': ['neccessary', 'necessery', 'neccesary'],
+  'environment': ['enviroment', 'environmnet', 'enviornment'],
+  'government': ['goverment', 'governmnet', 'govermnent'],
+  'development': ['developement', 'devlopment', 'develpoment'],
+  'argument': ['arguement', 'argumnet', 'arguemnt'],
+  'beginning': ['begining', 'beginnig', 'begginning'],
+  'recommend': ['recomend', 'reccommend', 'recommand'],
+  'temperature': ['temprature', 'temperture', 'temparature'],
+  'immediately': ['immediatly', 'imediately', 'immediatley'],
+  'occasionally': ['occasionaly', 'occassionally', 'ocassionally'],
+  'successful': ['successfull', 'succesful', 'sucessful'],
+  'professional': ['proffesional', 'profesional', 'proffessional'],
+  'knowledge': ['knowlege', 'knowlede', 'knowlegde'],
+  'experience': ['experiance', 'expirience', 'experince'],
+  'independent': ['independant', 'indepedent', 'independet'],
+  'opportunity': ['oportunity', 'oppurtunity', 'oppertunity'],
+  'analysis': ['anaylsis', 'analisis', 'analaysis'],
+  'consensus': ['concensus', 'consensis', 'consensous'],
+  'consequences': ['consequenses', 'consequnces', 'consequeces'],
+  'comprehensive': ['comperhensive', 'comprehnsive', 'comprahensive'],
+  'phenomenon': ['phenomenom', 'phenemenon', 'phenomeon'],
+  'significance': ['significane', 'significence', 'signifcance'],
+  'perspective': ['prospective', 'perspectiv', 'persepctive'],
+  'particularly': ['particulary', 'particuarly', 'particularily'],
+  'therefore': ['therefor', 'therfore', 'therfor'],
+  'whether': ['wether', 'wheather', 'wheter'],
+  'through': ['trough', 'thorugh', 'thruogh'],
+  'although': ['altough', 'althought', 'allthough'],
+  'which': ['wich', 'whcih', 'whihc'],
+  'their': ['thier', 'ther', 'theri'],
+  'because': ['becuase', 'becasue', 'beacuse'],
+  'different': ['diffrent', 'diferent', 'differnt'],
+  'important': ['importent', 'importnat', 'improtant'],
+  'influence': ['influance', 'influnce', 'influece'],
+  'maintain': ['maintian', 'maintan', 'mantain'],
+  'existence': ['existance', 'existense', 'existince'],
+  'structure': ['struture', 'strcuture', 'structre'],
+  'technique': ['techique', 'technqiue', 'tecnique'],
+  'efficiency': ['efficency', 'effeciency', 'efficiancy']
+};
+
+// 构建反向索引（错误拼写 -> 正确拼写）
+const MISSPELLING_INDEX = {};
+Object.keys(COMMON_MISSPELLINGS).forEach(correct => {
+  COMMON_MISSPELLINGS[correct].forEach(wrong => {
+    MISSPELLING_INDEX[wrong.toLowerCase()] = correct;
+  });
+});
+
+// 基础词汇表（用于拼写验证）
+const BASIC_VOCABULARY = new Set([
+  // 常用学术词汇
+  'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
+  'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could', 'should',
+  'may', 'might', 'must', 'shall', 'can', 'need', 'dare', 'ought', 'used',
+  'and', 'but', 'or', 'nor', 'for', 'yet', 'so', 'both', 'either', 'neither',
+  'not', 'only', 'own', 'same', 'than', 'too', 'very', 'just', 'also',
+  'this', 'that', 'these', 'those', 'what', 'which', 'who', 'whom', 'whose',
+  'where', 'when', 'why', 'how', 'all', 'each', 'every', 'both', 'few',
+  'more', 'most', 'other', 'some', 'such', 'no', 'any', 'many', 'much',
+  // 添加所有正确拼写的词
+  ...Object.keys(COMMON_MISSPELLINGS)
+]);
+
+/**
+ * 计算编辑距离（Levenshtein Distance）
+ * 用于模糊匹配拼写建议
+ */
+function levenshteinDistance(str1, str2) {
+  const m = str1.length;
+  const n = str2.length;
+  const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+  
+  for (let i = 0; i <= m; i++) dp[i][0] = i;
+  for (let j = 0; j <= n; j++) dp[0][j] = j;
+  
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      if (str1[i - 1] === str2[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1];
+      } else {
+        dp[i][j] = Math.min(
+          dp[i - 1][j - 1] + 1, // 替换
+          dp[i - 1][j] + 1,     // 删除
+          dp[i][j - 1] + 1      // 插入
+        );
+      }
+    }
+  }
+  return dp[m][n];
+}
+
+/**
+ * 检查单词拼写
+ * @param {string} word - 待检查的单词
+ * @returns {Object} 检查结果 { isCorrect, suggestions, errorType }
+ */
+function checkSpelling(word) {
+  if (!word || word.length < 2) {
+    return { isCorrect: true, suggestions: [], errorType: null };
+  }
+  
+  const lowerWord = word.toLowerCase();
+  
+  // 1. 检查是否在已知错误词典中
+  if (MISSPELLING_INDEX[lowerWord]) {
+    return {
+      isCorrect: false,
+      suggestions: [MISSPELLING_INDEX[lowerWord]],
+      errorType: 'common_misspelling',
+      confidence: 0.95
+    };
+  }
+  
+  // 2. 检查是否是正确的词汇
+  if (BASIC_VOCABULARY.has(lowerWord) || Object.keys(COMMON_MISSPELLINGS).includes(lowerWord)) {
+    return { isCorrect: true, suggestions: [], errorType: null };
+  }
+  
+  // 3. 使用编辑距离找相似词
+  const suggestions = [];
+  const correctWords = Object.keys(COMMON_MISSPELLINGS);
+  
+  for (const correct of correctWords) {
+    const distance = levenshteinDistance(lowerWord, correct);
+    if (distance <= 2 && distance > 0) {
+      suggestions.push({ word: correct, distance });
+    }
+  }
+  
+  // 按编辑距离排序
+  suggestions.sort((a, b) => a.distance - b.distance);
+  
+  if (suggestions.length > 0) {
+    return {
+      isCorrect: false,
+      suggestions: suggestions.slice(0, 3).map(s => s.word),
+      errorType: 'possible_misspelling',
+      confidence: 0.7
+    };
+  }
+  
+  // 4. 未知单词（可能是正确的专业术语）
+  return {
+    isCorrect: true, // 默认认为是正确的
+    suggestions: [],
+    errorType: null,
+    isUnknown: true
+  };
+}
+
+/**
+ * 检查文本中的所有拼写错误
+ * @param {string} text - 待检查的文本
+ * @returns {Array} 错误列表 [{ word, position, suggestions, errorType }]
+ */
+function checkTextSpelling(text) {
+  const errors = [];
+  // 匹配英文单词
+  const wordRegex = /\b[a-zA-Z]+\b/g;
+  let match;
+  
+  while ((match = wordRegex.exec(text)) !== null) {
+    const word = match[0];
+    const result = checkSpelling(word);
+    
+    if (!result.isCorrect) {
+      errors.push({
+        word: word,
+        position: match.index,
+        endPosition: match.index + word.length,
+        suggestions: result.suggestions,
+        errorType: result.errorType,
+        confidence: result.confidence
+      });
+    }
+  }
+  
+  return errors;
+}
+
+// 导出 V36 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.checkSpelling = checkSpelling;
+  window.WritingAI.checkTextSpelling = checkTextSpelling;
+  window.WritingAI.COMMON_MISSPELLINGS = COMMON_MISSPELLINGS;
+  window.WritingAI.levenshteinDistance = levenshteinDistance;
+}
+
+console.log('✅ V36 拼写检查系统加载完成');
+
+// ==================== V37: 语法检查系统 ====================
+/**
+ * AI 写作辅助模块 - 语法检查
+ * 功能：检测常见语法错误并提供修正建议
+ */
+
+// 常见语法错误模式
+const GRAMMAR_PATTERNS = [
+  // 主谓一致错误
+  {
+    id: 'subject_verb_singular',
+    pattern: /\b(he|she|it|everyone|someone|anyone|nobody|each|every)\s+(are|were|have|do)\b/gi,
+    message: '主谓一致错误：单数主语应使用单数动词',
+    suggestion: (match) => {
+      const fixes = { 'are': 'is', 'were': 'was', 'have': 'has', 'do': 'does' };
+      return match.replace(/\b(are|were|have|do)\b/i, m => fixes[m.toLowerCase()]);
+    },
+    category: 'subject_verb_agreement'
+  },
+  {
+    id: 'subject_verb_plural',
+    pattern: /\b(they|we|people|students|children)\s+(is|was|has|does)\b/gi,
+    message: '主谓一致错误：复数主语应使用复数动词',
+    suggestion: (match) => {
+      const fixes = { 'is': 'are', 'was': 'were', 'has': 'have', 'does': 'do' };
+      return match.replace(/\b(is|was|has|does)\b/i, m => fixes[m.toLowerCase()]);
+    },
+    category: 'subject_verb_agreement'
+  },
+  
+  // 冠词错误
+  {
+    id: 'article_a_an_vowel',
+    pattern: /\ba\s+([aeiou][a-z]+)\b/gi,
+    message: '冠词错误：元音开头的单词前应使用 "an"',
+    suggestion: (match, word) => 'an ' + word,
+    category: 'article'
+  },
+  {
+    id: 'article_an_consonant',
+    pattern: /\ban\s+([bcdfghjklmnpqrstvwxyz][a-z]+)\b/gi,
+    message: '冠词错误：辅音开头的单词前应使用 "a"',
+    suggestion: (match, word) => 'a ' + word,
+    category: 'article',
+    exceptions: ['hour', 'honest', 'honor', 'heir'] // 特殊情况
+  },
+  
+  // 双重否定
+  {
+    id: 'double_negative',
+    pattern: /\b(don't|doesn't|didn't|won't|can't|couldn't|shouldn't|wouldn't)\s+\w+\s+(no|nothing|nobody|nowhere|never)\b/gi,
+    message: '双重否定：在标准英语中应避免双重否定',
+    suggestion: null,
+    category: 'double_negative'
+  },
+  
+  // 常见时态错误
+  {
+    id: 'tense_yesterday_present',
+    pattern: /\byesterday\b[^.]*\b(is|are|go|come|do|have)\b(?!\s+going\s+to)/gi,
+    message: '时态错误：yesterday 应与过去时连用',
+    suggestion: null,
+    category: 'tense'
+  },
+  {
+    id: 'tense_tomorrow_past',
+    pattern: /\btomorrow\b[^.]*\b(was|were|went|came|did|had)\b/gi,
+    message: '时态错误：tomorrow 应与将来时连用',
+    suggestion: null,
+    category: 'tense'
+  },
+  
+  // 介词错误
+  {
+    id: 'preposition_depend',
+    pattern: /\bdepends?\s+(of|for|with)\b/gi,
+    message: '介词搭配错误：depend 应与 on 搭配',
+    suggestion: (match) => match.replace(/\b(of|for|with)\b/i, 'on'),
+    category: 'preposition'
+  },
+  {
+    id: 'preposition_consist',
+    pattern: /\bconsists?\s+(with|on|for)\b/gi,
+    message: '介词搭配错误：consist 应与 of 搭配',
+    suggestion: (match) => match.replace(/\b(with|on|for)\b/i, 'of'),
+    category: 'preposition'
+  },
+  {
+    id: 'preposition_interested',
+    pattern: /\binterested\s+(of|for|with)\b/gi,
+    message: '介词搭配错误：interested 应与 in 搭配',
+    suggestion: (match) => match.replace(/\b(of|for|with)\b/i, 'in'),
+    category: 'preposition'
+  },
+  
+  // 词性错误
+  {
+    id: 'adjective_adverb',
+    pattern: /\b(run|walk|speak|write|work|think)\s+(quick|slow|careful|beautiful|easy)\b/gi,
+    message: '词性错误：动词后应使用副词而非形容词',
+    suggestion: (match) => {
+      return match.replace(/\b(quick|slow|careful|beautiful|easy)\b/i, m => {
+        const adverbs = {
+          'quick': 'quickly', 'slow': 'slowly', 'careful': 'carefully',
+          'beautiful': 'beautifully', 'easy': 'easily'
+        };
+        return adverbs[m.toLowerCase()] || m + 'ly';
+      });
+    },
+    category: 'word_form'
+  },
+  
+  // 常见表达错误
+  {
+    id: 'expression_despite_of',
+    pattern: /\bdespite\s+of\b/gi,
+    message: '表达错误：despite 后不需要 of',
+    suggestion: (match) => 'despite',
+    category: 'expression'
+  },
+  {
+    id: 'expression_discuss_about',
+    pattern: /\bdiscuss\s+about\b/gi,
+    message: '表达错误：discuss 是及物动词，后面直接跟宾语',
+    suggestion: (match) => 'discuss',
+    category: 'expression'
+  },
+  {
+    id: 'expression_return_back',
+    pattern: /\breturn\s+back\b/gi,
+    message: '表达冗余：return 本身已包含 back 的含义',
+    suggestion: (match) => 'return',
+    category: 'redundancy'
+  }
+];
+
+/**
+ * 检查文本语法错误
+ * @param {string} text - 待检查的文本
+ * @returns {Array} 错误列表
+ */
+function checkGrammar(text) {
+  const errors = [];
+  
+  GRAMMAR_PATTERNS.forEach(rule => {
+    let match;
+    const regex = new RegExp(rule.pattern.source, rule.pattern.flags);
+    
+    while ((match = regex.exec(text)) !== null) {
+      // 检查例外情况
+      if (rule.exceptions) {
+        const matchedWord = match[1] ? match[1].toLowerCase() : '';
+        if (rule.exceptions.includes(matchedWord)) continue;
+      }
+      
+      const error = {
+        id: rule.id,
+        text: match[0],
+        position: match.index,
+        endPosition: match.index + match[0].length,
+        message: rule.message,
+        category: rule.category,
+        suggestion: rule.suggestion ? rule.suggestion(match[0], match[1]) : null
+      };
+      
+      errors.push(error);
+    }
+  });
+  
+  // 按位置排序
+  errors.sort((a, b) => a.position - b.position);
+  
+  return errors;
+}
+
+/**
+ * 获取语法错误类型统计
+ */
+function getGrammarErrorStats(errors) {
+  const stats = {};
+  errors.forEach(e => {
+    stats[e.category] = (stats[e.category] || 0) + 1;
+  });
+  return stats;
+}
+
+// 导出 V37 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.checkGrammar = checkGrammar;
+  window.WritingAI.getGrammarErrorStats = getGrammarErrorStats;
+  window.WritingAI.GRAMMAR_PATTERNS = GRAMMAR_PATTERNS;
+}
+
+console.log('✅ V37 语法检查系统加载完成');
+
+// ==================== V38: 智能续写建议系统 ====================
+/**
+ * AI 写作辅助模块 - 智能续写
+ * 功能：根据上下文预测用户想要写的内容，提供续写建议
+ */
+
+// 学术写作常用句式模式
+const CONTINUATION_PATTERNS = {
+  // 开头句式
+  openings: {
+    'In recent years': [
+      ', there has been a growing interest in...',
+      ', the issue of... has attracted considerable attention.',
+      ', significant progress has been made in...'
+    ],
+    'It is widely': [
+      ' believed that...',
+      ' acknowledged that...',
+      ' recognized that...'
+    ],
+    'The purpose of this': [
+      ' essay is to...',
+      ' paper is to examine...',
+      ' study is to investigate...'
+    ],
+    'This essay will': [
+      ' argue that...',
+      ' examine the extent to which...',
+      ' discuss both sides of...'
+    ]
+  },
+  
+  // 论证句式
+  arguments: {
+    'First': [
+      'ly, it is important to note that...',
+      ' and foremost, we must consider...',
+      ', the most significant point is that...'
+    ],
+    'Second': [
+      'ly, another key factor is...',
+      ', it should be noted that...',
+      ', we must also consider...'
+    ],
+    'Furthermore': [
+      ', it is worth mentioning that...',
+      ', this is supported by the fact that...',
+      ', research has shown that...'
+    ],
+    'However': [
+      ', it must be acknowledged that...',
+      ', there are also arguments against this view.',
+      ', some critics argue that...'
+    ],
+    'On the other hand': [
+      ', proponents of this view argue that...',
+      ', there is evidence to suggest that...',
+      ', it could be argued that...'
+    ],
+    'For example': [
+      ', studies have shown that...',
+      ', a case in point is...',
+      ', consider the situation where...'
+    ],
+    'In addition': [
+      ', it is important to consider...',
+      ', there is also the issue of...',
+      ' to this, we must also examine...'
+    ]
+  },
+  
+  // 结论句式
+  conclusions: {
+    'In conclusion': [
+      ', it is clear that...',
+      ', the evidence suggests that...',
+      ', while both views have merit, I believe...'
+    ],
+    'To sum up': [
+      ', the main points discussed above indicate that...',
+      ', there are compelling arguments on both sides.',
+      ', this essay has examined...'
+    ],
+    'All things considered': [
+      ', it seems reasonable to conclude that...',
+      ', the benefits outweigh the drawbacks.',
+      ', a balanced approach is needed.'
+    ],
+    'Taking everything into account': [
+      ', I would argue that...',
+      ', the most effective solution would be...',
+      ', both perspectives offer valuable insights.'
+    ]
+  },
+  
+  // 对比句式
+  contrast: {
+    'While': [
+      ' some people believe that..., others argue that...',
+      ' it is true that..., it is also important to consider...',
+      ' there are advantages to..., there are also disadvantages.'
+    ],
+    'Although': [
+      ' this approach has its merits, there are also limitations.',
+      ' some may disagree, the evidence clearly shows...',
+      ' challenging, this is not impossible.'
+    ],
+    'Despite': [
+      ' the challenges, significant progress has been made.',
+      ' these concerns, there are still reasons for optimism.',
+      ' its limitations, this approach offers several advantages.'
+    ]
+  },
+  
+  // 因果句式
+  causeEffect: {
+    'As a result': [
+      ', many people now believe that...',
+      ', there has been a significant increase in...',
+      ', this has led to...'
+    ],
+    'Consequently': [
+      ', it is essential to...',
+      ', measures should be taken to...',
+      ', this raises important questions about...'
+    ],
+    'Therefore': [
+      ', it can be concluded that...',
+      ', it is necessary to consider...',
+      ', the government should...'
+    ],
+    'This leads to': [
+      ' the conclusion that...',
+      ' important implications for...',
+      ' a number of consequences.'
+    ]
+  }
+};
+
+// 基于最后几个词的智能补全
+const WORD_COMPLETIONS = {
+  'I believe': [' that', ' strongly that', ' it is important'],
+  'It is': [' essential to', ' important to note that', ' widely believed that', ' clear that'],
+  'There are': [' several reasons for', ' many factors that', ' both advantages and disadvantages'],
+  'This is': [' because', ' due to the fact that', ' evidenced by', ' particularly important'],
+  'We should': [' consider', ' take into account', ' not ignore the fact that'],
+  'The main': [' reason is that', ' argument is that', ' advantage is', ' disadvantage is'],
+  'One of the': [' most important factors is', ' main reasons is', ' key issues is'],
+  'According to': [' recent studies', ' experts', ' research', ' statistics'],
+  'Studies have': [' shown that', ' revealed that', ' demonstrated that', ' indicated that'],
+  'It can be': [' argued that', ' seen that', ' concluded that', ' observed that'],
+  'In order to': [' achieve this', ' address this issue', ' solve this problem'],
+  'On the one': [' hand, ... On the other hand, ...'],
+  'Not only': [' ... but also ...', ' does this ..., but it also ...'],
+  'The more': [' ..., the more ...', ' we understand, the better we can ...']
+};
+
+/**
+ * 获取续写建议
+ * @param {string} text - 当前文本
+ * @param {number} cursorPosition - 光标位置
+ * @returns {Array} 建议列表
+ */
+function getSuggestions(text, cursorPosition) {
+  const textBeforeCursor = text.substring(0, cursorPosition);
+  const suggestions = [];
+  
+  // 获取最后的词组（最多5个词）
+  const words = textBeforeCursor.trim().split(/\s+/);
+  const lastWords = words.slice(-5);
+  
+  // 1. 检查句式模式匹配
+  for (let i = lastWords.length; i >= 1; i--) {
+    const phrase = lastWords.slice(-i).join(' ');
+    
+    // 遍历所有模式类别
+    for (const category of Object.values(CONTINUATION_PATTERNS)) {
+      if (category[phrase]) {
+        suggestions.push(...category[phrase].map(s => ({
+          text: s,
+          type: 'phrase_continuation',
+          confidence: 0.9 - (0.1 * (lastWords.length - i))
+        })));
+      }
+    }
+  }
+  
+  // 2. 检查词组补全
+  for (let i = Math.min(4, lastWords.length); i >= 1; i--) {
+    const phrase = lastWords.slice(-i).join(' ');
+    if (WORD_COMPLETIONS[phrase]) {
+      suggestions.push(...WORD_COMPLETIONS[phrase].map(s => ({
+        text: s,
+        type: 'word_completion',
+        confidence: 0.85
+      })));
+    }
+  }
+  
+  // 3. 基于段落位置的建议
+  const paragraphs = textBeforeCursor.split(/\n\n+/);
+  const currentParagraph = paragraphs[paragraphs.length - 1] || '';
+  const sentenceCount = (currentParagraph.match(/[.!?]+/g) || []).length;
+  
+  if (sentenceCount === 0 && currentParagraph.trim().length < 20) {
+    // 段落开头，建议开头句式
+    suggestions.push({
+      text: 'In contemporary society, ',
+      type: 'paragraph_start',
+      confidence: 0.7
+    });
+    suggestions.push({
+      text: 'It is widely acknowledged that ',
+      type: 'paragraph_start',
+      confidence: 0.7
+    });
+  }
+  
+  // 4. 去重并排序
+  const uniqueSuggestions = [];
+  const seen = new Set();
+  
+  for (const s of suggestions) {
+    if (!seen.has(s.text)) {
+      seen.add(s.text);
+      uniqueSuggestions.push(s);
+    }
+  }
+  
+  // 按置信度排序，返回前5个
+  return uniqueSuggestions
+    .sort((a, b) => b.confidence - a.confidence)
+    .slice(0, 5);
+}
+
+/**
+ * 智能自动补全（输入时触发）
+ * @param {string} currentWord - 当前正在输入的词
+ * @param {string} context - 上下文
+ * @returns {Array} 补全建议
+ */
+function getAutoComplete(currentWord, context) {
+  if (!currentWord || currentWord.length < 2) return [];
+  
+  const completions = [];
+  const lowerWord = currentWord.toLowerCase();
+  
+  // 学术常用词补全
+  const academicWords = [
+    'furthermore', 'moreover', 'nevertheless', 'consequently', 'therefore',
+    'however', 'although', 'whereas', 'meanwhile', 'subsequently',
+    'significant', 'substantial', 'considerable', 'fundamental', 'essential',
+    'demonstrate', 'illustrate', 'indicate', 'suggest', 'reveal',
+    'argument', 'perspective', 'approach', 'methodology', 'framework',
+    'analyze', 'examine', 'investigate', 'evaluate', 'assess',
+    'implication', 'consequence', 'phenomenon', 'hypothesis', 'conclusion'
+  ];
+  
+  for (const word of academicWords) {
+    if (word.startsWith(lowerWord) && word !== lowerWord) {
+      completions.push({
+        word: word,
+        remaining: word.substring(currentWord.length),
+        confidence: 0.8 + (currentWord.length / word.length) * 0.2
+      });
+    }
+  }
+  
+  return completions.sort((a, b) => b.confidence - a.confidence).slice(0, 5);
+}
+
+// 导出 V38 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.getSuggestions = getSuggestions;
+  window.WritingAI.getAutoComplete = getAutoComplete;
+  window.WritingAI.CONTINUATION_PATTERNS = CONTINUATION_PATTERNS;
+  window.WritingAI.WORD_COMPLETIONS = WORD_COMPLETIONS;
+}
+
+console.log('✅ V38 智能续写建议系统加载完成');
+
+// ==================== V39: 词汇增强建议系统 ====================
+/**
+ * AI 写作辅助模块 - 词汇增强
+ * 功能：建议更高级、更学术的词汇替换简单词汇
+ */
+
+// 简单词 -> 高级替换词映射
+const VOCABULARY_UPGRADES = {
+  // 动词替换
+  'show': {
+    basic: ['display', 'present', 'reveal'],
+    academic: ['demonstrate', 'illustrate', 'manifest', 'exhibit', 'elucidate'],
+    context: {
+      data: ['indicate', 'suggest', 'reflect'],
+      research: ['reveal', 'uncover', 'expose'],
+      argument: ['substantiate', 'corroborate', 'validate']
+    }
+  },
+  'think': {
+    basic: ['believe', 'consider', 'feel'],
+    academic: ['contend', 'posit', 'maintain', 'assert', 'hypothesize'],
+    context: {
+      opinion: ['argue', 'hold', 'submit'],
+      analysis: ['surmise', 'conjecture', 'postulate']
+    }
+  },
+  'say': {
+    basic: ['state', 'mention', 'tell'],
+    academic: ['assert', 'contend', 'proclaim', 'articulate', 'expound'],
+    context: {
+      quote: ['declare', 'affirm', 'pronounce'],
+      argument: ['argue', 'claim', 'maintain']
+    }
+  },
+  'get': {
+    basic: ['obtain', 'receive', 'acquire'],
+    academic: ['procure', 'attain', 'secure', 'garner'],
+    context: {
+      results: ['yield', 'derive', 'elicit'],
+      knowledge: ['gain', 'glean', 'assimilate']
+    }
+  },
+  'make': {
+    basic: ['create', 'produce', 'build'],
+    academic: ['construct', 'fabricate', 'generate', 'formulate', 'devise'],
+    context: {
+      decision: ['render', 'arrive at'],
+      argument: ['advance', 'put forth']
+    }
+  },
+  'use': {
+    basic: ['apply', 'employ', 'utilize'],
+    academic: ['leverage', 'harness', 'exploit', 'deploy'],
+    context: {
+      method: ['implement', 'adopt', 'incorporate'],
+      resource: ['avail oneself of', 'draw upon']
+    }
+  },
+  'help': {
+    basic: ['assist', 'aid', 'support'],
+    academic: ['facilitate', 'expedite', 'foster', 'bolster'],
+    context: {
+      understanding: ['elucidate', 'clarify'],
+      progress: ['advance', 'promote', 'further']
+    }
+  },
+  'change': {
+    basic: ['alter', 'modify', 'adjust'],
+    academic: ['transform', 'revolutionize', 'reconfigure', 'metamorphose'],
+    context: {
+      slight: ['tweak', 'amend', 'revise'],
+      major: ['overhaul', 'restructure']
+    }
+  },
+  
+  // 形容词替换
+  'good': {
+    basic: ['great', 'excellent', 'fine'],
+    academic: ['beneficial', 'advantageous', 'favorable', 'propitious', 'auspicious'],
+    context: {
+      quality: ['superior', 'exceptional', 'exemplary'],
+      outcome: ['optimal', 'desirable', 'salutary']
+    }
+  },
+  'bad': {
+    basic: ['poor', 'negative', 'harmful'],
+    academic: ['detrimental', 'deleterious', 'pernicious', 'adverse', 'inimical'],
+    context: {
+      effect: ['baneful', 'noxious', 'injurious'],
+      quality: ['substandard', 'deficient', 'inadequate']
+    }
+  },
+  'big': {
+    basic: ['large', 'huge', 'great'],
+    academic: ['substantial', 'considerable', 'significant', 'extensive', 'immense'],
+    context: {
+      importance: ['paramount', 'momentous', 'pivotal'],
+      size: ['vast', 'colossal', 'monumental']
+    }
+  },
+  'small': {
+    basic: ['little', 'tiny', 'minor'],
+    academic: ['negligible', 'marginal', 'minimal', 'modest', 'incremental'],
+    context: {
+      importance: ['trivial', 'inconsequential', 'peripheral'],
+      amount: ['scant', 'meager', 'paltry']
+    }
+  },
+  'important': {
+    basic: ['significant', 'major', 'key'],
+    academic: ['crucial', 'pivotal', 'paramount', 'indispensable', 'imperative'],
+    context: {
+      urgency: ['pressing', 'critical', 'vital'],
+      relevance: ['pertinent', 'germane', 'salient']
+    }
+  },
+  'different': {
+    basic: ['various', 'diverse', 'distinct'],
+    academic: ['disparate', 'divergent', 'heterogeneous', 'multifarious'],
+    context: {
+      comparison: ['dissimilar', 'contrasting', 'incongruous']
+    }
+  },
+  
+  // 副词替换
+  'very': {
+    basic: ['really', 'extremely', 'highly'],
+    academic: ['exceedingly', 'remarkably', 'extraordinarily', 'profoundly'],
+    note: '建议用更具体的副词或直接用更强的形容词'
+  },
+  'also': {
+    basic: ['too', 'as well'],
+    academic: ['furthermore', 'moreover', 'additionally', 'likewise'],
+    context: {
+      emphasis: ['indeed', 'in fact']
+    }
+  },
+  'but': {
+    basic: ['however', 'yet', 'still'],
+    academic: ['nevertheless', 'nonetheless', 'notwithstanding', 'conversely'],
+    context: {
+      contrast: ['on the contrary', 'in contrast'],
+      concession: ['albeit', 'although']
+    }
+  },
+  
+  // 名词替换
+  'problem': {
+    basic: ['issue', 'difficulty', 'challenge'],
+    academic: ['predicament', 'dilemma', 'conundrum', 'quandary', 'impediment'],
+    context: {
+      social: ['phenomenon', 'concern'],
+      technical: ['obstacle', 'constraint', 'limitation']
+    }
+  },
+  'result': {
+    basic: ['outcome', 'effect', 'consequence'],
+    academic: ['ramification', 'repercussion', 'implication', 'upshot'],
+    context: {
+      research: ['finding', 'conclusion'],
+      action: ['aftermath', 'byproduct']
+    }
+  },
+  'way': {
+    basic: ['method', 'approach', 'means'],
+    academic: ['methodology', 'mechanism', 'modality', 'avenue', 'paradigm'],
+    context: {
+      solution: ['stratagem', 'tactic'],
+      behavior: ['manner', 'fashion', 'mode']
+    }
+  },
+  'thing': {
+    basic: ['item', 'object', 'matter'],
+    academic: ['phenomenon', 'aspect', 'element', 'factor', 'entity'],
+    note: '建议使用更具体的名词'
+  }
+};
+
+/**
+ * 获取词汇升级建议
+ * @param {string} word - 原始词汇
+ * @param {string} context - 上下文（可选）
+ * @returns {Object} 替换建议
+ */
+function getVocabularyUpgrade(word, context = '') {
+  const lowerWord = word.toLowerCase();
+  const upgrades = VOCABULARY_UPGRADES[lowerWord];
+  
+  if (!upgrades) {
+    return null;
+  }
+  
+  const result = {
+    original: word,
+    basic: upgrades.basic || [],
+    academic: upgrades.academic || [],
+    contextual: [],
+    note: upgrades.note || null
+  };
+  
+  // 根据上下文提供更精确的建议
+  if (context && upgrades.context) {
+    const lowerContext = context.toLowerCase();
+    for (const [key, suggestions] of Object.entries(upgrades.context)) {
+      if (lowerContext.includes(key)) {
+        result.contextual = suggestions;
+        break;
+      }
+    }
+  }
+  
+  return result;
+}
+
+/**
+ * 扫描文本中可升级的词汇
+ * @param {string} text - 待检查的文本
+ * @returns {Array} 可升级词汇列表
+ */
+function scanForUpgrades(text) {
+  const upgrades = [];
+  const words = text.match(/\b\w+\b/g) || [];
+  const seenWords = new Set();
+  
+  words.forEach((word, index) => {
+    const lowerWord = word.toLowerCase();
+    if (seenWords.has(lowerWord)) return;
+    
+    if (VOCABULARY_UPGRADES[lowerWord]) {
+      // 获取上下文（前后10个词）
+      const contextStart = Math.max(0, index - 10);
+      const contextEnd = Math.min(words.length, index + 10);
+      const context = words.slice(contextStart, contextEnd).join(' ');
+      
+      const upgrade = getVocabularyUpgrade(word, context);
+      if (upgrade) {
+        // 找到词在原文中的位置
+        const regex = new RegExp('\\b' + word + '\\b', 'gi');
+        let match;
+        while ((match = regex.exec(text)) !== null) {
+          upgrades.push({
+            ...upgrade,
+            position: match.index,
+            endPosition: match.index + word.length
+          });
+        }
+        seenWords.add(lowerWord);
+      }
+    }
+  });
+  
+  return upgrades;
+}
+
+/**
+ * 获取词汇多样性分数
+ * @param {string} text - 文本
+ * @returns {Object} 词汇分析结果
+ */
+function analyzeVocabularyDiversity(text) {
+  const words = text.toLowerCase().match(/\b[a-z]+\b/g) || [];
+  const uniqueWords = new Set(words);
+  const totalWords = words.length;
+  const uniqueCount = uniqueWords.size;
+  
+  // 计算简单词使用频率
+  let simpleWordCount = 0;
+  const simpleWordsUsed = [];
+  
+  words.forEach(word => {
+    if (VOCABULARY_UPGRADES[word]) {
+      simpleWordCount++;
+      if (!simpleWordsUsed.includes(word)) {
+        simpleWordsUsed.push(word);
+      }
+    }
+  });
+  
+  return {
+    totalWords,
+    uniqueWords: uniqueCount,
+    diversityRatio: uniqueCount / totalWords,
+    simpleWordRatio: simpleWordCount / totalWords,
+    simpleWordsUsed,
+    score: Math.round((1 - simpleWordCount / totalWords) * 100),
+    suggestion: simpleWordCount > totalWords * 0.1 
+      ? '建议替换一些简单词汇以提升文章学术性'
+      : '词汇使用良好'
+  };
+}
+
+// 导出 V39 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.getVocabularyUpgrade = getVocabularyUpgrade;
+  window.WritingAI.scanForUpgrades = scanForUpgrades;
+  window.WritingAI.analyzeVocabularyDiversity = analyzeVocabularyDiversity;
+  window.WritingAI.VOCABULARY_UPGRADES = VOCABULARY_UPGRADES;
+}
+
+console.log('✅ V39 词汇增强建议系统加载完成');
+
+// ==================== V40: 学术短语推荐系统 ====================
+/**
+ * AI 写作辅助模块 - 学术短语库
+ * 功能：根据写作场景推荐合适的学术表达
+ */
+
+const ACADEMIC_PHRASES = {
+  // 引入主题
+  introduction: {
+    general: [
+      'In recent years, there has been growing interest in...',
+      'It is widely acknowledged that...',
+      'One of the most significant issues facing society today is...',
+      'The question of whether... has sparked considerable debate.',
+      'This essay will examine the extent to which...'
+    ],
+    thesis: [
+      'This essay argues that...',
+      'The central thesis of this paper is...',
+      'This analysis will demonstrate that...',
+      'The primary contention of this work is...',
+      'I will endeavor to show that...'
+    ],
+    background: [
+      'To fully understand this issue, it is necessary to...',
+      'Historically, the concept of... has evolved significantly.',
+      'The origins of this debate can be traced back to...',
+      'Prior to examining..., it is essential to establish...'
+    ]
+  },
+  
+  // 表达观点
+  opinion: {
+    strong: [
+      'It is my firm conviction that...',
+      'I strongly maintain that...',
+      'There can be little doubt that...',
+      'The evidence compellingly suggests that...',
+      'It is abundantly clear that...'
+    ],
+    moderate: [
+      'It would appear that...',
+      'On balance, it seems that...',
+      'The available evidence suggests that...',
+      'It is reasonable to conclude that...',
+      'One could argue that...'
+    ],
+    tentative: [
+      'It might be suggested that...',
+      'There is some evidence to support the view that...',
+      'It is possible that...',
+      'One interpretation is that...'
+    ]
+  },
+  
+  // 添加支持论据
+  support: {
+    evidence: [
+      'Research conducted by... demonstrates that...',
+      'According to a study published in...',
+      'Empirical evidence suggests that...',
+      'Statistical data from... reveals that...',
+      'A compelling illustration of this can be found in...'
+    ],
+    example: [
+      'A pertinent example of this phenomenon is...',
+      'This point is exemplified by...',
+      'To illustrate this further, consider...',
+      'A case in point is...',
+      'This is evident in the case of...'
+    ],
+    reasoning: [
+      'The rationale behind this is...',
+      'This can be attributed to...',
+      'The underlying reason for this is...',
+      'This phenomenon can be explained by...',
+      'The logic of this argument rests on...'
+    ]
+  },
+  
+  // 对比和转折
+  contrast: {
+    however: [
+      'Nevertheless, it must be acknowledged that...',
+      'Notwithstanding the above, there are valid concerns about...',
+      'However, a critical examination reveals that...',
+      'Despite this, one cannot overlook the fact that...',
+      'Conversely, it could be argued that...'
+    ],
+    comparison: [
+      'In contrast to..., ... demonstrates a different pattern.',
+      'While... emphasizes..., ... takes a different approach.',
+      'Unlike..., which..., ... tends to...',
+      'A stark contrast can be drawn between... and...',
+      'Whereas... focuses on..., ... prioritizes...'
+    ],
+    concession: [
+      'Admittedly, there is some merit in the argument that...',
+      'While it is true that..., this does not negate...',
+      'Although... may be valid to some extent...',
+      'Granted that..., it remains the case that...',
+      'It would be remiss not to acknowledge that...'
+    ]
+  },
+  
+  // 因果关系
+  causation: {
+    cause: [
+      'This can be attributed to several factors, including...',
+      'The primary catalyst for this was...',
+      'This phenomenon stems from...',
+      'The root cause of this issue lies in...',
+      'This development was precipitated by...'
+    ],
+    effect: [
+      'As a consequence of this...',
+      'This has far-reaching implications for...',
+      'The ramifications of this extend to...',
+      'This has given rise to...',
+      'The net effect of this has been...'
+    ],
+    relationship: [
+      'There exists a strong correlation between... and...',
+      'A causal link has been established between...',
+      '... is inextricably linked to...',
+      'The relationship between... and... is multifaceted.',
+      '... and ... are mutually reinforcing.'
+    ]
+  },
+  
+  // 强调和总结
+  emphasis: {
+    importance: [
+      'It is crucial to recognize that...',
+      'Of paramount importance is the fact that...',
+      'What is particularly significant here is...',
+      'This underscores the importance of...',
+      'The significance of this cannot be overstated.'
+    ],
+    clarity: [
+      'To put it more precisely...',
+      'In other words...',
+      'What this essentially means is...',
+      'To be more specific...',
+      'In essence, this suggests that...'
+    ]
+  },
+  
+  // 结论
+  conclusion: {
+    summary: [
+      'In light of the evidence presented...',
+      'Taking all factors into consideration...',
+      'On the basis of the foregoing analysis...',
+      'Having examined the various aspects of this issue...',
+      'In summation, the arguments presented herein suggest that...'
+    ],
+    recommendation: [
+      'It is therefore recommended that...',
+      'Policy makers should consider...',
+      'Future research should focus on...',
+      'Steps must be taken to address...',
+      'A concerted effort is needed to...'
+    ],
+    final: [
+      'Ultimately, the evidence supports the conclusion that...',
+      'In the final analysis, it is clear that...',
+      'All things considered, it can be concluded that...',
+      'The weight of evidence points to the conclusion that...',
+      'To conclude, this essay has demonstrated that...'
+    ]
+  },
+  
+  // 过渡衔接
+  transition: {
+    addition: [
+      'Furthermore, it is worth noting that...',
+      'Moreover, an additional consideration is...',
+      'In addition to the above...',
+      'Equally important is the fact that...',
+      'Another crucial aspect to consider is...'
+    ],
+    sequence: [
+      'First and foremost...',
+      'Subsequently...',
+      'Following this...',
+      'At this juncture...',
+      'Finally, and perhaps most importantly...'
+    ],
+    reference: [
+      'As previously mentioned...',
+      'In connection with the foregoing...',
+      'With reference to...',
+      'Returning to the earlier point about...',
+      'As discussed in the preceding section...'
+    ]
+  }
+};
+
+/**
+ * 根据写作位置和意图获取短语建议
+ * @param {string} intent - 写作意图类型
+ * @param {string} subType - 子类型（可选）
+ * @returns {Array} 推荐短语列表
+ */
+function getAcademicPhrases(intent, subType = null) {
+  const category = ACADEMIC_PHRASES[intent];
+  if (!category) return [];
+  
+  if (subType && category[subType]) {
+    return category[subType];
+  }
+  
+  // 返回该类别下所有短语
+  let allPhrases = [];
+  Object.values(category).forEach(phrases => {
+    allPhrases = allPhrases.concat(phrases);
+  });
+  return allPhrases;
+}
+
+/**
+ * 智能短语推荐 - 根据上下文分析适合的短语
+ * @param {string} text - 当前已写的文本
+ * @param {string} cursorContext - 光标附近的文本
+ * @returns {Object} 推荐结果
+ */
+function suggestAcademicPhrases(text, cursorContext = '') {
+  const analysis = {
+    position: 'body',
+    intent: 'support',
+    suggestions: []
+  };
+  
+  const textLength = text.length;
+  const lowerText = text.toLowerCase();
+  const lowerContext = cursorContext.toLowerCase();
+  
+  // 判断写作位置
+  if (textLength < 200) {
+    analysis.position = 'introduction';
+    analysis.intent = 'introduction';
+    analysis.suggestions = getAcademicPhrases('introduction', 'general')
+      .concat(getAcademicPhrases('introduction', 'thesis'));
+  } else if (textLength > 1500 || lowerText.includes('in conclusion') || 
+             lowerContext.includes('finally') || lowerContext.includes('to sum')) {
+    analysis.position = 'conclusion';
+    analysis.intent = 'conclusion';
+    analysis.suggestions = getAcademicPhrases('conclusion');
+  } else {
+    // 主体段落 - 根据上下文判断意图
+    if (lowerContext.includes('because') || lowerContext.includes('due to') ||
+        lowerContext.includes('reason') || lowerContext.includes('cause')) {
+      analysis.intent = 'causation';
+      analysis.suggestions = getAcademicPhrases('causation');
+    } else if (lowerContext.includes('however') || lowerContext.includes('but') ||
+               lowerContext.includes('although') || lowerContext.includes('despite')) {
+      analysis.intent = 'contrast';
+      analysis.suggestions = getAcademicPhrases('contrast');
+    } else if (lowerContext.includes('for example') || lowerContext.includes('such as') ||
+               lowerContext.includes('instance')) {
+      analysis.intent = 'support';
+      analysis.suggestions = getAcademicPhrases('support', 'example');
+    } else if (lowerContext.includes('i believe') || lowerContext.includes('i think') ||
+               lowerContext.includes('opinion')) {
+      analysis.intent = 'opinion';
+      analysis.suggestions = getAcademicPhrases('opinion');
+    } else if (lowerContext.includes('important') || lowerContext.includes('significant') ||
+               lowerContext.includes('crucial')) {
+      analysis.intent = 'emphasis';
+      analysis.suggestions = getAcademicPhrases('emphasis');
+    } else {
+      // 默认提供过渡短语
+      analysis.intent = 'transition';
+      analysis.suggestions = getAcademicPhrases('transition', 'addition');
+    }
+  }
+  
+  // 限制返回数量
+  analysis.suggestions = analysis.suggestions.slice(0, 8);
+  
+  return analysis;
+}
+
+/**
+ * 检测文本中是否使用了学术短语
+ * @param {string} text - 待检查文本
+ * @returns {Object} 使用情况分析
+ */
+function analyzeAcademicPhraseUsage(text) {
+  const lowerText = text.toLowerCase();
+  const usedPhrases = [];
+  let totalPhrases = 0;
+  
+  // 扁平化短语库
+  const checkPhrases = (obj, path = '') => {
+    for (const [key, value] of Object.entries(obj)) {
+      if (Array.isArray(value)) {
+        value.forEach(phrase => {
+          totalPhrases++;
+          const phraseStart = phrase.toLowerCase().split('...')[0].trim();
+          if (phraseStart.length > 5 && lowerText.includes(phraseStart)) {
+            usedPhrases.push({
+              phrase,
+              category: path ? `${path}.${key}` : key
+            });
+          }
+        });
+      } else if (typeof value === 'object') {
+        checkPhrases(value, path ? `${path}.${key}` : key);
+      }
+    }
+  };
+  
+  checkPhrases(ACADEMIC_PHRASES);
+  
+  return {
+    usedCount: usedPhrases.length,
+    usedPhrases,
+    coverage: (usedPhrases.length / (text.split('.').length - 1)) * 100,
+    suggestion: usedPhrases.length < 3 
+      ? '建议增加学术短语的使用以提升文章专业性'
+      : '学术短语使用情况良好'
+  };
+}
+
+// 导出 V40 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.getAcademicPhrases = getAcademicPhrases;
+  window.WritingAI.suggestAcademicPhrases = suggestAcademicPhrases;
+  window.WritingAI.analyzeAcademicPhraseUsage = analyzeAcademicPhraseUsage;
+  window.WritingAI.ACADEMIC_PHRASES = ACADEMIC_PHRASES;
+}
+
+console.log('✅ V40 学术短语推荐系统加载完成');
+
+// ==================== V41: 句式多样化分析系统 ====================
+/**
+ * AI 写作辅助模块 - 句式分析与多样化
+ * 功能：分析句子结构，建议多样化改写
+ */
+
+// 句式模板库
+const SENTENCE_PATTERNS = {
+  // 强调句型
+  emphasis: [
+    {
+      name: 'It is...that (强调句)',
+      pattern: 'It is [focus] that [rest of sentence]',
+      example: 'It is education that plays a crucial role in development.',
+      usage: '强调某个特定元素'
+    },
+    {
+      name: 'What...is (主语从句强调)',
+      pattern: 'What [subject] [verb] is [emphasis]',
+      example: 'What truly matters is the quality of education.',
+      usage: '强调重要性'
+    },
+    {
+      name: 'Not only...but also',
+      pattern: 'Not only [point 1], but [subject] also [point 2]',
+      example: 'Not only does technology improve efficiency, but it also creates new opportunities.',
+      usage: '双重强调'
+    },
+    {
+      name: 'Only by/when/if',
+      pattern: 'Only by/when/if [condition] can [subject] [result]',
+      example: 'Only by addressing the root causes can we achieve lasting change.',
+      usage: '条件强调'
+    }
+  ],
+  
+  // 对比句型
+  contrast: [
+    {
+      name: 'While...主句',
+      pattern: 'While [concession], [main point]',
+      example: 'While technology offers many benefits, its drawbacks cannot be ignored.',
+      usage: '转折对比'
+    },
+    {
+      name: 'Unlike...which...',
+      pattern: 'Unlike [A] which [characteristic], [B] [different characteristic]',
+      example: 'Unlike traditional methods which are time-consuming, modern approaches are highly efficient.',
+      usage: '直接对比'
+    },
+    {
+      name: 'Whereas',
+      pattern: '[Point A], whereas [contrasting point B]',
+      example: 'Some argue for strict regulations, whereas others advocate for market freedom.',
+      usage: '平行对比'
+    },
+    {
+      name: 'Rather than...prefer',
+      pattern: 'Rather than [option A], [subject] should [option B]',
+      example: 'Rather than focusing solely on grades, students should develop critical thinking.',
+      usage: '选择对比'
+    }
+  ],
+  
+  // 因果句型
+  causation: [
+    {
+      name: '分词作原因状语',
+      pattern: '[V-ing], [subject] [result]',
+      example: 'Having witnessed the effects firsthand, researchers recommend immediate action.',
+      usage: '表示原因'
+    },
+    {
+      name: 'Such...that',
+      pattern: '[Subject] is such [adj noun] that [consequence]',
+      example: 'The problem is of such magnitude that it requires global cooperation.',
+      usage: '程度因果'
+    },
+    {
+      name: 'Given that',
+      pattern: 'Given that [premise], it follows that [conclusion]',
+      example: 'Given that resources are limited, prioritization becomes essential.',
+      usage: '逻辑推导'
+    },
+    {
+      name: 'The fact that...leads to',
+      pattern: 'The fact that [observation] leads to [consequence]',
+      example: 'The fact that population is aging leads to significant economic challenges.',
+      usage: '事实推论'
+    }
+  ],
+  
+  // 复杂主语句型
+  complex_subject: [
+    {
+      name: '主语从句',
+      pattern: 'That [clause] is [adjective]',
+      example: 'That education should be accessible to all is beyond dispute.',
+      usage: '陈述普遍认知'
+    },
+    {
+      name: 'Whether引导主语从句',
+      pattern: 'Whether [option A] or [option B] depends on [factor]',
+      example: 'Whether this approach succeeds or fails depends on implementation.',
+      usage: '表示选择判断'
+    },
+    {
+      name: '形式主语it',
+      pattern: 'It is [adjective] that [clause]',
+      example: 'It is essential that governments take immediate action.',
+      usage: '评价性陈述'
+    }
+  ],
+  
+  // 定语从句句型
+  relative: [
+    {
+      name: '非限制性定语从句',
+      pattern: '[Noun], which [additional info], [rest]',
+      example: 'Technology, which has evolved rapidly, continues to reshape society.',
+      usage: '补充说明'
+    },
+    {
+      name: '介词+which/whom',
+      pattern: '[Noun] [prep] which [clause]',
+      example: 'The extent to which technology impacts daily life is remarkable.',
+      usage: '正式书面表达'
+    }
+  ],
+  
+  // 倒装句型
+  inversion: [
+    {
+      name: '否定副词倒装',
+      pattern: 'Never/Rarely/Seldom + aux + subject + verb',
+      example: 'Rarely has such a significant transformation occurred so quickly.',
+      usage: '强调罕见性'
+    },
+    {
+      name: 'So/Such倒装',
+      pattern: 'So [adj] is [noun] that [consequence]',
+      example: 'So profound is the impact that it cannot be reversed.',
+      usage: '强调程度'
+    },
+    {
+      name: 'Not until倒装',
+      pattern: 'Not until [time/condition] did [subject] [verb]',
+      example: 'Not until the evidence emerged did the true extent become clear.',
+      usage: '强调时间或条件'
+    }
+  ],
+  
+  // 条件句型
+  conditional: [
+    {
+      name: '虚拟条件句',
+      pattern: 'Were [subject] to [verb], [result]',
+      example: 'Were governments to implement stricter policies, emissions would decrease.',
+      usage: '假设情况'
+    },
+    {
+      name: 'Provided/Providing that',
+      pattern: 'Provided that [condition], [result]',
+      example: 'Provided that resources are allocated efficiently, the goal is achievable.',
+      usage: '条件假设'
+    }
+  ]
+};
+
+/**
+ * 分析句子结构
+ * @param {string} sentence - 单个句子
+ * @returns {Object} 句子分析结果
+ */
+function analyzeSentenceStructure(sentence) {
+  const analysis = {
+    length: sentence.split(/\s+/).length,
+    type: 'simple',
+    hasSubordinate: false,
+    hasParticiple: false,
+    startsWithSubject: true,
+    complexity: 'low'
+  };
+  
+  const lowerSentence = sentence.toLowerCase();
+  
+  // 检测从句标记词
+  const subordinates = ['that', 'which', 'who', 'whom', 'whose', 'when', 'where', 'while', 
+                        'although', 'because', 'since', 'if', 'unless', 'whereas'];
+  subordinates.forEach(word => {
+    if (lowerSentence.includes(' ' + word + ' ')) {
+      analysis.hasSubordinate = true;
+      analysis.type = 'complex';
+    }
+  });
+  
+  // 检测分词结构
+  if (/\b\w+ing\b,/.test(sentence) || /\b\w+ed\b,/.test(sentence)) {
+    analysis.hasParticiple = true;
+    analysis.type = 'complex';
+  }
+  
+  // 检测是否以主语开头
+  const starterWords = ['however', 'therefore', 'moreover', 'furthermore', 'consequently',
+                        'although', 'while', 'because', 'since', 'if', 'when'];
+  starterWords.forEach(word => {
+    if (lowerSentence.startsWith(word)) {
+      analysis.startsWithSubject = false;
+    }
+  });
+  
+  // 评估复杂度
+  if (analysis.length > 25 && analysis.hasSubordinate) {
+    analysis.complexity = 'high';
+  } else if (analysis.length > 15 || analysis.hasSubordinate) {
+    analysis.complexity = 'medium';
+  }
+  
+  return analysis;
+}
+
+/**
+ * 分析整篇文章的句式多样性
+ * @param {string} text - 完整文本
+ * @returns {Object} 多样性分析报告
+ */
+function analyzeSentenceVariety(text) {
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  
+  const report = {
+    totalSentences: sentences.length,
+    averageLength: 0,
+    shortSentences: 0,      // < 10 words
+    mediumSentences: 0,     // 10-20 words
+    longSentences: 0,       // > 20 words
+    complexSentences: 0,
+    subjectStartRatio: 0,
+    varietyScore: 0,
+    issues: [],
+    suggestions: []
+  };
+  
+  let totalWords = 0;
+  let subjectStarts = 0;
+  
+  sentences.forEach(sentence => {
+    const analysis = analyzeSentenceStructure(sentence);
+    totalWords += analysis.length;
+    
+    if (analysis.length < 10) report.shortSentences++;
+    else if (analysis.length <= 20) report.mediumSentences++;
+    else report.longSentences++;
+    
+    if (analysis.type === 'complex') report.complexSentences++;
+    if (analysis.startsWithSubject) subjectStarts++;
+  });
+  
+  report.averageLength = Math.round(totalWords / sentences.length);
+  report.subjectStartRatio = subjectStarts / sentences.length;
+  
+  // 计算多样性分数
+  const lengthVariety = 1 - Math.abs(0.33 - report.shortSentences/sentences.length) 
+                         - Math.abs(0.5 - report.mediumSentences/sentences.length)
+                         - Math.abs(0.17 - report.longSentences/sentences.length);
+  
+  const complexityVariety = report.complexSentences / sentences.length;
+  const startVariety = 1 - report.subjectStartRatio;
+  
+  report.varietyScore = Math.round((lengthVariety * 40 + complexityVariety * 30 + startVariety * 30));
+  
+  // 生成问题和建议
+  if (report.subjectStartRatio > 0.7) {
+    report.issues.push('过多句子以主语开头，缺乏变化');
+    report.suggestions.push('尝试使用状语从句、分词结构或倒装句开头');
+  }
+  
+  if (report.shortSentences > sentences.length * 0.4) {
+    report.issues.push('短句过多，文章可能显得零碎');
+    report.suggestions.push('尝试合并相关短句，使用连接词构建复合句');
+  }
+  
+  if (report.complexSentences < sentences.length * 0.2) {
+    report.issues.push('复杂句式较少，文章层次感不足');
+    report.suggestions.push('适当增加从句、分词结构等复杂句式');
+  }
+  
+  if (report.averageLength < 12) {
+    report.issues.push('平均句长偏短');
+    report.suggestions.push('增加修饰成分，丰富句子内容');
+  } else if (report.averageLength > 25) {
+    report.issues.push('平均句长偏长，可能影响可读性');
+    report.suggestions.push('适当拆分长句，保持阅读节奏');
+  }
+  
+  return report;
+}
+
+/**
+ * 获取句式改写建议
+ * @param {string} sentence - 需要改写的句子
+ * @returns {Array} 改写建议
+ */
+function getSentenceVariations(sentence) {
+  const variations = [];
+  const words = sentence.split(/\s+/);
+  
+  // 检测简单主谓宾结构，建议使用强调句
+  if (words.length < 15 && !sentence.toLowerCase().startsWith('it is')) {
+    variations.push({
+      type: 'emphasis',
+      suggestion: `可以改写为强调句：It is ... that ...`,
+      pattern: SENTENCE_PATTERNS.emphasis[0]
+    });
+  }
+  
+  // 如果句子表达观点，建议使用主语从句
+  if (sentence.toLowerCase().includes('i think') || 
+      sentence.toLowerCase().includes('i believe')) {
+    variations.push({
+      type: 'formal',
+      suggestion: '避免第一人称，可改写为：It is believed/argued that...',
+      pattern: SENTENCE_PATTERNS.complex_subject[2]
+    });
+  }
+  
+  // 建议添加从句
+  if (words.length < 12 && !sentence.includes(',')) {
+    variations.push({
+      type: 'complex',
+      suggestion: '可以添加 which/who 从句补充信息',
+      pattern: SENTENCE_PATTERNS.relative[0]
+    });
+  }
+  
+  // 随机推荐高级句型
+  const allPatterns = Object.values(SENTENCE_PATTERNS).flat();
+  const randomPattern = allPatterns[Math.floor(Math.random() * allPatterns.length)];
+  variations.push({
+    type: 'alternative',
+    suggestion: `可以尝试使用 "${randomPattern.name}" 句型`,
+    pattern: randomPattern
+  });
+  
+  return variations;
+}
+
+// 导出 V41 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.analyzeSentenceStructure = analyzeSentenceStructure;
+  window.WritingAI.analyzeSentenceVariety = analyzeSentenceVariety;
+  window.WritingAI.getSentenceVariations = getSentenceVariations;
+  window.WritingAI.SENTENCE_PATTERNS = SENTENCE_PATTERNS;
+}
+
+console.log('✅ V41 句式多样化分析系统加载完成');
+
+// ==================== V42: 实时写作反馈系统 ====================
+/**
+ * AI 写作辅助模块 - 实时反馈
+ * 功能：在用户输入时提供即时反馈和建议
+ */
+
+// 反馈类型配置
+const FEEDBACK_CONFIG = {
+  debounceMs: 500,        // 防抖延迟
+  minTextLength: 20,      // 最小触发长度
+  maxSuggestions: 5,      // 最大建议数
+  enableSpelling: true,
+  enableGrammar: true,
+  enableStyle: true,
+  enableVocabulary: true
+};
+
+// 写作目标跟踪
+const WRITING_GOALS = {
+  toefl_integrated: {
+    minWords: 150,
+    maxWords: 225,
+    targetParagraphs: 3,
+    timeLimit: 20
+  },
+  toefl_independent: {
+    minWords: 300,
+    maxWords: 400,
+    targetParagraphs: 5,
+    timeLimit: 30
+  },
+  gre_issue: {
+    minWords: 500,
+    maxWords: 700,
+    targetParagraphs: 5,
+    timeLimit: 30
+  },
+  gre_argument: {
+    minWords: 400,
+    maxWords: 600,
+    targetParagraphs: 5,
+    timeLimit: 30
+  },
+  ielts_task1: {
+    minWords: 150,
+    maxWords: 200,
+    targetParagraphs: 4,
+    timeLimit: 20
+  },
+  ielts_task2: {
+    minWords: 250,
+    maxWords: 300,
+    targetParagraphs: 5,
+    timeLimit: 40
+  }
+};
+
+/**
+ * 创建实时反馈管理器
+ * @returns {Object} 反馈管理器实例
+ */
+function createFeedbackManager() {
+  let lastText = '';
+  let debounceTimer = null;
+  let feedbackHistory = [];
+  
+  return {
+    config: { ...FEEDBACK_CONFIG },
+    
+    /**
+     * 更新配置
+     */
+    updateConfig(newConfig) {
+      Object.assign(this.config, newConfig);
+    },
+    
+    /**
+     * 触发实时分析
+     * @param {string} text - 当前文本
+     * @param {Object} options - 选项
+     */
+    analyze(text, options = {}) {
+      return new Promise((resolve) => {
+        if (debounceTimer) {
+          clearTimeout(debounceTimer);
+        }
+        
+        debounceTimer = setTimeout(() => {
+          const feedback = this.performAnalysis(text, options);
+          feedbackHistory.push({
+            timestamp: Date.now(),
+            feedback
+          });
+          resolve(feedback);
+        }, this.config.debounceMs);
+      });
+    },
+    
+    /**
+     * 执行综合分析
+     */
+    performAnalysis(text, options) {
+      const feedback = {
+        timestamp: Date.now(),
+        wordCount: 0,
+        paragraphCount: 0,
+        progress: {},
+        issues: [],
+        suggestions: [],
+        scores: {},
+        highlights: []
+      };
+      
+      if (text.length < this.config.minTextLength) {
+        return feedback;
+      }
+      
+      // 基础统计
+      const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+      feedback.wordCount = words.length;
+      feedback.paragraphCount = text.split(/\n\n+/).filter(p => p.trim().length > 0).length;
+      
+      // 进度追踪
+      if (options.writingType && WRITING_GOALS[options.writingType]) {
+        const goal = WRITING_GOALS[options.writingType];
+        feedback.progress = {
+          wordProgress: Math.min(100, Math.round(feedback.wordCount / goal.minWords * 100)),
+          paragraphProgress: Math.round(feedback.paragraphCount / goal.targetParagraphs * 100),
+          isWithinRange: feedback.wordCount >= goal.minWords && feedback.wordCount <= goal.maxWords,
+          wordsNeeded: Math.max(0, goal.minWords - feedback.wordCount),
+          wordsOver: Math.max(0, feedback.wordCount - goal.maxWords)
+        };
+      }
+      
+      // 拼写检查
+      if (this.config.enableSpelling && typeof checkTextSpelling === 'function') {
+        const spellingResults = checkTextSpelling(text);
+        spellingResults.forEach(error => {
+          feedback.issues.push({
+            type: 'spelling',
+            severity: 'error',
+            message: `拼写错误: "${error.word}"`,
+            suggestion: error.suggestions.join(', '),
+            position: error.position
+          });
+          feedback.highlights.push({
+            start: error.position,
+            end: error.position + error.word.length,
+            type: 'spelling-error'
+          });
+        });
+      }
+      
+      // 语法检查
+      if (this.config.enableGrammar && typeof checkGrammar === 'function') {
+        const grammarResults = checkGrammar(text);
+        grammarResults.forEach(error => {
+          feedback.issues.push({
+            type: 'grammar',
+            severity: error.severity || 'warning',
+            message: error.message,
+            suggestion: error.correction,
+            position: error.position
+          });
+          feedback.highlights.push({
+            start: error.position,
+            end: error.endPosition,
+            type: 'grammar-error'
+          });
+        });
+      }
+      
+      // 词汇建议
+      if (this.config.enableVocabulary && typeof scanForUpgrades === 'function') {
+        const upgrades = scanForUpgrades(text);
+        upgrades.slice(0, 3).forEach(upgrade => {
+          feedback.suggestions.push({
+            type: 'vocabulary',
+            message: `"${upgrade.original}" 可替换为更高级词汇`,
+            options: upgrade.academic.slice(0, 3)
+          });
+          feedback.highlights.push({
+            start: upgrade.position,
+            end: upgrade.endPosition,
+            type: 'vocabulary-upgrade'
+          });
+        });
+      }
+      
+      // 句式分析
+      if (this.config.enableStyle && typeof analyzeSentenceVariety === 'function') {
+        const varietyReport = analyzeSentenceVariety(text);
+        feedback.scores.sentenceVariety = varietyReport.varietyScore;
+        varietyReport.issues.forEach(issue => {
+          feedback.suggestions.push({
+            type: 'style',
+            message: issue
+          });
+        });
+      }
+      
+      // 计算综合分数
+      feedback.scores.overall = this.calculateOverallScore(feedback);
+      
+      // 限制反馈数量
+      feedback.issues = feedback.issues.slice(0, this.config.maxSuggestions);
+      feedback.suggestions = feedback.suggestions.slice(0, this.config.maxSuggestions);
+      
+      return feedback;
+    },
+    
+    /**
+     * 计算综合分数
+     */
+    calculateOverallScore(feedback) {
+      let score = 100;
+      
+      // 扣分项
+      score -= feedback.issues.filter(i => i.type === 'spelling').length * 2;
+      score -= feedback.issues.filter(i => i.type === 'grammar').length * 3;
+      
+      // 加分项
+      if (feedback.scores.sentenceVariety > 60) {
+        score += 5;
+      }
+      
+      // 进度奖励
+      if (feedback.progress.wordProgress >= 100) {
+        score += 5;
+      }
+      
+      return Math.max(0, Math.min(100, score));
+    },
+    
+    /**
+     * 获取反馈历史
+     */
+    getHistory() {
+      return feedbackHistory.slice(-10);
+    },
+    
+    /**
+     * 清除历史
+     */
+    clearHistory() {
+      feedbackHistory = [];
+    }
+  };
+}
+
+/**
+ * 生成实时提示消息
+ * @param {Object} feedback - 反馈对象
+ * @returns {Object} 格式化的提示信息
+ */
+function formatFeedbackMessage(feedback) {
+  const messages = {
+    primary: '',
+    secondary: [],
+    status: 'normal'  // normal, warning, error, success
+  };
+  
+  // 主要信息
+  if (feedback.progress.wordsNeeded > 0) {
+    messages.primary = `还需要 ${feedback.progress.wordsNeeded} 词达到最低要求`;
+    messages.status = 'warning';
+  } else if (feedback.progress.wordsOver > 0) {
+    messages.primary = `已超出 ${feedback.progress.wordsOver} 词，建议精简`;
+    messages.status = 'warning';
+  } else if (feedback.progress.wordProgress >= 100) {
+    messages.primary = `字数达标 ✓ (${feedback.wordCount} 词)`;
+    messages.status = 'success';
+  } else {
+    messages.primary = `已写 ${feedback.wordCount} 词`;
+  }
+  
+  // 次要信息
+  if (feedback.issues.length > 0) {
+    const spellingCount = feedback.issues.filter(i => i.type === 'spelling').length;
+    const grammarCount = feedback.issues.filter(i => i.type === 'grammar').length;
+    
+    if (spellingCount > 0) {
+      messages.secondary.push(`${spellingCount} 处拼写问题`);
+    }
+    if (grammarCount > 0) {
+      messages.secondary.push(`${grammarCount} 处语法问题`);
+    }
+    messages.status = 'error';
+  }
+  
+  if (feedback.suggestions.length > 0) {
+    messages.secondary.push(`${feedback.suggestions.length} 条改进建议`);
+  }
+  
+  return messages;
+}
+
+/**
+ * 创建写作进度追踪器
+ * @param {string} writingType - 写作类型
+ * @returns {Object} 进度追踪器
+ */
+function createProgressTracker(writingType) {
+  const goal = WRITING_GOALS[writingType] || WRITING_GOALS.toefl_independent;
+  const startTime = Date.now();
+  
+  return {
+    goal,
+    startTime,
+    
+    /**
+     * 获取当前状态
+     */
+    getStatus(text) {
+      const wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      const elapsedMinutes = (Date.now() - startTime) / 60000;
+      const wordsPerMinute = wordCount / elapsedMinutes;
+      
+      return {
+        wordCount,
+        elapsedMinutes: Math.round(elapsedMinutes * 10) / 10,
+        wordsPerMinute: Math.round(wordsPerMinute),
+        remainingTime: Math.max(0, goal.timeLimit - elapsedMinutes),
+        projectedFinalCount: Math.round(wordsPerMinute * goal.timeLimit),
+        isOnTrack: wordCount >= (goal.minWords * elapsedMinutes / goal.timeLimit),
+        percentComplete: Math.round(wordCount / goal.minWords * 100)
+      };
+    },
+    
+    /**
+     * 获取建议
+     */
+    getAdvice(status) {
+      if (status.remainingTime < 5 && status.wordCount < goal.minWords) {
+        return '时间紧迫！专注于完成基本要求。';
+      } else if (status.isOnTrack) {
+        return '进度良好，继续保持！';
+      } else if (status.wordsPerMinute < 10) {
+        return '写作速度偏慢，尝试先写出想法再修改。';
+      } else {
+        return '略微落后，可以加快节奏。';
+      }
+    }
+  };
+}
+
+// 导出 V42 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.createFeedbackManager = createFeedbackManager;
+  window.WritingAI.formatFeedbackMessage = formatFeedbackMessage;
+  window.WritingAI.createProgressTracker = createProgressTracker;
+  window.WritingAI.WRITING_GOALS = WRITING_GOALS;
+  window.WritingAI.FEEDBACK_CONFIG = FEEDBACK_CONFIG;
+}
+
+console.log('✅ V42 实时写作反馈系统加载完成');
+
+// ==================== V43: 段落结构分析系统 ====================
+/**
+ * AI 写作辅助模块 - 段落结构分析
+ * 功能：分析段落组织，确保逻辑连贯性
+ */
+
+// 段落类型识别关键词
+const PARAGRAPH_MARKERS = {
+  introduction: {
+    starters: ['in recent years', 'nowadays', 'it is widely', 'the question of', 
+               'one of the most', 'there has been', 'this essay'],
+    functions: ['引入话题', '背景介绍', '陈述论点']
+  },
+  thesis: {
+    starters: ['i believe', 'i argue', 'this essay will', 'in my opinion',
+               'the main argument', 'i contend', 'i maintain'],
+    functions: ['明确立场', '表达观点', '提出论点']
+  },
+  body_example: {
+    starters: ['for example', 'for instance', 'a case in point', 'consider',
+               'to illustrate', 'take', 'one example'],
+    functions: ['举例说明', '具体论证', '实例支持']
+  },
+  body_reason: {
+    starters: ['first', 'second', 'another', 'one reason', 'the primary',
+               'additionally', 'furthermore', 'moreover'],
+    functions: ['论证原因', '阐述理由', '递进论述']
+  },
+  body_contrast: {
+    starters: ['however', 'on the other hand', 'conversely', 'in contrast',
+               'nevertheless', 'while', 'although', 'despite'],
+    functions: ['对比论证', '转折分析', '反驳观点']
+  },
+  body_cause: {
+    starters: ['because', 'since', 'as a result', 'consequently', 'therefore',
+               'this leads to', 'the reason', 'due to'],
+    functions: ['因果分析', '结果阐述', '影响说明']
+  },
+  conclusion: {
+    starters: ['in conclusion', 'to conclude', 'in summary', 'to sum up',
+               'all things considered', 'ultimately', 'in the final analysis'],
+    functions: ['总结全文', '重申观点', '提出建议']
+  }
+};
+
+// 标准段落结构模板
+const PARAGRAPH_TEMPLATES = {
+  PEEL: {
+    name: 'PEEL 结构',
+    components: ['Point (论点)', 'Evidence (证据)', 'Explanation (解释)', 'Link (衔接)'],
+    description: '适合论证段落，结构清晰'
+  },
+  TEEL: {
+    name: 'TEEL 结构',
+    components: ['Topic Sentence (主题句)', 'Explanation (解释)', 'Evidence (证据)', 'Link (衔接)'],
+    description: '标准学术段落结构'
+  },
+  SEEAL: {
+    name: 'SEEAL 结构',
+    components: ['Statement (陈述)', 'Evidence (证据)', 'Explanation (解释)', 
+                 'Analysis (分析)', 'Link (链接)'],
+    description: '深入分析型段落'
+  }
+};
+
+/**
+ * 识别段落类型
+ * @param {string} paragraph - 段落文本
+ * @returns {Object} 段落类型信息
+ */
+function identifyParagraphType(paragraph) {
+  const lowerPara = paragraph.toLowerCase().trim();
+  
+  let bestMatch = {
+    type: 'body_general',
+    confidence: 0,
+    functions: ['一般论述']
+  };
+  
+  for (const [type, markers] of Object.entries(PARAGRAPH_MARKERS)) {
+    let matchCount = 0;
+    markers.starters.forEach(starter => {
+      if (lowerPara.includes(starter)) {
+        matchCount++;
+      }
+    });
+    
+    const confidence = matchCount / markers.starters.length;
+    if (confidence > bestMatch.confidence) {
+      bestMatch = {
+        type,
+        confidence: Math.round(confidence * 100),
+        functions: markers.functions
+      };
+    }
+  }
+  
+  return bestMatch;
+}
+
+/**
+ * 分析段落内部结构
+ * @param {string} paragraph - 段落文本
+ * @returns {Object} 结构分析
+ */
+function analyzeParagraphStructure(paragraph) {
+  const sentences = paragraph.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  
+  const analysis = {
+    sentenceCount: sentences.length,
+    hasTopicSentence: false,
+    hasEvidence: false,
+    hasExplanation: false,
+    hasConclusion: false,
+    structure: [],
+    score: 0,
+    issues: []
+  };
+  
+  if (sentences.length === 0) return analysis;
+  
+  // 分析第一句是否为主题句
+  const firstSentence = sentences[0].toLowerCase();
+  const topicIndicators = ['the', 'a', 'one', 'this', 'an'];
+  if (topicIndicators.some(ind => firstSentence.trim().startsWith(ind)) ||
+      firstSentence.length > 30) {
+    analysis.hasTopicSentence = true;
+    analysis.structure.push('Topic');
+  }
+  
+  // 分析中间句子
+  sentences.slice(1, -1).forEach((sentence, idx) => {
+    const lower = sentence.toLowerCase();
+    
+    // 检测证据
+    if (lower.includes('study') || lower.includes('research') || 
+        lower.includes('according to') || lower.includes('data') ||
+        lower.includes('statistic') || lower.includes('%') ||
+        lower.includes('for example')) {
+      analysis.hasEvidence = true;
+      analysis.structure.push('Evidence');
+    }
+    // 检测解释
+    else if (lower.includes('this means') || lower.includes('because') ||
+             lower.includes('this shows') || lower.includes('therefore') ||
+             lower.includes('in other words')) {
+      analysis.hasExplanation = true;
+      analysis.structure.push('Explanation');
+    }
+    else {
+      analysis.structure.push('Development');
+    }
+  });
+  
+  // 分析最后一句
+  if (sentences.length > 1) {
+    const lastSentence = sentences[sentences.length - 1].toLowerCase();
+    const conclusionIndicators = ['therefore', 'thus', 'hence', 'consequently', 
+                                   'as a result', 'this demonstrates', 'this shows'];
+    if (conclusionIndicators.some(ind => lastSentence.includes(ind))) {
+      analysis.hasConclusion = true;
+      analysis.structure.push('Conclusion');
+    } else {
+      analysis.structure.push('Development');
+    }
+  }
+  
+  // 计算结构分数
+  let score = 40; // 基础分
+  if (analysis.hasTopicSentence) score += 20;
+  if (analysis.hasEvidence) score += 20;
+  if (analysis.hasExplanation) score += 10;
+  if (analysis.hasConclusion) score += 10;
+  analysis.score = score;
+  
+  // 生成问题提示
+  if (!analysis.hasTopicSentence) {
+    analysis.issues.push('段落缺少明确的主题句');
+  }
+  if (!analysis.hasEvidence && sentences.length > 3) {
+    analysis.issues.push('建议增加具体证据或例子');
+  }
+  if (!analysis.hasExplanation && analysis.hasEvidence) {
+    analysis.issues.push('证据需要进一步解释说明');
+  }
+  if (sentences.length < 3) {
+    analysis.issues.push('段落内容较少，可以进一步展开');
+  }
+  if (sentences.length > 8) {
+    analysis.issues.push('段落较长，考虑拆分为多个段落');
+  }
+  
+  return analysis;
+}
+
+/**
+ * 分析全文段落组织
+ * @param {string} text - 完整文本
+ * @returns {Object} 整体分析报告
+ */
+function analyzeEssayStructure(text) {
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 0);
+  
+  const report = {
+    paragraphCount: paragraphs.length,
+    paragraphs: [],
+    hasIntroduction: false,
+    hasConclusion: false,
+    bodyParagraphs: 0,
+    overallScore: 0,
+    flow: [],
+    issues: [],
+    suggestions: []
+  };
+  
+  paragraphs.forEach((para, index) => {
+    const typeInfo = identifyParagraphType(para);
+    const structureInfo = analyzeParagraphStructure(para);
+    
+    const paraAnalysis = {
+      index: index + 1,
+      type: typeInfo.type,
+      confidence: typeInfo.confidence,
+      functions: typeInfo.functions,
+      structure: structureInfo,
+      preview: para.substring(0, 50) + '...'
+    };
+    
+    report.paragraphs.push(paraAnalysis);
+    report.flow.push(typeInfo.type);
+    
+    // 检测开头结尾
+    if (index === 0 && typeInfo.type === 'introduction') {
+      report.hasIntroduction = true;
+    }
+    if (index === paragraphs.length - 1 && typeInfo.type === 'conclusion') {
+      report.hasConclusion = true;
+    }
+    if (typeInfo.type.startsWith('body_')) {
+      report.bodyParagraphs++;
+    }
+  });
+  
+  // 计算整体分数
+  let score = 50;
+  if (report.hasIntroduction) score += 15;
+  if (report.hasConclusion) score += 15;
+  if (report.bodyParagraphs >= 2) score += 10;
+  if (report.paragraphCount >= 4 && report.paragraphCount <= 6) score += 10;
+  
+  report.overallScore = Math.min(100, score);
+  
+  // 生成问题和建议
+  if (!report.hasIntroduction) {
+    report.issues.push('缺少明确的引言段落');
+    report.suggestions.push('开头段落应该引入话题并陈述论点');
+  }
+  if (!report.hasConclusion) {
+    report.issues.push('缺少结论段落');
+    report.suggestions.push('结尾应该总结全文并重申观点');
+  }
+  if (report.bodyParagraphs < 2) {
+    report.issues.push('主体段落不足');
+    report.suggestions.push('至少需要2-3个主体段落来充分论证');
+  }
+  if (report.paragraphCount < 3) {
+    report.issues.push('段落数量过少');
+    report.suggestions.push('标准学术文章应包含4-5个段落');
+  }
+  
+  // 检查段落流程
+  const expectedFlow = ['introduction', 'body', 'body', 'conclusion'];
+  const hasLogicalFlow = report.flow[0]?.includes('intro') && 
+                         report.flow[report.flow.length - 1]?.includes('conclusion');
+  if (!hasLogicalFlow) {
+    report.suggestions.push('建议遵循"引言-主体-结论"的标准结构');
+  }
+  
+  return report;
+}
+
+/**
+ * 获取段落改进建议
+ * @param {string} paragraph - 段落文本
+ * @param {string} type - 目标段落类型
+ * @returns {Array} 改进建议
+ */
+function getParagraphSuggestions(paragraph, type = null) {
+  const currentType = identifyParagraphType(paragraph);
+  const structure = analyzeParagraphStructure(paragraph);
+  const suggestions = [];
+  
+  // 根据当前类型给出建议
+  if (currentType.type === 'introduction') {
+    if (!paragraph.toLowerCase().includes('essay') && 
+        !paragraph.toLowerCase().includes('argue')) {
+      suggestions.push({
+        type: 'structure',
+        message: '建议在引言末尾明确表明论点/文章目的'
+      });
+    }
+  }
+  
+  if (currentType.type.startsWith('body_')) {
+    if (structure.sentenceCount < 4) {
+      suggestions.push({
+        type: 'development',
+        message: '主体段落建议包含4-6个句子，充分展开论述',
+        template: PARAGRAPH_TEMPLATES.PEEL
+      });
+    }
+    
+    if (!structure.hasEvidence) {
+      suggestions.push({
+        type: 'evidence',
+        message: '添加具体例子或数据支持观点',
+        starters: ['For example,', 'Research shows that', 'A case in point is']
+      });
+    }
+  }
+  
+  if (currentType.type === 'conclusion') {
+    if (paragraph.toLowerCase().includes('i think') || 
+        paragraph.toLowerCase().includes('new point')) {
+      suggestions.push({
+        type: 'content',
+        message: '结论段不应引入新观点，应总结已论述的内容'
+      });
+    }
+  }
+  
+  // 通用建议
+  structure.issues.forEach(issue => {
+    suggestions.push({
+      type: 'improvement',
+      message: issue
+    });
+  });
+  
+  return suggestions;
+}
+
+// 导出 V43 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.identifyParagraphType = identifyParagraphType;
+  window.WritingAI.analyzeParagraphStructure = analyzeParagraphStructure;
+  window.WritingAI.analyzeEssayStructure = analyzeEssayStructure;
+  window.WritingAI.getParagraphSuggestions = getParagraphSuggestions;
+  window.WritingAI.PARAGRAPH_MARKERS = PARAGRAPH_MARKERS;
+  window.WritingAI.PARAGRAPH_TEMPLATES = PARAGRAPH_TEMPLATES;
+}
+
+console.log('✅ V43 段落结构分析系统加载完成');
+
+// ==================== V44: 写作风格检测系统 ====================
+/**
+ * AI 写作辅助模块 - 风格分析
+ * 功能：检测写作风格，提供学术化建议
+ */
+
+// 风格特征词库
+const STYLE_MARKERS = {
+  // 口语化表达（应避免）
+  informal: {
+    words: ['gonna', 'wanna', 'gotta', 'kinda', 'sorta', 'dunno', 'yeah', 'yep', 
+            'nope', 'ok', 'okay', 'stuff', 'thing', 'things', 'lot', 'lots',
+            'really', 'pretty', 'quite', 'kind of', 'sort of', 'a bit'],
+    contractions: ["don't", "won't", "can't", "isn't", "aren't", "doesn't", 
+                   "didn't", "hasn't", "haven't", "hadn't", "wouldn't", "couldn't",
+                   "shouldn't", "mustn't", "it's", "that's", "there's", "here's",
+                   "what's", "who's", "let's", "I'm", "you're", "we're", "they're"],
+    phrases: ['a lot of', 'lots of', 'so much', 'really good', 'very bad',
+              'pretty much', 'kind of like', 'you know', 'I mean']
+  },
+  
+  // 第一人称过度使用
+  first_person: {
+    overuse: ['i think', 'i believe', 'i feel', 'in my opinion', 'i argue',
+              'i suggest', 'i would say', 'from my perspective', 'i find'],
+    alternatives: {
+      'i think': ['it is believed that', 'one might argue that', 'evidence suggests that'],
+      'i believe': ['it can be contended that', 'there is reason to believe that'],
+      'in my opinion': ['arguably', 'it is evident that', 'the evidence indicates']
+    }
+  },
+  
+  // 模糊表达（应具体化）
+  vague: {
+    words: ['some', 'many', 'most', 'few', 'several', 'often', 'sometimes',
+            'usually', 'generally', 'basically', 'actually', 'literally',
+            'obviously', 'clearly', 'of course'],
+    phrases: ['a number of', 'a variety of', 'in some ways', 'to some extent',
+              'more or less', 'in general', 'on the whole']
+  },
+  
+  // 学术表达（应使用）
+  academic: {
+    verbs: ['analyze', 'evaluate', 'examine', 'investigate', 'demonstrate',
+            'illustrate', 'indicate', 'suggest', 'reveal', 'establish',
+            'determine', 'identify', 'assess', 'consider', 'explore'],
+    transitions: ['furthermore', 'moreover', 'consequently', 'nevertheless',
+                  'notwithstanding', 'subsequently', 'henceforth', 'thereby'],
+    hedging: ['may', 'might', 'could', 'appears to', 'seems to', 'tends to',
+              'suggests that', 'indicates that', 'it is possible that']
+  },
+  
+  // 过度表达（应适度）
+  excessive: {
+    absolutes: ['always', 'never', 'all', 'none', 'every', 'no one', 'everyone',
+                'absolutely', 'definitely', 'certainly', 'undoubtedly', 'surely'],
+    superlatives: ['best', 'worst', 'most', 'least', 'greatest', 'smallest',
+                   'highest', 'lowest', 'perfect', 'ideal', 'ultimate']
+  }
+};
+
+// 考试类型风格要求
+const EXAM_STYLE_REQUIREMENTS = {
+  toefl: {
+    formal: 0.7,
+    academic: 0.5,
+    firstPerson: true,  // TOEFL 允许第一人称
+    hedging: 0.2
+  },
+  gre: {
+    formal: 0.9,
+    academic: 0.7,
+    firstPerson: false,  // GRE 避免第一人称
+    hedging: 0.3
+  },
+  ielts: {
+    formal: 0.8,
+    academic: 0.6,
+    firstPerson: true,  // IELTS Task 2 允许
+    hedging: 0.25
+  }
+};
+
+/**
+ * 分析文本风格
+ * @param {string} text - 待分析文本
+ * @returns {Object} 风格分析报告
+ */
+function analyzeWritingStyle(text) {
+  const lowerText = text.toLowerCase();
+  const words = lowerText.match(/\b\w+\b/g) || [];
+  const totalWords = words.length;
+  
+  const report = {
+    informal: {
+      count: 0,
+      instances: [],
+      score: 100
+    },
+    contractions: {
+      count: 0,
+      instances: []
+    },
+    firstPerson: {
+      count: 0,
+      instances: [],
+      overuse: false
+    },
+    vague: {
+      count: 0,
+      instances: []
+    },
+    academic: {
+      count: 0,
+      instances: []
+    },
+    excessive: {
+      count: 0,
+      instances: []
+    },
+    overallScore: 0,
+    formalityLevel: '',
+    suggestions: []
+  };
+  
+  // 检测口语化词汇
+  STYLE_MARKERS.informal.words.forEach(word => {
+    const regex = new RegExp('\\b' + word + '\\b', 'gi');
+    const matches = text.match(regex);
+    if (matches) {
+      report.informal.count += matches.length;
+      report.informal.instances.push({ word, count: matches.length });
+    }
+  });
+  
+  // 检测缩写
+  STYLE_MARKERS.informal.contractions.forEach(contraction => {
+    if (lowerText.includes(contraction.toLowerCase())) {
+      report.contractions.count++;
+      report.contractions.instances.push(contraction);
+    }
+  });
+  
+  // 检测第一人称
+  STYLE_MARKERS.first_person.overuse.forEach(phrase => {
+    if (lowerText.includes(phrase)) {
+      report.firstPerson.count++;
+      report.firstPerson.instances.push(phrase);
+    }
+  });
+  report.firstPerson.overuse = report.firstPerson.count > 3;
+  
+  // 检测模糊表达
+  STYLE_MARKERS.vague.words.forEach(word => {
+    const regex = new RegExp('\\b' + word + '\\b', 'gi');
+    if (regex.test(text)) {
+      report.vague.count++;
+      report.vague.instances.push(word);
+    }
+  });
+  
+  // 检测学术词汇
+  STYLE_MARKERS.academic.verbs.concat(STYLE_MARKERS.academic.transitions).forEach(word => {
+    const regex = new RegExp('\\b' + word + '\\b', 'gi');
+    if (regex.test(text)) {
+      report.academic.count++;
+      report.academic.instances.push(word);
+    }
+  });
+  
+  // 检测过度表达
+  STYLE_MARKERS.excessive.absolutes.concat(STYLE_MARKERS.excessive.superlatives).forEach(word => {
+    const regex = new RegExp('\\b' + word + '\\b', 'gi');
+    if (regex.test(text)) {
+      report.excessive.count++;
+      report.excessive.instances.push(word);
+    }
+  });
+  
+  // 计算正式程度分数
+  let formalityScore = 100;
+  formalityScore -= report.informal.count * 3;
+  formalityScore -= report.contractions.count * 5;
+  formalityScore -= report.vague.count * 2;
+  formalityScore -= report.excessive.count * 2;
+  formalityScore += report.academic.count * 2;
+  formalityScore = Math.max(0, Math.min(100, formalityScore));
+  
+  report.overallScore = formalityScore;
+  
+  // 确定正式程度等级
+  if (formalityScore >= 85) {
+    report.formalityLevel = '高度学术化';
+  } else if (formalityScore >= 70) {
+    report.formalityLevel = '较为正式';
+  } else if (formalityScore >= 50) {
+    report.formalityLevel = '中等正式';
+  } else {
+    report.formalityLevel = '偏口语化';
+  }
+  
+  // 生成建议
+  if (report.informal.count > 0) {
+    report.suggestions.push({
+      type: 'informal',
+      message: `检测到 ${report.informal.count} 处口语化表达，建议替换为更正式的词汇`,
+      examples: report.informal.instances.slice(0, 3)
+    });
+  }
+  
+  if (report.contractions.count > 0) {
+    report.suggestions.push({
+      type: 'contraction',
+      message: `检测到 ${report.contractions.count} 处缩写形式，学术写作应使用完整形式`,
+      examples: report.contractions.instances.slice(0, 3)
+    });
+  }
+  
+  if (report.firstPerson.overuse) {
+    report.suggestions.push({
+      type: 'firstPerson',
+      message: '第一人称使用过多，建议采用更客观的表达方式',
+      alternatives: STYLE_MARKERS.first_person.alternatives
+    });
+  }
+  
+  if (report.vague.count > totalWords * 0.03) {
+    report.suggestions.push({
+      type: 'vague',
+      message: '模糊表达较多，建议使用更具体的数据或表述',
+      examples: report.vague.instances.slice(0, 3)
+    });
+  }
+  
+  if (report.academic.count < 5) {
+    report.suggestions.push({
+      type: 'academic',
+      message: '学术词汇使用较少，建议增加专业表达',
+      recommended: STYLE_MARKERS.academic.verbs.slice(0, 5)
+    });
+  }
+  
+  return report;
+}
+
+/**
+ * 检查是否符合特定考试风格要求
+ * @param {string} text - 文本
+ * @param {string} examType - 考试类型
+ * @returns {Object} 符合度报告
+ */
+function checkExamStyleCompliance(text, examType) {
+  const styleReport = analyzeWritingStyle(text);
+  const requirements = EXAM_STYLE_REQUIREMENTS[examType] || EXAM_STYLE_REQUIREMENTS.toefl;
+  
+  const compliance = {
+    examType,
+    overall: true,
+    checks: [],
+    score: 0
+  };
+  
+  // 正式度检查
+  const formalityPassed = styleReport.overallScore >= requirements.formal * 100;
+  compliance.checks.push({
+    criterion: '正式程度',
+    required: `≥${requirements.formal * 100}%`,
+    actual: `${styleReport.overallScore}%`,
+    passed: formalityPassed
+  });
+  
+  // 学术词汇检查
+  const academicRatio = styleReport.academic.count / (text.split(/\s+/).length);
+  const academicPassed = academicRatio >= requirements.academic * 0.1;
+  compliance.checks.push({
+    criterion: '学术词汇',
+    required: `≥${requirements.academic * 10}%`,
+    actual: `${Math.round(academicRatio * 100)}%`,
+    passed: academicPassed
+  });
+  
+  // 第一人称检查
+  const firstPersonPassed = requirements.firstPerson || !styleReport.firstPerson.overuse;
+  compliance.checks.push({
+    criterion: '第一人称使用',
+    required: requirements.firstPerson ? '允许' : '应避免',
+    actual: styleReport.firstPerson.overuse ? '过多' : '适度',
+    passed: firstPersonPassed
+  });
+  
+  // 计算总体得分
+  const passedCount = compliance.checks.filter(c => c.passed).length;
+  compliance.score = Math.round(passedCount / compliance.checks.length * 100);
+  compliance.overall = compliance.score >= 70;
+  
+  return compliance;
+}
+
+/**
+ * 获取风格改进建议
+ * @param {string} sentence - 待改进的句子
+ * @returns {Array} 改进建议
+ */
+function getStyleImprovements(sentence) {
+  const improvements = [];
+  const lowerSentence = sentence.toLowerCase();
+  
+  // 替换缩写
+  STYLE_MARKERS.informal.contractions.forEach(contraction => {
+    if (lowerSentence.includes(contraction.toLowerCase())) {
+      const expanded = {
+        "don't": "do not",
+        "won't": "will not",
+        "can't": "cannot",
+        "isn't": "is not",
+        "aren't": "are not",
+        "doesn't": "does not",
+        "didn't": "did not",
+        "hasn't": "has not",
+        "haven't": "have not",
+        "wouldn't": "would not",
+        "couldn't": "could not",
+        "shouldn't": "should not",
+        "it's": "it is",
+        "that's": "that is",
+        "there's": "there is",
+        "I'm": "I am",
+        "you're": "you are",
+        "we're": "we are",
+        "they're": "they are"
+      };
+      
+      if (expanded[contraction]) {
+        improvements.push({
+          type: 'contraction',
+          original: contraction,
+          replacement: expanded[contraction],
+          message: `将 "${contraction}" 替换为 "${expanded[contraction]}"`
+        });
+      }
+    }
+  });
+  
+  // 替换第一人称
+  for (const [phrase, alternatives] of Object.entries(STYLE_MARKERS.first_person.alternatives)) {
+    if (lowerSentence.includes(phrase)) {
+      improvements.push({
+        type: 'firstPerson',
+        original: phrase,
+        replacements: alternatives,
+        message: `考虑将 "${phrase}" 替换为更客观的表达`
+      });
+    }
+  }
+  
+  // 替换口语化词汇
+  const informalReplacements = {
+    'a lot of': 'numerous/many/substantial',
+    'lots of': 'a great deal of/considerable',
+    'really': 'significantly/considerably',
+    'pretty': 'fairly/reasonably',
+    'thing': '[specific noun]',
+    'stuff': '[specific noun]',
+    'ok': 'acceptable/satisfactory',
+    'good': 'beneficial/favorable/advantageous',
+    'bad': 'detrimental/adverse/unfavorable'
+  };
+  
+  for (const [informal, formal] of Object.entries(informalReplacements)) {
+    if (lowerSentence.includes(informal)) {
+      improvements.push({
+        type: 'informal',
+        original: informal,
+        replacement: formal,
+        message: `将 "${informal}" 替换为 "${formal}"`
+      });
+    }
+  }
+  
+  return improvements;
+}
+
+// 导出 V44 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.analyzeWritingStyle = analyzeWritingStyle;
+  window.WritingAI.checkExamStyleCompliance = checkExamStyleCompliance;
+  window.WritingAI.getStyleImprovements = getStyleImprovements;
+  window.WritingAI.STYLE_MARKERS = STYLE_MARKERS;
+  window.WritingAI.EXAM_STYLE_REQUIREMENTS = EXAM_STYLE_REQUIREMENTS;
+}
+
+console.log('✅ V44 写作风格检测系统加载完成');
+
+// ==================== V45: 综合写作助手集成 ====================
+/**
+ * AI 写作辅助模块 - 综合集成
+ * 功能：整合所有AI功能，提供一站式写作辅助
+ */
+
+/**
+ * 创建综合写作助手
+ * @param {Object} options - 配置选项
+ * @returns {Object} 写作助手实例
+ */
+function createWritingAssistant(options = {}) {
+  const config = {
+    examType: options.examType || 'toefl',
+    writingType: options.writingType || 'toefl_independent',
+    enableSpelling: options.enableSpelling !== false,
+    enableGrammar: options.enableGrammar !== false,
+    enableVocabulary: options.enableVocabulary !== false,
+    enableStyle: options.enableStyle !== false,
+    enableStructure: options.enableStructure !== false,
+    autoSuggest: options.autoSuggest !== false,
+    language: options.language || 'en'
+  };
+  
+  // 写作会话状态
+  let session = {
+    startTime: Date.now(),
+    text: '',
+    history: [],
+    feedback: [],
+    wordCount: 0,
+    lastAnalysis: null
+  };
+  
+  return {
+    config,
+    session,
+    
+    /**
+     * 初始化写作会话
+     */
+    startSession(writingType) {
+      session = {
+        startTime: Date.now(),
+        text: '',
+        history: [],
+        feedback: [],
+        wordCount: 0,
+        lastAnalysis: null
+      };
+      config.writingType = writingType || config.writingType;
+      console.log(`📝 写作会话已开始 - ${config.writingType}`);
+      return this.getSessionInfo();
+    },
+    
+    /**
+     * 获取会话信息
+     */
+    getSessionInfo() {
+      const goal = WRITING_GOALS[config.writingType] || WRITING_GOALS.toefl_independent;
+      const elapsedMinutes = (Date.now() - session.startTime) / 60000;
+      
+      return {
+        writingType: config.writingType,
+        examType: config.examType,
+        goal,
+        elapsedMinutes: Math.round(elapsedMinutes * 10) / 10,
+        remainingTime: Math.max(0, goal.timeLimit - elapsedMinutes),
+        wordCount: session.wordCount,
+        targetWords: goal.minWords,
+        progress: Math.round(session.wordCount / goal.minWords * 100)
+      };
+    },
+    
+    /**
+     * 更新文本并获取实时反馈
+     */
+    updateText(text) {
+      session.text = text;
+      session.wordCount = text.trim().split(/\s+/).filter(w => w.length > 0).length;
+      session.history.push({
+        timestamp: Date.now(),
+        wordCount: session.wordCount,
+        textLength: text.length
+      });
+      
+      return this.getQuickFeedback();
+    },
+    
+    /**
+     * 获取快速反馈（用于实时显示）
+     */
+    getQuickFeedback() {
+      const feedback = {
+        wordCount: session.wordCount,
+        paragraphCount: session.text.split(/\n\n+/).filter(p => p.trim()).length,
+        issues: [],
+        status: 'writing'
+      };
+      
+      const goal = WRITING_GOALS[config.writingType];
+      if (goal) {
+        if (session.wordCount < goal.minWords) {
+          feedback.status = 'below_target';
+          feedback.wordsNeeded = goal.minWords - session.wordCount;
+        } else if (session.wordCount > goal.maxWords) {
+          feedback.status = 'above_target';
+          feedback.wordsOver = session.wordCount - goal.maxWords;
+        } else {
+          feedback.status = 'on_target';
+        }
+      }
+      
+      return feedback;
+    },
+    
+    /**
+     * 执行完整分析
+     */
+    performFullAnalysis() {
+      const text = session.text;
+      if (!text || text.length < 50) {
+        return { error: '文本太短，无法进行完整分析' };
+      }
+      
+      const analysis = {
+        timestamp: Date.now(),
+        wordCount: session.wordCount,
+        sessionInfo: this.getSessionInfo(),
+        spelling: null,
+        grammar: null,
+        vocabulary: null,
+        sentences: null,
+        paragraphs: null,
+        style: null,
+        overallScore: 0,
+        summary: {
+          strengths: [],
+          weaknesses: [],
+          priorities: []
+        }
+      };
+      
+      // 拼写检查
+      if (config.enableSpelling && typeof checkTextSpelling === 'function') {
+        analysis.spelling = {
+          errors: checkTextSpelling(text),
+          score: 100
+        };
+        analysis.spelling.score = Math.max(0, 100 - analysis.spelling.errors.length * 2);
+      }
+      
+      // 语法检查
+      if (config.enableGrammar && typeof checkGrammar === 'function') {
+        analysis.grammar = {
+          issues: checkGrammar(text),
+          score: 100
+        };
+        analysis.grammar.score = Math.max(0, 100 - analysis.grammar.issues.length * 3);
+      }
+      
+      // 词汇分析
+      if (config.enableVocabulary && typeof analyzeVocabularyDiversity === 'function') {
+        analysis.vocabulary = analyzeVocabularyDiversity(text);
+        const upgrades = typeof scanForUpgrades === 'function' ? scanForUpgrades(text) : [];
+        analysis.vocabulary.upgradeSuggestions = upgrades.slice(0, 5);
+      }
+      
+      // 句式分析
+      if (typeof analyzeSentenceVariety === 'function') {
+        analysis.sentences = analyzeSentenceVariety(text);
+      }
+      
+      // 段落结构分析
+      if (config.enableStructure && typeof analyzeEssayStructure === 'function') {
+        analysis.paragraphs = analyzeEssayStructure(text);
+      }
+      
+      // 风格分析
+      if (config.enableStyle && typeof analyzeWritingStyle === 'function') {
+        analysis.style = analyzeWritingStyle(text);
+        if (typeof checkExamStyleCompliance === 'function') {
+          analysis.style.compliance = checkExamStyleCompliance(text, config.examType);
+        }
+      }
+      
+      // 计算综合分数
+      let scores = [];
+      if (analysis.spelling) scores.push(analysis.spelling.score);
+      if (analysis.grammar) scores.push(analysis.grammar.score);
+      if (analysis.vocabulary) scores.push(analysis.vocabulary.score);
+      if (analysis.sentences) scores.push(analysis.sentences.varietyScore);
+      if (analysis.paragraphs) scores.push(analysis.paragraphs.overallScore);
+      if (analysis.style) scores.push(analysis.style.overallScore);
+      
+      analysis.overallScore = scores.length > 0 
+        ? Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+        : 0;
+      
+      // 生成总结
+      this.generateSummary(analysis);
+      
+      session.lastAnalysis = analysis;
+      session.feedback.push(analysis);
+      
+      return analysis;
+    },
+    
+    /**
+     * 生成分析总结
+     */
+    generateSummary(analysis) {
+      const summary = analysis.summary;
+      
+      // 识别优点
+      if (analysis.spelling && analysis.spelling.score >= 90) {
+        summary.strengths.push('拼写准确率高');
+      }
+      if (analysis.grammar && analysis.grammar.score >= 85) {
+        summary.strengths.push('语法运用良好');
+      }
+      if (analysis.vocabulary && analysis.vocabulary.score >= 70) {
+        summary.strengths.push('词汇多样性较好');
+      }
+      if (analysis.sentences && analysis.sentences.varietyScore >= 70) {
+        summary.strengths.push('句式变化丰富');
+      }
+      if (analysis.paragraphs && analysis.paragraphs.hasIntroduction && analysis.paragraphs.hasConclusion) {
+        summary.strengths.push('文章结构完整');
+      }
+      if (analysis.style && analysis.style.overallScore >= 80) {
+        summary.strengths.push('学术风格规范');
+      }
+      
+      // 识别弱点和优先改进项
+      if (analysis.spelling && analysis.spelling.errors.length > 3) {
+        summary.weaknesses.push('存在多处拼写错误');
+        summary.priorities.push({ area: 'spelling', message: '检查拼写错误' });
+      }
+      if (analysis.grammar && analysis.grammar.issues.length > 3) {
+        summary.weaknesses.push('语法问题较多');
+        summary.priorities.push({ area: 'grammar', message: '修正语法错误' });
+      }
+      if (analysis.vocabulary && analysis.vocabulary.score < 50) {
+        summary.weaknesses.push('词汇较为简单');
+        summary.priorities.push({ area: 'vocabulary', message: '使用更高级的词汇' });
+      }
+      if (analysis.sentences && analysis.sentences.varietyScore < 50) {
+        summary.weaknesses.push('句式变化不足');
+        summary.priorities.push({ area: 'sentences', message: '增加句式多样性' });
+      }
+      if (analysis.paragraphs && !analysis.paragraphs.hasConclusion) {
+        summary.weaknesses.push('缺少结论段');
+        summary.priorities.push({ area: 'structure', message: '添加结论段落' });
+      }
+      if (analysis.style && analysis.style.contractions.count > 0) {
+        summary.weaknesses.push('使用了缩写形式');
+        summary.priorities.push({ area: 'style', message: '展开所有缩写' });
+      }
+      
+      // 按优先级排序
+      summary.priorities.sort((a, b) => {
+        const priority = { spelling: 1, grammar: 2, structure: 3, style: 4, vocabulary: 5, sentences: 6 };
+        return (priority[a.area] || 99) - (priority[b.area] || 99);
+      });
+    },
+    
+    /**
+     * 获取当前位置的智能建议
+     */
+    getSuggestionsAtCursor(cursorPosition) {
+      const text = session.text;
+      const textBeforeCursor = text.substring(0, cursorPosition);
+      const textAfterCursor = text.substring(cursorPosition);
+      
+      const suggestions = {
+        continuation: null,
+        phrases: null,
+        vocabulary: null
+      };
+      
+      // 续写建议
+      if (typeof getSuggestions === 'function') {
+        const lastSentence = textBeforeCursor.split(/[.!?]/).pop() || '';
+        suggestions.continuation = getSuggestions(textBeforeCursor, { examType: config.examType });
+      }
+      
+      // 学术短语建议
+      if (typeof suggestAcademicPhrases === 'function') {
+        const context = textBeforeCursor.slice(-200);
+        suggestions.phrases = suggestAcademicPhrases(textBeforeCursor, context);
+      }
+      
+      // 词汇升级建议
+      const lastWord = textBeforeCursor.match(/\b\w+$/)?.[0];
+      if (lastWord && typeof getVocabularyUpgrade === 'function') {
+        suggestions.vocabulary = getVocabularyUpgrade(lastWord);
+      }
+      
+      return suggestions;
+    },
+    
+    /**
+     * 获取改进后的文本
+     */
+    getImprovedText() {
+      let improvedText = session.text;
+      
+      // 应用拼写修正
+      if (typeof checkTextSpelling === 'function') {
+        const errors = checkTextSpelling(improvedText);
+        errors.reverse().forEach(error => {
+          if (error.suggestions.length > 0) {
+            improvedText = improvedText.substring(0, error.position) + 
+                          error.suggestions[0] + 
+                          improvedText.substring(error.position + error.word.length);
+          }
+        });
+      }
+      
+      return {
+        original: session.text,
+        improved: improvedText,
+        changes: []
+      };
+    },
+    
+    /**
+     * 导出分析报告
+     */
+    exportReport() {
+      return {
+        sessionInfo: this.getSessionInfo(),
+        text: session.text,
+        analysis: session.lastAnalysis,
+        history: session.history,
+        exportTime: new Date().toISOString()
+      };
+    },
+    
+    /**
+     * 重置会话
+     */
+    resetSession() {
+      session = {
+        startTime: Date.now(),
+        text: '',
+        history: [],
+        feedback: [],
+        wordCount: 0,
+        lastAnalysis: null
+      };
+    }
+  };
+}
+
+/**
+ * 获取综合评分等级
+ * @param {number} score - 综合分数
+ * @returns {Object} 等级信息
+ */
+function getScoreGrade(score) {
+  if (score >= 90) return { grade: 'A', label: '优秀', color: '#4CAF50' };
+  if (score >= 80) return { grade: 'B', label: '良好', color: '#8BC34A' };
+  if (score >= 70) return { grade: 'C', label: '中等', color: '#FFC107' };
+  if (score >= 60) return { grade: 'D', label: '及格', color: '#FF9800' };
+  return { grade: 'F', label: '需改进', color: '#F44336' };
+}
+
+/**
+ * 生成写作建议清单
+ * @param {Object} analysis - 分析结果
+ * @returns {Array} 建议列表
+ */
+function generateActionItems(analysis) {
+  const items = [];
+  
+  if (!analysis) return items;
+  
+  // 拼写
+  if (analysis.spelling && analysis.spelling.errors.length > 0) {
+    items.push({
+      priority: 1,
+      category: '拼写',
+      action: `修正 ${analysis.spelling.errors.length} 处拼写错误`,
+      details: analysis.spelling.errors.slice(0, 3).map(e => e.word)
+    });
+  }
+  
+  // 语法
+  if (analysis.grammar && analysis.grammar.issues.length > 0) {
+    items.push({
+      priority: 2,
+      category: '语法',
+      action: `修正 ${analysis.grammar.issues.length} 处语法问题`,
+      details: analysis.grammar.issues.slice(0, 3).map(i => i.message)
+    });
+  }
+  
+  // 结构
+  if (analysis.paragraphs) {
+    if (!analysis.paragraphs.hasIntroduction) {
+      items.push({
+        priority: 3,
+        category: '结构',
+        action: '添加引言段落',
+        details: ['引入话题背景', '明确表达论点']
+      });
+    }
+    if (!analysis.paragraphs.hasConclusion) {
+      items.push({
+        priority: 3,
+        category: '结构',
+        action: '添加结论段落',
+        details: ['总结主要论点', '重申立场']
+      });
+    }
+  }
+  
+  // 风格
+  if (analysis.style && analysis.style.contractions.count > 0) {
+    items.push({
+      priority: 4,
+      category: '风格',
+      action: '展开所有缩写',
+      details: analysis.style.contractions.instances.slice(0, 5)
+    });
+  }
+  
+  // 词汇
+  if (analysis.vocabulary && analysis.vocabulary.upgradeSuggestions?.length > 0) {
+    items.push({
+      priority: 5,
+      category: '词汇',
+      action: '使用更高级的词汇',
+      details: analysis.vocabulary.upgradeSuggestions.slice(0, 3).map(u => u.original)
+    });
+  }
+  
+  return items.sort((a, b) => a.priority - b.priority);
+}
+
+// 导出 V45 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.createWritingAssistant = createWritingAssistant;
+  window.WritingAI.getScoreGrade = getScoreGrade;
+  window.WritingAI.generateActionItems = generateActionItems;
+  
+  // 创建全局默认实例
+  window.WritingAssistant = createWritingAssistant();
+}
+
+console.log('✅ V45 综合写作助手集成加载完成');
+console.log('🎉 AI 写作辅助模块 V36-V45 全部加载完成！');

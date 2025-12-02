@@ -1576,6 +1576,50 @@
                                 </div>
                             </div>
                         </div>
+
+                        <!-- 解压功能设置 -->
+                        <div class="settings-card-modern">
+                            <div class="settings-card-header">
+                                <div class="settings-card-icon-new stress" style="background: linear-gradient(135deg, #ec4899, #f472b6);">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                    </svg>
+                                </div>
+                                <div class="settings-card-title">
+                                    <h4>解压功能</h4>
+                                    <p>学习疲劳时放松一下</p>
+                                </div>
+                            </div>
+                            <div class="settings-list">
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">点击特效</span>
+                                        <span class="setting-desc">点击屏幕时产生爱心/星星效果</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="clickEffectsToggle" onchange="toggleClickEffects(this.checked)">
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                                <div class="setting-row">
+                                    <div class="setting-info">
+                                        <span class="setting-name">天气粒子</span>
+                                        <span class="setting-desc">顶部显示阳光/萤火虫动画</span>
+                                    </div>
+                                    <label class="toggle-modern">
+                                        <input type="checkbox" id="weatherParticlesToggle" onchange="toggleWeatherParticles(this.checked)">
+                                        <span class="toggle-track">
+                                            <span class="toggle-thumb"></span>
+                                        </span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- 音频设置面板 -->

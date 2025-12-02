@@ -8388,4 +8388,54 @@ window.checkAgeDisclaimer = checkAgeDisclaimer;
 window.showAgeDisclaimer = showAgeDisclaimer;
 window.acceptAgeDisclaimer = acceptAgeDisclaimer;
 
+// ==================== V9.32: 解压功能开关 ====================
+function toggleClickEffects(enabled) {
+    console.log('toggleClickEffects called with:', enabled);
+    if (window.UX && window.UX.ClickEffects) {
+        if (enabled) {
+            window.UX.ClickEffects.enable();
+            showToast('点击特效已开启 ✨');
+        } else {
+            window.UX.ClickEffects.disable();
+            showToast('点击特效已关闭');
+        }
+    }
+}
+
+function toggleWeatherParticles(enabled) {
+    console.log('toggleWeatherParticles called with:', enabled);
+    if (window.UX && window.UX.WeatherParticles) {
+        if (enabled) {
+            window.UX.WeatherParticles.enable();
+            showToast('天气粒子已开启 🌟');
+        } else {
+            window.UX.WeatherParticles.disable();
+            showToast('天气粒子已关闭');
+        }
+    }
+}
+
+// 初始化解压功能开关状态
+function initStressReliefSettings() {
+    const clickEffectsToggle = document.getElementById('clickEffectsToggle');
+    const weatherParticlesToggle = document.getElementById('weatherParticlesToggle');
+    
+    if (clickEffectsToggle) {
+        clickEffectsToggle.checked = localStorage.getItem('clickEffectsEnabled') === 'true';
+    }
+    if (weatherParticlesToggle) {
+        weatherParticlesToggle.checked = localStorage.getItem('weatherParticlesEnabled') === 'true';
+    }
+}
+
+// 导出解压功能开关
+window.toggleClickEffects = toggleClickEffects;
+window.toggleWeatherParticles = toggleWeatherParticles;
+window.initStressReliefSettings = initStressReliefSettings;
+
+// 页面加载时初始化
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(initStressReliefSettings, 500);
+});
+
 console.log("modules.js loaded");
