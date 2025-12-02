@@ -1010,14 +1010,27 @@ function openModule(moduleName) {
                 else console.error('initResourcesModule not found');
                 break;
             case 'writing':
-                console.log('Initializing writing module');
-                // 写作模块使用module-page而非modal
+                console.log('✍️ V1: 打开写作模块');
+                // V2: 写作模块使用module-page全屏显示
                 var writingModule = document.getElementById('writing-module');
                 if (writingModule) {
+                    // V3: 隐藏底部导航栏
+                    var bottomNav = document.getElementById('bottomNav');
+                    if (bottomNav) bottomNav.classList.add('hidden');
+                    
+                    // V4: 显示写作模块
                     writingModule.classList.remove('hidden');
-                    if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
-                        WritingModule.showHistory();
+                    
+                    // V5: 滚动到顶部
+                    writingModule.scrollTop = 0;
+                    
+                    // 初始化写作模块
+                    if (typeof WritingModule !== 'undefined') {
+                        if (WritingModule.showHistory) WritingModule.showHistory();
                     }
+                    console.log('✅ V5: 写作模块已打开');
+                } else {
+                    console.error('❌ 写作模块元素不存在');
                 }
                 break;
         }
@@ -1025,14 +1038,24 @@ function openModule(moduleName) {
     } else {
         // 检查是否是module-page类型的模块
         if (moduleName === 'writing') {
+            console.log('✍️ openModule: 打开写作模块 (备用路径)');
             var writingModule = document.getElementById('writing-module');
             if (writingModule) {
-                writingModule.classList.remove('hidden');
+                // 隐藏底部导航
                 var bottomNav = document.getElementById('bottomNav');
                 if (bottomNav) bottomNav.classList.add('hidden');
+                
+                // 显示模块
+                writingModule.classList.remove('hidden');
+                writingModule.scrollTop = 0;
+                
+                // 初始化
                 if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
                     WritingModule.showHistory();
                 }
+                console.log('✅ 写作模块已通过备用路径打开');
+            } else {
+                console.error('❌ 写作模块元素不存在');
             }
         } else {
             console.error('Modal not found for:', modalId);

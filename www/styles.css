@@ -19838,13 +19838,33 @@ body.theme-dark .rich-examples-section {
 }
 
 /* ==================== 写作模块样式 ==================== */
-/* v1.0: 写作练习模块 */
+/* v1.0-v1.5: 写作练习模块 - 5版修复 */
 
-/* 写作模块容器 */
-#writing-module {
-    padding: 0 16px 100px;
+/* V1: module-page 基础样式（关键修复） */
+.module-page {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary, #f8fafc);
+    z-index: 1000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
+.module-page.hidden {
+    display: none !important;
+}
+
+/* V2: 写作模块容器 */
+#writing-module {
+    padding: 0 16px 100px;
+    min-height: 100vh;
+    background: var(--bg-primary, #f8fafc);
+}
+
+/* V3: 模块头部优化 */
 #writing-module .module-header {
     display: flex;
     align-items: center;
@@ -19852,8 +19872,33 @@ body.theme-dark .rich-examples-section {
     padding: 16px 0;
     position: sticky;
     top: 0;
-    background: var(--bg-primary);
-    z-index: 10;
+    background: var(--bg-primary, #f8fafc);
+    z-index: 100;
+    border-bottom: 1px solid var(--border-color, #e2e8f0);
+    margin-bottom: 16px;
+}
+
+/* V4: 返回按钮增强 */
+#writing-module .back-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--card-bg, white);
+    border: 1px solid var(--border-color, #e2e8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+#writing-module .back-btn:hover {
+    background: var(--accent-light, #eff6ff);
+    border-color: var(--accent-color, #6366f1);
+}
+
+#writing-module .back-btn:active {
+    transform: scale(0.95);
 }
 
 #writing-module .module-header h2 {

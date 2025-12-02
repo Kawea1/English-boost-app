@@ -961,11 +961,40 @@
     // 暴露到全局
     window.WritingModule = WritingModule;
     
+    // V1.1-V1.5: 增强初始化，确保模块可进入
+    function initWritingModule() {
+        console.log('✍️ V1.1: 初始化写作模块...');
+        
+        // V1.2: 确保模块元素存在
+        const moduleEl = document.getElementById('writing-module');
+        if (!moduleEl) {
+            console.error('❌ V1.2: 写作模块元素不存在');
+            return;
+        }
+        
+        // V1.3: 初始化模块
+        WritingModule.init();
+        
+        // V1.4: 绑定返回按钮
+        const backBtn = moduleEl.querySelector('.back-btn');
+        if (backBtn) {
+            backBtn.onclick = function() {
+                console.log('✍️ V1.4: 关闭写作模块');
+                moduleEl.classList.add('hidden');
+                // 显示底部导航
+                const bottomNav = document.getElementById('bottomNav');
+                if (bottomNav) bottomNav.classList.remove('hidden');
+            };
+        }
+        
+        console.log('✅ V1.5: 写作模块初始化完成');
+    }
+    
     // 页面加载后初始化
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', () => WritingModule.init());
+        document.addEventListener('DOMContentLoaded', initWritingModule);
     } else {
-        WritingModule.init();
+        initWritingModule();
     }
     
 })();
