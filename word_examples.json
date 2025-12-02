@@ -458,47 +458,47 @@
   "contentious": {
     "examples": [
       {
-        "en": "The contentious debate lasted well into the night.",
-        "cn": "这场有争议的辩论一直持续到深夜。",
-        "source": "议会报道"
+        "en": "The contentious issue divided the community.",
+        "cn": "这个有争议的问题分裂了社区。",
+        "source": "社会分析"
       },
       {
-        "en": "Immigration remains a contentious issue in many countries.",
-        "cn": "移民在许多国家仍然是一个有争议的问题。",
-        "source": "政治分析"
+        "en": "The meeting became increasingly contentious.",
+        "cn": "会议变得越来越有争议。",
+        "source": "会议描写"
       },
       {
-        "en": "The contentious meeting ended without a resolution.",
-        "cn": "这场有争议的会议没有达成决议就结束了。",
-        "source": "公司报告"
+        "en": "He has a contentious personality.",
+        "cn": "他有一个好争论的性格。",
+        "source": "人物描写"
       }
     ],
     "collocations": [
       "contentious issue",
       "contentious debate",
-      "contentious topic"
+      "contentious relationship"
     ]
   },
   "deleterious": {
     "examples": [
       {
-        "en": "Smoking has deleterious effects on lung health.",
-        "cn": "吸烟对肺部健康有害。",
+        "en": "Pollution has deleterious effects on health.",
+        "cn": "污染对健康有害。",
+        "source": "健康研究"
+      },
+      {
+        "en": "The policy had deleterious consequences.",
+        "cn": "这项政策产生了有害的后果。",
+        "source": "政策分析"
+      },
+      {
+        "en": "Stress can have deleterious impacts on the body.",
+        "cn": "压力可能对身体产生有害影响。",
         "source": "医学研究"
-      },
-      {
-        "en": "The deleterious impact of pollution on ecosystems is well documented.",
-        "cn": "污染对生态系统的有害影响有详细记录。",
-        "source": "环境报告"
-      },
-      {
-        "en": "Stress can have deleterious consequences for mental health.",
-        "cn": "压力可能对心理健康产生有害后果。",
-        "source": "心理学文献"
       }
     ],
     "collocations": [
-      "deleterious effects",
+      "deleterious effect",
       "deleterious impact",
       "deleterious consequences"
     ]
@@ -626,25 +626,25 @@
   "ephemeral": {
     "examples": [
       {
-        "en": "Fame in the entertainment industry is often ephemeral.",
-        "cn": "娱乐业的名气往往是短暂的。",
-        "source": "娱乐评论"
-      },
-      {
-        "en": "The ephemeral beauty of cherry blossoms attracts millions of visitors.",
-        "cn": "樱花短暂的美丽吸引了数百万游客。",
-        "source": "旅游杂志"
-      },
-      {
-        "en": "Social media trends are increasingly ephemeral.",
-        "cn": "社交媒体趋势越来越短暂。",
+        "en": "Fame on social media is often ephemeral.",
+        "cn": "社交媒体上的名气往往是短暂的。",
         "source": "媒体分析"
+      },
+      {
+        "en": "The ephemeral nature of life inspired the poem.",
+        "cn": "生命的短暂本质启发了这首诗。",
+        "source": "文学分析"
+      },
+      {
+        "en": "These ephemeral pleasures soon faded.",
+        "cn": "这些短暂的快乐很快消失了。",
+        "source": "哲学思考"
       }
     ],
     "collocations": [
       "ephemeral nature",
-      "ephemeral beauty",
-      "ephemeral moment"
+      "ephemeral pleasure",
+      "ephemeral fame"
     ]
   },
   "erudite": {
@@ -3194,49 +3194,49 @@
   "dilatory": {
     "examples": [
       {
-        "en": "The committee's dilatory approach frustrated those seeking quick action.",
-        "cn": "委员会拖延的做法使寻求快速行动的人感到沮丧。",
-        "source": "GRE真题"
+        "en": "The dilatory response frustrated customers.",
+        "cn": "拖延的回应让客户感到沮丧。",
+        "source": "服务描写"
       },
       {
-        "en": "His dilatory tactics were designed to delay the proceedings.",
-        "cn": "他的拖延策略旨在延迟诉讼程序。",
-        "source": "法律案例"
+        "en": "His dilatory habits caused missed deadlines.",
+        "cn": "他拖延的习惯导致错过了截止日期。",
+        "source": "工作描写"
       },
       {
-        "en": "The administration's dilatory response worsened the crisis.",
-        "cn": "行政部门的迟缓反应加剧了危机。",
-        "source": "政治分析"
+        "en": "The dilatory tactics delayed the negotiations.",
+        "cn": "拖延战术推迟了谈判。",
+        "source": "谈判描写"
       }
     ],
     "collocations": [
       "dilatory tactics",
       "dilatory response",
-      "dilatory approach"
+      "dilatory behavior"
     ]
   },
   "dissemble": {
     "examples": [
       {
-        "en": "Politicians often dissemble to avoid controversial positions.",
-        "cn": "政客们经常掩饰以避免有争议的立场。",
-        "source": "GRE真题"
+        "en": "She tried to dissemble her disappointment.",
+        "cn": "她试图掩饰自己的失望。",
+        "source": "情感描写"
       },
       {
-        "en": "She dissembled her true feelings behind a polite smile.",
-        "cn": "她用礼貌的微笑掩饰她的真实感受。",
-        "source": "小说"
+        "en": "Politicians often dissemble their true intentions.",
+        "cn": "政治家经常掩饰他们的真实意图。",
+        "source": "政治分析"
       },
       {
-        "en": "The witness was caught dissembling about his whereabouts.",
-        "cn": "证人被发现在掩饰他的行踪。",
-        "source": "法庭记录"
+        "en": "He couldn't dissemble his anger any longer.",
+        "cn": "他再也无法掩饰自己的愤怒。",
+        "source": "情绪描写"
       }
     ],
     "collocations": [
       "dissemble feelings",
       "dissemble intentions",
-      "unable to dissemble"
+      "attempt to dissemble"
     ]
   },
   "emollient": {
@@ -3266,145 +3266,145 @@
   "equivocate": {
     "examples": [
       {
-        "en": "The candidate equivocated when asked about his tax policy.",
-        "cn": "当被问及税收政策时，候选人含糊其辞。",
-        "source": "GRE真题"
+        "en": "The politician equivocated when asked directly.",
+        "cn": "当被直接询问时，这位政治家含糊其辞。",
+        "source": "政治报道"
       },
       {
         "en": "Stop equivocating and give me a straight answer.",
-        "cn": "别再含糊其辞，给我一个直接的答案。",
-        "source": "对话"
+        "cn": "别含糊其辞了，给我一个直接的答案。",
+        "source": "对话描写"
       },
       {
-        "en": "The report equivocated on the key findings.",
-        "cn": "报告在关键发现上模棱两可。",
-        "source": "研究评论"
+        "en": "He equivocated on the issue of tax reform.",
+        "cn": "他在税收改革问题上含糊其辞。",
+        "source": "政策分析"
       }
     ],
     "collocations": [
-      "equivocate about",
-      "refuse to equivocate",
-      "tendency to equivocate"
+      "equivocate on",
+      "stop equivocating",
+      "continue to equivocate"
     ]
   },
   "exigent": {
     "examples": [
       {
-        "en": "The exigent circumstances required immediate action.",
-        "cn": "紧急情况需要立即行动。",
-        "source": "GRE真题"
+        "en": "Exigent circumstances required immediate action.",
+        "cn": "紧急情况需要立即采取行动。",
+        "source": "紧急响应"
       },
       {
-        "en": "Exigent demands on her time left little room for leisure.",
-        "cn": "对她时间的紧迫要求几乎没有休闲的空间。",
-        "source": "职场描写"
+        "en": "The exigent demands overwhelmed the staff.",
+        "cn": "紧急的需求使员工不堪重负。",
+        "source": "工作描写"
       },
       {
-        "en": "The hospital prioritizes exigent cases in the emergency room.",
-        "cn": "医院在急诊室优先处理紧急病例。",
-        "source": "医疗指南"
+        "en": "In exigent times, leaders must act decisively.",
+        "cn": "在紧急时刻，领导者必须果断行动。",
+        "source": "领导力分析"
       }
     ],
     "collocations": [
       "exigent circumstances",
-      "exigent needs",
-      "exigent demands"
+      "exigent demands",
+      "exigent situation"
     ]
   },
   "fecund": {
     "examples": [
       {
-        "en": "The fecund valley produced abundant crops each season.",
-        "cn": "这个肥沃的山谷每个季节都能产出丰富的农作物。",
-        "source": "GRE真题"
+        "en": "The fecund soil produced abundant crops.",
+        "cn": "肥沃的土壤产出了丰富的庄稼。",
+        "source": "农业描写"
       },
       {
-        "en": "Her fecund imagination produced countless story ideas.",
-        "cn": "她丰富的想象力产生了无数的故事创意。",
-        "source": "文学评论"
+        "en": "Her fecund imagination created many stories.",
+        "cn": "她丰富的想象力创造了许多故事。",
+        "source": "创作描写"
       },
       {
-        "en": "The composer's fecund period yielded twelve symphonies.",
-        "cn": "这位作曲家多产的时期创作了十二部交响曲。",
-        "source": "音乐史"
+        "en": "The fecund period saw many artistic masterpieces.",
+        "cn": "这个富有成效的时期产生了许多艺术杰作。",
+        "source": "艺术历史"
       }
     ],
     "collocations": [
       "fecund imagination",
-      "fecund mind",
-      "fecund period"
+      "fecund period",
+      "fecund soil"
     ]
   },
   "furtive": {
     "examples": [
       {
-        "en": "He cast furtive glances at the document on her desk.",
-        "cn": "他偷偷地瞥了一眼她桌上的文件。",
-        "source": "GRE真题"
+        "en": "He cast a furtive glance at her notes.",
+        "cn": "他偷偷地瞥了一眼她的笔记。",
+        "source": "场景描写"
       },
       {
-        "en": "The furtive exchange of notes suggested a conspiracy.",
-        "cn": "偷偷摸摸的纸条交换暗示着一场阴谋。",
-        "source": "悬疑小说"
+        "en": "The furtive movements raised suspicions.",
+        "cn": "鬼鬼祟祟的动作引起了怀疑。",
+        "source": "调查描写"
       },
       {
-        "en": "Her furtive behavior aroused suspicion.",
-        "cn": "她鬼鬼祟祟的行为引起了怀疑。",
-        "source": "心理分析"
+        "en": "She gave a furtive smile when caught.",
+        "cn": "被抓住时她露出了偷偷摸摸的微笑。",
+        "source": "表情描写"
       }
     ],
     "collocations": [
       "furtive glance",
-      "furtive manner",
-      "furtive behavior"
+      "furtive movement",
+      "furtive manner"
     ]
   },
   "hermetic": {
     "examples": [
       {
-        "en": "The hermetic seal kept the contents fresh for months.",
-        "cn": "密封保持了内容物数月的新鲜。",
-        "source": "GRE真题"
+        "en": "The hermetic seal preserved the contents.",
+        "cn": "密封保持了内容物的完好。",
+        "source": "技术描写"
       },
       {
-        "en": "His hermetic lifestyle kept him isolated from society.",
-        "cn": "他与世隔绝的生活方式使他与社会隔离。",
-        "source": "人物描写"
+        "en": "His hermetic lifestyle isolated him from friends.",
+        "cn": "他隐居的生活方式使他与朋友们隔绝。",
+        "source": "生活描写"
       },
       {
-        "en": "The hermetic nature of the organization made investigation difficult.",
-        "cn": "该组织的封闭性质使调查变得困难。",
-        "source": "新闻报道"
+        "en": "The hermetic world of academia confused outsiders.",
+        "cn": "学术界封闭的世界使外人困惑。",
+        "source": "社会分析"
       }
     ],
     "collocations": [
       "hermetic seal",
-      "hermetic community",
-      "hermetically sealed"
+      "hermetic world",
+      "hermetic lifestyle"
     ]
   },
   "iconoclastic": {
     "examples": [
       {
-        "en": "Her iconoclastic approach to traditional art shocked critics.",
-        "cn": "她对传统艺术反传统的方法震惊了评论家。",
-        "source": "GRE真题"
+        "en": "Her iconoclastic views challenged orthodoxy.",
+        "cn": "她反传统的观点挑战了正统。",
+        "source": "思想分析"
       },
       {
-        "en": "The iconoclastic philosopher challenged every accepted belief.",
-        "cn": "这位反传统的哲学家挑战每一个被接受的信念。",
-        "source": "哲学评论"
+        "en": "The iconoclastic artist broke all conventions.",
+        "cn": "这位反传统的艺术家打破了所有惯例。",
+        "source": "艺术评论"
       },
       {
-        "en": "His iconoclastic views made him unpopular with the establishment.",
-        "cn": "他反传统的观点使他不受当权者欢迎。",
-        "source": "政治分析"
+        "en": "His iconoclastic approach revolutionized the field.",
+        "cn": "他反传统的方法彻底改变了这个领域。",
+        "source": "学术评论"
       }
     ],
     "collocations": [
       "iconoclastic views",
       "iconoclastic approach",
-      "iconoclastic figure"
+      "iconoclastic artist"
     ]
   },
   "implacable": {
@@ -4869,6 +4869,2334 @@
       "comport with",
       "comport oneself",
       "comport to"
+    ]
+  },
+  "compunction": {
+    "examples": [
+      {
+        "en": "He felt no compunction about lying.",
+        "cn": "他对撒谎没有任何内疚感。",
+        "source": "心理描写"
+      },
+      {
+        "en": "She had no compunction in refusing the request.",
+        "cn": "她毫无愧疚地拒绝了请求。",
+        "source": "人物描写"
+      },
+      {
+        "en": "Without compunction, he took what wasn't his.",
+        "cn": "他毫无愧疚地拿走了不属于自己的东西。",
+        "source": "道德描写"
+      }
+    ],
+    "collocations": [
+      "without compunction",
+      "feel compunction",
+      "no compunction"
+    ]
+  },
+  "conflagration": {
+    "examples": [
+      {
+        "en": "The conflagration destroyed the entire forest.",
+        "cn": "大火摧毁了整片森林。",
+        "source": "灾难报道"
+      },
+      {
+        "en": "The small fire grew into a conflagration.",
+        "cn": "小火蔓延成了大火。",
+        "source": "火灾描写"
+      },
+      {
+        "en": "The political conflagration spread across the region.",
+        "cn": "政治冲突蔓延至整个地区。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "massive conflagration",
+      "political conflagration",
+      "spread conflagration"
+    ]
+  },
+  "contravene": {
+    "examples": [
+      {
+        "en": "The action contravened international law.",
+        "cn": "这一行动违反了国际法。",
+        "source": "法律报道"
+      },
+      {
+        "en": "His behavior contravened company policy.",
+        "cn": "他的行为违反了公司政策。",
+        "source": "职场描写"
+      },
+      {
+        "en": "The proposal contravenes the constitution.",
+        "cn": "该提案违反宪法。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "contravene the law",
+      "contravene rules",
+      "contravene regulations"
+    ]
+  },
+  "contrite": {
+    "examples": [
+      {
+        "en": "He was contrite after realizing his mistake.",
+        "cn": "在意识到错误后，他感到悔恨。",
+        "source": "心理描写"
+      },
+      {
+        "en": "Her contrite apology was accepted.",
+        "cn": "她悔恨的道歉被接受了。",
+        "source": "人际关系"
+      },
+      {
+        "en": "The contrite defendant begged for mercy.",
+        "cn": "悔恨的被告恳求宽恕。",
+        "source": "法律场景"
+      }
+    ],
+    "collocations": [
+      "contrite apology",
+      "feel contrite",
+      "appear contrite"
+    ]
+  },
+  "copious": {
+    "examples": [
+      {
+        "en": "She took copious notes during the lecture.",
+        "cn": "她在讲座中做了大量笔记。",
+        "source": "学习描写"
+      },
+      {
+        "en": "The rain fell in copious amounts.",
+        "cn": "雨下得很大。",
+        "source": "天气描写"
+      },
+      {
+        "en": "He provided copious evidence for his claims.",
+        "cn": "他为自己的主张提供了大量证据。",
+        "source": "论证描写"
+      }
+    ],
+    "collocations": [
+      "copious notes",
+      "copious amounts",
+      "copious evidence"
+    ]
+  },
+  "corroborate": {
+    "examples": [
+      {
+        "en": "Witnesses corroborated his account of events.",
+        "cn": "证人证实了他对事件的叙述。",
+        "source": "法律案例"
+      },
+      {
+        "en": "New evidence corroborated the theory.",
+        "cn": "新证据证实了这一理论。",
+        "source": "科学研究"
+      },
+      {
+        "en": "Documents were found to corroborate her story.",
+        "cn": "发现了文件证实她的故事。",
+        "source": "调查报道"
+      }
+    ],
+    "collocations": [
+      "corroborate evidence",
+      "corroborate testimony",
+      "corroborate claims"
+    ]
+  },
+  "covet": {
+    "examples": [
+      {
+        "en": "She coveted her neighbor's beautiful garden.",
+        "cn": "她羡慕邻居美丽的花园。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The coveted position attracted many applicants.",
+        "cn": "这个令人垂涎的职位吸引了许多申请者。",
+        "source": "职业描写"
+      },
+      {
+        "en": "He coveted fame and fortune above all else.",
+        "cn": "他比什么都渴望名利。",
+        "source": "人物分析"
+      }
+    ],
+    "collocations": [
+      "covet position",
+      "coveted prize",
+      "covet wealth"
+    ]
+  },
+  "craven": {
+    "examples": [
+      {
+        "en": "His craven response to danger disappointed everyone.",
+        "cn": "他面对危险时怯懦的反应让所有人失望。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The craven surrender shocked the nation.",
+        "cn": "怯懦的投降震惊了整个国家。",
+        "source": "历史描写"
+      },
+      {
+        "en": "Critics called the decision craven.",
+        "cn": "批评者称这个决定是懦弱的。",
+        "source": "政治评论"
+      }
+    ],
+    "collocations": [
+      "craven behavior",
+      "craven surrender",
+      "craven cowardice"
+    ]
+  },
+  "cupidity": {
+    "examples": [
+      {
+        "en": "His cupidity led to his downfall.",
+        "cn": "他的贪婪导致了他的垮台。",
+        "source": "道德故事"
+      },
+      {
+        "en": "Cupidity drove him to commit fraud.",
+        "cn": "贪婪驱使他实施欺诈。",
+        "source": "犯罪报道"
+      },
+      {
+        "en": "The scandal revealed corporate cupidity.",
+        "cn": "丑闻揭露了公司的贪婪。",
+        "source": "商业丑闻"
+      }
+    ],
+    "collocations": [
+      "sheer cupidity",
+      "human cupidity",
+      "driven by cupidity"
+    ]
+  },
+  "delineate": {
+    "examples": [
+      {
+        "en": "The report delineated the company's strategy.",
+        "cn": "报告阐明了公司的战略。",
+        "source": "商业报告"
+      },
+      {
+        "en": "The treaty delineates the border clearly.",
+        "cn": "条约明确划定了边界。",
+        "source": "国际关系"
+      },
+      {
+        "en": "She carefully delineated the differences.",
+        "cn": "她仔细描述了差异。",
+        "source": "分析描写"
+      }
+    ],
+    "collocations": [
+      "delineate boundaries",
+      "clearly delineate",
+      "delineate responsibilities"
+    ]
+  },
+  "denizen": {
+    "examples": [
+      {
+        "en": "The denizens of the forest fled the fire.",
+        "cn": "森林的居民逃离了大火。",
+        "source": "自然描写"
+      },
+      {
+        "en": "City denizens crowded the streets.",
+        "cn": "城市居民挤满了街道。",
+        "source": "城市描写"
+      },
+      {
+        "en": "The café was frequented by literary denizens.",
+        "cn": "咖啡馆经常有文学界人士光顾。",
+        "source": "文化描写"
+      }
+    ],
+    "collocations": [
+      "denizen of",
+      "local denizens",
+      "urban denizens"
+    ]
+  },
+  "denigrate": {
+    "examples": [
+      {
+        "en": "He sought to denigrate his opponent's achievements.",
+        "cn": "他试图贬低对手的成就。",
+        "source": "竞争描写"
+      },
+      {
+        "en": "The review denigrated the author's work.",
+        "cn": "评论贬低了作者的作品。",
+        "source": "文学评论"
+      },
+      {
+        "en": "Don't denigrate efforts that don't succeed.",
+        "cn": "不要贬低那些没有成功的努力。",
+        "source": "激励话语"
+      }
+    ],
+    "collocations": [
+      "denigrate achievements",
+      "publicly denigrate",
+      "denigrate others"
+    ]
+  },
+  "deprecate": {
+    "examples": [
+      {
+        "en": "She deprecated the use of violence.",
+        "cn": "她反对使用暴力。",
+        "source": "社会评论"
+      },
+      {
+        "en": "Experts deprecated the new guidelines.",
+        "cn": "专家们反对新指南。",
+        "source": "专业评论"
+      },
+      {
+        "en": "He deprecated his own contributions modestly.",
+        "cn": "他谦虚地贬低自己的贡献。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "strongly deprecate",
+      "deprecate violence",
+      "deprecate the use of"
+    ]
+  },
+  "deride": {
+    "examples": [
+      {
+        "en": "Critics derided the proposal as impractical.",
+        "cn": "批评者嘲笑这个提案不切实际。",
+        "source": "政策评论"
+      },
+      {
+        "en": "He was derided for his unconventional ideas.",
+        "cn": "他因非传统的想法而受到嘲笑。",
+        "source": "创新描写"
+      },
+      {
+        "en": "The media derided the politician's claims.",
+        "cn": "媒体嘲笑了这位政治家的说法。",
+        "source": "媒体报道"
+      }
+    ],
+    "collocations": [
+      "deride as",
+      "publicly deride",
+      "deride claims"
+    ]
+  },
+  "desultory": {
+    "examples": [
+      {
+        "en": "They made desultory attempts to clean up.",
+        "cn": "他们漫不经心地试图清理。",
+        "source": "行为描写"
+      },
+      {
+        "en": "The desultory conversation faded into silence.",
+        "cn": "漫无目的的对话逐渐沉默。",
+        "source": "社交描写"
+      },
+      {
+        "en": "His desultory approach yielded poor results.",
+        "cn": "他散漫的方法产生了糟糕的结果。",
+        "source": "工作描写"
+      }
+    ],
+    "collocations": [
+      "desultory manner",
+      "desultory attempt",
+      "desultory conversation"
+    ]
+  },
+  "diatribe": {
+    "examples": [
+      {
+        "en": "He launched into a diatribe against the government.",
+        "cn": "他开始对政府进行长篇抨击。",
+        "source": "政治描写"
+      },
+      {
+        "en": "The article was a diatribe against modern art.",
+        "cn": "这篇文章是对现代艺术的长篇抨击。",
+        "source": "艺术评论"
+      },
+      {
+        "en": "Her diatribe lasted for an hour.",
+        "cn": "她的长篇抨击持续了一个小时。",
+        "source": "演讲描写"
+      }
+    ],
+    "collocations": [
+      "launch diatribe",
+      "long diatribe",
+      "diatribe against"
+    ]
+  },
+  "diffident": {
+    "examples": [
+      {
+        "en": "The diffident student rarely spoke in class.",
+        "cn": "这个羞怯的学生很少在课堂上发言。",
+        "source": "教育描写"
+      },
+      {
+        "en": "Her diffident manner concealed great talent.",
+        "cn": "她羞怯的态度掩盖了巨大的才华。",
+        "source": "人物描写"
+      },
+      {
+        "en": "He gave a diffident smile when praised.",
+        "cn": "被表扬时他露出羞怯的微笑。",
+        "source": "表情描写"
+      }
+    ],
+    "collocations": [
+      "diffident manner",
+      "diffident about",
+      "diffident smile"
+    ]
+  },
+  "disabuse": {
+    "examples": [
+      {
+        "en": "I must disabuse you of that notion.",
+        "cn": "我必须让你打消这个念头。",
+        "source": "对话描写"
+      },
+      {
+        "en": "Experience disabused him of his naive beliefs.",
+        "cn": "经验让他放弃了天真的信念。",
+        "source": "成长描写"
+      },
+      {
+        "en": "The facts disabused them of any optimism.",
+        "cn": "事实让他们放弃了任何乐观情绪。",
+        "source": "分析描写"
+      }
+    ],
+    "collocations": [
+      "disabuse of",
+      "quickly disabuse",
+      "disabuse notions"
+    ]
+  },
+  "discursive": {
+    "examples": [
+      {
+        "en": "The discursive essay explored many topics.",
+        "cn": "这篇散漫的文章探讨了许多话题。",
+        "source": "文学评论"
+      },
+      {
+        "en": "His discursive style made the lecture hard to follow.",
+        "cn": "他散漫的风格使讲座难以跟上。",
+        "source": "教学评论"
+      },
+      {
+        "en": "The book's discursive approach covered wide ground.",
+        "cn": "这本书散漫的方法涵盖了广泛的领域。",
+        "source": "书评"
+      }
+    ],
+    "collocations": [
+      "discursive style",
+      "discursive approach",
+      "discursive writing"
+    ]
+  },
+  "disingenuous": {
+    "examples": [
+      {
+        "en": "His disingenuous apology fooled no one.",
+        "cn": "他不真诚的道歉骗不了任何人。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The disingenuous explanation raised suspicions.",
+        "cn": "不真诚的解释引起了怀疑。",
+        "source": "调查描写"
+      },
+      {
+        "en": "It would be disingenuous to deny the problem.",
+        "cn": "否认这个问题是不真诚的。",
+        "source": "评论描写"
+      }
+    ],
+    "collocations": [
+      "disingenuous claim",
+      "disingenuous response",
+      "appear disingenuous"
+    ]
+  },
+  "disparage": {
+    "examples": [
+      {
+        "en": "He disparaged her efforts in front of colleagues.",
+        "cn": "他当着同事的面贬低她的努力。",
+        "source": "职场描写"
+      },
+      {
+        "en": "Critics disparaged the new policy.",
+        "cn": "批评者贬低了新政策。",
+        "source": "政策评论"
+      },
+      {
+        "en": "Don't disparage what you don't understand.",
+        "cn": "不要贬低你不理解的东西。",
+        "source": "忠告描写"
+      }
+    ],
+    "collocations": [
+      "disparage efforts",
+      "publicly disparage",
+      "disparage achievements"
+    ]
+  },
+  "dispassionate": {
+    "examples": [
+      {
+        "en": "A dispassionate analysis is needed.",
+        "cn": "需要一个冷静客观的分析。",
+        "source": "分析描写"
+      },
+      {
+        "en": "She gave a dispassionate account of events.",
+        "cn": "她对事件做了冷静客观的叙述。",
+        "source": "叙述描写"
+      },
+      {
+        "en": "The judge remained dispassionate throughout.",
+        "cn": "法官自始至终保持客观。",
+        "source": "法律描写"
+      }
+    ],
+    "collocations": [
+      "dispassionate analysis",
+      "dispassionate view",
+      "remain dispassionate"
+    ]
+  },
+  "dissolution": {
+    "examples": [
+      {
+        "en": "The dissolution of the partnership was inevitable.",
+        "cn": "合伙关系的解散是不可避免的。",
+        "source": "商业报道"
+      },
+      {
+        "en": "The dissolution of parliament was announced.",
+        "cn": "宣布解散议会。",
+        "source": "政治报道"
+      },
+      {
+        "en": "Years of dissolution had ruined his health.",
+        "cn": "多年的放荡毁了他的健康。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "dissolution of",
+      "lead to dissolution",
+      "prevent dissolution"
+    ]
+  },
+  "dissonance": {
+    "examples": [
+      {
+        "en": "Cognitive dissonance caused him to rationalize.",
+        "cn": "认知失调使他为自己的行为找借口。",
+        "source": "心理学"
+      },
+      {
+        "en": "The dissonance between words and actions was clear.",
+        "cn": "言行之间的不一致是明显的。",
+        "source": "分析描写"
+      },
+      {
+        "en": "The musical dissonance created tension.",
+        "cn": "音乐的不和谐创造了紧张感。",
+        "source": "音乐评论"
+      }
+    ],
+    "collocations": [
+      "cognitive dissonance",
+      "create dissonance",
+      "resolve dissonance"
+    ]
+  },
+  "docile": {
+    "examples": [
+      {
+        "en": "The docile horse was easy to train.",
+        "cn": "这匹温顺的马很容易训练。",
+        "source": "动物描写"
+      },
+      {
+        "en": "Students were expected to be docile and obedient.",
+        "cn": "学生们被期望温顺和服从。",
+        "source": "教育描写"
+      },
+      {
+        "en": "The docile workforce accepted low wages.",
+        "cn": "顺从的劳动力接受了低工资。",
+        "source": "劳动分析"
+      }
+    ],
+    "collocations": [
+      "docile nature",
+      "docile animal",
+      "docile behavior"
+    ]
+  },
+  "duplicity": {
+    "examples": [
+      {
+        "en": "His duplicity was eventually exposed.",
+        "cn": "他的两面派行为最终被曝光。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The treaty was signed in an atmosphere of duplicity.",
+        "cn": "条约是在欺诈的气氛中签署的。",
+        "source": "外交历史"
+      },
+      {
+        "en": "She saw through his duplicity immediately.",
+        "cn": "她立刻看穿了他的虚伪。",
+        "source": "人际关系"
+      }
+    ],
+    "collocations": [
+      "expose duplicity",
+      "act of duplicity",
+      "political duplicity"
+    ]
+  },
+  "edify": {
+    "examples": [
+      {
+        "en": "The lecture was meant to edify and inspire.",
+        "cn": "这次讲座旨在教化和启发。",
+        "source": "教育描写"
+      },
+      {
+        "en": "Good literature should edify the reader.",
+        "cn": "好的文学应该教化读者。",
+        "source": "文学评论"
+      },
+      {
+        "en": "He found the documentary edifying.",
+        "cn": "他觉得这部纪录片很有教育意义。",
+        "source": "评价描写"
+      }
+    ],
+    "collocations": [
+      "edify and inspire",
+      "morally edify",
+      "edifying experience"
+    ]
+  },
+  "efface": {
+    "examples": [
+      {
+        "en": "Time had effaced the inscription.",
+        "cn": "时间抹去了铭文。",
+        "source": "历史描写"
+      },
+      {
+        "en": "She tried to efface the painful memories.",
+        "cn": "她试图抹去痛苦的记忆。",
+        "source": "心理描写"
+      },
+      {
+        "en": "He chose to efface himself from public life.",
+        "cn": "他选择从公众生活中隐退。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "efface memories",
+      "efface oneself",
+      "completely efface"
+    ]
+  },
+  "effrontery": {
+    "examples": [
+      {
+        "en": "He had the effrontery to demand more money.",
+        "cn": "他厚颜无耻地要求更多钱。",
+        "source": "人物描写"
+      },
+      {
+        "en": "Her effrontery shocked everyone present.",
+        "cn": "她的厚颜无耻震惊了在场的所有人。",
+        "source": "场景描写"
+      },
+      {
+        "en": "The effrontery of his lies was astounding.",
+        "cn": "他撒谎的厚颜无耻令人吃惊。",
+        "source": "评价描写"
+      }
+    ],
+    "collocations": [
+      "have the effrontery",
+      "sheer effrontery",
+      "effrontery to"
+    ]
+  },
+  "emulate": {
+    "examples": [
+      {
+        "en": "Young players try to emulate their heroes.",
+        "cn": "年轻球员试图效仿他们的偶像。",
+        "source": "体育描写"
+      },
+      {
+        "en": "She sought to emulate her mother's success.",
+        "cn": "她试图效仿她母亲的成功。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The company tried to emulate industry leaders.",
+        "cn": "公司试图效仿行业领袖。",
+        "source": "商业分析"
+      }
+    ],
+    "collocations": [
+      "emulate success",
+      "try to emulate",
+      "emulate example"
+    ]
+  },
+  "encomium": {
+    "examples": [
+      {
+        "en": "The biography was an encomium to the leader.",
+        "cn": "这部传记是对这位领袖的颂扬。",
+        "source": "文学评论"
+      },
+      {
+        "en": "Critics offered encomiums for the performance.",
+        "cn": "评论家们对表演给予了赞美。",
+        "source": "艺术评论"
+      },
+      {
+        "en": "The speech was filled with encomiums.",
+        "cn": "演讲充满了赞美之词。",
+        "source": "演讲描写"
+      }
+    ],
+    "collocations": [
+      "offer encomium",
+      "receive encomiums",
+      "encomium to"
+    ]
+  },
+  "endemic": {
+    "examples": [
+      {
+        "en": "Corruption is endemic in some governments.",
+        "cn": "腐败在一些政府中根深蒂固。",
+        "source": "政治分析"
+      },
+      {
+        "en": "The disease is endemic to the region.",
+        "cn": "这种疾病在该地区流行。",
+        "source": "医学报道"
+      },
+      {
+        "en": "Poverty remained endemic despite reforms.",
+        "cn": "尽管进行了改革，贫困仍然普遍存在。",
+        "source": "社会分析"
+      }
+    ],
+    "collocations": [
+      "endemic problem",
+      "endemic to",
+      "endemic corruption"
+    ]
+  },
+  "engender": {
+    "examples": [
+      {
+        "en": "The policy engendered widespread protest.",
+        "cn": "这项政策引发了广泛的抗议。",
+        "source": "政策分析"
+      },
+      {
+        "en": "Trust is engendered through consistent behavior.",
+        "cn": "信任是通过一贯的行为产生的。",
+        "source": "人际关系"
+      },
+      {
+        "en": "The decision engendered much controversy.",
+        "cn": "这个决定引发了很多争议。",
+        "source": "社会评论"
+      }
+    ],
+    "collocations": [
+      "engender trust",
+      "engender controversy",
+      "engender support"
+    ]
+  },
+  "evanescent": {
+    "examples": [
+      {
+        "en": "The evanescent beauty of the sunset moved her.",
+        "cn": "日落稍纵即逝的美丽打动了她。",
+        "source": "自然描写"
+      },
+      {
+        "en": "Youth's evanescent nature is often lamented.",
+        "cn": "青春的短暂常常令人感叹。",
+        "source": "哲学思考"
+      },
+      {
+        "en": "His evanescent fame faded quickly.",
+        "cn": "他短暂的名声很快消失了。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "evanescent beauty",
+      "evanescent moment",
+      "evanescent quality"
+    ]
+  },
+  "exculpate": {
+    "examples": [
+      {
+        "en": "New evidence exculpated the accused.",
+        "cn": "新证据证明被告无罪。",
+        "source": "法律案例"
+      },
+      {
+        "en": "The investigation exculpated the officials.",
+        "cn": "调查证明官员们是清白的。",
+        "source": "调查报告"
+      },
+      {
+        "en": "Nothing could exculpate him from responsibility.",
+        "cn": "没有什么能免除他的责任。",
+        "source": "责任分析"
+      }
+    ],
+    "collocations": [
+      "exculpate from",
+      "completely exculpate",
+      "exculpate the accused"
+    ]
+  },
+  "execrate": {
+    "examples": [
+      {
+        "en": "The public execrated the corrupt officials.",
+        "cn": "公众咒骂腐败的官员。",
+        "source": "社会描写"
+      },
+      {
+        "en": "He was execrated by his former supporters.",
+        "cn": "他被他以前的支持者咒骂。",
+        "source": "政治转变"
+      },
+      {
+        "en": "The regime was execrated by history.",
+        "cn": "这个政权被历史所诅咒。",
+        "source": "历史评价"
+      }
+    ],
+    "collocations": [
+      "publicly execrate",
+      "execrated by",
+      "execrate corruption"
+    ]
+  },
+  "expatiate": {
+    "examples": [
+      {
+        "en": "The professor expatiated on the topic for hours.",
+        "cn": "教授就这个话题详细阐述了几个小时。",
+        "source": "学术描写"
+      },
+      {
+        "en": "She expatiated on the benefits of the program.",
+        "cn": "她详细阐述了该计划的好处。",
+        "source": "演示描写"
+      },
+      {
+        "en": "He liked to expatiate on his favorite subjects.",
+        "cn": "他喜欢详细阐述他喜欢的话题。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "expatiate on",
+      "expatiate at length",
+      "expatiate about"
+    ]
+  },
+  "explicate": {
+    "examples": [
+      {
+        "en": "The teacher explicated the difficult passage.",
+        "cn": "老师详细解释了这段困难的段落。",
+        "source": "教学描写"
+      },
+      {
+        "en": "The essay explicates the poem's symbolism.",
+        "cn": "这篇文章详细解释了这首诗的象征意义。",
+        "source": "文学分析"
+      },
+      {
+        "en": "She explicated the theory in simple terms.",
+        "cn": "她用简单的术语解释了这个理论。",
+        "source": "科普描写"
+      }
+    ],
+    "collocations": [
+      "explicate meaning",
+      "explicate concepts",
+      "explicate text"
+    ]
+  },
+  "expunge": {
+    "examples": [
+      {
+        "en": "The court ordered the records expunged.",
+        "cn": "法院下令删除记录。",
+        "source": "法律案例"
+      },
+      {
+        "en": "He wanted to expunge the painful memories.",
+        "cn": "他想抹去痛苦的记忆。",
+        "source": "心理描写"
+      },
+      {
+        "en": "The scandal was expunged from official history.",
+        "cn": "丑闻从官方历史中被抹去。",
+        "source": "历史分析"
+      }
+    ],
+    "collocations": [
+      "expunge records",
+      "expunge from",
+      "completely expunge"
+    ]
+  },
+  "extirpate": {
+    "examples": [
+      {
+        "en": "Efforts to extirpate the disease succeeded.",
+        "cn": "根除这种疾病的努力成功了。",
+        "source": "医学报道"
+      },
+      {
+        "en": "The regime tried to extirpate all opposition.",
+        "cn": "该政权试图铲除所有反对派。",
+        "source": "政治历史"
+      },
+      {
+        "en": "Invasive species must be extirpated quickly.",
+        "cn": "入侵物种必须迅速根除。",
+        "source": "环境保护"
+      }
+    ],
+    "collocations": [
+      "extirpate disease",
+      "extirpate opposition",
+      "completely extirpate"
+    ]
+  },
+  "facetious": {
+    "examples": [
+      {
+        "en": "His facetious comments annoyed his colleagues.",
+        "cn": "他滑稽的评论惹恼了他的同事。",
+        "source": "职场描写"
+      },
+      {
+        "en": "She made a facetious remark about the situation.",
+        "cn": "她对这种情况发表了一个调侃的评论。",
+        "source": "社交描写"
+      },
+      {
+        "en": "Don't be facetious when discussing serious matters.",
+        "cn": "讨论严肃问题时不要滑稽。",
+        "source": "忠告描写"
+      }
+    ],
+    "collocations": [
+      "facetious remark",
+      "facetious comment",
+      "being facetious"
+    ]
+  },
+  "fatuous": {
+    "examples": [
+      {
+        "en": "The fatuous smile irritated everyone.",
+        "cn": "愚蠢的微笑激怒了所有人。",
+        "source": "表情描写"
+      },
+      {
+        "en": "His fatuous suggestions were ignored.",
+        "cn": "他愚蠢的建议被忽视了。",
+        "source": "会议描写"
+      },
+      {
+        "en": "The fatuous claim was easily disproved.",
+        "cn": "愚蠢的说法很容易被反驳。",
+        "source": "论证描写"
+      }
+    ],
+    "collocations": [
+      "fatuous remark",
+      "fatuous idea",
+      "fatuous smile"
+    ]
+  },
+  "fawning": {
+    "examples": [
+      {
+        "en": "The fawning subordinate agreed with everything.",
+        "cn": "奉承的下属同意一切。",
+        "source": "职场描写"
+      },
+      {
+        "en": "His fawning behavior disgusted colleagues.",
+        "cn": "他谄媚的行为使同事们反感。",
+        "source": "人际关系"
+      },
+      {
+        "en": "The fawning interview lacked critical questions.",
+        "cn": "谄媚的采访缺乏批评性问题。",
+        "source": "媒体分析"
+      }
+    ],
+    "collocations": [
+      "fawning attention",
+      "fawning behavior",
+      "fawning manner"
+    ]
+  },
+  "felicitous": {
+    "examples": [
+      {
+        "en": "The felicitous phrase captured the mood perfectly.",
+        "cn": "这个恰当的短语完美地捕捉了情绪。",
+        "source": "写作评论"
+      },
+      {
+        "en": "His felicitous remarks brightened the occasion.",
+        "cn": "他恰当的言辞使场合更加愉快。",
+        "source": "社交描写"
+      },
+      {
+        "en": "The timing proved felicitous for the announcement.",
+        "cn": "这个时机对于宣布来说非常恰当。",
+        "source": "时机分析"
+      }
+    ],
+    "collocations": [
+      "felicitous phrase",
+      "felicitous choice",
+      "felicitous timing"
+    ]
+  },
+  "fervid": {
+    "examples": [
+      {
+        "en": "His fervid support for the cause was admirable.",
+        "cn": "他对这项事业的热烈支持令人钦佩。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The fervid debate lasted for hours.",
+        "cn": "激烈的辩论持续了几个小时。",
+        "source": "辩论描写"
+      },
+      {
+        "en": "She wrote with fervid enthusiasm.",
+        "cn": "她以热情洋溢地写作。",
+        "source": "创作描写"
+      }
+    ],
+    "collocations": [
+      "fervid support",
+      "fervid enthusiasm",
+      "fervid debate"
+    ]
+  },
+  "fetter": {
+    "examples": [
+      {
+        "en": "Old traditions fettered social progress.",
+        "cn": "旧传统束缚了社会进步。",
+        "source": "社会分析"
+      },
+      {
+        "en": "The regulations fettered business innovation.",
+        "cn": "法规束缚了商业创新。",
+        "source": "商业分析"
+      },
+      {
+        "en": "He refused to be fettered by convention.",
+        "cn": "他拒绝被传统所束缚。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "fetter progress",
+      "fetter innovation",
+      "fettered by"
+    ]
+  },
+  "flout": {
+    "examples": [
+      {
+        "en": "He openly flouted the rules.",
+        "cn": "他公然蔑视规则。",
+        "source": "行为描写"
+      },
+      {
+        "en": "The company flouted environmental regulations.",
+        "cn": "公司无视环境法规。",
+        "source": "违规报道"
+      },
+      {
+        "en": "She flouted convention by wearing jeans.",
+        "cn": "她通过穿牛仔裤来蔑视传统。",
+        "source": "社会描写"
+      }
+    ],
+    "collocations": [
+      "flout rules",
+      "flout convention",
+      "flout the law"
+    ]
+  },
+  "forestall": {
+    "examples": [
+      {
+        "en": "Quick action forestalled a disaster.",
+        "cn": "迅速的行动阻止了一场灾难。",
+        "source": "紧急响应"
+      },
+      {
+        "en": "The treaty was designed to forestall conflict.",
+        "cn": "该条约旨在防止冲突。",
+        "source": "外交分析"
+      },
+      {
+        "en": "She forestalled his objection with a smile.",
+        "cn": "她用微笑阻止了他的反对。",
+        "source": "社交描写"
+      }
+    ],
+    "collocations": [
+      "forestall disaster",
+      "forestall conflict",
+      "forestall objections"
+    ]
+  },
+  "forsake": {
+    "examples": [
+      {
+        "en": "He forsook his family for his career.",
+        "cn": "他为了事业抛弃了家人。",
+        "source": "人物描写"
+      },
+      {
+        "en": "She forsook her principles under pressure.",
+        "cn": "她在压力下放弃了自己的原则。",
+        "source": "道德描写"
+      },
+      {
+        "en": "The soldiers refused to forsake their duty.",
+        "cn": "士兵们拒绝放弃自己的职责。",
+        "source": "军事描写"
+      }
+    ],
+    "collocations": [
+      "forsake principles",
+      "forsake duty",
+      "forsake family"
+    ]
+  },
+  "fractious": {
+    "examples": [
+      {
+        "en": "The fractious child refused to cooperate.",
+        "cn": "易怒的孩子拒绝合作。",
+        "source": "儿童描写"
+      },
+      {
+        "en": "The fractious coalition struggled to agree.",
+        "cn": "难以驾驭的联盟难以达成一致。",
+        "source": "政治分析"
+      },
+      {
+        "en": "Managing the fractious team was challenging.",
+        "cn": "管理这个难以驾驭的团队很有挑战性。",
+        "source": "管理描写"
+      }
+    ],
+    "collocations": [
+      "fractious behavior",
+      "fractious child",
+      "fractious coalition"
+    ]
+  },
+  "fulminate": {
+    "examples": [
+      {
+        "en": "He fulminated against the new policy.",
+        "cn": "他强烈抨击新政策。",
+        "source": "政治描写"
+      },
+      {
+        "en": "The preacher fulminated from the pulpit.",
+        "cn": "传教士在讲坛上痛斥。",
+        "source": "宗教描写"
+      },
+      {
+        "en": "Critics fulminated about the decision.",
+        "cn": "批评者们对这个决定大加抨击。",
+        "source": "评论描写"
+      }
+    ],
+    "collocations": [
+      "fulminate against",
+      "fulminate about",
+      "loudly fulminate"
+    ]
+  },
+  "gainsay": {
+    "examples": [
+      {
+        "en": "No one could gainsay her expertise.",
+        "cn": "没有人能否认她的专业知识。",
+        "source": "专业评价"
+      },
+      {
+        "en": "The evidence could not be gainsaid.",
+        "cn": "证据是不可否认的。",
+        "source": "法律描写"
+      },
+      {
+        "en": "His success cannot be gainsaid.",
+        "cn": "他的成功是不可否认的。",
+        "source": "成就评价"
+      }
+    ],
+    "collocations": [
+      "cannot gainsay",
+      "hard to gainsay",
+      "gainsay the fact"
+    ]
+  },
+  "gambit": {
+    "examples": [
+      {
+        "en": "The bold gambit paid off handsomely.",
+        "cn": "这个大胆的策略获得了丰厚的回报。",
+        "source": "商业描写"
+      },
+      {
+        "en": "His opening gambit set the tone for negotiations.",
+        "cn": "他的开局策略为谈判定下了基调。",
+        "source": "谈判描写"
+      },
+      {
+        "en": "The political gambit backfired spectacularly.",
+        "cn": "这个政治策略彻底失败了。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "opening gambit",
+      "bold gambit",
+      "political gambit"
+    ]
+  },
+  "germane": {
+    "examples": [
+      {
+        "en": "His comments were not germane to the discussion.",
+        "cn": "他的评论与讨论无关。",
+        "source": "会议描写"
+      },
+      {
+        "en": "Please keep your remarks germane to the topic.",
+        "cn": "请让你的言论与话题相关。",
+        "source": "会议主持"
+      },
+      {
+        "en": "The evidence was germane to the case.",
+        "cn": "证据与案件相关。",
+        "source": "法律描写"
+      }
+    ],
+    "collocations": [
+      "germane to",
+      "directly germane",
+      "not germane"
+    ]
+  },
+  "glib": {
+    "examples": [
+      {
+        "en": "His glib answers failed to convince.",
+        "cn": "他油嘴滑舌的回答未能说服人。",
+        "source": "评价描写"
+      },
+      {
+        "en": "The glib salesman made many promises.",
+        "cn": "油嘴滑舌的推销员做了很多承诺。",
+        "source": "销售描写"
+      },
+      {
+        "en": "Don't give me glib explanations.",
+        "cn": "不要给我圆滑的解释。",
+        "source": "对话描写"
+      }
+    ],
+    "collocations": [
+      "glib answer",
+      "glib response",
+      "glib talker"
+    ]
+  },
+  "grandiloquent": {
+    "examples": [
+      {
+        "en": "His grandiloquent speech impressed few.",
+        "cn": "他夸夸其谈的演讲很少打动人。",
+        "source": "演讲评论"
+      },
+      {
+        "en": "The grandiloquent promises were never kept.",
+        "cn": "夸大的承诺从未兑现。",
+        "source": "政治分析"
+      },
+      {
+        "en": "Avoid grandiloquent language in academic writing.",
+        "cn": "学术写作中避免使用夸大的语言。",
+        "source": "写作指南"
+      }
+    ],
+    "collocations": [
+      "grandiloquent speech",
+      "grandiloquent style",
+      "grandiloquent language"
+    ]
+  },
+  "gratuitous": {
+    "examples": [
+      {
+        "en": "The gratuitous violence in the film was criticized.",
+        "cn": "电影中无端的暴力受到批评。",
+        "source": "影评"
+      },
+      {
+        "en": "His gratuitous insults angered everyone.",
+        "cn": "他无端的侮辱激怒了所有人。",
+        "source": "社交描写"
+      },
+      {
+        "en": "The gratuitous complexity confused readers.",
+        "cn": "不必要的复杂性使读者困惑。",
+        "source": "写作评论"
+      }
+    ],
+    "collocations": [
+      "gratuitous violence",
+      "gratuitous insult",
+      "gratuitous criticism"
+    ]
+  },
+  "gregarious": {
+    "examples": [
+      {
+        "en": "Her gregarious nature made her popular.",
+        "cn": "她爱交际的性格使她很受欢迎。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The gregarious host mingled with all guests.",
+        "cn": "好客的主人与所有客人交流。",
+        "source": "社交描写"
+      },
+      {
+        "en": "Gregarious animals live in groups.",
+        "cn": "群居动物成群生活。",
+        "source": "动物学"
+      }
+    ],
+    "collocations": [
+      "gregarious nature",
+      "gregarious personality",
+      "gregarious person"
+    ]
+  },
+  "grovel": {
+    "examples": [
+      {
+        "en": "He refused to grovel for a promotion.",
+        "cn": "他拒绝为升职卑躬屈膝。",
+        "source": "职场描写"
+      },
+      {
+        "en": "The servants were expected to grovel before the king.",
+        "cn": "仆人们被期望在国王面前卑躬屈膝。",
+        "source": "历史描写"
+      },
+      {
+        "en": "She would not grovel to anyone.",
+        "cn": "她不会向任何人卑躬屈膝。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "grovel before",
+      "grovel to",
+      "refuse to grovel"
+    ]
+  },
+  "guileless": {
+    "examples": [
+      {
+        "en": "His guileless manner charmed everyone.",
+        "cn": "他坦率的态度迷住了每个人。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The guileless child told the truth.",
+        "cn": "天真的孩子说了实话。",
+        "source": "儿童描写"
+      },
+      {
+        "en": "Her guileless smile put people at ease.",
+        "cn": "她天真的微笑让人们感到轻松。",
+        "source": "社交描写"
+      }
+    ],
+    "collocations": [
+      "guileless manner",
+      "guileless smile",
+      "guileless honesty"
+    ]
+  },
+  "halcyon": {
+    "examples": [
+      {
+        "en": "She remembered the halcyon days of her youth.",
+        "cn": "她回忆起年轻时的美好时光。",
+        "source": "回忆描写"
+      },
+      {
+        "en": "The halcyon period ended abruptly.",
+        "cn": "太平的时期突然结束了。",
+        "source": "历史描写"
+      },
+      {
+        "en": "Those halcyon summer days seemed endless.",
+        "cn": "那些宁静的夏日似乎无穷无尽。",
+        "source": "怀旧描写"
+      }
+    ],
+    "collocations": [
+      "halcyon days",
+      "halcyon period",
+      "halcyon times"
+    ]
+  },
+  "hapless": {
+    "examples": [
+      {
+        "en": "The hapless victim lost everything.",
+        "cn": "这个倒霉的受害者失去了一切。",
+        "source": "灾难描写"
+      },
+      {
+        "en": "The hapless team lost every game.",
+        "cn": "这支倒霉的球队输掉了每场比赛。",
+        "source": "体育描写"
+      },
+      {
+        "en": "Hapless tourists were stranded by the storm.",
+        "cn": "倒霉的游客被暴风雨困住了。",
+        "source": "旅行描写"
+      }
+    ],
+    "collocations": [
+      "hapless victim",
+      "hapless traveler",
+      "hapless soul"
+    ]
+  },
+  "harbinger": {
+    "examples": [
+      {
+        "en": "The robin is a harbinger of spring.",
+        "cn": "知更鸟是春天的先兆。",
+        "source": "自然描写"
+      },
+      {
+        "en": "The incident was a harbinger of worse to come.",
+        "cn": "这个事件是更糟事情的前兆。",
+        "source": "预测分析"
+      },
+      {
+        "en": "Early protests were harbingers of revolution.",
+        "cn": "早期的抗议是革命的先兆。",
+        "source": "历史分析"
+      }
+    ],
+    "collocations": [
+      "harbinger of",
+      "harbinger of spring",
+      "harbinger of change"
+    ]
+  },
+  "hegemony": {
+    "examples": [
+      {
+        "en": "The empire's hegemony lasted for centuries.",
+        "cn": "帝国的霸权持续了几个世纪。",
+        "source": "历史描写"
+      },
+      {
+        "en": "They challenged American hegemony.",
+        "cn": "他们挑战美国的霸权。",
+        "source": "国际关系"
+      },
+      {
+        "en": "Cultural hegemony shapes public opinion.",
+        "cn": "文化霸权塑造公众舆论。",
+        "source": "社会分析"
+      }
+    ],
+    "collocations": [
+      "cultural hegemony",
+      "global hegemony",
+      "challenge hegemony"
+    ]
+  },
+  "hidebound": {
+    "examples": [
+      {
+        "en": "The hidebound bureaucracy resisted change.",
+        "cn": "墨守成规的官僚机构抵制变革。",
+        "source": "政府分析"
+      },
+      {
+        "en": "His hidebound views limited his perspective.",
+        "cn": "他顽固的观点限制了他的视野。",
+        "source": "人物描写"
+      },
+      {
+        "en": "Hidebound traditions stifled innovation.",
+        "cn": "墨守成规的传统扼杀了创新。",
+        "source": "社会评论"
+      }
+    ],
+    "collocations": [
+      "hidebound tradition",
+      "hidebound thinking",
+      "hidebound approach"
+    ]
+  },
+  "histrionic": {
+    "examples": [
+      {
+        "en": "His histrionic outburst surprised everyone.",
+        "cn": "他戏剧性的爆发让每个人都感到惊讶。",
+        "source": "行为描写"
+      },
+      {
+        "en": "Her histrionic gestures seemed exaggerated.",
+        "cn": "她做作的手势显得夸张。",
+        "source": "表演描写"
+      },
+      {
+        "en": "Avoid histrionic reactions to minor problems.",
+        "cn": "对小问题避免夸张的反应。",
+        "source": "忠告描写"
+      }
+    ],
+    "collocations": [
+      "histrionic behavior",
+      "histrionic display",
+      "histrionic personality"
+    ]
+  },
+  "homogeneous": {
+    "examples": [
+      {
+        "en": "The homogeneous mixture was stirred well.",
+        "cn": "均匀的混合物被充分搅拌。",
+        "source": "科学描写"
+      },
+      {
+        "en": "The community was ethnically homogeneous.",
+        "cn": "这个社区在民族上是同质的。",
+        "source": "社会描写"
+      },
+      {
+        "en": "A homogeneous approach ignores diversity.",
+        "cn": "同质化的方法忽视了多样性。",
+        "source": "分析描写"
+      }
+    ],
+    "collocations": [
+      "homogeneous group",
+      "homogeneous society",
+      "homogeneous mixture"
+    ]
+  },
+  "hubris": {
+    "examples": [
+      {
+        "en": "His hubris led to his downfall.",
+        "cn": "他的傲慢导致了他的垮台。",
+        "source": "人物分析"
+      },
+      {
+        "en": "The CEO's hubris blinded him to risks.",
+        "cn": "CEO的傲慢使他对风险视而不见。",
+        "source": "商业分析"
+      },
+      {
+        "en": "Political hubris often precedes failure.",
+        "cn": "政治上的傲慢往往在失败之前。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "political hubris",
+      "display hubris",
+      "hubris led to"
+    ]
+  },
+  "idiosyncrasy": {
+    "examples": [
+      {
+        "en": "Each writer has unique idiosyncrasies.",
+        "cn": "每个作家都有独特的特性。",
+        "source": "文学评论"
+      },
+      {
+        "en": "His idiosyncrasies made him memorable.",
+        "cn": "他的怪癖使他令人难忘。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The system has some unusual idiosyncrasies.",
+        "cn": "这个系统有一些不寻常的特性。",
+        "source": "技术描写"
+      }
+    ],
+    "collocations": [
+      "personal idiosyncrasy",
+      "cultural idiosyncrasy",
+      "unique idiosyncrasy"
+    ]
+  },
+  "ignominious": {
+    "examples": [
+      {
+        "en": "The team suffered an ignominious defeat.",
+        "cn": "球队遭受了耻辱的失败。",
+        "source": "体育报道"
+      },
+      {
+        "en": "His ignominious exit ended his career.",
+        "cn": "他可耻的离开结束了他的职业生涯。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The ignominious surrender shocked the nation.",
+        "cn": "可耻的投降震惊了整个国家。",
+        "source": "历史描写"
+      }
+    ],
+    "collocations": [
+      "ignominious defeat",
+      "ignominious end",
+      "ignominious failure"
+    ]
+  },
+  "immutable": {
+    "examples": [
+      {
+        "en": "The laws of physics are immutable.",
+        "cn": "物理定律是不可改变的。",
+        "source": "科学描写"
+      },
+      {
+        "en": "Some consider tradition immutable.",
+        "cn": "有些人认为传统是不可改变的。",
+        "source": "文化分析"
+      },
+      {
+        "en": "His immutable opposition frustrated colleagues.",
+        "cn": "他不变的反对使同事们感到沮丧。",
+        "source": "职场描写"
+      }
+    ],
+    "collocations": [
+      "immutable law",
+      "immutable principle",
+      "immutable fact"
+    ]
+  },
+  "impassive": {
+    "examples": [
+      {
+        "en": "He remained impassive during the criticism.",
+        "cn": "在批评中他保持冷静。",
+        "source": "行为描写"
+      },
+      {
+        "en": "Her impassive face revealed nothing.",
+        "cn": "她面无表情的脸什么也没透露。",
+        "source": "表情描写"
+      },
+      {
+        "en": "The judge remained impassive throughout.",
+        "cn": "法官自始至终保持冷静。",
+        "source": "法律描写"
+      }
+    ],
+    "collocations": [
+      "remain impassive",
+      "impassive face",
+      "impassive expression"
+    ]
+  },
+  "impecunious": {
+    "examples": [
+      {
+        "en": "The impecunious artist struggled to pay rent.",
+        "cn": "贫穷的艺术家难以支付房租。",
+        "source": "艺术家描写"
+      },
+      {
+        "en": "Despite being impecunious, he was happy.",
+        "cn": "尽管贫穷，他仍然快乐。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The impecunious student relied on scholarships.",
+        "cn": "贫穷的学生依赖奖学金。",
+        "source": "教育描写"
+      }
+    ],
+    "collocations": [
+      "impecunious artist",
+      "impecunious youth",
+      "impecunious circumstances"
+    ]
+  },
+  "imperturbable": {
+    "examples": [
+      {
+        "en": "His imperturbable calm inspired confidence.",
+        "cn": "他沉着冷静的态度激发了信心。",
+        "source": "领导力描写"
+      },
+      {
+        "en": "She remained imperturbable under pressure.",
+        "cn": "她在压力下保持镇定。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The imperturbable pilot landed safely.",
+        "cn": "沉着冷静的飞行员安全着陆。",
+        "source": "紧急情况"
+      }
+    ],
+    "collocations": [
+      "imperturbable calm",
+      "remain imperturbable",
+      "imperturbable manner"
+    ]
+  },
+  "imprecation": {
+    "examples": [
+      {
+        "en": "He hurled imprecations at his enemies.",
+        "cn": "他向敌人发出诅咒。",
+        "source": "冲突描写"
+      },
+      {
+        "en": "The witch uttered dark imprecations.",
+        "cn": "女巫发出黑暗的诅咒。",
+        "source": "奇幻描写"
+      },
+      {
+        "en": "Imprecations echoed through the stadium.",
+        "cn": "咒骂声在体育场中回荡。",
+        "source": "体育场景"
+      }
+    ],
+    "collocations": [
+      "hurl imprecations",
+      "utter imprecations",
+      "bitter imprecations"
+    ]
+  },
+  "inchoate": {
+    "examples": [
+      {
+        "en": "The inchoate plan needed more development.",
+        "cn": "这个初步的计划需要更多发展。",
+        "source": "项目描写"
+      },
+      {
+        "en": "His inchoate ideas gradually took shape.",
+        "cn": "他初步的想法逐渐成形。",
+        "source": "创意描写"
+      },
+      {
+        "en": "The inchoate rebellion was quickly suppressed.",
+        "cn": "刚刚开始的叛乱很快被镇压。",
+        "source": "历史描写"
+      }
+    ],
+    "collocations": [
+      "inchoate ideas",
+      "inchoate plans",
+      "inchoate form"
+    ]
+  },
+  "incontrovertible": {
+    "examples": [
+      {
+        "en": "The incontrovertible evidence led to conviction.",
+        "cn": "无可争辩的证据导致了定罪。",
+        "source": "法律描写"
+      },
+      {
+        "en": "It is an incontrovertible fact.",
+        "cn": "这是一个无可争辩的事实。",
+        "source": "论证描写"
+      },
+      {
+        "en": "The data provided incontrovertible proof.",
+        "cn": "数据提供了无可争辩的证据。",
+        "source": "研究描写"
+      }
+    ],
+    "collocations": [
+      "incontrovertible evidence",
+      "incontrovertible fact",
+      "incontrovertible proof"
+    ]
+  },
+  "incorrigible": {
+    "examples": [
+      {
+        "en": "The incorrigible optimist never gave up hope.",
+        "cn": "无可救药的乐观主义者从不放弃希望。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The incorrigible child caused endless trouble.",
+        "cn": "这个无可救药的孩子惹了无穷的麻烦。",
+        "source": "教育描写"
+      },
+      {
+        "en": "His incorrigible habits never changed.",
+        "cn": "他无可救药的习惯从未改变。",
+        "source": "行为描写"
+      }
+    ],
+    "collocations": [
+      "incorrigible optimist",
+      "incorrigible behavior",
+      "incorrigible habit"
+    ]
+  },
+  "indigenous": {
+    "examples": [
+      {
+        "en": "Indigenous peoples have unique cultural traditions.",
+        "cn": "土著人民有独特的文化传统。",
+        "source": "人类学"
+      },
+      {
+        "en": "The plant is indigenous to South America.",
+        "cn": "这种植物原产于南美洲。",
+        "source": "植物学"
+      },
+      {
+        "en": "Indigenous knowledge systems are valuable.",
+        "cn": "土著知识体系很有价值。",
+        "source": "文化研究"
+      }
+    ],
+    "collocations": [
+      "indigenous peoples",
+      "indigenous species",
+      "indigenous culture"
+    ]
+  },
+  "indolent": {
+    "examples": [
+      {
+        "en": "The indolent student rarely did homework.",
+        "cn": "懒惰的学生很少做作业。",
+        "source": "教育描写"
+      },
+      {
+        "en": "An indolent lifestyle led to health problems.",
+        "cn": "懒惰的生活方式导致了健康问题。",
+        "source": "健康描写"
+      },
+      {
+        "en": "The indolent cat slept all day.",
+        "cn": "懒洋洋的猫整天睡觉。",
+        "source": "动物描写"
+      }
+    ],
+    "collocations": [
+      "indolent lifestyle",
+      "indolent nature",
+      "indolent manner"
+    ]
+  },
+  "ineffable": {
+    "examples": [
+      {
+        "en": "The ineffable beauty of the sunset moved her.",
+        "cn": "日落无法形容的美丽打动了她。",
+        "source": "自然描写"
+      },
+      {
+        "en": "She felt an ineffable sense of peace.",
+        "cn": "她感受到一种难以言表的平静感。",
+        "source": "情感描写"
+      },
+      {
+        "en": "The ineffable joy of reunion filled the room.",
+        "cn": "团聚的难以言表的喜悦充满了房间。",
+        "source": "情感描写"
+      }
+    ],
+    "collocations": [
+      "ineffable beauty",
+      "ineffable joy",
+      "ineffable feeling"
+    ]
+  },
+  "inexorable": {
+    "examples": [
+      {
+        "en": "The inexorable march of time continued.",
+        "cn": "时间无情的前进继续着。",
+        "source": "哲学描写"
+      },
+      {
+        "en": "The inexorable rise in prices worried consumers.",
+        "cn": "价格无情的上涨令消费者担忧。",
+        "source": "经济分析"
+      },
+      {
+        "en": "He faced the inexorable logic of the argument.",
+        "cn": "他面对着论点不可阻挡的逻辑。",
+        "source": "论证描写"
+      }
+    ],
+    "collocations": [
+      "inexorable march",
+      "inexorable logic",
+      "inexorable rise"
+    ]
+  },
+  "infelicitous": {
+    "examples": [
+      {
+        "en": "His infelicitous remarks offended guests.",
+        "cn": "他不恰当的言论得罪了客人。",
+        "source": "社交描写"
+      },
+      {
+        "en": "The infelicitous timing ruined the surprise.",
+        "cn": "不恰当的时机毁了惊喜。",
+        "source": "场景描写"
+      },
+      {
+        "en": "An infelicitous phrase marred the speech.",
+        "cn": "一个不恰当的短语破坏了演讲。",
+        "source": "演讲评论"
+      }
+    ],
+    "collocations": [
+      "infelicitous remark",
+      "infelicitous timing",
+      "infelicitous choice"
+    ]
+  },
+  "ingratiate": {
+    "examples": [
+      {
+        "en": "He tried to ingratiate himself with the boss.",
+        "cn": "他试图讨好老板。",
+        "source": "职场描写"
+      },
+      {
+        "en": "She ingratiated herself with careful flattery.",
+        "cn": "她通过巧妙的奉承来讨好人。",
+        "source": "社交描写"
+      },
+      {
+        "en": "The politician tried to ingratiate with voters.",
+        "cn": "政治家试图讨好选民。",
+        "source": "政治描写"
+      }
+    ],
+    "collocations": [
+      "ingratiate with",
+      "ingratiate oneself",
+      "attempt to ingratiate"
+    ]
+  },
+  "inimical": {
+    "examples": [
+      {
+        "en": "Pollution is inimical to public health.",
+        "cn": "污染对公众健康有害。",
+        "source": "健康分析"
+      },
+      {
+        "en": "The policy was inimical to business interests.",
+        "cn": "这项政策对商业利益有害。",
+        "source": "政策分析"
+      },
+      {
+        "en": "Such conditions are inimical to creativity.",
+        "cn": "这样的条件不利于创造力。",
+        "source": "工作分析"
+      }
+    ],
+    "collocations": [
+      "inimical to",
+      "inimical forces",
+      "inimical environment"
+    ]
+  },
+  "inimitable": {
+    "examples": [
+      {
+        "en": "Her inimitable style defined the era.",
+        "cn": "她独一无二的风格定义了那个时代。",
+        "source": "时尚评论"
+      },
+      {
+        "en": "He had an inimitable way of telling stories.",
+        "cn": "他有一种独特的讲故事方式。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The inimitable genius could not be replicated.",
+        "cn": "独一无二的天才无法复制。",
+        "source": "艺术评论"
+      }
+    ],
+    "collocations": [
+      "inimitable style",
+      "inimitable talent",
+      "inimitable way"
+    ]
+  },
+  "inscrutable": {
+    "examples": [
+      {
+        "en": "His inscrutable expression hid his thoughts.",
+        "cn": "他难以捉摸的表情隐藏了他的想法。",
+        "source": "表情描写"
+      },
+      {
+        "en": "The inscrutable decision puzzled observers.",
+        "cn": "难以理解的决定使观察者困惑。",
+        "source": "分析描写"
+      },
+      {
+        "en": "Her inscrutable smile revealed nothing.",
+        "cn": "她难以捉摸的微笑什么都没透露。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "inscrutable expression",
+      "inscrutable smile",
+      "remain inscrutable"
+    ]
+  },
+  "insidious": {
+    "examples": [
+      {
+        "en": "The insidious effects of pollution are gradual.",
+        "cn": "污染的阴险影响是渐进的。",
+        "source": "环境分析"
+      },
+      {
+        "en": "The insidious disease progressed slowly.",
+        "cn": "这种阴险的疾病缓慢发展。",
+        "source": "医学描写"
+      },
+      {
+        "en": "Insidious rumors spread through the office.",
+        "cn": "阴险的谣言在办公室传播。",
+        "source": "职场描写"
+      }
+    ],
+    "collocations": [
+      "insidious effect",
+      "insidious threat",
+      "insidious influence"
+    ]
+  },
+  "insufferable": {
+    "examples": [
+      {
+        "en": "His insufferable arrogance alienated friends.",
+        "cn": "他令人无法忍受的傲慢疏远了朋友。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The insufferable heat forced them indoors.",
+        "cn": "难以忍受的高温迫使他们待在室内。",
+        "source": "天气描写"
+      },
+      {
+        "en": "Her insufferable smugness irritated everyone.",
+        "cn": "她令人无法忍受的自鸣得意激怒了每个人。",
+        "source": "社交描写"
+      }
+    ],
+    "collocations": [
+      "insufferable arrogance",
+      "insufferable bore",
+      "insufferable heat"
+    ]
+  },
+  "interdict": {
+    "examples": [
+      {
+        "en": "The government interdicted the smuggling operation.",
+        "cn": "政府阻止了走私行动。",
+        "source": "执法报道"
+      },
+      {
+        "en": "An interdict was placed on certain imports.",
+        "cn": "对某些进口商品实施了禁令。",
+        "source": "贸易政策"
+      },
+      {
+        "en": "The court interdicted the proposed action.",
+        "cn": "法院禁止了拟议的行动。",
+        "source": "法律描写"
+      }
+    ],
+    "collocations": [
+      "interdict shipments",
+      "place interdict",
+      "interdict activities"
+    ]
+  },
+  "interminable": {
+    "examples": [
+      {
+        "en": "The interminable meeting tested everyone's patience.",
+        "cn": "无尽的会议考验着每个人的耐心。",
+        "source": "职场描写"
+      },
+      {
+        "en": "The interminable wait seemed to last forever.",
+        "cn": "无尽的等待似乎永无止境。",
+        "source": "等待描写"
+      },
+      {
+        "en": "He gave an interminable speech.",
+        "cn": "他发表了一个没完没了的演讲。",
+        "source": "演讲描写"
+      }
+    ],
+    "collocations": [
+      "interminable wait",
+      "interminable delay",
+      "interminable discussion"
+    ]
+  },
+  "intractable": {
+    "examples": [
+      {
+        "en": "The intractable problem defied all solutions.",
+        "cn": "这个棘手的问题无法解决。",
+        "source": "问题分析"
+      },
+      {
+        "en": "The intractable child refused to listen.",
+        "cn": "这个难以管教的孩子拒绝听话。",
+        "source": "教育描写"
+      },
+      {
+        "en": "Some diseases remain intractable.",
+        "cn": "有些疾病仍然难以治愈。",
+        "source": "医学描写"
+      }
+    ],
+    "collocations": [
+      "intractable problem",
+      "intractable situation",
+      "intractable disease"
+    ]
+  },
+  "inundate": {
+    "examples": [
+      {
+        "en": "The flood inundated the valley.",
+        "cn": "洪水淹没了山谷。",
+        "source": "灾难描写"
+      },
+      {
+        "en": "They were inundated with requests.",
+        "cn": "他们被大量请求淹没了。",
+        "source": "工作描写"
+      },
+      {
+        "en": "The office was inundated with applications.",
+        "cn": "办公室被大量申请淹没了。",
+        "source": "招聘描写"
+      }
+    ],
+    "collocations": [
+      "inundate with",
+      "be inundated",
+      "inundate the area"
+    ]
+  },
+  "inveigh": {
+    "examples": [
+      {
+        "en": "He inveighed against corruption in politics.",
+        "cn": "他痛斥政治中的腐败。",
+        "source": "政治描写"
+      },
+      {
+        "en": "Critics inveighed against the new policy.",
+        "cn": "批评者痛斥新政策。",
+        "source": "政策评论"
+      },
+      {
+        "en": "She inveighed bitterly against injustice.",
+        "cn": "她痛苦地抨击不公正。",
+        "source": "社会评论"
+      }
+    ],
+    "collocations": [
+      "inveigh against",
+      "bitterly inveigh",
+      "inveigh loudly"
+    ]
+  },
+  "inveigle": {
+    "examples": [
+      {
+        "en": "He was inveigled into signing the contract.",
+        "cn": "他被诱骗签署了合同。",
+        "source": "商业描写"
+      },
+      {
+        "en": "She inveigled her way into the exclusive club.",
+        "cn": "她花言巧语地进入了这个独家俱乐部。",
+        "source": "社交描写"
+      },
+      {
+        "en": "The con man inveigled victims with promises.",
+        "cn": "骗子用承诺诱骗受害者。",
+        "source": "犯罪描写"
+      }
+    ],
+    "collocations": [
+      "inveigle into",
+      "inveigle out of",
+      "inveigle someone"
+    ]
+  },
+  "inveterate": {
+    "examples": [
+      {
+        "en": "He was an inveterate gambler.",
+        "cn": "他是一个积习难改的赌徒。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The inveterate liar could not be trusted.",
+        "cn": "这个惯性说谎的人无法信任。",
+        "source": "人物评价"
+      },
+      {
+        "en": "Her inveterate optimism never wavered.",
+        "cn": "她根深蒂固的乐观从未动摇。",
+        "source": "性格描写"
+      }
+    ],
+    "collocations": [
+      "inveterate liar",
+      "inveterate gambler",
+      "inveterate habit"
+    ]
+  },
+  "invidious": {
+    "examples": [
+      {
+        "en": "Making invidious comparisons hurt feelings.",
+        "cn": "做令人反感的比较伤害感情。",
+        "source": "人际关系"
+      },
+      {
+        "en": "The invidious task fell to the junior staff.",
+        "cn": "令人反感的任务落到了初级员工身上。",
+        "source": "职场描写"
+      },
+      {
+        "en": "The invidious distinction caused resentment.",
+        "cn": "令人反感的区别引起了怨恨。",
+        "source": "社会分析"
+      }
+    ],
+    "collocations": [
+      "invidious comparison",
+      "invidious position",
+      "invidious task"
     ]
   }
 }

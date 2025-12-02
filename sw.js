@@ -1,8 +1,8 @@
 // Service Worker for English Boost App
 // ==================== 版本控制 ====================
 // 每次更新时修改版本号 - 格式: english-boost-v主版本.次版本.修订号.时间戳
-const CACHE_VERSION = 'v3.9.0-202512020825';
-const BUILD_TIME = '20251201';
+const CACHE_VERSION = 'v3.10.0-202512090905';
+const BUILD_TIME = '20251209';
 const CACHE_NAME = `english-boost-v${CACHE_VERSION}-${BUILD_TIME}`;
 
 // 关键资源版本哈希（用于验证完整性）
@@ -30,7 +30,13 @@ const urlsToCache = [
     '/subscription.js',
     '/manifest.json',
     '/quotes.js',
-    '/version.json'
+    '/version.json',
+    // V11-V16: 词汇增强数据文件
+    '/word_relations.json',
+    '/word_mnemonics.json',
+    '/word_difficulty.json',
+    '/word_examples.json',
+    '/word_exam_tags.json'
 ];
 
 // 关键资源（必须确保最新）

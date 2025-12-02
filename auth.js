@@ -57,18 +57,56 @@ function getDeviceFingerprint() {
 
 // 检查当前设备是否已激活
 function isDeviceActivated() {
+    console.log('🔍 V1-V10: 检查设备激活状态...');
+    
     const deviceId = getDeviceFingerprint();
     const activatedDevices = getActivatedDevices();
     
+    // V1: 检查设备指纹匹配
     if (activatedDevices[deviceId]) {
-        // 设备已激活，恢复登录状态
         const deviceInfo = activatedDevices[deviceId];
+        console.log('V1: 找到设备激活信息:', deviceInfo.type || 'normal');
+        
+        // V2: 如果是试用类型，检查是否过期
+        if (deviceInfo.type === 'trial' && deviceInfo.userData && deviceInfo.userData.trialStartDate) {
+            const trialDays = deviceInfo.userData.trialDays || 30;
+            const trialEnd = deviceInfo.userData.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+            if (Date.now() > trialEnd) {
+                console.log('V2: 试用已过期');
+                return false;
+            }
+            console.log('V2: 试用有效');
+        }
+        
+        // V3: 恢复登录状态
         localStorage.setItem('isLoggedIn', 'true');
         localStorage.setItem('activationKey', deviceInfo.key);
         localStorage.setItem('authUser', JSON.stringify(deviceInfo.userData));
         localStorage.setItem('deviceId', deviceId);
+        console.log('V3: 登录状态已恢复');
         return true;
     }
+    
+    // V4: 尝试检查其他可能的设备ID
+    const alternativeIds = [
+        localStorage.getItem('eb_device_id'),
+        localStorage.getItem('deviceId'),
+        'trial-device'
+    ].filter(Boolean);
+    
+    for (const altId of alternativeIds) {
+        if (activatedDevices[altId]) {
+            console.log('V4: 通过备用ID找到激活:', altId);
+            const deviceInfo = activatedDevices[altId];
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('activationKey', deviceInfo.key);
+            localStorage.setItem('authUser', JSON.stringify(deviceInfo.userData));
+            localStorage.setItem('deviceId', deviceId);
+            return true;
+        }
+    }
+    
+    console.log('V4: 未找到设备激活信息');
     return false;
 }
 
@@ -210,16 +248,111 @@ function fullLogout() {
 }
 
 function checkAuth() {
-    // 首先检查常规登录状态
+    console.log('🔐 V1-V10: 开始认证检查...');
+    
+    // V1: 首先检查常规登录状态
     if (localStorage.getItem('isLoggedIn') === 'true') {
+        console.log('V1: isLoggedIn=true，已登录');
         return true;
     }
     
-    // 如果未登录，检查设备是否已激活
+    // V2: 检查设备是否已激活（包括试用激活）
     if (isDeviceActivated()) {
+        console.log('V2: 设备已激活');
         return true;
     }
     
+    // V3: 检查activation.js的试用状态
+    if (checkTrialActivation()) {
+        console.log('V3: 检测到有效试用');
+        return true;
+    }
+    
+    // V4: 直接检查eb_activation_state（最后防线）
+    try {
+        const activationState = JSON.parse(localStorage.getItem('eb_activation_state') || 'null');
+        if (activationState && activationState.isActivated) {
+            console.log('V4: 通过eb_activation_state检测到激活状态');
+            
+            // 尝试恢复登录状态
+            if (activationState.trialStartDate) {
+                const trialDays = 30;
+                const trialEnd = activationState.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+                if (Date.now() < trialEnd) {
+                    localStorage.setItem('isLoggedIn', 'true');
+                    console.log('V4: 恢复试用登录状态');
+                    return true;
+                }
+            } else {
+                // 非试用激活
+                localStorage.setItem('isLoggedIn', 'true');
+                return true;
+            }
+        }
+    } catch (e) {
+        console.warn('V4: 检查eb_activation_state失败', e);
+    }
+    
+    console.log('🔐 认证检查完成: 未登录');
+    return false;
+}
+
+// V8-V10: 检查试用激活状态（与activation.js互通）
+function checkTrialActivation() {
+    console.log('🧪 V8-V10: 检查试用激活状态...');
+    
+    try {
+        // V8: 读取activation.js保存的状态
+        const activationState = JSON.parse(localStorage.getItem('eb_activation_state') || 'null');
+        
+        if (!activationState) {
+            console.log('V8: 未找到eb_activation_state');
+            return false;
+        }
+        
+        // V9: 检查是否有试用开始日期
+        if (activationState.trialStartDate) {
+            const trialDays = activationState.trialDays || 30;
+            const trialEnd = activationState.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+            const now = Date.now();
+            
+            if (now < trialEnd) {
+                // V10: 试用有效，同步登录状态
+                console.log('V9: 试用有效，剩余天数:', Math.ceil((trialEnd - now) / (24 * 60 * 60 * 1000)));
+                
+                localStorage.setItem('isLoggedIn', 'true');
+                
+                // 创建试用用户信息（如果不存在）
+                if (!localStorage.getItem('authUser') || localStorage.getItem('authUser') === '{}') {
+                    const trialUser = {
+                        user: 'trial_user',
+                        role: 'trial',
+                        isTrial: true,
+                        trialStartDate: activationState.trialStartDate,
+                        trialDays: trialDays
+                    };
+                    localStorage.setItem('authUser', JSON.stringify(trialUser));
+                    localStorage.setItem('activationKey', 'TRIAL-AUTO');
+                }
+                
+                console.log('✅ V10: 试用状态有效，已自动登录');
+                return true;
+            } else {
+                console.log('⚠️ V9: 试用期已过期');
+                return false;
+            }
+        }
+        
+        // V10: 检查isActivated标志（非试用激活）
+        if (activationState.isActivated && activationState.activationCode) {
+            console.log('V10: 检测到正式激活');
+            localStorage.setItem('isLoggedIn', 'true');
+            return true;
+        }
+        
+    } catch (e) {
+        console.warn('V8-V10: 检查试用状态失败:', e);
+    }
     return false;
 }
 
@@ -229,6 +362,7 @@ window.logout = logout;
 window.fullLogout = fullLogout;
 window.checkAuth = checkAuth;
 window.isDeviceActivated = isDeviceActivated;
+window.checkTrialActivation = checkTrialActivation; // V8: 导出试用检查函数
 window.showActivationResult = showActivationResult;
 window.closeActivationResult = closeActivationResult;
 window.enterApp = enterApp;

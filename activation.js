@@ -949,23 +949,173 @@ const ActivationSystem = {
     // ==================== v4.0 新增功能 ====================
 
     /**
-     * 开始试用
+     * 开始试用 - V1-V20优化版
+     * V1-V10: 基础试用功能和状态同步
+     * V11: 添加强制页面切换机制
+     * V12: 延迟确认状态设置
+     * V13: 添加多重确认机制
      */
     startTrial() {
+        console.log('🚀 V1-V20: 开始试用流程...');
+        
+        // V1: 检查是否已使用过试用
         if (this.state.trialStartDate) {
+            console.log('⚠️ 已使用过试用');
             return { success: false, message: '已使用过试用' };
         }
         
+        // V2: 设置试用状态
         this.state.trialStartDate = Date.now();
         this.state.isActivated = true;
         this.state.vipLevel = 'basic'; // 试用期享受基础VIP
+        
+        // V3: 保存到localStorage
         this.saveActivationState();
+        
+        // V4: 同步到auth.js的登录系统（关键步骤）
+        this.syncTrialToAuthSystem();
+        
+        // V5: 再次确认isLoggedIn状态（双重保障）
+        localStorage.setItem('isLoggedIn', 'true');
+        
+        // V6: 触发全局试用开始事件
+        window.dispatchEvent(new CustomEvent('trialActivated', {
+            detail: {
+                trialStartDate: this.state.trialStartDate,
+                trialDays: this.config.trialDays
+            }
+        }));
+        
+        // V11: 延迟再次确认（防止被其他代码覆盖）
+        setTimeout(() => {
+            localStorage.setItem('isLoggedIn', 'true');
+            console.log('V11: 延迟确认isLoggedIn=true');
+        }, 100);
+        
+        // V12: 多次确认
+        setTimeout(() => {
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                localStorage.setItem('isLoggedIn', 'true');
+                console.warn('V12: isLoggedIn被意外清除，已恢复');
+            }
+        }, 500);
+        
+        console.log('✅ V1-V12: 试用激活成功，登录状态:', localStorage.getItem('isLoggedIn'));
         
         return { 
             success: true, 
             message: `试用已开始，${this.config.trialDays}天内免费使用`,
-            expiresAt: this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000
+            expiresAt: this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000,
+            shouldEnterApp: true // V7: 标记应该进入应用
         };
+    },
+    
+    /**
+     * V1-V20: 同步试用状态到auth.js认证系统
+     * 解决两个认证系统不互通的问题
+     * V13: 增加更多设备ID映射
+     * V14: 增加双重写入确认
+     */
+    syncTrialToAuthSystem() {
+        console.log('🔄 V1-V20: 开始同步试用状态到认证系统...');
+        
+        // V1: 设置isLoggedIn标志（最关键）
+        localStorage.setItem('isLoggedIn', 'true');
+        console.log('V1: isLoggedIn已设置为true');
+        
+        // V2: 创建试用用户数据
+        const trialKey = 'TRIAL-' + Date.now();
+        const trialUserData = {
+            user: 'trial_user_' + (this.state.deviceId || 'unknown').substring(0, 8),
+            role: 'trial',
+            expires: new Date(this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+            permanent: false,
+            isTrial: true,
+            trialStartDate: this.state.trialStartDate,
+            trialDays: this.config.trialDays
+        };
+        
+        // V3: 保存用户信息
+        localStorage.setItem('authUser', JSON.stringify(trialUserData));
+        localStorage.setItem('activationKey', trialKey);
+        localStorage.setItem('deviceId', this.state.deviceId || 'trial-device');
+        console.log('V2-V3: 用户数据已保存');
+        
+        // V4: 同步到activatedDevices（设备激活列表）- 让isDeviceActivated()返回true
+        try {
+            const activatedDevices = JSON.parse(localStorage.getItem('activatedDevices') || '{}');
+            
+            // V13: 使用更多设备标识确保匹配
+            const deviceIds = [
+                this.state.deviceFingerprint,
+                this.state.deviceId,
+                localStorage.getItem('deviceId'),
+                localStorage.getItem('eb_device_id'),
+                'trial-device',
+                'DEV' + Math.abs(navigator.userAgent.split('').reduce((a, b) => ((a << 5) - a) + b.charCodeAt(0), 0) & 0xFFFFFF).toString(36).toUpperCase()
+            ].filter(Boolean);
+            
+            // 去重
+            const uniqueDeviceIds = [...new Set(deviceIds)];
+            
+            uniqueDeviceIds.forEach(deviceId => {
+                activatedDevices[deviceId] = {
+                    key: trialKey,
+                    userData: trialUserData,
+                    activatedAt: new Date().toISOString(),
+                    type: 'trial'
+                };
+            });
+            
+            localStorage.setItem('activatedDevices', JSON.stringify(activatedDevices));
+            console.log('V4+V13: 设备激活列表已更新，设备数:', uniqueDeviceIds.length);
+        } catch (e) {
+            console.warn('V4: 同步设备激活列表失败', e);
+        }
+        
+        // V5: 同步到subscription.js的订阅系统
+        try {
+            const trialEndDate = new Date(this.state.trialStartDate + this.config.trialDays * 24 * 60 * 60 * 1000);
+            const subscriptionStatus = {
+                type: 'trial',
+                status: 'active',
+                startDate: new Date(this.state.trialStartDate).toISOString(),
+                trialEndDate: trialEndDate.toISOString(),
+                purchaseDate: null,
+                activationKey: trialKey,
+                deviceId: this.state.deviceId,
+                lastCheckDate: new Date().toISOString()
+            };
+            localStorage.setItem('subscriptionStatus', JSON.stringify(subscriptionStatus));
+            console.log('V5: 订阅状态已同步');
+        } catch (e) {
+            console.warn('V5: 同步订阅状态失败', e);
+        }
+        
+        // V6: 再次强制确认关键状态
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            console.warn('V6: isLoggedIn意外丢失，重新设置');
+            localStorage.setItem('isLoggedIn', 'true');
+        }
+        
+        // V7: 清除任何可能阻止登录的缓存
+        sessionStorage.removeItem('requireActivation');
+        sessionStorage.removeItem('loginRequired');
+        
+        // V14: 双重写入确认
+        const confirmWrite = localStorage.getItem('isLoggedIn');
+        if (confirmWrite !== 'true') {
+            console.error('V14: localStorage写入失败，尝试再次写入');
+            try {
+                localStorage.setItem('isLoggedIn', 'true');
+            } catch (e) {
+                console.error('V14: localStorage写入彻底失败:', e);
+            }
+        }
+        
+        console.log('✅ V1-V14: 试用状态已同步到所有认证系统');
+        console.log('   isLoggedIn:', localStorage.getItem('isLoggedIn'));
+        console.log('   activationKey:', localStorage.getItem('activationKey'));
     },
 
     /**
@@ -1421,6 +1571,129 @@ const ActivationUI = {
             setTimeout(() => dialog.remove(), 300);
         }
     },
+    
+    /**
+     * V17: 强制关闭所有对话框和遮罩
+     */
+    forceCloseAllDialogs() {
+        console.log('V17: 强制关闭所有对话框...');
+        
+        // 关闭激活对话框
+        const activationDialog = document.getElementById('activation-dialog');
+        if (activationDialog) {
+            activationDialog.remove();
+            console.log('V17: 已移除 activation-dialog');
+        }
+        
+        // 关闭所有modal和dialog类元素
+        const allDialogs = document.querySelectorAll('.activation-dialog, .modal, .dialog, .overlay, [class*="activation"]');
+        allDialogs.forEach(el => {
+            if (el.id !== 'mainApp' && el.id !== 'appContainer') {
+                el.style.display = 'none';
+                console.log('V17: 隐藏元素:', el.className || el.id);
+            }
+        });
+        
+        // 移除body上的modal相关类
+        document.body.classList.remove('modal-open', 'activation-open', 'dialog-open');
+        
+        // 确保body可滚动
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+    },
+    
+    /**
+     * V18: 强制进入应用（多种方案）
+     * @returns {boolean} 是否成功切换
+     */
+    forceEnterApp() {
+        console.log('V18: 尝试强制进入应用...');
+        
+        // 触发事件通知
+        window.dispatchEvent(new CustomEvent('trialStarted'));
+        window.dispatchEvent(new CustomEvent('authSuccess'));
+        
+        // 尝试的元素选择器列表
+        const loginSelectors = [
+            '#loginPage',
+            '#login-page',
+            '.login-page',
+            '#activationPage',
+            '#activation-page',
+            '.activation-page',
+            '[data-page="login"]',
+            '[data-page="activation"]'
+        ];
+        
+        const appSelectors = [
+            '#mainApp',
+            '#main-app',
+            '.main-app',
+            '#appContainer',
+            '#app-container',
+            '.app-container',
+            '[data-page="main"]',
+            '[data-page="app"]'
+        ];
+        
+        let switched = false;
+        
+        // 隐藏所有登录/激活页面
+        loginSelectors.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.classList.add('hidden');
+                el.style.display = 'none';
+                el.style.visibility = 'hidden';
+                el.style.opacity = '0';
+                console.log('V18: 隐藏登录页:', selector);
+                switched = true;
+            }
+        });
+        
+        // 显示所有应用页面
+        appSelectors.forEach(selector => {
+            const el = document.querySelector(selector);
+            if (el) {
+                el.classList.remove('hidden');
+                el.style.display = 'block';
+                el.style.visibility = 'visible';
+                el.style.opacity = '1';
+                console.log('V18: 显示应用页:', selector);
+                switched = true;
+            }
+        });
+        
+        // V19: 尝试调用全局的enterApp函数
+        if (typeof window.enterApp === 'function') {
+            try {
+                window.enterApp();
+                console.log('V19: 调用 window.enterApp() 成功');
+                switched = true;
+            } catch (e) {
+                console.warn('V19: window.enterApp() 调用失败:', e);
+            }
+        }
+        
+        // V20: 初始化应用功能
+        if (switched) {
+            console.log('V20: 初始化应用功能...');
+            setTimeout(() => {
+                try {
+                    if (typeof initDailyGoals === 'function') initDailyGoals();
+                    if (typeof initNavScrollBehavior === 'function') initNavScrollBehavior();
+                    if (typeof initAvatar === 'function') initAvatar();
+                    if (typeof renderSubscriptionBadge === 'function') renderSubscriptionBadge();
+                    if (typeof initApp === 'function') initApp();
+                    console.log('V20: 应用功能初始化完成');
+                } catch (e) {
+                    console.warn('V20: 应用初始化部分失败:', e);
+                }
+            }, 100);
+        }
+        
+        return switched;
+    },
 
     /**
      * 绑定对话框事件
@@ -1569,7 +1842,7 @@ const ActivationUI = {
             }
         });
         
-        // V1-V10优化: 简化的试用按钮绑定
+        // V1-V20优化: 简化的试用按钮绑定
         const trialBtn = document.getElementById('start-trial-btn');
         if (trialBtn) {
             // 确保按钮可点击
@@ -1582,8 +1855,13 @@ const ActivationUI = {
                 e.preventDefault();
                 e.stopPropagation();
                 
+                console.log('🔘 V15: 试用按钮被点击');
+                
                 // 防止重复点击
-                if (trialBtn.classList.contains('processing')) return;
+                if (trialBtn.classList.contains('processing')) {
+                    console.log('⚠️ 正在处理中，忽略重复点击');
+                    return;
+                }
                 trialBtn.classList.add('processing');
                 
                 // 点击音效
@@ -1595,7 +1873,10 @@ const ActivationUI = {
                     trialBtn.style.transform = '';
                 }, 150);
                 
+                // V1: 开始试用
                 const result = ActivationSystem.startTrial();
+                console.log('V15: 试用结果:', result);
+                
                 if (result.success) {
                     // 成功音效
                     this.playSound('success');
@@ -1603,10 +1884,28 @@ const ActivationUI = {
                     this.showWelcomeConfetti();
                     // 显示试用成功动画
                     this.showTrialSuccessAnimation();
+                    
+                    // V15-V20: 改进的页面跳转逻辑
                     setTimeout(() => {
-                        this.closeActivationDialog();
-                        window.dispatchEvent(new CustomEvent('trialStarted'));
-                    }, 3000);
+                        console.log('🚀 V16: 准备进入应用...');
+                        
+                        // V16: 再次确认登录状态
+                        localStorage.setItem('isLoggedIn', 'true');
+                        
+                        // V17: 关闭所有激活相关的对话框和遮罩
+                        this.forceCloseAllDialogs();
+                        
+                        // V18: 多种方式尝试进入应用
+                        const enterSuccess = this.forceEnterApp();
+                        
+                        // V19: 如果所有方法都失败，刷新页面
+                        if (!enterSuccess) {
+                            console.log('V19: 所有切换方法失败，3秒后刷新页面');
+                            setTimeout(() => {
+                                location.reload();
+                            }, 1000);
+                        }
+                    }, 2000); // 等待动画
                 } else {
                     trialBtn.classList.remove('processing');
                     const errorEl = document.getElementById('activation-error');
@@ -1620,6 +1919,9 @@ const ActivationUI = {
             // 绑定点击和触摸事件
             trialBtn.addEventListener('click', handleTrialStart);
             trialBtn.addEventListener('touchend', handleTrialStart);
+            console.log('✅ 试用按钮事件已绑定');
+        } else {
+            console.warn('⚠️ 未找到试用按钮 #start-trial-btn');
         }
         
         // 设备迁移按钮

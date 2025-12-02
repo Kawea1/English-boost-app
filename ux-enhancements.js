@@ -2973,6 +2973,1963 @@
         StressReliefSystem.init();
     }
 
+    // ==================== 宠物陪伴系统 v8.1-v8.20 ====================
+    
+    // v8.1: 宠物类型定义 (v8.26优化：更可爱的宠物设定)
+    const PET_TYPES = {
+        cat: { 
+            emoji: '🐱', name: '小猫咪', evolutions: ['🐱', '😺', '😸'],
+            personality: 'gentle', // 性格：温柔
+            sleepEmoji: '😴', happyEmoji: '😻', sadEmoji: '😿', playEmoji: '🙀',
+            idleActions: ['打哈欠', '舔毛毛', '伸懒腰', '眨眨眼'],
+            favoriteFood: 'fish', sound: '喵~'
+        },
+        dog: { 
+            emoji: '🐶', name: '小狗狗', evolutions: ['🐶', '🐕', '🦮'],
+            personality: 'loyal', // 性格：忠诚
+            sleepEmoji: '😪', happyEmoji: '🥳', sadEmoji: '🥺', playEmoji: '🤪',
+            idleActions: ['摇尾巴', '转圈圈', '趴下来', '竖耳朵'],
+            favoriteFood: 'meat', sound: '汪汪~'
+        },
+        rabbit: { 
+            emoji: '🐰', name: '小兔兔', evolutions: ['🐰', '🐇', '🐾'],
+            personality: 'shy', // 性格：害羞
+            sleepEmoji: '😴', happyEmoji: '🥰', sadEmoji: '😢', playEmoji: '😝',
+            idleActions: ['抖耳朵', '蹦蹦跳', '揉眼睛', '闻一闻'],
+            favoriteFood: 'apple', sound: '吱吱~'
+        },
+        bear: { 
+            emoji: '🐻', name: '小熊熊', evolutions: ['🐻', '🧸', '🐻‍❄️'],
+            personality: 'lazy', // 性格：慵懒
+            sleepEmoji: '😴', happyEmoji: '🤗', sadEmoji: '😞', playEmoji: '🤭',
+            idleActions: ['打滚滚', '挠痒痒', '打呼噜', '吃蜂蜜'],
+            favoriteFood: 'cake', sound: '哼哼~'
+        },
+        panda: { 
+            emoji: '🐼', name: '小熊猫', evolutions: ['🐼', '🎍', '🐾'],
+            personality: 'chill', // 性格：佛系
+            sleepEmoji: '😪', happyEmoji: '😊', sadEmoji: '😔', playEmoji: '🎋',
+            idleActions: ['吃竹子', '滚来滚去', '卖萌', '发呆'],
+            favoriteFood: 'cookie', sound: '嘤嘤~'
+        },
+        fox: { 
+            emoji: '🦊', name: '小狐狸', evolutions: ['🦊', '🔥', '✨'],
+            personality: 'clever', // 性格：机灵
+            sleepEmoji: '😴', happyEmoji: '😏', sadEmoji: '😿', playEmoji: '🤓',
+            idleActions: ['竖耳朵', '甩尾巴', '偷看看', '装无辜'],
+            favoriteFood: 'meat', sound: '呜呜~'
+        },
+        penguin: { 
+            emoji: '🐧', name: '小企鹅', evolutions: ['🐧', '❄️', '🎿'],
+            personality: 'cute', // 性格：呆萌
+            sleepEmoji: '😴', happyEmoji: '🥰', sadEmoji: '😢', playEmoji: '🤪',
+            idleActions: ['摇摇晃晃', '拍翅膀', '滑一滑', '抖抖毛'],
+            favoriteFood: 'fish', sound: '嘎嘎~'
+        },
+        hamster: { 
+            emoji: '🐹', name: '小仓鼠', evolutions: ['🐹', '🌻', '🎡'],
+            personality: 'active', // 性格：活泼
+            sleepEmoji: '😴', happyEmoji: '😋', sadEmoji: '😢', playEmoji: '🏃',
+            idleActions: ['塞腮帮', '跑轮子', '洗脸脸', '挖洞洞'],
+            favoriteFood: 'cookie', sound: '吱吱~'
+        },
+        owl: { 
+            emoji: '🦉', name: '小猫头鹰', evolutions: ['🦉', '📚', '🎓'],
+            personality: 'wise', // 性格：智慧
+            sleepEmoji: '😪', happyEmoji: '🤓', sadEmoji: '😔', playEmoji: '🧐',
+            idleActions: ['转头头', '眨大眼', '整理羽毛', '看书书'],
+            favoriteFood: 'meat', sound: '咕咕~'
+        },
+        shark: { 
+            emoji: '🦈', name: '小鲨鲨', evolutions: ['🦈', '🌊', '🔱'],
+            personality: 'cool', // 性格：酷酷的
+            sleepEmoji: '😴', happyEmoji: '😎', sadEmoji: '🥺', playEmoji: '🤩',
+            idleActions: ['游来游去', '吐泡泡', '摆尾巴', '潜下去'],
+            favoriteFood: 'fish', sound: '咕噜~'
+        }
+    };
+    
+    // v8.2: 食物类型
+    const FOOD_TYPES = {
+        apple: { emoji: '🍎', name: '苹果', hunger: 15, happiness: 5, cost: 0 },
+        cookie: { emoji: '🍪', name: '饼干', hunger: 20, happiness: 10, cost: 5 },
+        cake: { emoji: '🍰', name: '蛋糕', hunger: 30, happiness: 20, cost: 15 },
+        meat: { emoji: '🍖', name: '肉骨头', hunger: 40, happiness: 15, cost: 20 },
+        fish: { emoji: '🐟', name: '小鱼干', hunger: 35, happiness: 25, cost: 25 },
+        icecream: { emoji: '🍦', name: '冰淇淋', hunger: 10, happiness: 30, cost: 30 }
+    };
+    
+    // v8.3: 装饰道具
+    const ACCESSORIES = {
+        hats: [
+            { id: 'crown', emoji: '👑', name: '皇冠', price: 100 },
+            { id: 'cap', emoji: '🧢', name: '棒球帽', price: 50 },
+            { id: 'tophat', emoji: '🎩', name: '礼帽', price: 80 },
+            { id: 'partyhat', emoji: '🎉', name: '派对帽', price: 60 }
+        ],
+        glasses: [
+            { id: 'sunglasses', emoji: '🕶️', name: '墨镜', price: 40 },
+            { id: 'glasses', emoji: '👓', name: '眼镜', price: 30 }
+        ],
+        bows: [
+            { id: 'ribbon', emoji: '🎀', name: '蝴蝶结', price: 35 },
+            { id: 'flower', emoji: '🌸', name: '花朵', price: 45 }
+        ]
+    };
+    
+    // v8.4: 成就定义
+    const PET_ACHIEVEMENTS = [
+        { id: 'first_feed', name: '第一次喂食', desc: '喂养宠物1次', icon: '🍎', coins: 10, condition: data => data.feedCount >= 1 },
+        { id: 'feed_10', name: '贴心主人', desc: '喂养宠物10次', icon: '🥗', coins: 30, condition: data => data.feedCount >= 10 },
+        { id: 'feed_50', name: '美食家', desc: '喂养宠物50次', icon: '🍽️', coins: 100, condition: data => data.feedCount >= 50 },
+        { id: 'play_10', name: '玩伴', desc: '和宠物互动10次', icon: '🎮', coins: 20, condition: data => data.playCount >= 10 },
+        { id: 'play_50', name: '最佳朋友', desc: '和宠物互动50次', icon: '💕', coins: 80, condition: data => data.playCount >= 50 },
+        { id: 'level_5', name: '成长中', desc: '宠物达到5级', icon: '⭐', coins: 50, condition: data => data.level >= 5 },
+        { id: 'level_10', name: '茁壮成长', desc: '宠物达到10级', icon: '🌟', coins: 150, condition: data => data.level >= 10 },
+        { id: 'streak_7', name: '一周陪伴', desc: '连续7天照顾宠物', icon: '📅', coins: 100, condition: data => data.streak >= 7 },
+        { id: 'streak_30', name: '月度陪伴', desc: '连续30天照顾宠物', icon: '🏆', coins: 500, condition: data => data.streak >= 30 }
+    ];
+    
+    // v8.5-v8.20: 宠物系统主模块
+    const VirtualPetSystem = {
+        data: null,
+        container: null,
+        isInitialized: false,
+        moodInterval: null,
+        decayInterval: null,
+        
+        // 默认数据
+        getDefaultData() {
+            return {
+                hasPet: false,
+                petType: null,
+                petName: '',
+                hunger: 100,
+                happiness: 100,
+                energy: 100,
+                exp: 0,
+                level: 1,
+                coins: 50,
+                feedCount: 0,
+                playCount: 0,
+                streak: 0,
+                lastVisit: null,
+                lastFeed: null,
+                achievements: [],
+                ownedAccessories: [],
+                equippedAccessories: { hat: null, glasses: null, bow: null },
+                diaryEntries: [],
+                totalDaysWithPet: 0,
+                gameHighScore: 0
+            };
+        },
+        
+        init() {
+            this.loadData();
+            
+            if (!this.data.hasPet) {
+                this.showPetSelection();
+            } else {
+                this.createPetUI();
+                this.startLifeCycle();
+                this.checkDailyVisit();
+            }
+            
+            console.log('🐾 宠物陪伴系统 v8.1-v8.20 已加载');
+        },
+        
+        // 数据持久化
+        loadData() {
+            const saved = localStorage.getItem('virtualPetData');
+            this.data = saved ? JSON.parse(saved) : this.getDefaultData();
+        },
+        
+        saveData() {
+            localStorage.setItem('virtualPetData', JSON.stringify(this.data));
+        },
+        
+        // v8.1: 宠物选择界面
+        showPetSelection() {
+            const overlay = document.createElement('div');
+            overlay.className = 'pet-selection-overlay';
+            overlay.innerHTML = `
+                <div class="pet-selection-modal">
+                    <h2 class="pet-selection-title">🎉 领养一只宠物</h2>
+                    <p class="pet-selection-subtitle">选择你的学习伙伴，它会陪你一起成长！</p>
+                    <div class="pet-options">
+                        ${Object.entries(PET_TYPES).map(([key, pet]) => `
+                            <div class="pet-option" data-type="${key}">
+                                <span class="pet-option-icon">${pet.emoji}</span>
+                                <span class="pet-option-name">${pet.name}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <input type="text" class="pet-name-input" placeholder="给它起个名字吧~" maxlength="10">
+                    <button class="pet-confirm-btn" disabled>确认领养</button>
+                </div>
+            `;
+            document.body.appendChild(overlay);
+            
+            setTimeout(() => overlay.classList.add('show'), 10);
+            
+            let selectedType = null;
+            const confirmBtn = overlay.querySelector('.pet-confirm-btn');
+            const nameInput = overlay.querySelector('.pet-name-input');
+            
+            overlay.querySelectorAll('.pet-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    overlay.querySelectorAll('.pet-option').forEach(o => o.classList.remove('selected'));
+                    option.classList.add('selected');
+                    selectedType = option.dataset.type;
+                    this.updateConfirmBtn(confirmBtn, selectedType, nameInput.value);
+                });
+            });
+            
+            nameInput.addEventListener('input', () => {
+                this.updateConfirmBtn(confirmBtn, selectedType, nameInput.value);
+            });
+            
+            confirmBtn.addEventListener('click', () => {
+                if (selectedType && nameInput.value.trim()) {
+                    this.adoptPet(selectedType, nameInput.value.trim());
+                    overlay.classList.remove('show');
+                    setTimeout(() => overlay.remove(), 300);
+                }
+            });
+        },
+        
+        updateConfirmBtn(btn, type, name) {
+            btn.disabled = !(type && name.trim());
+        },
+        
+        adoptPet(type, name) {
+            this.data.hasPet = true;
+            this.data.petType = type;
+            this.data.petName = name;
+            this.data.lastVisit = new Date().toDateString();
+            this.saveData();
+            
+            this.createPetUI();
+            this.startLifeCycle();
+            
+            showSmartToast(`🎉 ${name}成为了你的学习伙伴！`, 'success', 3000);
+            celebrateSuccess();
+            HapticFeedback.success();
+            
+            this.addDiaryEntry(`今天，${name}来到了我身边，成为了我的学习伙伴！`);
+        },
+        
+        // v8.2: 创建宠物UI
+        createPetUI() {
+            if (this.container) this.container.remove();
+            
+            const pet = PET_TYPES[this.data.petType];
+            const evolutionStage = Math.min(Math.floor(this.data.level / 5), 2);
+            const currentEmoji = pet.evolutions[evolutionStage];
+            
+            this.container = document.createElement('div');
+            this.container.className = 'virtual-pet-container';
+            this.container.innerHTML = `
+                <div class="pet-status-bar">
+                    <div class="pet-name-display">${this.data.petName}</div>
+                    <div class="pet-stat">
+                        <span class="pet-stat-icon">🍖</span>
+                        <div class="pet-stat-bar">
+                            <div class="pet-stat-fill hunger" style="width: ${this.data.hunger}%"></div>
+                        </div>
+                        <span class="pet-stat-value">${this.data.hunger}%</span>
+                    </div>
+                    <div class="pet-stat">
+                        <span class="pet-stat-icon">💖</span>
+                        <div class="pet-stat-bar">
+                            <div class="pet-stat-fill happiness" style="width: ${this.data.happiness}%"></div>
+                        </div>
+                        <span class="pet-stat-value">${this.data.happiness}%</span>
+                    </div>
+                    <div class="pet-stat">
+                        <span class="pet-stat-icon">⚡</span>
+                        <div class="pet-stat-bar">
+                            <div class="pet-stat-fill energy" style="width: ${this.data.energy}%"></div>
+                        </div>
+                        <span class="pet-stat-value">${this.data.energy}%</span>
+                    </div>
+                </div>
+                <div class="pet-mood-bubble"></div>
+                <div class="pet-action-menu">
+                    <button class="pet-action-btn" data-action="feed">
+                        <span class="pet-action-icon">🍎</span>
+                        <span class="pet-action-label">喂食</span>
+                    </button>
+                    <button class="pet-action-btn" data-action="play">
+                        <span class="pet-action-icon">🎮</span>
+                        <span class="pet-action-label">玩耍</span>
+                    </button>
+                    <button class="pet-action-btn" data-action="shop">
+                        <span class="pet-action-icon">🛒</span>
+                        <span class="pet-action-label">商店</span>
+                    </button>
+                    <button class="pet-action-btn" data-action="stats">
+                        <span class="pet-action-icon">📊</span>
+                        <span class="pet-action-label">统计</span>
+                    </button>
+                </div>
+                <div class="pet-food-menu">
+                    ${Object.entries(FOOD_TYPES).map(([key, food]) => `
+                        <button class="pet-food-option" data-food="${key}" ${food.cost > this.data.coins ? 'disabled' : ''}>
+                            <span class="pet-food-icon">${food.emoji}</span>
+                            <span class="pet-food-cost">${food.cost > 0 ? food.cost + '💰' : '免费'}</span>
+                        </button>
+                    `).join('')}
+                </div>
+                <div class="virtual-pet ${this.getMoodClass()}">
+                    ${this.data.equippedAccessories.hat ? `<div class="pet-accessory hat">${this.getAccessoryEmoji('hats', this.data.equippedAccessories.hat)}</div>` : ''}
+                    ${this.data.equippedAccessories.glasses ? `<div class="pet-accessory glasses">${this.getAccessoryEmoji('glasses', this.data.equippedAccessories.glasses)}</div>` : ''}
+                    ${this.data.equippedAccessories.bow ? `<div class="pet-accessory bow">${this.getAccessoryEmoji('bows', this.data.equippedAccessories.bow)}</div>` : ''}
+                    <div class="virtual-pet-sprite">${currentEmoji}</div>
+                    <div class="pet-level-badge">${this.data.level}</div>
+                    <div class="pet-exp-bar">
+                        <div class="pet-exp-fill" style="width: ${(this.data.exp % 100)}%"></div>
+                    </div>
+                    <div class="pet-environment">
+                        <span class="pet-grass">🌱</span>
+                        <span class="pet-grass">🌿</span>
+                        <span class="pet-grass">🌿</span>
+                        <span class="pet-grass">🌱</span>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(this.container);
+            this.setupEvents();
+            this.updateUI();
+        },
+        
+        getAccessoryEmoji(category, id) {
+            const item = ACCESSORIES[category].find(a => a.id === id);
+            return item ? item.emoji : '';
+        },
+        
+        getMoodClass() {
+            if (this.data.energy < 20) return 'sleeping';
+            if (this.data.hunger < 30) return 'hungry';
+            if (this.data.happiness > 80) return 'excited';
+            return '';
+        },
+        
+        // v8.3: 事件绑定
+        setupEvents() {
+            const pet = this.container.querySelector('.virtual-pet');
+            const actionMenu = this.container.querySelector('.pet-action-menu');
+            const foodMenu = this.container.querySelector('.pet-food-menu');
+            let menuOpen = false;
+            let foodMenuOpen = false;
+            
+            // 点击宠物
+            pet.addEventListener('click', (e) => {
+                if (menuOpen) {
+                    actionMenu.classList.remove('show');
+                    foodMenu.classList.remove('show');
+                    menuOpen = false;
+                    foodMenuOpen = false;
+                } else {
+                    this.petInteract();
+                }
+            });
+            
+            // 长按显示菜单
+            let pressTimer;
+            pet.addEventListener('touchstart', () => {
+                pressTimer = setTimeout(() => {
+                    actionMenu.classList.add('show');
+                    menuOpen = true;
+                    HapticFeedback.medium();
+                }, 500);
+            });
+            pet.addEventListener('touchend', () => clearTimeout(pressTimer));
+            pet.addEventListener('touchmove', () => clearTimeout(pressTimer));
+            
+            // 双击显示菜单（桌面端）
+            let lastClick = 0;
+            pet.addEventListener('click', () => {
+                const now = Date.now();
+                if (now - lastClick < 300) {
+                    actionMenu.classList.add('show');
+                    menuOpen = true;
+                }
+                lastClick = now;
+            });
+            
+            // 菜单操作
+            actionMenu.querySelectorAll('.pet-action-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const action = btn.dataset.action;
+                    
+                    switch(action) {
+                        case 'feed':
+                            foodMenu.classList.toggle('show');
+                            foodMenuOpen = !foodMenuOpen;
+                            break;
+                        case 'play':
+                            this.playWithPet();
+                            actionMenu.classList.remove('show');
+                            menuOpen = false;
+                            break;
+                        case 'shop':
+                            this.showShop();
+                            actionMenu.classList.remove('show');
+                            menuOpen = false;
+                            break;
+                        case 'stats':
+                            this.showStats();
+                            actionMenu.classList.remove('show');
+                            menuOpen = false;
+                            break;
+                    }
+                });
+            });
+            
+            // 喂食选择
+            foodMenu.querySelectorAll('.pet-food-option').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!btn.disabled) {
+                        this.feedPet(btn.dataset.food);
+                        foodMenu.classList.remove('show');
+                        actionMenu.classList.remove('show');
+                        menuOpen = false;
+                        foodMenuOpen = false;
+                    }
+                });
+            });
+            
+            // 点击其他地方关闭菜单
+            document.addEventListener('click', (e) => {
+                if (!this.container.contains(e.target)) {
+                    actionMenu.classList.remove('show');
+                    foodMenu.classList.remove('show');
+                    menuOpen = false;
+                    foodMenuOpen = false;
+                }
+            });
+        },
+        
+        // v8.4: 宠物互动
+        petInteract() {
+            this.data.playCount++;
+            this.data.happiness = Math.min(100, this.data.happiness + 5);
+            this.data.exp += 2;
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            this.showHeartBurst();
+            this.speak(this.getRandomSpeech('interact'));
+            HapticFeedback.light();
+            
+            this.checkAchievements();
+        },
+        
+        // v8.5: 喂食
+        feedPet(foodType) {
+            const food = FOOD_TYPES[foodType];
+            
+            if (this.data.coins < food.cost) {
+                showSmartToast('💰 金币不足！', 'error', 2000);
+                return;
+            }
+            
+            this.data.coins -= food.cost;
+            this.data.hunger = Math.min(100, this.data.hunger + food.hunger);
+            this.data.happiness = Math.min(100, this.data.happiness + food.happiness);
+            this.data.exp += 5;
+            this.data.feedCount++;
+            this.data.lastFeed = Date.now();
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            this.showFoodAnimation(food.emoji);
+            this.speak(this.getRandomSpeech('feed'));
+            HapticFeedback.medium();
+            
+            this.checkAchievements();
+        },
+        
+        showFoodAnimation(emoji) {
+            const pet = this.container.querySelector('.virtual-pet');
+            const rect = pet.getBoundingClientRect();
+            
+            const food = document.createElement('div');
+            food.className = 'pet-food-item';
+            food.textContent = emoji;
+            food.style.left = `${rect.left + rect.width / 2 - 15}px`;
+            food.style.top = `${rect.top}px`;
+            document.body.appendChild(food);
+            
+            pet.classList.add('eating');
+            setTimeout(() => {
+                food.remove();
+                pet.classList.remove('eating');
+            }, 1000);
+        },
+        
+        // v8.6: 玩耍
+        playWithPet() {
+            if (this.data.energy < 20) {
+                this.speak('太累了，让我休息一下吧~');
+                return;
+            }
+            
+            this.data.energy = Math.max(0, this.data.energy - 15);
+            this.data.happiness = Math.min(100, this.data.happiness + 20);
+            this.data.playCount++;
+            this.data.exp += 10;
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            const pet = this.container.querySelector('.virtual-pet');
+            pet.classList.add('dancing');
+            setTimeout(() => pet.classList.remove('dancing'), 3000);
+            
+            this.showSparkles();
+            this.speak(this.getRandomSpeech('play'));
+            HapticFeedback.success();
+            
+            // 随机获得金币
+            if (Math.random() > 0.5) {
+                const coins = Math.floor(Math.random() * 10) + 5;
+                this.data.coins += coins;
+                this.saveData();
+                showSmartToast(`🎉 玩耍获得 ${coins} 金币！`, 'success', 2000);
+            }
+            
+            this.checkAchievements();
+        },
+        
+        showHeartBurst() {
+            const pet = this.container.querySelector('.virtual-pet');
+            const rect = pet.getBoundingClientRect();
+            
+            for (let i = 0; i < 6; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'pet-heart';
+                heart.textContent = '❤️';
+                heart.style.setProperty('--tx', `${(Math.random() - 0.5) * 80}px`);
+                heart.style.setProperty('--ty', `${-Math.random() * 60 - 20}px`);
+                heart.style.left = `${rect.left + rect.width / 2}px`;
+                heart.style.top = `${rect.top + rect.height / 2}px`;
+                heart.style.position = 'fixed';
+                heart.style.zIndex = '200';
+                heart.style.pointerEvents = 'none';
+                document.body.appendChild(heart);
+                
+                setTimeout(() => heart.remove(), 1000);
+            }
+        },
+        
+        showSparkles() {
+            const pet = this.container.querySelector('.virtual-pet');
+            const rect = pet.getBoundingClientRect();
+            
+            const sparkles = ['✨', '⭐', '🌟', '💫'];
+            for (let i = 0; i < 8; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'pet-sparkle';
+                sparkle.textContent = sparkles[Math.floor(Math.random() * sparkles.length)];
+                sparkle.style.left = `${rect.left + Math.random() * rect.width}px`;
+                sparkle.style.top = `${rect.top + Math.random() * rect.height}px`;
+                sparkle.style.animationDelay = `${i * 0.1}s`;
+                document.body.appendChild(sparkle);
+                
+                setTimeout(() => sparkle.remove(), 1000);
+            }
+        },
+        
+        // v8.7: 等级系统
+        checkLevelUp() {
+            const expNeeded = this.data.level * 100;
+            if (this.data.exp >= expNeeded) {
+                this.data.exp -= expNeeded;
+                this.data.level++;
+                this.data.coins += this.data.level * 10;
+                
+                showSmartToast(`🎉 ${this.data.petName}升到了 ${this.data.level} 级！`, 'success', 3000);
+                celebrateSuccess();
+                
+                // 检查进化
+                if (this.data.level === 5 || this.data.level === 10) {
+                    this.showEvolution();
+                }
+                
+                this.addDiaryEntry(`今天升到了 ${this.data.level} 级，真开心！`);
+            }
+        },
+        
+        // v8.8: 进化动画
+        showEvolution() {
+            const pet = PET_TYPES[this.data.petType];
+            const oldStage = Math.min(Math.floor((this.data.level - 1) / 5), 2);
+            const newStage = Math.min(Math.floor(this.data.level / 5), 2);
+            
+            if (oldStage === newStage) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'pet-evolution-modal';
+            modal.innerHTML = `
+                <div class="pet-evolution-content">
+                    <div class="pet-evolution-before">${pet.evolutions[oldStage]}</div>
+                    <div class="pet-evolution-arrow">⬇️</div>
+                    <div class="pet-evolution-after">${pet.evolutions[newStage]}</div>
+                    <div class="pet-evolution-text">🎊 ${this.data.petName} 进化了！</div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            setTimeout(() => {
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.remove();
+                    this.createPetUI(); // 重建UI显示新形态
+                }, 500);
+            }, 4000);
+            
+            this.addDiaryEntry(`今天进化了！变得更可爱了~`);
+        },
+        
+        // v8.9: 商店
+        showShop() {
+            const modal = document.createElement('div');
+            modal.className = 'pet-shop-modal';
+            modal.innerHTML = `
+                <div class="pet-shop-header">
+                    <span class="pet-shop-title">🛒 宠物商店</span>
+                    <div class="pet-coins-display">💰 ${this.data.coins}</div>
+                </div>
+                <div class="pet-shop-tabs">
+                    <button class="pet-shop-tab active" data-tab="hats">帽子</button>
+                    <button class="pet-shop-tab" data-tab="glasses">眼镜</button>
+                    <button class="pet-shop-tab" data-tab="bows">装饰</button>
+                </div>
+                <div class="pet-shop-items" data-current="hats">
+                    ${this.renderShopItems('hats')}
+                </div>
+                <button class="pet-tasks-close" style="position:absolute;top:15px;right:15px;">×</button>
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            // Tab切换
+            modal.querySelectorAll('.pet-shop-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    modal.querySelectorAll('.pet-shop-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    modal.querySelector('.pet-shop-items').innerHTML = this.renderShopItems(tab.dataset.tab);
+                    this.setupShopItemEvents(modal);
+                });
+            });
+            
+            this.setupShopItemEvents(modal);
+            
+            modal.querySelector('.pet-tasks-close').addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+        },
+        
+        renderShopItems(category) {
+            return ACCESSORIES[category].map(item => {
+                const owned = this.data.ownedAccessories.includes(item.id);
+                const equipped = Object.values(this.data.equippedAccessories).includes(item.id);
+                return `
+                    <div class="pet-shop-item ${owned ? 'owned' : ''}" data-id="${item.id}" data-category="${category}" data-price="${item.price}">
+                        <span class="pet-shop-item-icon">${item.emoji}</span>
+                        ${owned ? 
+                            `<span class="pet-shop-item-owned">${equipped ? '✓ 已装备' : '点击装备'}</span>` :
+                            `<span class="pet-shop-item-price">💰 ${item.price}</span>`
+                        }
+                    </div>
+                `;
+            }).join('');
+        },
+        
+        setupShopItemEvents(modal) {
+            modal.querySelectorAll('.pet-shop-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const id = item.dataset.id;
+                    const category = item.dataset.category;
+                    const price = parseInt(item.dataset.price);
+                    
+                    if (this.data.ownedAccessories.includes(id)) {
+                        // 已拥有，切换装备
+                        const slotKey = category === 'hats' ? 'hat' : category === 'glasses' ? 'glasses' : 'bow';
+                        if (this.data.equippedAccessories[slotKey] === id) {
+                            this.data.equippedAccessories[slotKey] = null;
+                        } else {
+                            this.data.equippedAccessories[slotKey] = id;
+                        }
+                        this.saveData();
+                        this.createPetUI();
+                        modal.remove();
+                        showSmartToast('👗 装扮已更新！', 'success', 1500);
+                    } else {
+                        // 购买
+                        if (this.data.coins >= price) {
+                            this.data.coins -= price;
+                            this.data.ownedAccessories.push(id);
+                            this.saveData();
+                            modal.querySelector('.pet-coins-display').innerHTML = `💰 ${this.data.coins}`;
+                            item.classList.add('owned');
+                            item.querySelector('.pet-shop-item-price').outerHTML = `<span class="pet-shop-item-owned">点击装备</span>`;
+                            showSmartToast('🎉 购买成功！', 'success', 1500);
+                            HapticFeedback.success();
+                        } else {
+                            showSmartToast('💰 金币不足！', 'error', 1500);
+                        }
+                    }
+                });
+            });
+        },
+        
+        // v8.10: 成就检查
+        checkAchievements() {
+            PET_ACHIEVEMENTS.forEach(achievement => {
+                if (!this.data.achievements.includes(achievement.id) && achievement.condition(this.data)) {
+                    this.data.achievements.push(achievement.id);
+                    this.data.coins += achievement.coins;
+                    this.saveData();
+                    this.showAchievementPopup(achievement);
+                }
+            });
+        },
+        
+        showAchievementPopup(achievement) {
+            const popup = document.createElement('div');
+            popup.className = 'pet-achievement-popup';
+            popup.innerHTML = `
+                <div class="pet-achievement-icon">${achievement.icon}</div>
+                <div class="pet-achievement-title">${achievement.name}</div>
+                <div class="pet-achievement-desc">${achievement.desc}</div>
+                <div class="pet-achievement-reward">+${achievement.coins} 💰</div>
+            `;
+            document.body.appendChild(popup);
+            
+            setTimeout(() => popup.classList.add('show'), 10);
+            HapticFeedback.success();
+            
+            setTimeout(() => {
+                popup.classList.remove('show');
+                setTimeout(() => popup.remove(), 400);
+            }, 3000);
+        },
+        
+        // v8.11: 统计面板
+        showStats() {
+            const pet = PET_TYPES[this.data.petType];
+            const evolutionStage = Math.min(Math.floor(this.data.level / 5), 2);
+            
+            const modal = document.createElement('div');
+            modal.className = 'pet-stats-modal';
+            modal.innerHTML = `
+                <div class="pet-stats-header">
+                    <div class="pet-stats-avatar">${pet.evolutions[evolutionStage]}</div>
+                    <div class="pet-stats-name">${this.data.petName}</div>
+                    <div class="pet-stats-level">Lv.${this.data.level} · ${pet.name}</div>
+                </div>
+                <div class="pet-stats-grid">
+                    <div class="pet-stats-item">
+                        <div class="pet-stats-value">${this.data.totalDaysWithPet}</div>
+                        <div class="pet-stats-label">陪伴天数</div>
+                    </div>
+                    <div class="pet-stats-item">
+                        <div class="pet-stats-value">${this.data.feedCount}</div>
+                        <div class="pet-stats-label">喂食次数</div>
+                    </div>
+                    <div class="pet-stats-item">
+                        <div class="pet-stats-value">${this.data.playCount}</div>
+                        <div class="pet-stats-label">互动次数</div>
+                    </div>
+                    <div class="pet-stats-item">
+                        <div class="pet-stats-value">${this.data.coins}</div>
+                        <div class="pet-stats-label">金币</div>
+                    </div>
+                </div>
+                <div style="margin-bottom:15px;text-align:center;">
+                    <div style="font-size:13px;color:var(--gray-500);margin-bottom:8px;">获得成就 (${this.data.achievements.length}/${PET_ACHIEVEMENTS.length})</div>
+                    <div class="pet-stats-achievements">
+                        ${PET_ACHIEVEMENTS.map(a => `
+                            <span class="pet-stats-badge" style="${this.data.achievements.includes(a.id) ? '' : 'filter:grayscale(1);opacity:0.4;'}" title="${a.name}">${a.icon}</span>
+                        `).join('')}
+                    </div>
+                </div>
+                <button class="pet-confirm-btn" style="margin-top:10px;">关闭</button>
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            modal.querySelector('.pet-confirm-btn').addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+        },
+        
+        // v8.12: 心情说话
+        speak(text) {
+            const bubble = this.container.querySelector('.pet-mood-bubble');
+            bubble.textContent = text;
+            bubble.classList.add('show');
+            
+            setTimeout(() => bubble.classList.remove('show'), 3000);
+        },
+        
+        getRandomSpeech(type) {
+            const speeches = {
+                interact: [
+                    '嘿嘿，被发现了~',
+                    '摸摸头~',
+                    '今天也要加油哦！',
+                    '学习累了吗？休息一下吧~',
+                    '你是最棒的！💪',
+                    '我最喜欢你了！❤️'
+                ],
+                feed: [
+                    '好吃好吃！谢谢~',
+                    '太美味了！😋',
+                    '吃饱了有力气学习！',
+                    '你对我真好~',
+                    '这是我最喜欢的！'
+                ],
+                play: [
+                    '太开心了！🎉',
+                    '再玩一会儿吧~',
+                    '和你在一起真开心！',
+                    '嘿嘿，好好玩！',
+                    '我们是最好的朋友！'
+                ],
+                hungry: [
+                    '肚子好饿...',
+                    '有东西吃吗？🥺',
+                    '想吃好吃的...'
+                ],
+                happy: [
+                    '今天心情超好！',
+                    '学习使我快乐~',
+                    '有你真好！'
+                ],
+                tired: [
+                    '好困啊...💤',
+                    '需要休息一下...',
+                    '让我睡一会儿吧~'
+                ]
+            };
+            
+            const list = speeches[type] || speeches.interact;
+            return list[Math.floor(Math.random() * list.length)];
+        },
+        
+        // v8.13: 日记系统
+        addDiaryEntry(content) {
+            this.data.diaryEntries.unshift({
+                date: new Date().toLocaleString('zh-CN'),
+                content,
+                mood: this.data.happiness > 70 ? '😊' : this.data.happiness > 40 ? '😐' : '😢'
+            });
+            
+            // 只保留最近30条
+            this.data.diaryEntries = this.data.diaryEntries.slice(0, 30);
+            this.saveData();
+        },
+        
+        // v8.14: 生命周期管理
+        startLifeCycle() {
+            // 状态衰减
+            this.decayInterval = setInterval(() => {
+                this.data.hunger = Math.max(0, this.data.hunger - 2);
+                this.data.happiness = Math.max(0, this.data.happiness - 1);
+                
+                // 睡觉恢复精力
+                const hour = new Date().getHours();
+                if (hour >= 23 || hour < 6) {
+                    this.data.energy = Math.min(100, this.data.energy + 5);
+                } else {
+                    this.data.energy = Math.max(0, this.data.energy - 0.5);
+                }
+                
+                this.saveData();
+                this.updateUI();
+            }, 60000); // 每分钟
+            
+            // 随机说话
+            this.moodInterval = setInterval(() => {
+                if (Math.random() > 0.7) {
+                    if (this.data.hunger < 30) {
+                        this.speak(this.getRandomSpeech('hungry'));
+                    } else if (this.data.energy < 20) {
+                        this.speak(this.getRandomSpeech('tired'));
+                    } else if (this.data.happiness > 70) {
+                        this.speak(this.getRandomSpeech('happy'));
+                    }
+                }
+            }, 30000);
+        },
+        
+        // v8.15: 每日访问检查
+        checkDailyVisit() {
+            const today = new Date().toDateString();
+            
+            if (this.data.lastVisit !== today) {
+                // 新的一天
+                const lastDate = this.data.lastVisit ? new Date(this.data.lastVisit) : null;
+                const todayDate = new Date(today);
+                
+                if (lastDate) {
+                    const diffDays = Math.floor((todayDate - lastDate) / (1000 * 60 * 60 * 24));
+                    if (diffDays === 1) {
+                        this.data.streak++;
+                    } else {
+                        this.data.streak = 1;
+                    }
+                } else {
+                    this.data.streak = 1;
+                }
+                
+                this.data.totalDaysWithPet++;
+                this.data.lastVisit = today;
+                
+                // 每日奖励
+                const dailyCoins = 10 + this.data.streak * 2;
+                this.data.coins += dailyCoins;
+                
+                this.saveData();
+                
+                setTimeout(() => {
+                    showSmartToast(`🌅 早安！连续陪伴 ${this.data.streak} 天，获得 ${dailyCoins} 金币！`, 'success', 3000);
+                    this.speak('新的一天开始了！一起加油吧~');
+                }, 1500);
+                
+                this.checkAchievements();
+            }
+        },
+        
+        // v8.16: UI更新
+        updateUI() {
+            if (!this.container) return;
+            
+            const hungerFill = this.container.querySelector('.pet-stat-fill.hunger');
+            const happinessFill = this.container.querySelector('.pet-stat-fill.happiness');
+            const energyFill = this.container.querySelector('.pet-stat-fill.energy');
+            
+            if (hungerFill) {
+                hungerFill.style.width = `${this.data.hunger}%`;
+                this.container.querySelector('.pet-stat:nth-child(2) .pet-stat-value').textContent = `${Math.round(this.data.hunger)}%`;
+            }
+            if (happinessFill) {
+                happinessFill.style.width = `${this.data.happiness}%`;
+                this.container.querySelector('.pet-stat:nth-child(3) .pet-stat-value').textContent = `${Math.round(this.data.happiness)}%`;
+            }
+            if (energyFill) {
+                energyFill.style.width = `${this.data.energy}%`;
+                this.container.querySelector('.pet-stat:nth-child(4) .pet-stat-value').textContent = `${Math.round(this.data.energy)}%`;
+            }
+            
+            // 更新经验条
+            const expFill = this.container.querySelector('.pet-exp-fill');
+            if (expFill) {
+                expFill.style.width = `${(this.data.exp % 100)}%`;
+            }
+            
+            // 更新等级
+            const levelBadge = this.container.querySelector('.pet-level-badge');
+            if (levelBadge) {
+                levelBadge.textContent = this.data.level;
+            }
+            
+            // 更新宠物状态class
+            const pet = this.container.querySelector('.virtual-pet');
+            pet.className = `virtual-pet ${this.getMoodClass()}`;
+            
+            // 更新食物按钮
+            this.container.querySelectorAll('.pet-food-option').forEach(btn => {
+                const food = FOOD_TYPES[btn.dataset.food];
+                btn.disabled = food.cost > this.data.coins;
+            });
+        },
+        
+        // v8.17: 学习任务完成奖励
+        onLearningComplete(taskType, score) {
+            if (!this.data.hasPet) return;
+            
+            const rewards = {
+                vocabulary: { exp: 10, coins: 5, happiness: 10 },
+                listening: { exp: 15, coins: 8, happiness: 15 },
+                speaking: { exp: 20, coins: 10, happiness: 20 },
+                reading: { exp: 15, coins: 8, happiness: 15 }
+            };
+            
+            const reward = rewards[taskType] || { exp: 5, coins: 3, happiness: 5 };
+            
+            // 根据分数调整奖励
+            const multiplier = score >= 90 ? 1.5 : score >= 70 ? 1.2 : 1;
+            
+            this.data.exp += Math.floor(reward.exp * multiplier);
+            this.data.coins += Math.floor(reward.coins * multiplier);
+            this.data.happiness = Math.min(100, this.data.happiness + reward.happiness);
+            this.data.hunger = Math.max(0, this.data.hunger - 5); // 学习消耗饥饿
+            
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            // 宠物鼓励
+            const encouragements = [
+                '太厉害了！👏',
+                '你好棒哦！继续加油！',
+                '学习真认真！我为你骄傲！',
+                '太棒了！奖励你一个拥抱~🤗',
+                '进步超大的！🌟'
+            ];
+            
+            setTimeout(() => {
+                this.speak(encouragements[Math.floor(Math.random() * encouragements.length)]);
+                this.showSparkles();
+            }, 500);
+            
+            this.addDiaryEntry(`主人完成了${taskType === 'vocabulary' ? '词汇' : taskType === 'listening' ? '听力' : taskType === 'speaking' ? '口语' : '阅读'}练习，得了${score}分！`);
+        },
+        
+        // 清理
+        destroy() {
+            if (this.container) this.container.remove();
+            if (this.moodInterval) clearInterval(this.moodInterval);
+            if (this.decayInterval) clearInterval(this.decayInterval);
+        },
+        
+        // ==================== v8.21-v8.25 宠物新功能 ====================
+        
+        // v8.21: 宠物游泳动画（特别为鲨鱼设计）
+        startSwimming() {
+            if (!this.container) return;
+            const pet = this.container.querySelector('.virtual-pet');
+            pet.classList.add('swimming');
+            
+            // 创建水波纹效果
+            this.createWaterRipples();
+            
+            setTimeout(() => {
+                pet.classList.remove('swimming');
+            }, 5000);
+        },
+        
+        createWaterRipples() {
+            const container = this.container.querySelector('.virtual-pet-area');
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    const ripple = document.createElement('div');
+                    ripple.className = 'pet-water-ripple';
+                    ripple.style.left = `${Math.random() * 80 + 10}%`;
+                    ripple.style.bottom = '10%';
+                    container.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 2000);
+                }, i * 300);
+            }
+        },
+        
+        // v8.22: 宠物技能系统
+        petSkills: {
+            shark: [
+                { id: 'bite', name: '咬一口', emoji: '😬', cooldown: 60000, effect: 'damage' },
+                { id: 'swim', name: '游泳', emoji: '🏊', cooldown: 30000, effect: 'speed' },
+                { id: 'splash', name: '泼水', emoji: '💦', cooldown: 45000, effect: 'fun' },
+                { id: 'dive', name: '深潜', emoji: '🌊', cooldown: 120000, effect: 'treasure' }
+            ],
+            cat: [
+                { id: 'scratch', name: '挠挠', emoji: '🐾', cooldown: 60000, effect: 'play' },
+                { id: 'purr', name: '呼噜', emoji: '😺', cooldown: 30000, effect: 'comfort' },
+                { id: 'hunt', name: '捕猎', emoji: '🐭', cooldown: 90000, effect: 'coins' }
+            ],
+            dog: [
+                { id: 'bark', name: '汪汪', emoji: '🐕', cooldown: 30000, effect: 'alert' },
+                { id: 'fetch', name: '捡球', emoji: '⚾', cooldown: 45000, effect: 'play' },
+                { id: 'guard', name: '守护', emoji: '🛡️', cooldown: 120000, effect: 'protect' }
+            ]
+        },
+        
+        showSkillsPanel() {
+            const petType = this.data.petType;
+            const skills = this.petSkills[petType] || this.petSkills.cat;
+            const lastUsed = this.data.skillsLastUsed || {};
+            const now = Date.now();
+            
+            const modal = document.createElement('div');
+            modal.className = 'pet-skills-modal';
+            modal.innerHTML = `
+                <div class="pet-skills-header">
+                    <span class="pet-skills-title">🎯 宠物技能</span>
+                    <button class="pet-skills-close">×</button>
+                </div>
+                <div class="pet-skills-list">
+                    ${skills.map(skill => {
+                        const cooldownRemaining = lastUsed[skill.id] ? Math.max(0, skill.cooldown - (now - lastUsed[skill.id])) : 0;
+                        const isReady = cooldownRemaining === 0;
+                        return `
+                            <div class="pet-skill-item ${isReady ? 'ready' : 'cooling'}" data-skill="${skill.id}">
+                                <div class="pet-skill-icon">${skill.emoji}</div>
+                                <div class="pet-skill-info">
+                                    <div class="pet-skill-name">${skill.name}</div>
+                                    <div class="pet-skill-status">${isReady ? '可使用' : `冷却中 ${Math.ceil(cooldownRemaining/1000)}s`}</div>
+                                </div>
+                                <button class="pet-skill-use" ${isReady ? '' : 'disabled'}>使用</button>
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            modal.querySelector('.pet-skills-close').addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+            
+            modal.querySelectorAll('.pet-skill-use').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const skillId = e.target.closest('.pet-skill-item').dataset.skill;
+                    this.useSkill(skillId);
+                    modal.classList.remove('show');
+                    setTimeout(() => modal.remove(), 300);
+                });
+            });
+        },
+        
+        useSkill(skillId) {
+            const petType = this.data.petType;
+            const skills = this.petSkills[petType] || this.petSkills.cat;
+            const skill = skills.find(s => s.id === skillId);
+            if (!skill) return;
+            
+            // 记录使用时间
+            if (!this.data.skillsLastUsed) this.data.skillsLastUsed = {};
+            this.data.skillsLastUsed[skillId] = Date.now();
+            
+            // 技能效果
+            let reward = { exp: 5, coins: 0, happiness: 10 };
+            let message = '';
+            
+            switch (skill.effect) {
+                case 'treasure':
+                    reward.coins = Math.floor(Math.random() * 20) + 10;
+                    message = `🦈 ${this.data.petName}潜入深海找到了 ${reward.coins} 金币！`;
+                    this.createTreasureEffect();
+                    break;
+                case 'coins':
+                    reward.coins = Math.floor(Math.random() * 10) + 5;
+                    message = `${skill.emoji} ${this.data.petName}帮你赚了 ${reward.coins} 金币！`;
+                    break;
+                case 'fun':
+                    reward.happiness = 20;
+                    message = `${skill.emoji} ${this.data.petName}玩得很开心！+20 快乐值`;
+                    this.showSparkles();
+                    break;
+                case 'speed':
+                    this.startSwimming();
+                    message = `${skill.emoji} ${this.data.petName}开始游泳了！`;
+                    break;
+                default:
+                    message = `${skill.emoji} ${this.data.petName}使用了${skill.name}！`;
+            }
+            
+            this.data.exp += reward.exp;
+            this.data.coins += reward.coins;
+            this.data.happiness = Math.min(100, this.data.happiness + reward.happiness);
+            
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            showSmartToast(message, 'success', 2500);
+            this.speak(`${skill.name}！嘿嘿~`);
+            HapticFeedback.success();
+        },
+        
+        createTreasureEffect() {
+            const container = this.container.querySelector('.virtual-pet-area');
+            const treasures = ['💎', '🪙', '🏆', '⭐', '🌟'];
+            
+            for (let i = 0; i < 8; i++) {
+                setTimeout(() => {
+                    const treasure = document.createElement('div');
+                    treasure.className = 'pet-treasure-item';
+                    treasure.textContent = treasures[Math.floor(Math.random() * treasures.length)];
+                    treasure.style.left = `${Math.random() * 60 + 20}%`;
+                    treasure.style.bottom = '20%';
+                    container.appendChild(treasure);
+                    setTimeout(() => treasure.remove(), 1500);
+                }, i * 100);
+            }
+        },
+        
+        // v8.23: 宠物表情包系统
+        emojiPacks: {
+            shark: ['🦈', '🌊', '💦', '🐟', '🦑', '🐙', '🌀', '🔱'],
+            cat: ['🐱', '😺', '😸', '😻', '🙀', '😿', '😹', '🐾'],
+            dog: ['🐶', '🐕', '🦮', '🐩', '🦴', '🐾', '💕', '🎾'],
+            rabbit: ['🐰', '🐇', '🥕', '🌸', '💐', '🍀', '🌿', '💕'],
+            bear: ['🐻', '🧸', '🍯', '🐻‍❄️', '❄️', '🌲', '🏔️', '⭐'],
+            panda: ['🐼', '🎋', '🎍', '💚', '🍃', '🌿', '😊', '💕'],
+            fox: ['🦊', '🍂', '🍁', '🌙', '⭐', '🔥', '✨', '💫'],
+            penguin: ['🐧', '❄️', '🧊', '🎿', '⛷️', '🌊', '💙', '🐟'],
+            hamster: ['🐹', '🌻', '🌾', '🥜', '🧀', '🌰', '💛', '🎡'],
+            owl: ['🦉', '📚', '🎓', '🌙', '⭐', '🔮', '📖', '✨']
+        },
+        
+        showEmojiPicker() {
+            const petType = this.data.petType;
+            const emojis = this.emojiPacks[petType] || this.emojiPacks.cat;
+            
+            const picker = document.createElement('div');
+            picker.className = 'pet-emoji-picker';
+            picker.innerHTML = `
+                <div class="pet-emoji-picker-header">给${this.data.petName}发表情</div>
+                <div class="pet-emoji-grid">
+                    ${emojis.map(e => `<button class="pet-emoji-btn" data-emoji="${e}">${e}</button>`).join('')}
+                </div>
+            `;
+            
+            const rect = this.container.getBoundingClientRect();
+            picker.style.left = `${rect.left}px`;
+            picker.style.bottom = `${window.innerHeight - rect.top + 10}px`;
+            
+            document.body.appendChild(picker);
+            setTimeout(() => picker.classList.add('show'), 10);
+            
+            picker.querySelectorAll('.pet-emoji-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const emoji = e.target.dataset.emoji;
+                    this.sendEmojiToPet(emoji);
+                    picker.classList.remove('show');
+                    setTimeout(() => picker.remove(), 300);
+                });
+            });
+            
+            // 点击外部关闭
+            setTimeout(() => {
+                document.addEventListener('click', function closeHandler(e) {
+                    if (!picker.contains(e.target)) {
+                        picker.classList.remove('show');
+                        setTimeout(() => picker.remove(), 300);
+                        document.removeEventListener('click', closeHandler);
+                    }
+                });
+            }, 100);
+        },
+        
+        sendEmojiToPet(emoji) {
+            // 显示表情飘动效果
+            const container = this.container.querySelector('.virtual-pet-area');
+            const floatEmoji = document.createElement('div');
+            floatEmoji.className = 'pet-floating-emoji';
+            floatEmoji.textContent = emoji;
+            floatEmoji.style.left = '50%';
+            floatEmoji.style.top = '50%';
+            container.appendChild(floatEmoji);
+            
+            setTimeout(() => floatEmoji.remove(), 1500);
+            
+            // 宠物回应
+            const responses = [
+                '收到啦！谢谢~',
+                '好可爱！❤️',
+                '我也爱你！',
+                '嘿嘿，开心~',
+                '你最好了！'
+            ];
+            setTimeout(() => {
+                this.speak(responses[Math.floor(Math.random() * responses.length)]);
+            }, 500);
+            
+            this.data.happiness = Math.min(100, this.data.happiness + 5);
+            this.data.playCount++;
+            this.saveData();
+            this.updateUI();
+            
+            HapticFeedback.light();
+        },
+        
+        // v8.24: 宠物天气互动
+        weatherMoods: {
+            sunny: { mood: 'happy', message: '天气真好！出去玩吧~', effect: 'sunshine' },
+            rainy: { mood: 'cozy', message: '下雨天，窝在家里学习~', effect: 'rain' },
+            cloudy: { mood: 'calm', message: '多云的天气，心情平静~', effect: 'clouds' },
+            snowy: { mood: 'excited', message: '下雪啦！好想出去玩雪！', effect: 'snow' }
+        },
+        
+        checkWeatherMood() {
+            // 模拟天气（实际可接入天气API）
+            const weathers = ['sunny', 'rainy', 'cloudy', 'snowy'];
+            const currentWeather = weathers[Math.floor(Math.random() * weathers.length)];
+            const weatherData = this.weatherMoods[currentWeather];
+            
+            this.currentWeather = currentWeather;
+            this.speak(weatherData.message);
+            this.showWeatherEffect(weatherData.effect);
+            
+            return currentWeather;
+        },
+        
+        showWeatherEffect(effect) {
+            const container = this.container.querySelector('.virtual-pet-area');
+            
+            // 清除之前的天气效果
+            container.querySelectorAll('.pet-weather-effect').forEach(e => e.remove());
+            
+            const effectEl = document.createElement('div');
+            effectEl.className = `pet-weather-effect pet-weather-${effect}`;
+            
+            switch (effect) {
+                case 'sunshine':
+                    effectEl.innerHTML = '<div class="pet-sun">☀️</div>';
+                    break;
+                case 'rain':
+                    effectEl.innerHTML = Array(10).fill('<div class="pet-raindrop">💧</div>').join('');
+                    break;
+                case 'snow':
+                    effectEl.innerHTML = Array(8).fill('<div class="pet-snowflake">❄️</div>').join('');
+                    break;
+                case 'clouds':
+                    effectEl.innerHTML = '<div class="pet-cloud">☁️</div><div class="pet-cloud">⛅</div>';
+                    break;
+            }
+            
+            container.appendChild(effectEl);
+            
+            setTimeout(() => effectEl.remove(), 5000);
+        },
+        
+        // v8.25: 宠物冒险系统
+        adventures: [
+            { id: 'beach', name: '海滩探险', emoji: '🏖️', duration: 30000, rewards: { coins: 15, exp: 20 }, special: 'shark' },
+            { id: 'forest', name: '森林探险', emoji: '🌲', duration: 45000, rewards: { coins: 20, exp: 25 } },
+            { id: 'mountain', name: '登山冒险', emoji: '🏔️', duration: 60000, rewards: { coins: 25, exp: 30 } },
+            { id: 'city', name: '城市漫步', emoji: '🏙️', duration: 20000, rewards: { coins: 10, exp: 15 } },
+            { id: 'ocean', name: '深海探秘', emoji: '🌊', duration: 90000, rewards: { coins: 50, exp: 50 }, special: 'shark' }
+        ],
+        
+        showAdventurePanel() {
+            const petType = this.data.petType;
+            const currentAdventure = this.data.currentAdventure;
+            
+            const modal = document.createElement('div');
+            modal.className = 'pet-adventure-modal';
+            modal.innerHTML = `
+                <div class="pet-adventure-header">
+                    <span class="pet-adventure-title">🗺️ 宠物冒险</span>
+                    <button class="pet-adventure-close">×</button>
+                </div>
+                ${currentAdventure ? `
+                    <div class="pet-adventure-progress">
+                        <div class="pet-adventure-current">
+                            <span class="pet-adventure-icon">${this.adventures.find(a => a.id === currentAdventure.id).emoji}</span>
+                            <span class="pet-adventure-name">${this.adventures.find(a => a.id === currentAdventure.id).name}</span>
+                        </div>
+                        <div class="pet-adventure-bar">
+                            <div class="pet-adventure-bar-fill" id="adventureProgress"></div>
+                        </div>
+                        <div class="pet-adventure-time">冒险中...</div>
+                    </div>
+                ` : `
+                    <div class="pet-adventure-intro">派${this.data.petName}去冒险，赚取金币和经验！</div>
+                    <div class="pet-adventure-list">
+                        ${this.adventures.map(adv => {
+                            const isSpecial = adv.special === petType;
+                            const available = !adv.special || adv.special === petType;
+                            return `
+                                <div class="pet-adventure-item ${isSpecial ? 'special' : ''} ${available ? '' : 'locked'}" data-adventure="${adv.id}">
+                                    <div class="pet-adventure-item-icon">${adv.emoji}</div>
+                                    <div class="pet-adventure-item-info">
+                                        <div class="pet-adventure-item-name">${adv.name} ${isSpecial ? '⭐' : ''}</div>
+                                        <div class="pet-adventure-item-time">⏱️ ${adv.duration / 1000}秒</div>
+                                    </div>
+                                    <div class="pet-adventure-item-rewards">
+                                        <span>💰${adv.rewards.coins}</span>
+                                        <span>✨${adv.rewards.exp}</span>
+                                    </div>
+                                    <button class="pet-adventure-start" ${available ? '' : 'disabled'}>出发</button>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `}
+            `;
+            document.body.appendChild(modal);
+            
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            modal.querySelector('.pet-adventure-close').addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+            
+            if (!currentAdventure) {
+                modal.querySelectorAll('.pet-adventure-start').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const adventureId = e.target.closest('.pet-adventure-item').dataset.adventure;
+                        this.startAdventure(adventureId);
+                        modal.classList.remove('show');
+                        setTimeout(() => modal.remove(), 300);
+                    });
+                });
+            } else {
+                // 更新进度条
+                const elapsed = Date.now() - currentAdventure.startTime;
+                const adv = this.adventures.find(a => a.id === currentAdventure.id);
+                const progress = Math.min(100, (elapsed / adv.duration) * 100);
+                modal.querySelector('#adventureProgress').style.width = `${progress}%`;
+            }
+        },
+        
+        startAdventure(adventureId) {
+            const adventure = this.adventures.find(a => a.id === adventureId);
+            if (!adventure) return;
+            
+            this.data.currentAdventure = {
+                id: adventureId,
+                startTime: Date.now()
+            };
+            this.saveData();
+            
+            showSmartToast(`🚀 ${this.data.petName}出发去${adventure.name}了！`, 'info', 2000);
+            this.speak(`我要去${adventure.name}啦！等我回来~`);
+            
+            // 设置冒险完成定时器
+            setTimeout(() => {
+                this.completeAdventure(adventureId);
+            }, adventure.duration);
+        },
+        
+        completeAdventure(adventureId) {
+            const adventure = this.adventures.find(a => a.id === adventureId);
+            if (!adventure) return;
+            
+            // 计算奖励（专属冒险有加成）
+            const isSpecial = adventure.special === this.data.petType;
+            const multiplier = isSpecial ? 1.5 : 1;
+            
+            const coinsReward = Math.floor(adventure.rewards.coins * multiplier);
+            const expReward = Math.floor(adventure.rewards.exp * multiplier);
+            
+            this.data.coins += coinsReward;
+            this.data.exp += expReward;
+            this.data.happiness = Math.min(100, this.data.happiness + 15);
+            this.data.currentAdventure = null;
+            
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            // 显示完成通知
+            showSmartToast(`🎉 ${this.data.petName}冒险归来！获得 ${coinsReward}💰 ${expReward}✨`, 'success', 3000);
+            this.speak('我回来啦！快看我带回了什么~');
+            this.showSparkles();
+            
+            this.addDiaryEntry(`${this.data.petName}去${adventure.name}冒险，带回了${coinsReward}金币！`);
+            
+            HapticFeedback.success();
+        },
+        
+        // 添加冒险按钮到菜单
+        enhanceActionMenu() {
+            if (!this.container) return;
+            const menu = this.container.querySelector('.pet-action-menu');
+            if (!menu) return;
+            
+            // 添加新按钮
+            const newButtons = `
+                <button class="pet-action-btn" data-action="skills">🎯 技能</button>
+                <button class="pet-action-btn" data-action="emoji">😊 表情</button>
+                <button class="pet-action-btn" data-action="adventure">🗺️ 冒险</button>
+                <button class="pet-action-btn" data-action="settings">⚙️ 设置</button>
+            `;
+            menu.innerHTML += newButtons;
+            
+            // 绑定事件
+            menu.querySelector('[data-action="skills"]')?.addEventListener('click', () => this.showSkillsPanel());
+            menu.querySelector('[data-action="emoji"]')?.addEventListener('click', () => this.showEmojiPicker());
+            menu.querySelector('[data-action="adventure"]')?.addEventListener('click', () => this.showAdventurePanel());
+            menu.querySelector('[data-action="settings"]')?.addEventListener('click', () => this.showPetSettings());
+        },
+        
+        // ==================== v8.26-v8.30 可爱人性化优化 ====================
+        
+        // v8.26: 智能陪伴设置（不粘人）
+        showPetSettings() {
+            const settings = this.data.settings || {
+                quietMode: false,           // 安静模式
+                autoHide: false,            // 自动隐藏
+                speakFrequency: 'normal',   // 说话频率: quiet/normal/chatty
+                showNotifications: true,    // 显示通知
+                petPosition: 'right'        // 宠物位置
+            };
+            
+            const modal = document.createElement('div');
+            modal.className = 'pet-settings-modal';
+            modal.innerHTML = `
+                <div class="pet-settings-header">
+                    <span class="pet-settings-title">⚙️ 宠物设置</span>
+                    <button class="pet-settings-close">×</button>
+                </div>
+                <div class="pet-settings-subtitle">让${this.data.petName}更懂你的心~</div>
+                <div class="pet-settings-list">
+                    <div class="pet-setting-item">
+                        <div class="pet-setting-info">
+                            <div class="pet-setting-name">🔕 安静模式</div>
+                            <div class="pet-setting-desc">学习时${this.data.petName}会安静陪伴</div>
+                        </div>
+                        <label class="pet-toggle">
+                            <input type="checkbox" ${settings.quietMode ? 'checked' : ''} data-setting="quietMode">
+                            <span class="pet-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="pet-setting-item">
+                        <div class="pet-setting-info">
+                            <div class="pet-setting-name">👻 自动隐藏</div>
+                            <div class="pet-setting-desc">操作时自动变透明</div>
+                        </div>
+                        <label class="pet-toggle">
+                            <input type="checkbox" ${settings.autoHide ? 'checked' : ''} data-setting="autoHide">
+                            <span class="pet-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="pet-setting-item">
+                        <div class="pet-setting-info">
+                            <div class="pet-setting-name">💬 话痨程度</div>
+                            <div class="pet-setting-desc">控制${this.data.petName}说话频率</div>
+                        </div>
+                        <div class="pet-setting-options">
+                            <button class="pet-freq-btn ${settings.speakFrequency === 'quiet' ? 'active' : ''}" data-freq="quiet">安静</button>
+                            <button class="pet-freq-btn ${settings.speakFrequency === 'normal' ? 'active' : ''}" data-freq="normal">正常</button>
+                            <button class="pet-freq-btn ${settings.speakFrequency === 'chatty' ? 'active' : ''}" data-freq="chatty">话唠</button>
+                        </div>
+                    </div>
+                    <div class="pet-setting-item">
+                        <div class="pet-setting-info">
+                            <div class="pet-setting-name">🔔 学习提醒</div>
+                            <div class="pet-setting-desc">${this.data.petName}会温柔提醒你学习</div>
+                        </div>
+                        <label class="pet-toggle">
+                            <input type="checkbox" ${settings.showNotifications ? 'checked' : ''} data-setting="showNotifications">
+                            <span class="pet-toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="pet-setting-item">
+                        <div class="pet-setting-info">
+                            <div class="pet-setting-name">📍 宠物位置</div>
+                            <div class="pet-setting-desc">选择${this.data.petName}待的位置</div>
+                        </div>
+                        <div class="pet-setting-options">
+                            <button class="pet-pos-btn ${settings.petPosition === 'left' ? 'active' : ''}" data-pos="left">左边</button>
+                            <button class="pet-pos-btn ${settings.petPosition === 'right' ? 'active' : ''}" data-pos="right">右边</button>
+                        </div>
+                    </div>
+                </div>
+                <button class="pet-settings-save">💾 保存设置</button>
+            `;
+            document.body.appendChild(modal);
+            setTimeout(() => modal.classList.add('show'), 10);
+            
+            // 绑定事件
+            modal.querySelector('.pet-settings-close').addEventListener('click', () => {
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+            });
+            
+            modal.querySelectorAll('.pet-freq-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modal.querySelectorAll('.pet-freq-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+            
+            modal.querySelectorAll('.pet-pos-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    modal.querySelectorAll('.pet-pos-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+            
+            modal.querySelector('.pet-settings-save').addEventListener('click', () => {
+                const newSettings = {
+                    quietMode: modal.querySelector('[data-setting="quietMode"]').checked,
+                    autoHide: modal.querySelector('[data-setting="autoHide"]').checked,
+                    speakFrequency: modal.querySelector('.pet-freq-btn.active').dataset.freq,
+                    showNotifications: modal.querySelector('[data-setting="showNotifications"]').checked,
+                    petPosition: modal.querySelector('.pet-pos-btn.active').dataset.pos
+                };
+                this.data.settings = newSettings;
+                this.saveData();
+                this.applySettings();
+                modal.classList.remove('show');
+                setTimeout(() => modal.remove(), 300);
+                showSmartToast('✅ 设置已保存！', 'success', 1500);
+                this.speak('好的主人，我记住啦~');
+            });
+        },
+        
+        applySettings() {
+            const settings = this.data.settings || {};
+            if (this.container) {
+                // 应用位置
+                if (settings.petPosition === 'left') {
+                    this.container.style.right = 'auto';
+                    this.container.style.left = '15px';
+                } else {
+                    this.container.style.left = 'auto';
+                    this.container.style.right = '15px';
+                }
+                // 应用自动隐藏
+                if (settings.autoHide) {
+                    this.container.classList.add('auto-hide-enabled');
+                } else {
+                    this.container.classList.remove('auto-hide-enabled');
+                }
+            }
+        },
+        
+        // v8.27: 可爱空闲动作系统
+        idleActionInterval: null,
+        
+        startIdleActions() {
+            const settings = this.data.settings || {};
+            const frequency = settings.speakFrequency === 'quiet' ? 60000 : settings.speakFrequency === 'chatty' ? 15000 : 30000;
+            
+            this.idleActionInterval = setInterval(() => {
+                if (settings.quietMode) return;
+                if (Math.random() > 0.6) {
+                    this.doIdleAction();
+                }
+            }, frequency);
+        },
+        
+        doIdleAction() {
+            const pet = PET_TYPES[this.data.petType];
+            if (!pet || !pet.idleActions) return;
+            
+            const action = pet.idleActions[Math.floor(Math.random() * pet.idleActions.length)];
+            const petEl = this.container?.querySelector('.virtual-pet');
+            if (!petEl) return;
+            
+            // 显示动作气泡
+            const actionBubble = document.createElement('div');
+            actionBubble.className = 'pet-action-bubble';
+            actionBubble.innerHTML = `<span class="pet-action-text">*${action}*</span>`;
+            this.container.appendChild(actionBubble);
+            
+            setTimeout(() => actionBubble.classList.add('show'), 10);
+            
+            // 播放对应动画
+            petEl.classList.add('idle-action');
+            
+            setTimeout(() => {
+                actionBubble.classList.remove('show');
+                petEl.classList.remove('idle-action');
+                setTimeout(() => actionBubble.remove(), 300);
+            }, 2500);
+        },
+        
+        // v8.28: 智能表情系统（根据状态显示不同表情）
+        updatePetExpression() {
+            const pet = PET_TYPES[this.data.petType];
+            if (!pet) return;
+            
+            const petSprite = this.container?.querySelector('.virtual-pet-sprite');
+            if (!petSprite) return;
+            
+            let expression = pet.emoji; // 默认表情
+            
+            if (this.data.energy < 20) {
+                expression = pet.sleepEmoji;
+            } else if (this.data.hunger < 30) {
+                expression = pet.sadEmoji;
+            } else if (this.data.happiness > 80) {
+                expression = pet.happyEmoji;
+            }
+            
+            // 进化形态覆盖基础表情
+            const evolutionStage = Math.min(Math.floor(this.data.level / 5), 2);
+            if (evolutionStage > 0) {
+                expression = pet.evolutions[evolutionStage];
+            }
+            
+            petSprite.textContent = expression;
+        },
+        
+        // v8.29: 温柔提醒系统（不打扰）
+        gentleReminders: [
+            { type: 'study', message: '要不要学一会儿呢？我陪你~ 📖', icon: '📚' },
+            { type: 'rest', message: '学累了吧？休息一下眼睛吧~ 👀', icon: '☕' },
+            { type: 'drink', message: '记得喝水哦，保持水分很重要~ 💧', icon: '🥤' },
+            { type: 'stretch', message: '坐久了要活动活动身体呀~ 🧘', icon: '🏃' },
+            { type: 'encourage', message: '你今天也很棒！继续加油哦~ ✨', icon: '💪' }
+        ],
+        
+        showGentleReminder() {
+            const settings = this.data.settings || {};
+            if (!settings.showNotifications) return;
+            if (settings.quietMode) return;
+            
+            const reminder = this.gentleReminders[Math.floor(Math.random() * this.gentleReminders.length)];
+            
+            // 创建温柔提醒气泡（不是弹窗，是小气泡）
+            const bubble = document.createElement('div');
+            bubble.className = 'pet-gentle-reminder';
+            bubble.innerHTML = `
+                <div class="pet-reminder-icon">${reminder.icon}</div>
+                <div class="pet-reminder-message">${reminder.message}</div>
+                <button class="pet-reminder-close">知道啦~</button>
+            `;
+            
+            if (this.container) {
+                this.container.appendChild(bubble);
+                setTimeout(() => bubble.classList.add('show'), 10);
+                
+                bubble.querySelector('.pet-reminder-close').addEventListener('click', () => {
+                    bubble.classList.remove('show');
+                    setTimeout(() => bubble.remove(), 300);
+                    this.speak('好哒~继续加油！');
+                });
+                
+                // 10秒后自动消失
+                setTimeout(() => {
+                    if (bubble.parentElement) {
+                        bubble.classList.remove('show');
+                        setTimeout(() => bubble.remove(), 300);
+                    }
+                }, 10000);
+            }
+        },
+        
+        // v8.30: 互动小游戏 - 摸头杀 & 挠痒痒
+        setupCuteInteractions() {
+            if (!this.container) return;
+            const petEl = this.container.querySelector('.virtual-pet');
+            if (!petEl) return;
+            
+            let touchCount = 0;
+            let lastTouch = 0;
+            
+            // 连续点击触发特殊反应
+            petEl.addEventListener('click', () => {
+                const now = Date.now();
+                if (now - lastTouch < 500) {
+                    touchCount++;
+                } else {
+                    touchCount = 1;
+                }
+                lastTouch = now;
+                
+                if (touchCount >= 5) {
+                    this.triggerSpecialReaction();
+                    touchCount = 0;
+                }
+            });
+            
+            // 拖拽互动
+            let isDragging = false;
+            let dragCount = 0;
+            
+            petEl.addEventListener('mousedown', () => { isDragging = true; dragCount = 0; });
+            petEl.addEventListener('mousemove', () => {
+                if (isDragging) {
+                    dragCount++;
+                    if (dragCount > 10 && dragCount % 5 === 0) {
+                        this.showLittleHeart();
+                    }
+                }
+            });
+            petEl.addEventListener('mouseup', () => {
+                if (dragCount > 20) {
+                    this.speak('好舒服呀~继续继续~');
+                    this.data.happiness = Math.min(100, this.data.happiness + 3);
+                    this.saveData();
+                    this.updateUI();
+                }
+                isDragging = false;
+            });
+            
+            // 触摸设备支持
+            petEl.addEventListener('touchstart', () => { isDragging = true; dragCount = 0; });
+            petEl.addEventListener('touchmove', () => {
+                if (isDragging) {
+                    dragCount++;
+                    if (dragCount > 10 && dragCount % 5 === 0) {
+                        this.showLittleHeart();
+                    }
+                }
+            });
+            petEl.addEventListener('touchend', () => {
+                if (dragCount > 20) {
+                    this.speak('好舒服呀~继续继续~');
+                    this.data.happiness = Math.min(100, this.data.happiness + 3);
+                    this.saveData();
+                    this.updateUI();
+                }
+                isDragging = false;
+            });
+        },
+        
+        triggerSpecialReaction() {
+            const pet = PET_TYPES[this.data.petType];
+            const petEl = this.container?.querySelector('.virtual-pet');
+            if (!petEl) return;
+            
+            // 特殊可爱反应
+            petEl.classList.add('special-reaction');
+            
+            // 显示特殊表情
+            const reactions = [
+                { text: '哇啊啊~太开心了！', emoji: '🥳' },
+                { text: '嘻嘻，好痒痒~', emoji: '🤭' },
+                { text: '呜呜，不要停~', emoji: '🥺' },
+                { text: `${pet.sound} ${pet.sound}`, emoji: pet.playEmoji },
+                { text: '最喜欢你了！', emoji: '💕' }
+            ];
+            const reaction = reactions[Math.floor(Math.random() * reactions.length)];
+            
+            this.speak(reaction.text);
+            
+            // 撒花效果
+            this.showSparkles();
+            this.showConfetti();
+            
+            // 增加好感度
+            this.data.happiness = Math.min(100, this.data.happiness + 10);
+            this.data.exp += 5;
+            this.checkLevelUp();
+            this.saveData();
+            this.updateUI();
+            
+            HapticFeedback.success();
+            
+            setTimeout(() => petEl.classList.remove('special-reaction'), 2000);
+        },
+        
+        showLittleHeart() {
+            const petEl = this.container?.querySelector('.virtual-pet');
+            if (!petEl) return;
+            const rect = petEl.getBoundingClientRect();
+            
+            const heart = document.createElement('div');
+            heart.className = 'pet-little-heart';
+            heart.textContent = '💗';
+            heart.style.left = `${rect.left + Math.random() * rect.width}px`;
+            heart.style.top = `${rect.top + Math.random() * rect.height / 2}px`;
+            document.body.appendChild(heart);
+            
+            setTimeout(() => heart.remove(), 800);
+        },
+        
+        showConfetti() {
+            const colors = ['🌸', '🌺', '🌻', '🌷', '💐', '✨', '⭐', '💫'];
+            for (let i = 0; i < 15; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'pet-confetti';
+                    confetti.textContent = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = `${Math.random() * 100}%`;
+                    confetti.style.animationDuration = `${1 + Math.random()}s`;
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 2000);
+                }, i * 50);
+            }
+        },
+        
+        // 获取个性化问候语
+        getPersonalizedGreeting() {
+            const hour = new Date().getHours();
+            const pet = PET_TYPES[this.data.petType];
+            const name = this.data.petName;
+            
+            let greeting = '';
+            if (hour < 6) {
+                greeting = `夜深了...${name}陪你熬夜~ 💤`;
+            } else if (hour < 9) {
+                greeting = `早安呀~新的一天，${pet.sound}`;
+            } else if (hour < 12) {
+                greeting = `上午好！今天也要加油哦~`;
+            } else if (hour < 14) {
+                greeting = `午饭吃了吗？记得按时吃饭~`;
+            } else if (hour < 18) {
+                greeting = `下午好~学习辛苦了~`;
+            } else if (hour < 21) {
+                greeting = `晚上好！今天学了多少呀？`;
+            } else {
+                greeting = `夜深了，早点休息哦~`;
+            }
+            
+            return greeting;
+        }
+    };
+    
+    // 增强原始init方法
+    const originalPetInit = VirtualPetSystem.init;
+    VirtualPetSystem.init = function() {
+        originalPetInit.call(this);
+        // 延迟添加增强功能
+        setTimeout(() => {
+            this.enhanceActionMenu();
+            this.applySettings();
+            this.startIdleActions();
+            this.setupCuteInteractions();
+            
+            // 如果是鲨鱼，添加特殊欢迎
+            if (this.data.petType === 'shark') {
+                this.speak('咕噜咕噜~我是小鲨鲨！🦈');
+            } else if (this.data.hasPet) {
+                // 个性化问候
+                this.speak(this.getPersonalizedGreeting());
+            }
+            
+            // 检查是否有未完成的冒险
+            if (this.data.currentAdventure) {
+                const adventure = this.adventures.find(a => a.id === this.data.currentAdventure.id);
+                const elapsed = Date.now() - this.data.currentAdventure.startTime;
+                if (elapsed >= adventure.duration) {
+                    this.completeAdventure(this.data.currentAdventure.id);
+                } else {
+                    const remaining = adventure.duration - elapsed;
+                    setTimeout(() => this.completeAdventure(this.data.currentAdventure.id), remaining);
+                }
+            }
+            
+            // 随机温柔提醒（每30分钟一次机会）
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    this.showGentleReminder();
+                }
+            }, 30 * 60 * 1000);
+            
+        }, 500);
+        
+        console.log('🐾 宠物陪伴系统 v8.1-v8.30 已加载');
+    };
+    
+    // 隐藏旧的 StudyPet（避免重复）
+    const originalStudyPetInit = StudyPet.init;
+    StudyPet.init = function() {
+        // 不初始化旧宠物，使用新的 VirtualPetSystem
+    };
+    
+    // 延迟初始化宠物系统
+    setTimeout(() => {
+        VirtualPetSystem.init();
+    }, 2000);
+
     window.UX = {
         HapticFeedback,
         createRipple,
@@ -3028,6 +4985,12 @@
         MeditationMode,
         StressReliefPanel,
         StressReliefSystemV2,
+        // v8.1-v8.20 宠物陪伴系统
+        VirtualPetSystem,
+        PET_TYPES,
+        FOOD_TYPES,
+        ACCESSORIES,
+        PET_ACHIEVEMENTS,
         settings: window.uxSettings
     };
     

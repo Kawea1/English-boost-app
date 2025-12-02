@@ -74,6 +74,9 @@ var wordMnemonicsData = null;
 // V13: 词汇难度分级数据
 var wordDifficultyData = null;
 
+// V15: 丰富例句数据
+var wordExamplesData = null;
+
 // ==================== V14: 科学助记系统 ====================
 // 基于认知心理学的10个维度改进
 
@@ -117,19 +120,127 @@ try {
     chunkingGroups = {};
 }
 
-// V14: 科学记忆方法类型（基于研究）
+// V14-V19: 科学记忆方法类型（基于研究）- UI/Emoji优化版
 var MNEMONIC_SCIENCE = {
     types: {
-        'etymology': { name: '词源分析', icon: '📚', color: '#166534', bg: '#dcfce7', effectiveness: 0.85, description: '基于词根词缀，建立深层语义联系' },
-        'phonetic': { name: '谐音记忆', icon: '🔊', color: '#92400e', bg: '#fef3c7', effectiveness: 0.72, description: '通过声音相似性建立快速联想' },
-        'visual': { name: '形象联想', icon: '🎨', color: '#1e40af', bg: '#dbeafe', effectiveness: 0.88, description: '创建生动视觉画面，激活视觉皮层' },
-        'story': { name: '故事记忆', icon: '📖', color: '#7c2d12', bg: '#ffedd5', effectiveness: 0.90, description: '编织叙事情节，利用情节记忆优势' },
-        'loci': { name: '记忆宫殿', icon: '🏛️', color: '#5b21b6', bg: '#ede9fe', effectiveness: 0.92, description: '空间定位法，世界记忆大师常用技术' },
-        'chunking': { name: '分块记忆', icon: '🧩', color: '#0f766e', bg: '#ccfbf1', effectiveness: 0.80, description: '信息分组，减轻工作记忆负担' },
-        'emotional': { name: '情感锚定', icon: '💖', color: '#be123c', bg: '#ffe4e6', effectiveness: 0.87, description: '建立情感连接，增强长期记忆' },
-        'kinesthetic': { name: '动作记忆', icon: '🤸', color: '#4338ca', bg: '#e0e7ff', effectiveness: 0.78, description: '身体动作参与，多感官编码' },
-        'elaboration': { name: '精细加工', icon: '🔬', color: '#6d28d9', bg: '#f3e8ff', effectiveness: 0.86, description: '深度处理信息，建立多重联结' },
-        'dual_coding': { name: '双重编码', icon: '🔗', color: '#0369a1', bg: '#e0f2fe', effectiveness: 0.89, description: '同时使用语言和图像编码' }
+        'etymology': { 
+            name: '词源分析', 
+            icon: '🌳', 
+            iconAlt: '📜',
+            color: '#166534', 
+            bg: '#dcfce7', 
+            bgGradient: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
+            effectiveness: 0.85, 
+            description: '追溯词根词缀，建立深层语义联系',
+            shortDesc: '词根词缀'
+        },
+        'phonetic': { 
+            name: '谐音记忆', 
+            icon: '🎵', 
+            iconAlt: '🔔',
+            color: '#92400e', 
+            bg: '#fef3c7', 
+            bgGradient: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
+            effectiveness: 0.72, 
+            description: '声音相似性，快速联想记忆',
+            shortDesc: '声音联想'
+        },
+        'visual': { 
+            name: '形象联想', 
+            icon: '🖼️', 
+            iconAlt: '👁️',
+            color: '#1e40af', 
+            bg: '#dbeafe', 
+            bgGradient: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
+            effectiveness: 0.88, 
+            description: '生动视觉画面，激活视觉皮层',
+            shortDesc: '画面想象'
+        },
+        'story': { 
+            name: '故事记忆', 
+            icon: '📚', 
+            iconAlt: '🎬',
+            color: '#7c2d12', 
+            bg: '#ffedd5', 
+            bgGradient: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)',
+            effectiveness: 0.90, 
+            description: '编织叙事情节，利用情节记忆优势',
+            shortDesc: '编故事'
+        },
+        'loci': { 
+            name: '记忆宫殿', 
+            icon: '🏰', 
+            iconAlt: '🗺️',
+            color: '#5b21b6', 
+            bg: '#ede9fe', 
+            bgGradient: 'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
+            effectiveness: 0.92, 
+            description: '空间定位法，世界记忆冠军技术',
+            shortDesc: '空间定位'
+        },
+        'chunking': { 
+            name: '分块记忆', 
+            icon: '🧱', 
+            iconAlt: '📦',
+            color: '#0f766e', 
+            bg: '#ccfbf1', 
+            bgGradient: 'linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%)',
+            effectiveness: 0.80, 
+            description: '信息分组，减轻工作记忆负担',
+            shortDesc: '分组记忆'
+        },
+        'emotional': { 
+            name: '情感锚定', 
+            icon: '💝', 
+            iconAlt: '🎭',
+            color: '#be123c', 
+            bg: '#ffe4e6', 
+            bgGradient: 'linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%)',
+            effectiveness: 0.87, 
+            description: '建立情感连接，增强长期记忆',
+            shortDesc: '情感连接'
+        },
+        'kinesthetic': { 
+            name: '动作记忆', 
+            icon: '🏃', 
+            iconAlt: '✋',
+            color: '#4338ca', 
+            bg: '#e0e7ff', 
+            bgGradient: 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)',
+            effectiveness: 0.78, 
+            description: '身体动作参与，多感官编码',
+            shortDesc: '动作参与'
+        },
+        'elaboration': { 
+            name: '精细加工', 
+            icon: '🔍', 
+            iconAlt: '⚗️',
+            color: '#6d28d9', 
+            bg: '#f3e8ff', 
+            bgGradient: 'linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)',
+            effectiveness: 0.86, 
+            description: '深度处理信息，建立多重联结',
+            shortDesc: '深度加工'
+        },
+        'dual_coding': { 
+            name: '双重编码', 
+            icon: '🔀', 
+            iconAlt: '🎯',
+            color: '#0369a1', 
+            bg: '#e0f2fe', 
+            bgGradient: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
+            effectiveness: 0.89, 
+            description: '语言+图像双通道编码',
+            shortDesc: '双通道'
+        }
+    },
+    // V15: 效果等级emoji映射
+    effectivenessEmoji: function(score) {
+        if (score >= 0.9) return { emoji: '🏆', label: '顶级', color: '#f59e0b' };
+        if (score >= 0.85) return { emoji: '⭐', label: '优秀', color: '#22c55e' };
+        if (score >= 0.8) return { emoji: '✨', label: '良好', color: '#3b82f6' };
+        if (score >= 0.7) return { emoji: '👍', label: '不错', color: '#8b5cf6' };
+        return { emoji: '💪', label: '加油', color: '#6b7280' };
     },
     // 记忆强度计算（基于艾宾浩斯遗忘曲线修正）
     calculateRetention: function(initialStrength, hoursSinceEncoding, reviewCount) {
@@ -363,6 +474,27 @@ function loadWordDifficulty() {
         });
 }
 
+// V15: 加载丰富例句数据
+function loadWordExamples() {
+    if (wordExamplesData) return Promise.resolve(wordExamplesData);
+    
+    return fetch('word_examples.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word examples');
+            return response.json();
+        })
+        .then(function(data) {
+            wordExamplesData = data;
+            console.log('[V15] 丰富例句数据加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V15] 加载丰富例句数据失败:', err);
+            wordExamplesData = {};
+            return {};
+        });
+}
+
 // V11: 获取单词的同义词/反义词
 function getWordRelations(word) {
     if (!wordRelationsData) return null;
@@ -382,6 +514,13 @@ function getWordDifficulty(word) {
     if (!wordDifficultyData) return null;
     var lowerWord = word.toLowerCase();
     return wordDifficultyData[lowerWord] || null;
+}
+
+// V15: 获取单词丰富例句
+function getWordExamples(word) {
+    if (!wordExamplesData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordExamplesData[lowerWord] || null;
 }
 
 try {
@@ -404,6 +543,8 @@ function initVocabulary() {
     loadWordMnemonics();
     // V13: 加载词汇难度分级数据
     loadWordDifficulty();
+    // V15: 加载丰富例句数据
+    loadWordExamples();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词
@@ -1287,25 +1428,38 @@ function showMeaning() {
     meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
     meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
     
-    // V14: 科学助记系统 - 增强版显示
+    // V14-V19: 科学助记系统 - UI优化增强版
     if (mnemonic || enhancedMnemonic.hasEnhancements) {
-        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:16px;overflow:hidden;border:1px solid rgba(192,132,252,0.2);box-shadow:0 4px 12px rgba(168,85,247,0.1);">';
+        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:20px;overflow:hidden;border:1px solid rgba(192,132,252,0.15);box-shadow:0 8px 24px rgba(168,85,247,0.12),0 2px 8px rgba(0,0,0,0.04);">';
         
-        // 头部：科学记忆标签
-        meaningHtml += '<div style="background:linear-gradient(135deg,#9333ea 0%,#7c3aed 50%,#6366f1 100%);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;">';
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:10px;backdrop-filter:blur(4px);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>';
-        meaningHtml += '<div><div style="color:white;font-weight:700;font-size:14px;">🧠 科学记忆法</div>';
-        meaningHtml += '<div style="color:rgba(255,255,255,0.8);font-size:11px;">基于认知心理学研究</div></div>';
+        // V16: 头部重新设计 - 更现代的渐变和图标
+        meaningHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 35%,#6366f1 70%,#4f46e5 100%);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;">';
+        // V17: 添加装饰性背景元素
+        meaningHtml += '<div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>';
+        meaningHtml += '<div style="position:absolute;bottom:-30px;left:40%;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">';
+        // V18: 更精美的图标容器
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:rgba(255,255,255,0.18);border-radius:12px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.1);"><span style="font-size:20px;">🧬</span></span>';
+        meaningHtml += '<div><div style="color:white;font-weight:700;font-size:15px;text-shadow:0 1px 2px rgba(0,0,0,0.1);">💡 科学记忆法</div>';
+        meaningHtml += '<div style="color:rgba(255,255,255,0.85);font-size:11px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">🔬</span> 认知心理学 · 记忆增强</div></div>';
         meaningHtml += '</div>';
         
-        // 效果评估指示器
+        // V19: 效果评估指示器 - 增强视觉效果
         var effectivenessScore = enhancedMnemonic.effectiveness ? Math.round(enhancedMnemonic.effectiveness.effectiveness * 100) : null;
         if (effectivenessScore !== null) {
+            var scoreEmoji = effectivenessScore >= 90 ? '🏆' : effectivenessScore >= 75 ? '⭐' : effectivenessScore >= 50 ? '📈' : '💪';
             var scoreColor = effectivenessScore >= 80 ? '#4ade80' : effectivenessScore >= 50 ? '#fbbf24' : '#f87171';
-            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:20px;">';
-            meaningHtml += '<span style="font-size:11px;color:white;">效果</span>';
-            meaningHtml += '<span style="font-weight:700;color:' + scoreColor + ';">' + effectivenessScore + '%</span>';
+            var scoreBg = effectivenessScore >= 80 ? 'rgba(74,222,128,0.2)' : effectivenessScore >= 50 ? 'rgba(251,191,36,0.2)' : 'rgba(248,113,113,0.2)';
+            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:' + scoreBg + ';padding:6px 12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);position:relative;z-index:1;">';
+            meaningHtml += '<span style="font-size:14px;">' + scoreEmoji + '</span>';
+            meaningHtml += '<span style="font-size:11px;color:white;opacity:0.9;">效果</span>';
+            meaningHtml += '<span style="font-weight:700;color:' + scoreColor + ';text-shadow:0 1px 2px rgba(0,0,0,0.2);">' + effectivenessScore + '%</span>';
+            meaningHtml += '</div>';
+        } else {
+            // 新词显示
+            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.15);padding:5px 10px;border-radius:20px;position:relative;z-index:1;">';
+            meaningHtml += '<span style="font-size:12px;">✨</span>';
+            meaningHtml += '<span style="font-size:11px;color:white;font-weight:500;">新学习</span>';
             meaningHtml += '</div>';
         }
         meaningHtml += '</div>';
@@ -1317,98 +1471,131 @@ function showMeaning() {
         var activeMnemonic = enhancedMnemonic.custom || mnemonic;
         
         if (activeMnemonic) {
-            // 助记类型标签（科学分类）
+            // V16: 助记类型标签 - 重新设计
             var mnemonicType = activeMnemonic.type || 'etymology';
             var typeInfo = MNEMONIC_SCIENCE.types[mnemonicType] || MNEMONIC_SCIENCE.types['etymology'];
+            var effEmoji = MNEMONIC_SCIENCE.effectivenessEmoji(typeInfo.effectiveness);
             
-            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
-            meaningHtml += '<span style="font-size:20px;">' + typeInfo.icon + '</span>';
-            meaningHtml += '<span style="display:inline-block;padding:4px 12px;background:' + typeInfo.bg + ';border-radius:6px;font-size:12px;color:' + typeInfo.color + ';font-weight:600;">' + typeInfo.name + '</span>';
-            meaningHtml += '<span style="font-size:11px;color:#9ca3af;">科学有效性: ' + Math.round(typeInfo.effectiveness * 100) + '%</span>';
+            meaningHtml += '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">';
+            // 类型图标容器
+            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:' + (typeInfo.bgGradient || typeInfo.bg) + ';border-radius:24px;border:1px solid ' + typeInfo.color + '22;box-shadow:0 2px 6px ' + typeInfo.color + '15;">';
+            meaningHtml += '<span style="font-size:18px;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.1));">' + typeInfo.icon + '</span>';
+            meaningHtml += '<span style="font-size:13px;color:' + typeInfo.color + ';font-weight:700;">' + typeInfo.name + '</span>';
+            meaningHtml += '</div>';
+            // 有效性徽章
+            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:linear-gradient(135deg,#fefce8,#fef9c3);border-radius:16px;border:1px solid #fde04733;">';
+            meaningHtml += '<span style="font-size:12px;">' + effEmoji.emoji + '</span>';
+            meaningHtml += '<span style="font-size:11px;color:#854d0e;font-weight:600;">' + Math.round(typeInfo.effectiveness * 100) + '% 有效</span>';
+            meaningHtml += '</div>';
             if (enhancedMnemonic.custom) {
-                meaningHtml += '<span style="display:inline-block;padding:2px 8px;background:#dbeafe;border-radius:4px;font-size:10px;color:#1e40af;font-weight:600;">✨ 我的记忆</span>';
+                meaningHtml += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:16px;border:1px solid #3b82f622;">';
+                meaningHtml += '<span style="font-size:11px;">✨</span>';
+                meaningHtml += '<span style="font-size:11px;color:#1e40af;font-weight:600;">我的创作</span>';
+                meaningHtml += '</div>';
             }
             meaningHtml += '</div>';
             
-            // 主助记内容
-            meaningHtml += '<div style="font-size:16px;color:#581c87;line-height:1.7;font-weight:500;padding:12px;background:white;border-radius:10px;border-left:4px solid #a855f7;margin-bottom:12px;">';
+            // V17: 主助记内容 - 更精美的卡片设计
+            meaningHtml += '<div style="font-size:16px;color:#581c87;line-height:1.8;font-weight:500;padding:14px 16px;background:linear-gradient(135deg,#ffffff,#fefbff);border-radius:14px;border-left:5px solid;border-image:linear-gradient(180deg,#a855f7,#7c3aed) 1;margin-bottom:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),0 2px 8px rgba(168,85,247,0.08);position:relative;">';
+            meaningHtml += '<span style="position:absolute;top:8px;right:10px;font-size:16px;opacity:0.15;">💡</span>';
             meaningHtml += activeMnemonic.mnemonic;
             meaningHtml += '</div>';
             
-            // 词根信息（深度加工）
+            // V18: 词根信息 - 更精美的信息卡片
             if (activeMnemonic.roots) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(139,92,246,0.08);border-radius:8px;margin-bottom:10px;">';
-                meaningHtml += '<span style="font-size:16px;">📚</span>';
-                meaningHtml += '<div><div style="font-size:11px;color:#7c3aed;font-weight:600;margin-bottom:4px;">词根解析 (Etymology)</div>';
-                meaningHtml += '<div style="font-size:13px;color:#6b21a8;">' + activeMnemonic.roots + '</div></div>';
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.04));border-radius:12px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.12);">';
+                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#a855f7,#7c3aed);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(168,85,247,0.3);flex-shrink:0;">🌳</span>';
+                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">📜</span> 词根解析 Etymology</div>';
+                meaningHtml += '<div style="font-size:13px;color:#6b21a8;line-height:1.6;">' + activeMnemonic.roots + '</div></div>';
                 meaningHtml += '</div>';
             }
             
-            // 联想画面（双重编码）
+            // V18: 联想画面 - 更生动的视觉设计
             if (activeMnemonic.association) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(59,130,246,0.08);border-radius:8px;margin-bottom:10px;">';
-                meaningHtml += '<span style="font-size:16px;">🎨</span>';
-                meaningHtml += '<div><div style="font-size:11px;color:#2563eb;font-weight:600;margin-bottom:4px;">视觉联想 (Dual Coding)</div>';
-                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;">"' + activeMnemonic.association + '"</div></div>';
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(59,130,246,0.03));border-radius:12px;margin-bottom:10px;border:1px solid rgba(59,130,246,0.12);">';
+                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;">🖼️</span>';
+                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#2563eb;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">👁️</span> 视觉联想 Dual Coding</div>';
+                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.6);border-radius:8px;border-left:3px solid #3b82f6;">"' + activeMnemonic.association + '"</div></div>';
                 meaningHtml += '</div>';
             }
         }
         
-        // V14.3: 记忆宫殿位置
+        // V19: 记忆宫殿位置 - 增强视觉设计
         if (enhancedMnemonic.memoryPalace) {
             var location = memoryPalaceData.locations.find(function(l) { return l.id === enhancedMnemonic.memoryPalace.locationId; });
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(139,92,246,0.12);border-radius:8px;margin-bottom:10px;">';
-            meaningHtml += '<span style="font-size:16px;">🏛️</span>';
-            meaningHtml += '<div><div style="font-size:11px;color:#7c3aed;font-weight:600;margin-bottom:4px;">记忆宫殿位置</div>';
-            meaningHtml += '<div style="font-size:13px;color:#5b21b6;"><strong>' + (location ? location.name : '位置') + '</strong>: ' + enhancedMnemonic.memoryPalace.image + '</div></div>';
+            var locIcon = location ? location.icon : '🏛️';
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(139,92,246,0.05));border-radius:14px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.15);position:relative;overflow:hidden;">';
+            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.08;">' + locIcon + '</div>';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#8b5cf6,#6366f1);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(139,92,246,0.35);flex-shrink:0;">🏰</span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">📍</span> 记忆宫殿定位</div>';
+            meaningHtml += '<div style="font-size:13px;color:#5b21b6;line-height:1.6;"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(139,92,246,0.15);border-radius:6px;margin-right:6px;"><span style="font-size:14px;">' + locIcon + '</span><strong>' + (location ? location.name : '位置') + '</strong></span>' + enhancedMnemonic.memoryPalace.image + '</div></div>';
             meaningHtml += '</div>';
         }
         
-        // V14.4: 情感锚定
+        // V19: 情感锚定 - 更生动的视觉表达
         if (enhancedMnemonic.emotionalAnchor) {
             var emo = enhancedMnemonic.emotionalAnchor;
-            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(236,72,153,0.08);border-radius:8px;margin-bottom:10px;">';
-            meaningHtml += '<span style="font-size:20px;">' + emo.data.icon + '</span>';
-            meaningHtml += '<div><div style="font-size:11px;color:#be185d;font-weight:600;">情感锚定</div>';
-            meaningHtml += '<div style="font-size:13px;color:#9d174d;">' + emo.data.name + ' (强度: ' + emo.intensity + '/10)</div></div>';
+            var intensityBars = '';
+            for (var i = 1; i <= 10; i++) {
+                var isActive = i <= emo.intensity;
+                intensityBars += '<span style="display:inline-block;width:8px;height:' + (4 + i * 1.5) + 'px;background:' + (isActive ? emo.data.color : 'rgba(0,0,0,0.1)') + ';border-radius:2px;margin-right:1px;transition:all 0.2s;"></span>';
+            }
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(236,72,153,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(236,72,153,0.15);position:relative;overflow:hidden;">';
+            meaningHtml += '<div style="position:absolute;top:-15px;right:-15px;font-size:50px;opacity:0.06;">' + emo.data.icon + '</div>';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:linear-gradient(135deg,#ec4899,#db2777);border-radius:50%;font-size:22px;box-shadow:0 3px 10px rgba(236,72,153,0.35);flex-shrink:0;animation:pulse-soft 2s infinite;">' + emo.data.icon + '</span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#be185d;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">💫</span> 情感记忆锚点</div>';
+            meaningHtml += '<div style="font-size:14px;color:#9d174d;font-weight:600;margin-bottom:6px;">' + emo.data.name + '</div>';
+            meaningHtml += '<div style="display:flex;align-items:flex-end;gap:2px;">' + intensityBars + '<span style="margin-left:6px;font-size:11px;color:#be185d;font-weight:600;">' + emo.intensity + '/10</span></div></div>';
             meaningHtml += '</div>';
         }
         
-        // V14.5: 分块记忆组
+        // V19: 分块记忆组 - 更精美的标签设计
         if (enhancedMnemonic.chunkGroup) {
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(20,184,166,0.08);border-radius:8px;margin-bottom:10px;">';
-            meaningHtml += '<span style="font-size:16px;">🧩</span>';
-            meaningHtml += '<div><div style="font-size:11px;color:#0f766e;font-weight:600;margin-bottom:4px;">记忆分块: ' + enhancedMnemonic.chunkGroup.name + '</div>';
-            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:4px;">';
-            enhancedMnemonic.chunkGroup.words.slice(0, 5).forEach(function(w) {
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(20,184,166,0.1),rgba(20,184,166,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(20,184,166,0.15);position:relative;overflow:hidden;">';
+            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.06;">🧩</div>';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#14b8a6,#0d9488);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(20,184,166,0.35);flex-shrink:0;">🧩</span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#0f766e;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">🔗</span> 记忆分块: <span style="padding:2px 8px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:10px;font-size:10px;">' + enhancedMnemonic.chunkGroup.name + '</span></div>';
+            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+            enhancedMnemonic.chunkGroup.words.slice(0, 6).forEach(function(w, idx) {
                 var isCurrent = w.toLowerCase() === wordData.word.toLowerCase();
-                meaningHtml += '<span style="padding:2px 8px;background:' + (isCurrent ? '#14b8a6' : '#ccfbf1') + ';color:' + (isCurrent ? 'white' : '#0f766e') + ';border-radius:4px;font-size:12px;font-weight:' + (isCurrent ? '700' : '500') + ';">' + w + '</span>';
+                if (isCurrent) {
+                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:20px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(20,184,166,0.4);display:flex;align-items:center;gap:4px;"><span>👉</span>' + w + '</span>';
+                } else {
+                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#f0fdfa,#ccfbf1);color:#0f766e;border-radius:20px;font-size:12px;font-weight:500;border:1px solid rgba(20,184,166,0.2);display:flex;align-items:center;gap:3px;"><span style=\"opacity:0.6;font-size:10px;\">' + (idx + 1) + '</span>' + w + '</span>';
+                }
             });
-            if (enhancedMnemonic.chunkGroup.words.length > 5) {
-                meaningHtml += '<span style="padding:2px 8px;background:#f0fdfa;color:#0d9488;border-radius:4px;font-size:11px;">+' + (enhancedMnemonic.chunkGroup.words.length - 5) + '</span>';
+            if (enhancedMnemonic.chunkGroup.words.length > 6) {
+                meaningHtml += '<span style="padding:4px 10px;background:#f0fdfa;color:#0d9488;border-radius:20px;font-size:11px;font-weight:600;border:1px dashed #99f6e4;">+' + (enhancedMnemonic.chunkGroup.words.length - 6) + ' more</span>';
             }
             meaningHtml += '</div></div></div>';
         }
         
-        // 操作按钮区
-        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(168,85,247,0.3);">';
+        // V19: 操作按钮区 - 完全重新设计的圆角胶囊按钮
+        meaningHtml += '<div style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(168,85,247,0.1);position:relative;">';
+        meaningHtml += '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fdf4ff,#fae8ff);padding:2px 12px;border-radius:10px;border:1px solid rgba(168,85,247,0.15);"><span style="font-size:10px;color:#9333ea;font-weight:600;">✨ 记忆工具箱 ✨</span></div>';
         
-        // 效果反馈按钮
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;min-width:100px;padding:8px 10px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(34,197,94,0.3);">👍 记住了</button>';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;min-width:100px;padding:8px 10px;background:linear-gradient(135deg,#f97316 0%,#ea580c 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(249,115,22,0.3);">🔄 需强化</button>';
+        // 第一行：反馈按钮
+        meaningHtml += '<div style="display:flex;gap:10px;margin-bottom:10px;margin-top:8px;">';
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#10b981 0%,#059669 50%,#047857 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(16,185,129,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;position:relative;overflow:hidden;"><span style=\"font-size:18px;\">✅</span><span>记住了!</span></button>';
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(245,158,11,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;"><span style=\"font-size:18px;\">🔁</span><span>再强化</span></button>';
+        meaningHtml += '</div>';
         
-        // 练习按钮
-        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(245,158,11,0.3);">🧠 练习</button>';
+        // 第二行：功能按钮
+        meaningHtml += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">';
         
-        // 自定义按钮
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(139,92,246,0.3);">✏️ 自定义</button>';
+        // 练习按钮 - 黄色
+        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fcd34d;border-radius:14px;color:#92400e;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(251,191,36,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏋️</span><span>练习</span></button>';
         
-        // 记忆宫殿按钮
-        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#6366f1 0%,#4f46e5 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(99,102,241,0.3);">🏛️ 宫殿</button>';
+        // 自定义按钮 - 紫色
+        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#f3e8ff 0%,#e9d5ff 100%);border:1px solid #d8b4fe;border-radius:14px;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(139,92,246,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🎨</span><span>创作</span></button>';
         
-        // 统计按钮
-        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:8px 10px;background:linear-gradient(135deg,#ec4899 0%,#db2777 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(236,72,153,0.3);">📊 统计</button>';
+        // 宫殿按钮 - 靛蓝色
+        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#e0e7ff 0%,#c7d2fe 100%);border:1px solid #a5b4fc;border-radius:14px;color:#4338ca;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(99,102,241,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏰</span><span>宫殿</span></button>';
         
+        // 统计按钮 - 粉色
+        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:10px 6px;background:linear-gradient(180deg,#fce7f3 0%,#fbcfe8 100%);border:1px solid #f9a8d4;border-radius:14px;color:#be185d;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(236,72,153,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">📈</span><span>统计</span></button>';
+        
+        meaningHtml += '</div>';
         meaningHtml += '</div>';
         
         meaningHtml += '</div>'; // 主体内容区结束
