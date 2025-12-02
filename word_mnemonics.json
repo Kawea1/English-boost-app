@@ -1304,7 +1304,7 @@
   "pernicious": {
     "mnemonic": "per(完全) + nic(杀) + ious = 完全致命的,有害的",
     "type": "词根分解",
-    "association": "遗害无穷",
+    "association": "祸害无穷",
     "roots": "per- + nex(死亡)"
   },
   "perspicacious": {
@@ -1332,8 +1332,8 @@
     "roots": "phainein(显示)"
   },
   "phlegmatic": {
-    "mnemonic": "phlegm(黏液) + atic = 像黏液一样迟缓,冷漠的",
-    "type": "联想记忆",
+    "mnemonic": "phlegm(黏液) + atic = 像黏液一样迟缓,冷淡的",
+    "type": "词根分解",
     "association": "波澜不惊",
     "roots": "phlegma(黏液)"
   },
@@ -1374,9 +1374,9 @@
     "roots": "prae- + caput(头)"
   },
   "precursor": {
-    "mnemonic": "pre(在前) + curs(跑) + or = 跑在前面的人,先驱",
+    "mnemonic": "pre(在前) + curs(跑) + or = 跑在前面的,先驱",
     "type": "词根分解",
-    "association": "开路先锋",
+    "association": "先行者",
     "roots": "prae- + currere(跑)"
   },
   "predilection": {
@@ -2638,5 +2638,695 @@
     "type": "词根分解",
     "association": "对簿公堂",
     "roots": "lis(诉讼)"
+  },
+  "malfeasance": {
+    "mnemonic": "mal(坏) + feas(做) + ance = 做坏事,不法行为",
+    "type": "词根分解",
+    "association": "违法乱纪",
+    "roots": "male(坏) + facere(做)"
+  },
+  "malign": {
+    "mnemonic": "mal(坏) + ign = 坏意图的,诽谤",
+    "type": "词根分解",
+    "association": "恶意中伤",
+    "roots": "malignus(恶意的)"
+  },
+  "maverick": {
+    "mnemonic": "Maverick = 不打烙印的牛,特立独行的人",
+    "type": "联想记忆",
+    "association": "与众不同",
+    "roots": "Samuel Maverick(人名)"
+  },
+  "mendacious": {
+    "mnemonic": "mend(补) + acious = 补漏洞说谎的,虚假的",
+    "type": "联想记忆",
+    "association": "谎话连篇",
+    "roots": "mendax(说谎的)"
+  },
+  "mercurial": {
+    "mnemonic": "mercury(水银) + ial = 像水银一样善变,多变的",
+    "type": "联想记忆",
+    "association": "反复无常",
+    "roots": "Mercurius(墨丘利)"
+  },
+  "misanthrope": {
+    "mnemonic": "mis(恨hate) + anthrop(人) + e = 恨人类的人,厌世者",
+    "type": "词根分解",
+    "association": "愤世嫉俗",
+    "roots": "misos(恨) + anthropos(人)"
+  },
+  "modicum": {
+    "mnemonic": "mod(适度) + icum = 适度的量,少量",
+    "type": "词根分解",
+    "association": "一丁点",
+    "roots": "modicus(适度的)"
+  },
+  "momentous": {
+    "mnemonic": "moment(时刻) + ous = 重要时刻的,重大的",
+    "type": "词根分解",
+    "association": "举足轻重",
+    "roots": "momentum(动力)"
+  },
+  "moribund": {
+    "mnemonic": "mor(死亡mortal) + ibund = 即将死亡的,垂死的",
+    "type": "词根分解",
+    "association": "奄奄一息",
+    "roots": "mori(死)"
+  },
+  "morose": {
+    "mnemonic": "mor(忧郁) + ose = 忧郁的,阴沉的",
+    "type": "词根分解",
+    "association": "闷闷不乐",
+    "roots": "morosus(脾气坏的)"
+  },
+  "munificent": {
+    "mnemonic": "mun(给予) + ific + ent = 给予多的,慷慨的",
+    "type": "词根分解",
+    "association": "出手大方",
+    "roots": "munus(礼物) + facere(做)"
+  },
+  "nonchalant": {
+    "mnemonic": "non(不) + chal(在乎) + ant = 不在乎的,冷淡的",
+    "type": "词根分解",
+    "association": "满不在乎",
+    "roots": "non- + chaloir(在乎)"
+  },
+  "oblivious": {
+    "mnemonic": "ob + liv(忘记) + ious = 完全忘记的,不在意的",
+    "type": "词根分解",
+    "association": "浑然不觉",
+    "roots": "ob- + livor(遗忘)"
+  },
+  "officious": {
+    "mnemonic": "offic(职务office) + ious = 过分尽职的,多管闲事的",
+    "type": "词根分解",
+    "association": "爱管闲事",
+    "roots": "officiosus(热心的)"
+  },
+  "ominous": {
+    "mnemonic": "omin(预兆omen) + ous = 有不好预兆的,不祥的",
+    "type": "词根分解",
+    "association": "乌云压顶",
+    "roots": "omen(预兆)"
+  },
+  "opprobrium": {
+    "mnemonic": "op + prob(羞耻) + rium = 强烈羞耻,耻辱",
+    "type": "词根分解",
+    "association": "千夫所指",
+    "roots": "ob- + probrum(羞耻)"
+  },
+  "ornate": {
+    "mnemonic": "orn(装饰) + ate = 装饰过的,华丽的",
+    "type": "词根分解",
+    "association": "雕龙画凤",
+    "roots": "ornare(装饰)"
+  },
+  "orthodox": {
+    "mnemonic": "ortho(正确) + dox(信仰) = 正确信仰的,正统的",
+    "type": "词根分解",
+    "association": "墨守成规",
+    "roots": "orthos(正确) + doxa(信仰)"
+  },
+  "ossify": {
+    "mnemonic": "oss(骨头) + ify = 变成骨头,僵化",
+    "type": "词根分解",
+    "association": "思想僵化",
+    "roots": "os(骨头)"
+  },
+  "painstaking": {
+    "mnemonic": "pains(辛苦) + taking = 承受辛苦的,煞费苦心的",
+    "type": "联想记忆",
+    "association": "呕心沥血",
+    "roots": "pains + taking"
+  },
+  "palpable": {
+    "mnemonic": "palp(触摸) + able = 可触摸的,明显的",
+    "type": "词根分解",
+    "association": "显而易见",
+    "roots": "palpare(触摸)"
+  },
+  "panegyric": {
+    "mnemonic": "pan(全部) + egyr(聚会) + ic = 全体聚会赞美,颂词",
+    "type": "词根分解",
+    "association": "极力赞扬",
+    "roots": "pan(全) + agyris(集会)"
+  },
+  "parsimonious": {
+    "mnemonic": "pars(节省) + imonious = 过分节省的,吝啬的",
+    "type": "词根分解",
+    "association": "一毛不拔",
+    "roots": "parcere(节省)"
+  },
+  "pedant": {
+    "mnemonic": "ped(教育) + ant = 卖弄学问的人,学究",
+    "type": "词根分解",
+    "association": "书呆子",
+    "roots": "paideia(教育)"
+  },
+  "pellucid": {
+    "mnemonic": "pel + lucid(清晰lucid) = 非常清晰的,透明的",
+    "type": "词根分解",
+    "association": "一目了然",
+    "roots": "per- + lucidus(明亮的)"
+  },
+  "penitent": {
+    "mnemonic": "pen(惩罚penalty) + itent = 受惩罚悔改的,忏悔的",
+    "type": "词根分解",
+    "association": "悔过自新",
+    "roots": "paenitere(悔恨)"
+  },
+  "penurious": {
+    "mnemonic": "pen(缺乏) + urious = 缺乏的,贫穷的",
+    "type": "词根分解",
+    "association": "一贫如洗",
+    "roots": "penuria(贫乏)"
+  },
+  "perfidy": {
+    "mnemonic": "per(完全) + fid(信任faith) + y = 完全不信任,背信弃义",
+    "type": "词根分解",
+    "association": "背信弃义",
+    "roots": "per- + fides(信任)"
+  },
+  "perfunctory": {
+    "mnemonic": "per + funct(完成function) + ory = 只是完成任务的,敷衍的",
+    "type": "词根分解",
+    "association": "敷衍了事",
+    "roots": "per- + fungi(执行)"
+  },
+  "peripatetic": {
+    "mnemonic": "peri(周围) + pat(走path) + etic = 到处走的,巡回的",
+    "type": "词根分解",
+    "association": "走南闯北",
+    "roots": "peri- + patein(走)"
+  },
+  "pertinacious": {
+    "mnemonic": "per + tin(持有) + acious = 紧紧持有的,顽强的",
+    "type": "词根分解",
+    "association": "不屈不挠",
+    "roots": "per- + tenax(顽强的)"
+  },
+  "pervade": {
+    "mnemonic": "per(全面) + vade(走) = 走遍各处,弥漫",
+    "type": "词根分解",
+    "association": "无孔不入",
+    "roots": "per- + vadere(走)"
+  },
+  "philistine": {
+    "mnemonic": "Philistine(非利士人) = 无文化的人,庸人",
+    "type": "联想记忆",
+    "association": "附庸风雅",
+    "roots": "Philistine(圣经中的部落)"
+  },
+  "pious": {
+    "mnemonic": "pi(虔诚) + ous = 虔诚的,虔敬的",
+    "type": "词根分解",
+    "association": "恭敬虔诚",
+    "roots": "pius(虔诚的)"
+  },
+  "pithy": {
+    "mnemonic": "pith(髓) + y = 像髓一样精华,精辟的",
+    "type": "词根分解",
+    "association": "言简意赅",
+    "roots": "pith(核心)"
+  },
+  "placid": {
+    "mnemonic": "plac(平静please) + id = 平静的,温和的",
+    "type": "词根分解",
+    "association": "波澜不惊",
+    "roots": "placidus(平静的)"
+  },
+  "plaintive": {
+    "mnemonic": "plain(抱怨complain) + tive = 抱怨的,哀伤的",
+    "type": "词根分解",
+    "association": "悲切哀怨",
+    "roots": "plangere(哀叹)"
+  },
+  "plenitude": {
+    "mnemonic": "plen(满plenty) + itude = 充满的状态,丰富",
+    "type": "词根分解",
+    "association": "应有尽有",
+    "roots": "plenus(满的)"
+  },
+  "ponderous": {
+    "mnemonic": "ponder(思考) + ous = 需要思考的重,笨重的",
+    "type": "词根分解",
+    "association": "沉闷乏味",
+    "roots": "ponderosus(重的)"
+  },
+  "portentous": {
+    "mnemonic": "port(携带) + ent + ous = 携带预兆的,不祥的",
+    "type": "词根分解",
+    "association": "大祸临头",
+    "roots": "portentum(预兆)"
+  },
+  "precarious": {
+    "mnemonic": "prec(祈祷) + arious = 需要祈祷的,不稳定的",
+    "type": "词根分解",
+    "association": "朝不保夕",
+    "roots": "precarius(靠祈求的)"
+  },
+  "preclude": {
+    "mnemonic": "pre + clude(关闭close) = 提前关闭,阻止",
+    "type": "词根分解",
+    "association": "防患于未然",
+    "roots": "prae- + claudere(关闭)"
+  },
+  "precocious": {
+    "mnemonic": "pre(提前) + coc(煮cook) + ious = 提前煮熟的,早熟的",
+    "type": "词根分解",
+    "association": "少年老成",
+    "roots": "prae- + coquere(煮)"
+  },
+  "preternatural": {
+    "mnemonic": "preter(超越) + natural = 超越自然的,异常的",
+    "type": "词根分解",
+    "association": "超乎寻常",
+    "roots": "praeter- + naturalis(自然的)"
+  },
+  "pristine": {
+    "mnemonic": "prist(原始) + ine = 原始的,纯净的",
+    "type": "词根分解",
+    "association": "一尘不染",
+    "roots": "pristinus(古老的)"
+  },
+  "privation": {
+    "mnemonic": "priv(剥夺private) + ation = 剥夺,贫困",
+    "type": "词根分解",
+    "association": "艰苦匮乏",
+    "roots": "privare(剥夺)"
+  },
+  "prodigious": {
+    "mnemonic": "prodig(惊人prodigy) + ious = 惊人的,巨大的",
+    "type": "词根分解",
+    "association": "令人惊叹",
+    "roots": "prodigium(预兆)"
+  },
+  "profligate": {
+    "mnemonic": "pro + flig(打击) + ate = 向前打击挥霍,放荡的",
+    "type": "词根分解",
+    "association": "挥金如土",
+    "roots": "pro- + fligere(打击)"
+  },
+  "propitious": {
+    "mnemonic": "pro + pit(有利) + ious = 有利的,吉祥的",
+    "type": "词根分解",
+    "association": "天时地利",
+    "roots": "propitius(有利的)"
+  },
+  "propriety": {
+    "mnemonic": "propri(正确proper) + ety = 正确性,得体",
+    "type": "词根分解",
+    "association": "循规蹈矩",
+    "roots": "proprietas(固有性质)"
+  },
+  "puerile": {
+    "mnemonic": "puer(孩子) + ile = 像孩子一样,幼稚的",
+    "type": "词根分解",
+    "association": "天真幼稚",
+    "roots": "puer(男孩)"
+  },
+  "pugnacious": {
+    "mnemonic": "pugn(打fight) + acious = 爱打架的,好斗的",
+    "type": "词根分解",
+    "association": "好勇斗狠",
+    "roots": "pugnare(战斗)"
+  },
+  "punctilious": {
+    "mnemonic": "punct(点punctual) + ilious = 注意每个点的,一丝不苟的",
+    "type": "词根分解",
+    "association": "锱铢必较",
+    "roots": "punctum(点)"
+  },
+  "quandary": {
+    "mnemonic": "quan(全) + dary = 全部都很难,困境",
+    "type": "联想记忆",
+    "association": "进退两难",
+    "roots": "拉丁语 quandō(什么时候)"
+  },
+  "quash": {
+    "mnemonic": "quash = 夸嘘(打压)",
+    "type": "谐音记忆",
+    "association": "镇压撤销",
+    "roots": "古法语 quasser(打破)"
+  },
+  "quintessential": {
+    "mnemonic": "quint(五) + essential = 第五元素精华,典型的",
+    "type": "词根分解",
+    "association": "精华所在",
+    "roots": "quinta essentia(第五元素)"
+  },
+  "ramification": {
+    "mnemonic": "ram(分支) + ific + ation = 分支出去,后果",
+    "type": "词根分解",
+    "association": "牵一发动全身",
+    "roots": "ramus(分支)"
+  },
+  "rarefy": {
+    "mnemonic": "rare(稀有) + fy = 使稀有,稀释",
+    "type": "词根分解",
+    "association": "变得稀薄",
+    "roots": "rarus(稀少的)"
+  },
+  "ratify": {
+    "mnemonic": "rat(比率) + ify = 按比率确认,批准",
+    "type": "联想记忆",
+    "association": "正式批准",
+    "roots": "ratus(固定的)"
+  },
+  "raze": {
+    "mnemonic": "raze = raise颠倒,夷为平地",
+    "type": "联想记忆",
+    "association": "彻底摧毁",
+    "roots": "拉丁语 radere(刮)"
+  },
+  "rebuke": {
+    "mnemonic": "re + buke(责骂) = 反复责骂,斥责",
+    "type": "词根分解",
+    "association": "严厉训斥",
+    "roots": "古法语 rebuchier(砍)"
+  },
+  "recant": {
+    "mnemonic": "re + cant(唱歌) = 唱反调,撤回",
+    "type": "词根分解",
+    "association": "公开认错",
+    "roots": "re- + cantare(唱)"
+  },
+  "reciprocate": {
+    "mnemonic": "re + ciproc(来回) + ate = 来回交换,回报",
+    "type": "词根分解",
+    "association": "投桃报李",
+    "roots": "reciprocus(来回的)"
+  },
+  "reclusive": {
+    "mnemonic": "re + clus(关闭close) + ive = 关起来的,隐居的",
+    "type": "词根分解",
+    "association": "深居简出",
+    "roots": "re- + claudere(关闭)"
+  },
+  "refractory": {
+    "mnemonic": "re + fract(打破) + ory = 反复打破规矩,倔强的",
+    "type": "词根分解",
+    "association": "桀骜不驯",
+    "roots": "re- + frangere(打破)"
+  },
+  "remonstrate": {
+    "mnemonic": "re + monstr(展示monster) + ate = 反复展示不满,抗议",
+    "type": "词根分解",
+    "association": "据理力争",
+    "roots": "re- + monstrare(展示)"
+  },
+  "render": {
+    "mnemonic": "rend(给予) + er = 给予,使成为",
+    "type": "词根分解",
+    "association": "提供呈现",
+    "roots": "reddere(交还)"
+  },
+  "replete": {
+    "mnemonic": "re + plete(满fill) = 充满的,饱满的",
+    "type": "词根分解",
+    "association": "应有尽有",
+    "roots": "re- + plere(填满)"
+  },
+  "reproach": {
+    "mnemonic": "re + proach(接近approach) = 反复接近批评,责备",
+    "type": "词根分解",
+    "association": "横加指责",
+    "roots": "re- + propiare(接近)"
+  },
+  "reprobate": {
+    "mnemonic": "re + prob(证明) + ate = 反复被否定的,堕落者",
+    "type": "词根分解",
+    "association": "不可救药",
+    "roots": "re- + probare(证明)"
+  },
+  "repugnant": {
+    "mnemonic": "re + pugn(打fight) + ant = 反抗的,令人厌恶的",
+    "type": "词根分解",
+    "association": "令人作呕",
+    "roots": "re- + pugnare(战斗)"
+  },
+  "requite": {
+    "mnemonic": "re + quite(完全quit) = 完全偿还,报答",
+    "type": "词根分解",
+    "association": "报答恩情",
+    "roots": "re- + quite(释放)"
+  },
+  "resolve": {
+    "mnemonic": "re + solve(解决) = 反复解决,决心",
+    "type": "词根分解",
+    "association": "下定决心",
+    "roots": "re- + solvere(松开)"
+  },
+  "reverberate": {
+    "mnemonic": "re + verber(打击) + ate = 反复打击回响,回荡",
+    "type": "词根分解",
+    "association": "余音绕梁",
+    "roots": "re- + verberare(打击)"
+  },
+  "revile": {
+    "mnemonic": "re + vile(卑鄙) = 反复说卑鄙话,辱骂",
+    "type": "词根分解",
+    "association": "破口大骂",
+    "roots": "re- + vilis(卑贱的)"
+  },
+  "ruminate": {
+    "mnemonic": "rumin(反刍) + ate = 像牛反刍一样,沉思",
+    "type": "词根分解",
+    "association": "细细品味",
+    "roots": "ruminare(反刍)"
+  },
+  "sagacity": {
+    "mnemonic": "sag(智慧sage) + acity = 智慧,睿智",
+    "type": "词根分解",
+    "association": "足智多谋",
+    "roots": "sagax(敏锐的)"
+  },
+  "salutary": {
+    "mnemonic": "salut(健康salute) + ary = 有益健康的,有益的",
+    "type": "词根分解",
+    "association": "裨益匪浅",
+    "roots": "salus(健康)"
+  },
+  "sanction": {
+    "mnemonic": "sanct(神圣) + ion = 神圣的认可,批准",
+    "type": "词根分解",
+    "association": "官方认可",
+    "roots": "sanctus(神圣的)"
+  },
+  "satiate": {
+    "mnemonic": "sat(满足satisfy) + iate = 使满足,使饱足",
+    "type": "词根分解",
+    "association": "心满意足",
+    "roots": "satis(足够)"
+  },
+  "saturate": {
+    "mnemonic": "satur(满) + ate = 使饱和,浸透",
+    "type": "词根分解",
+    "association": "饱和状态",
+    "roots": "saturare(使满)"
+  },
+  "saunter": {
+    "mnemonic": "saun(散步) + ter = 闲逛,漫步",
+    "type": "联想记忆",
+    "association": "悠然自得",
+    "roots": "中世纪英语 santren(沉思)"
+  },
+  "scant": {
+    "mnemonic": "scant = 少看(scan),稀少的",
+    "type": "联想记忆",
+    "association": "寥寥无几",
+    "roots": "古诺斯语 skamt(短的)"
+  },
+  "schism": {
+    "mnemonic": "schis(分裂) + m = 分裂,分歧",
+    "type": "词根分解",
+    "association": "分道扬镳",
+    "roots": "schisma(分裂)"
+  },
+  "scion": {
+    "mnemonic": "sci(知道science) + on = 知识的传承,后代",
+    "type": "联想记忆",
+    "association": "名门之后",
+    "roots": "古法语 cion(嫩枝)"
+  },
+  "sedition": {
+    "mnemonic": "sed(分开) + ition = 使分开,煽动叛乱",
+    "type": "词根分解",
+    "association": "图谋不轨",
+    "roots": "se- + ire(走)"
+  },
+  "semblance": {
+    "mnemonic": "sembl(相似resemble) + ance = 相似的外表,外观",
+    "type": "词根分解",
+    "association": "表面现象",
+    "roots": "simulare(假装)"
+  },
+  "servile": {
+    "mnemonic": "serv(服务serve) + ile = 像仆人一样,卑躬屈膝的",
+    "type": "词根分解",
+    "association": "奴颜婢膝",
+    "roots": "servus(奴隶)"
+  },
+  "solicitous": {
+    "mnemonic": "solicit(请求) + ous = 急于请求的,热切的",
+    "type": "词根分解",
+    "association": "嘘寒问暖",
+    "roots": "sollicitare(打扰)"
+  },
+  "somber": {
+    "mnemonic": "som(阴暗) + ber = 阴暗的,忧郁的",
+    "type": "词根分解",
+    "association": "阴郁沉闷",
+    "roots": "sub- + umbra(阴影)"
+  },
+  "somnolent": {
+    "mnemonic": "somn(睡眠) + olent = 想睡的,昏昏欲睡的",
+    "type": "词根分解",
+    "association": "睡眼惺忪",
+    "roots": "somnus(睡眠)"
+  },
+  "sonorous": {
+    "mnemonic": "son(声音sound) + orous = 声音大的,洪亮的",
+    "type": "词根分解",
+    "association": "声如洪钟",
+    "roots": "sonorus(响亮的)"
+  },
+  "sophisticated": {
+    "mnemonic": "soph(智慧) + istic + ated = 有智慧的,老练的",
+    "type": "词根分解",
+    "association": "老于世故",
+    "roots": "sophisticus(诡辩的)"
+  },
+  "sordid": {
+    "mnemonic": "sord(脏) + id = 肮脏的,卑鄙的",
+    "type": "词根分解",
+    "association": "龌龊不堪",
+    "roots": "sordidus(脏的)"
+  },
+  "sparse": {
+    "mnemonic": "sparse = 稀疏的(spare少)",
+    "type": "联想记忆",
+    "association": "寥寥无几",
+    "roots": "sparsus(散布的)"
+  },
+  "spawn": {
+    "mnemonic": "spawn = 产卵,引发",
+    "type": "联想记忆",
+    "association": "孵化产生",
+    "roots": "古法语 espandre(展开)"
+  },
+  "speculative": {
+    "mnemonic": "specul(观察) + ative = 观察推测的,推测的",
+    "type": "词根分解",
+    "association": "捕风捉影",
+    "roots": "speculari(观察)"
+  },
+  "spontaneous": {
+    "mnemonic": "spont(自愿) + aneous = 自愿的,自发的",
+    "type": "词根分解",
+    "association": "不假思索",
+    "roots": "sponte(自愿地)"
+  },
+  "squalid": {
+    "mnemonic": "squal(肮脏) + id = 肮脏的,污秽的",
+    "type": "词根分解",
+    "association": "污秽不堪",
+    "roots": "squalidus(肮脏的)"
+  },
+  "squander": {
+    "mnemonic": "s + wander(游荡) = 钱财游荡走了,浪费",
+    "type": "联想记忆",
+    "association": "挥霍无度",
+    "roots": "中世纪英语 squanderen"
+  },
+  "staunch": {
+    "mnemonic": "staunch = 站住(stand),坚定的",
+    "type": "联想记忆",
+    "association": "坚定不移",
+    "roots": "古法语 estancher(止住)"
+  },
+  "stigmatize": {
+    "mnemonic": "stigma(烙印) + tize = 打上烙印,污名化",
+    "type": "词根分解",
+    "association": "打上耻辱烙印",
+    "roots": "stigma(烙印)"
+  },
+  "stipulate": {
+    "mnemonic": "stipul(规定) + ate = 规定,约定",
+    "type": "词根分解",
+    "association": "明文规定",
+    "roots": "stipulari(约定)"
+  },
+  "stoic": {
+    "mnemonic": "stoic(斯多葛) = 像斯多葛派一样,坚忍的",
+    "type": "联想记忆",
+    "association": "不动声色",
+    "roots": "Stoicus(斯多葛派的)"
+  },
+  "stratagem": {
+    "mnemonic": "strat(军队strategy) + agem = 军事计谋,谋略",
+    "type": "词根分解",
+    "association": "运筹帷幄",
+    "roots": "strategema(计谋)"
+  },
+  "strife": {
+    "mnemonic": "strife = 斗争(strive努力)",
+    "type": "联想记忆",
+    "association": "激烈冲突",
+    "roots": "古法语 estrif(争吵)"
+  },
+  "stymie": {
+    "mnemonic": "sty(阻止) + mie = 阻止,妨碍",
+    "type": "联想记忆",
+    "association": "束手无策",
+    "roots": "高尔夫术语"
+  },
+  "subjugate": {
+    "mnemonic": "sub(在下) + jug(轭yoke) + ate = 放在轭下,征服",
+    "type": "词根分解",
+    "association": "俯首称臣",
+    "roots": "sub- + jugum(轭)"
+  },
+  "sublime": {
+    "mnemonic": "sub + lim(门槛limit) + e = 超过门槛,崇高的",
+    "type": "词根分解",
+    "association": "崇高壮丽",
+    "roots": "sublimis(高耸的)"
+  },
+  "subside": {
+    "mnemonic": "sub(向下) + side(坐) = 向下坐,平息",
+    "type": "词根分解",
+    "association": "渐渐平息",
+    "roots": "sub- + sidere(坐)"
+  },
+  "substantive": {
+    "mnemonic": "sub + stant(站) + ive = 站得住的,实质的",
+    "type": "词根分解",
+    "association": "实质性的",
+    "roots": "sub- + stare(站立)"
+  },
+  "subterfuge": {
+    "mnemonic": "subter(在下) + fuge(逃跑) = 在下面逃跑,诡计",
+    "type": "词根分解",
+    "association": "瞒天过海",
+    "roots": "subter- + fugere(逃跑)"
+  },
+  "subvert": {
+    "mnemonic": "sub(在下) + vert(转) = 从下面转翻,颠覆",
+    "type": "词根分解",
+    "association": "暗中破坏",
+    "roots": "sub- + vertere(转)"
+  },
+  "suffice": {
+    "mnemonic": "suf + fic(做make) + e = 做得够,足够",
+    "type": "词根分解",
+    "association": "绰绰有余",
+    "roots": "sub- + facere(做)"
+  },
+  "sumptuous": {
+    "mnemonic": "sumpt(花费) + uous = 花费多的,奢华的",
+    "type": "词根分解",
+    "association": "穷奢极欲",
+    "roots": "sumptus(花费)"
   }
 }

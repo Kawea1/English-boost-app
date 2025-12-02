@@ -68,6 +68,9 @@ var sessionWordProgress = {}; // 本轮学习中每个单词的进度（用于�
 // V11: 同义词/反义词数据
 var wordRelationsData = null;
 
+// V12: 智能助记词数据
+var wordMnemonicsData = null;
+
 // V11: 加载同义词/反义词数据
 function loadWordRelations() {
     if (wordRelationsData) return Promise.resolve(wordRelationsData);
@@ -89,11 +92,39 @@ function loadWordRelations() {
         });
 }
 
+// V12: 加载智能助记词数据
+function loadWordMnemonics() {
+    if (wordMnemonicsData) return Promise.resolve(wordMnemonicsData);
+    
+    return fetch('word_mnemonics.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word mnemonics');
+            return response.json();
+        })
+        .then(function(data) {
+            wordMnemonicsData = data;
+            console.log('[V12] 智能助记词数据加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V12] 加载智能助记词数据失败:', err);
+            wordMnemonicsData = {};
+            return {};
+        });
+}
+
 // V11: 获取单词的同义词/反义词
 function getWordRelations(word) {
     if (!wordRelationsData) return null;
     var lowerWord = word.toLowerCase();
     return wordRelationsData[lowerWord] || null;
+}
+
+// V12: 获取单词的助记词
+function getWordMnemonic(word) {
+    if (!wordMnemonicsData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordMnemonicsData[lowerWord] || null;
 }
 
 try {
@@ -112,6 +143,8 @@ function initVocabulary() {
     loadAdaptiveDifficulty();
     // V11: 加载同义词/反义词数据
     loadWordRelations();
+    // V12: 加载智能助记词数据
+    loadWordMnemonics();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词

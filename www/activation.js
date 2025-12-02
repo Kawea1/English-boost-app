@@ -1288,19 +1288,12 @@ const ActivationUI = {
                     <!-- V6: 温馨的小提示 -->
                     <div class="trial-note">
                         <span class="note-icon">💡</span>
-                        <span class="note-text">体验期结束后，你可以随时选择激活完整版</span>
+                        <span class="note-text">体验期结束后，可随时选择激活完整版</span>
                     </div>
                     
-                    <!-- V7: 学习者评价（真实感） -->
-                    <div class="user-testimonial">
-                        <div class="testimonial-quote">"这款APP帮我在一个月内提升了50个GRE核心词汇的掌握"</div>
-                        <div class="testimonial-author">
-                            <span class="author-avatar">👨‍🎓</span>
-                            <span class="author-info">
-                                <span class="author-name">李同学</span>
-                                <span class="author-title">北京大学</span>
-                            </span>
-                        </div>
+                    <!-- V7: 真诚的APP介绍（替代假评价） -->
+                    <div class="app-intro">
+                        <div class="intro-text">专注学术英语，助力留学考试</div>
                     </div>
                 </div>
                 
@@ -3154,69 +3147,16 @@ const ActivationUI = {
                 color: #64748b;
             }
             
-            /* V7: 学习者评价 */
-            .user-testimonial {
-                margin-top: 25px;
-                padding: 18px;
-                background: linear-gradient(145deg, #fafafa, #f5f5f5);
-                border-radius: 16px;
-                border: 1px solid rgba(0, 0, 0, 0.03);
-            }
-            
-            .testimonial-quote {
-                font-size: 14px;
-                font-style: italic;
-                color: #475569;
-                line-height: 1.6;
+            /* V7: 简洁的APP介绍（替代虚假评价） */
+            .app-intro {
+                margin-top: 20px;
                 text-align: center;
-                margin-bottom: 12px;
             }
             
-            .testimonial-quote::before {
-                content: '"';
-                color: #6366f1;
-                font-size: 18px;
-            }
-            
-            .testimonial-quote::after {
-                content: '"';
-                color: #6366f1;
-                font-size: 18px;
-            }
-            
-            .testimonial-author {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 10px;
-            }
-            
-            .author-avatar {
-                width: 36px;
-                height: 36px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: linear-gradient(135deg, #e0e7ff, #c7d2fe);
-                border-radius: 50%;
-                font-size: 18px;
-            }
-            
-            .author-info {
-                display: flex;
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .author-name {
+            .intro-text {
                 font-size: 13px;
-                font-weight: 600;
-                color: #1e293b;
-            }
-            
-            .author-title {
-                font-size: 11px;
                 color: #94a3b8;
+                letter-spacing: 0.5px;
             }
             
             /* 保留旧样式兼容 */
