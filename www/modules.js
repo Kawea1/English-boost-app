@@ -18,6 +18,118 @@ var reviewSessionStats = {  // 复习会话统计
     completedBatches: 0
 };
 
+// ==================== V2.8: 学习目标相关函数 ====================
+
+// V2.8: 获取当前学习目标
+function getCurrentLearningGoal() {
+    if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getLearningGoal) {
+        return ActivationSystem.getLearningGoal();
+    }
+    try {
+        var goalData = JSON.parse(localStorage.getItem('eb_learning_goal') || '{}');
+        return goalData.goal || null;
+    } catch(e) {
+        return null;
+    }
+}
+
+// V2.8: 获取当前目标的显示标签
+function getCurrentGoalLabel() {
+    var goal = getCurrentLearningGoal();
+    var labels = {
+        'gre': 'GRE模式',
+        'toefl': '托福模式',
+        'academic': '学术英语'
+    };
+    return labels[goal] || '';
+}
+
+// V2.8: 根据学习目标过滤阅读文章
+function getGoalFilteredPassages(passages) {
+    var goal = getCurrentLearningGoal();
+    console.log('[V2.8] 阅读模块当前学习目标:', goal);
+    
+    var filtered = [];
+    
+    passages.forEach(function(passage, index) {
+        var shouldInclude = false;
+        var priority = 0; // 用于排序的优先级
+        
+        if (!goal) {
+            // 没有设置目标，包含所有
+            shouldInclude = true;
+        } else if (goal === 'gre') {
+            // GRE模式：优先GRE文章
+            if (passage.category && passage.category.toLowerCase().includes('gre')) {
+                shouldInclude = true;
+                priority = 10;
+            } else if (passage.difficulty === '高级' || passage.difficulty === 'advanced') {
+                shouldInclude = true;
+                priority = 5;
+            } else {
+                // 其他文章也包含，但优先级低
+                shouldInclude = true;
+                priority = 1;
+            }
+        } else if (goal === 'toefl') {
+            // 托福模式：优先托福文章
+            if (passage.category && (
+                passage.category.toLowerCase().includes('toefl') ||
+                passage.category.toLowerCase().includes('托福')
+            )) {
+                shouldInclude = true;
+                priority = 10;
+            } else if (passage.topic && (
+                passage.topic.includes('听力') ||
+                passage.topic.includes('口语') ||
+                passage.topic.includes('学术')
+            )) {
+                shouldInclude = true;
+                priority = 5;
+            } else {
+                shouldInclude = true;
+                priority = 1;
+            }
+        } else if (goal === 'academic') {
+            // 学术英语模式：优先学术类文章
+            if (passage.topic && (
+                passage.topic.includes('学术') ||
+                passage.topic.includes('科学') ||
+                passage.topic.includes('研究') ||
+                passage.topic.includes('论文')
+            )) {
+                shouldInclude = true;
+                priority = 10;
+            } else if (passage.category && passage.category.includes('学术')) {
+                shouldInclude = true;
+                priority = 8;
+            } else {
+                shouldInclude = true;
+                priority = 1;
+            }
+        } else {
+            shouldInclude = true;
+        }
+        
+        if (shouldInclude) {
+            filtered.push({
+                passage: passage,
+                originalIndex: index,
+                priority: priority
+            });
+        }
+    });
+    
+    // 按优先级排序（高优先级在前）
+    filtered.sort(function(a, b) {
+        return b.priority - a.priority;
+    });
+    
+    console.log('[V2.8] 过滤后阅读文章数:', filtered.length, '/', passages.length);
+    
+    return filtered;
+}
+
 // ==================== V1: 获取所有已学单词 ====================
 
 // 获取所有已学单词（完整版）
@@ -3871,16 +3983,26 @@ function loadRandomUnreadPassage() {
         if (el) el.innerHTML = "<p style='color:#f44336;padding:20px;text-align:center;'>阅读数据加载中...</p>";
         return;
     }
+    
+    // V2.8: 根据学习目标过滤阅读文章
+    var goalFilteredPassages = getGoalFilteredPassages(passages);
+    
     var unread = [];
-    for (var i = 0; i < passages.length; i++) {
-        if (readArticles.indexOf(passages[i].id) === -1) unread.push(i);
+    for (var i = 0; i < goalFilteredPassages.length; i++) {
+        if (readArticles.indexOf(goalFilteredPassages[i].passage.id) === -1) {
+            unread.push(goalFilteredPassages[i]);
+        }
     }
     if (unread.length === 0) {
         readArticles = [];
         localStorage.setItem("readArticles", "[]");
-        for (var j = 0; j < passages.length; j++) unread.push(j);
+        // 重新获取过滤后的文章
+        unread = getGoalFilteredPassages(passages);
     }
-    var idx = unread[Math.floor(Math.random() * unread.length)];
+    
+    // V2.8: 从过滤后的结果中随机选择
+    var selected = unread[Math.floor(Math.random() * unread.length)];
+    var idx = selected.originalIndex;
     
     // 更新控制栏
     var listEl = document.getElementById("readingList");
@@ -3890,11 +4012,14 @@ function loadRandomUnreadPassage() {
         var todayReadData = JSON.parse(localStorage.getItem("todayReadArticles") || '{"date":"","articles":[]}');
         var todayCount = (todayReadData.date === today) ? todayReadData.articles.length : 0;
         
+        // V2.8: 显示当前学习目标
+        var goalLabel = getCurrentGoalLabel();
+        
         listEl.innerHTML = 
             "<div style='display:flex;align-items:center;justify-content:space-between;'>" +
             "<div style='display:flex;align-items:center;gap:8px;'>" +
             "<span style='width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#667eea,#764ba2);display:flex;align-items:center;justify-content:center;'><svg viewBox='0 0 24 24' width='22' height='22' fill='none' stroke='white' stroke-width='2'><path d='M4 19.5A2.5 2.5 0 0 1 6.5 17H20'/><path d='M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z'/></svg></span>" +
-            "<div><div style='font-weight:600;color:#333;'>今日阅读</div>" +
+            "<div><div style='font-weight:600;color:#333;'>今日阅读" + (goalLabel ? " · " + goalLabel : "") + "</div>" +
             "<div style='font-size:13px;color:#888;'>今日已读 " + todayCount + " 篇</div></div></div>" +
             "<button onclick='loadRandomUnreadPassage()' style='padding:10px 20px;background:linear-gradient(135deg,#667eea,#764ba2);color:white;border:none;border-radius:25px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 8px rgba(102,126,234,0.3);display:flex;align-items:center;gap:6px;'><svg viewBox='0 0 24 24' width='16' height='16' fill='none' stroke='currentColor' stroke-width='2'><path d='M23 4v6h-6'/><path d='M1 20v-6h6'/><path d='M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15'/></svg> 换一篇</button></div>";
     }

@@ -676,14 +676,6 @@ var currentModule = null;
             }
         }
     }
-                    window.electron.shell.openExternal(url);
-                } else {
-                    window.open(url, '_blank');
-                }
-                closeUpdateDialog();
-            }, 500);
-        }
-    }
     
     // 跳过此版本
     function skipVersion(version) {

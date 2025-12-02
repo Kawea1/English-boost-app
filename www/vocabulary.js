@@ -65,6 +65,546 @@ var wordRatings = {};
 var wordLearningProgress = {}; // 记录每个单词的学习进度
 var sessionWordProgress = {}; // 本轮学习中每个单词的进度（用于间隔重复）
 
+// ==================== V1: 单词掌握度追踪系统 ====================
+// 多维度追踪每个单词的掌握程度
+
+var wordMasteryData = {};  // 单词掌握度数据
+try {
+    wordMasteryData = JSON.parse(localStorage.getItem('wordMasteryData') || '{}');
+} catch(e) {
+    wordMasteryData = {};
+}
+
+// 掌握度等级定义
+var MASTERY_LEVELS = {
+    0: { name: '未学习', icon: '○', color: '#9ca3af', bgColor: '#f3f4f6' },
+    1: { name: '初识', icon: '◔', color: '#f59e0b', bgColor: '#fef3c7' },
+    2: { name: '熟悉', icon: '◑', color: '#3b82f6', bgColor: '#dbeafe' },
+    3: { name: '掌握', icon: '◕', color: '#10b981', bgColor: '#d1fae5' },
+    4: { name: '精通', icon: '●', color: '#8b5cf6', bgColor: '#ede9fe' },
+    5: { name: '完美', icon: '★', color: '#ec4899', bgColor: '#fce7f3' }
+};
+
+// 初始化单词掌握度
+function initWordMastery(word) {
+    if (!wordMasteryData[word]) {
+        wordMasteryData[word] = {
+            level: 0,                    // 掌握等级 0-5
+            totalViews: 0,               // 总查看次数
+            correctCount: 0,             // 正确次数
+            wrongCount: 0,               // 错误次数
+            lastStudied: null,           // 最后学习时间
+            firstStudied: null,          // 首次学习时间
+            studyHistory: [],            // 学习历史 [{date, result, duration}]
+            pronunciationScore: 0,       // 发音得分
+            spellingScore: 0,            // 拼写得分
+            meaningScore: 0,             // 释义记忆得分
+            retentionRate: 0,            // 记忆保持率
+            difficulty: 'medium',        // 个人难度评估
+            notes: ''                    // 用户笔记
+        };
+    }
+    return wordMasteryData[word];
+}
+
+// 更新单词掌握度
+function updateWordMastery(word, result, options) {
+    options = options || {};
+    var mastery = initWordMastery(word);
+    var now = Date.now();
+    
+    // 更新基础统计
+    mastery.totalViews++;
+    mastery.lastStudied = now;
+    if (!mastery.firstStudied) {
+        mastery.firstStudied = now;
+    }
+    
+    // 记录学习历史
+    mastery.studyHistory.push({
+        date: now,
+        result: result,  // 'correct', 'wrong', 'partial', 'skip'
+        duration: options.duration || 0,
+        type: options.type || 'review'  // 'learn', 'review', 'quiz', 'pronunciation'
+    });
+    
+    // 保留最近50条历史
+    if (mastery.studyHistory.length > 50) {
+        mastery.studyHistory = mastery.studyHistory.slice(-50);
+    }
+    
+    // 更新正确/错误次数
+    if (result === 'correct') {
+        mastery.correctCount++;
+    } else if (result === 'wrong') {
+        mastery.wrongCount++;
+    }
+    
+    // 更新维度得分
+    if (options.pronunciationScore !== undefined) {
+        mastery.pronunciationScore = Math.round(
+            mastery.pronunciationScore * 0.7 + options.pronunciationScore * 0.3
+        );
+    }
+    if (options.spellingScore !== undefined) {
+        mastery.spellingScore = Math.round(
+            mastery.spellingScore * 0.7 + options.spellingScore * 0.3
+        );
+    }
+    if (options.meaningScore !== undefined) {
+        mastery.meaningScore = Math.round(
+            mastery.meaningScore * 0.7 + options.meaningScore * 0.3
+        );
+    }
+    
+    // 计算记忆保持率
+    mastery.retentionRate = calculateRetentionRate(mastery);
+    
+    // 计算掌握等级
+    mastery.level = calculateMasteryLevel(mastery);
+    
+    // 评估个人难度
+    mastery.difficulty = assessPersonalDifficulty(mastery);
+    
+    // 保存数据
+    saveWordMastery();
+    
+    return mastery;
+}
+
+// 计算记忆保持率
+function calculateRetentionRate(mastery) {
+    if (mastery.correctCount + mastery.wrongCount === 0) return 0;
+    
+    // 基于正确率计算，加权最近的表现
+    var recentHistory = mastery.studyHistory.slice(-10);
+    var recentCorrect = recentHistory.filter(function(h) { 
+        return h.result === 'correct'; 
+    }).length;
+    
+    var overallRate = mastery.correctCount / (mastery.correctCount + mastery.wrongCount);
+    var recentRate = recentHistory.length > 0 ? recentCorrect / recentHistory.length : 0;
+    
+    // 70%权重给最近表现，30%给总体表现
+    return Math.round((recentRate * 0.7 + overallRate * 0.3) * 100);
+}
+
+// 计算掌握等级
+function calculateMasteryLevel(mastery) {
+    var score = 0;
+    
+    // 因素1: 学习次数 (最高20分)
+    score += Math.min(mastery.totalViews * 2, 20);
+    
+    // 因素2: 记忆保持率 (最高30分)
+    score += mastery.retentionRate * 0.3;
+    
+    // 因素3: 发音得分 (最高15分)
+    score += mastery.pronunciationScore * 0.15;
+    
+    // 因素4: 拼写得分 (最高15分)
+    score += mastery.spellingScore * 0.15;
+    
+    // 因素5: 释义记忆 (最高20分)
+    score += mastery.meaningScore * 0.2;
+    
+    // 转换为等级
+    if (score >= 90) return 5;  // 完美
+    if (score >= 75) return 4;  // 精通
+    if (score >= 55) return 3;  // 掌握
+    if (score >= 35) return 2;  // 熟悉
+    if (score >= 15) return 1;  // 初识
+    return 0;  // 未学习
+}
+
+// 评估个人难度
+function assessPersonalDifficulty(mastery) {
+    var errorRate = mastery.wrongCount / Math.max(1, mastery.totalViews);
+    var avgDuration = 0;
+    
+    if (mastery.studyHistory.length > 0) {
+        var totalDuration = mastery.studyHistory.reduce(function(sum, h) {
+            return sum + (h.duration || 0);
+        }, 0);
+        avgDuration = totalDuration / mastery.studyHistory.length;
+    }
+    
+    // 错误率高或学习时间长表示难度大
+    if (errorRate > 0.5 || avgDuration > 10000) return 'hard';
+    if (errorRate > 0.2 || avgDuration > 5000) return 'medium';
+    return 'easy';
+}
+
+// 保存掌握度数据
+function saveWordMastery() {
+    try {
+        localStorage.setItem('wordMasteryData', JSON.stringify(wordMasteryData));
+    } catch(e) {
+        console.warn('保存掌握度数据失败:', e);
+    }
+}
+
+// 获取单词掌握度信息
+function getWordMastery(word) {
+    return wordMasteryData[word] || initWordMastery(word);
+}
+
+// 获取掌握度等级信息
+function getMasteryLevelInfo(level) {
+    return MASTERY_LEVELS[level] || MASTERY_LEVELS[0];
+}
+
+// 生成掌握度显示HTML
+function renderMasteryBadge(word, options) {
+    options = options || {};
+    var mastery = getWordMastery(word);
+    var levelInfo = getMasteryLevelInfo(mastery.level);
+    var size = options.size || 'normal';  // 'mini', 'normal', 'large'
+    
+    var sizeClasses = {
+        mini: 'mastery-badge-mini',
+        normal: 'mastery-badge-normal',
+        large: 'mastery-badge-large'
+    };
+    
+    var html = '<div class="mastery-badge ' + sizeClasses[size] + '" ';
+    html += 'style="background:' + levelInfo.bgColor + ';color:' + levelInfo.color + ';" ';
+    html += 'data-word="' + word + '" title="' + levelInfo.name + ' - 保持率' + mastery.retentionRate + '%">';
+    html += '<span class="mastery-icon">' + levelInfo.icon + '</span>';
+    
+    if (size !== 'mini') {
+        html += '<span class="mastery-text">' + levelInfo.name + '</span>';
+    }
+    
+    if (size === 'large') {
+        html += '<span class="mastery-rate">' + mastery.retentionRate + '%</span>';
+    }
+    
+    html += '</div>';
+    
+    return html;
+}
+
+// 生成详细掌握度卡片
+function renderMasteryCard(word) {
+    var mastery = getWordMastery(word);
+    var levelInfo = getMasteryLevelInfo(mastery.level);
+    
+    var html = '<div class="mastery-card">';
+    
+    // 头部：等级和保持率
+    html += '<div class="mastery-card-header" style="background:' + levelInfo.bgColor + '">';
+    html += '<div class="mastery-level-display">';
+    html += '<span class="mastery-level-icon" style="color:' + levelInfo.color + '">' + levelInfo.icon + '</span>';
+    html += '<span class="mastery-level-name">' + levelInfo.name + '</span>';
+    html += '</div>';
+    html += '<div class="mastery-retention">';
+    html += '<span class="retention-value">' + mastery.retentionRate + '%</span>';
+    html += '<span class="retention-label">记忆保持</span>';
+    html += '</div>';
+    html += '</div>';
+    
+    // 三维度进度条
+    html += '<div class="mastery-dimensions">';
+    html += renderDimensionBar('🎤 发音', mastery.pronunciationScore);
+    html += renderDimensionBar('✏️ 拼写', mastery.spellingScore);
+    html += renderDimensionBar('📖 释义', mastery.meaningScore);
+    html += '</div>';
+    
+    // 统计信息
+    html += '<div class="mastery-stats">';
+    html += '<div class="stat-item"><span class="stat-value">' + mastery.totalViews + '</span><span class="stat-label">学习次数</span></div>';
+    html += '<div class="stat-item"><span class="stat-value">' + mastery.correctCount + '</span><span class="stat-label">正确</span></div>';
+    html += '<div class="stat-item"><span class="stat-value">' + mastery.wrongCount + '</span><span class="stat-label">错误</span></div>';
+    
+    var difficultyLabels = { easy: '简单', medium: '适中', hard: '困难' };
+    var difficultyColors = { easy: '#10b981', medium: '#f59e0b', hard: '#ef4444' };
+    html += '<div class="stat-item"><span class="stat-value" style="color:' + difficultyColors[mastery.difficulty] + '">' + difficultyLabels[mastery.difficulty] + '</span><span class="stat-label">难度</span></div>';
+    html += '</div>';
+    
+    // 学习时间线
+    if (mastery.firstStudied) {
+        html += '<div class="mastery-timeline">';
+        html += '<span class="timeline-item">首次: ' + formatDate(mastery.firstStudied) + '</span>';
+        if (mastery.lastStudied) {
+            html += '<span class="timeline-item">最近: ' + formatTimeAgo(mastery.lastStudied) + '</span>';
+        }
+        html += '</div>';
+    }
+    
+    html += '</div>';
+    
+    return html;
+}
+
+// 渲染维度进度条
+function renderDimensionBar(label, score) {
+    var color = score >= 80 ? '#10b981' : (score >= 50 ? '#3b82f6' : (score >= 30 ? '#f59e0b' : '#ef4444'));
+    
+    var html = '<div class="dimension-bar-item">';
+    html += '<span class="dimension-label">' + label + '</span>';
+    html += '<div class="dimension-bar-track">';
+    html += '<div class="dimension-bar-fill" style="width:' + score + '%;background:' + color + '"></div>';
+    html += '</div>';
+    html += '<span class="dimension-value">' + score + '</span>';
+    html += '</div>';
+    
+    return html;
+}
+
+// 格式化日期
+function formatDate(timestamp) {
+    var date = new Date(timestamp);
+    return (date.getMonth() + 1) + '/' + date.getDate();
+}
+
+// 格式化时间差
+function formatTimeAgo(timestamp) {
+    var now = Date.now();
+    var diff = now - timestamp;
+    
+    var minutes = Math.floor(diff / 60000);
+    var hours = Math.floor(diff / 3600000);
+    var days = Math.floor(diff / 86400000);
+    
+    if (days > 0) return days + '天前';
+    if (hours > 0) return hours + '小时前';
+    if (minutes > 0) return minutes + '分钟前';
+    return '刚刚';
+}
+
+// 获取掌握度统计
+function getMasteryStats() {
+    var stats = {
+        total: window.vocabularyData ? window.vocabularyData.length : 0,
+        byLevel: { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+        avgRetention: 0,
+        hardWords: [],
+        masteredWords: [],
+        needReview: []
+    };
+    
+    var totalRetention = 0;
+    var retentionCount = 0;
+    
+    Object.keys(wordMasteryData).forEach(function(word) {
+        var m = wordMasteryData[word];
+        stats.byLevel[m.level]++;
+        
+        if (m.retentionRate > 0) {
+            totalRetention += m.retentionRate;
+            retentionCount++;
+        }
+        
+        if (m.difficulty === 'hard') {
+            stats.hardWords.push(word);
+        }
+        
+        if (m.level >= 4) {
+            stats.masteredWords.push(word);
+        }
+        
+        // 检查是否需要复习（超过3天未学习且保持率低于80%）
+        if (m.lastStudied && (Date.now() - m.lastStudied > 3 * 86400000) && m.retentionRate < 80) {
+            stats.needReview.push({ word: word, urgency: 100 - m.retentionRate });
+        }
+    });
+    
+    stats.avgRetention = retentionCount > 0 ? Math.round(totalRetention / retentionCount) : 0;
+    stats.needReview.sort(function(a, b) { return b.urgency - a.urgency; });
+    
+    return stats;
+}
+
+// 添加掌握度追踪样式
+function addMasteryTrackingStyles() {
+    if (document.getElementById('masteryTrackingStyles')) return;
+    
+    var style = document.createElement('style');
+    style.id = 'masteryTrackingStyles';
+    style.textContent = `
+        /* V1: 掌握度徽章样式 */
+        .mastery-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        
+        .mastery-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        
+        .mastery-badge-mini {
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+        
+        .mastery-badge-normal {
+            padding: 4px 10px;
+            font-size: 13px;
+        }
+        
+        .mastery-badge-large {
+            padding: 6px 14px;
+            font-size: 14px;
+        }
+        
+        .mastery-icon {
+            font-size: 1.1em;
+        }
+        
+        .mastery-rate {
+            margin-left: 4px;
+            opacity: 0.8;
+        }
+        
+        /* 掌握度卡片 */
+        .mastery-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .mastery-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+        }
+        
+        .mastery-level-display {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .mastery-level-icon {
+            font-size: 28px;
+        }
+        
+        .mastery-level-name {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .mastery-retention {
+            text-align: right;
+        }
+        
+        .retention-value {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .retention-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        /* 维度进度条 */
+        .mastery-dimensions {
+            padding: 16px;
+        }
+        
+        .dimension-bar-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .dimension-label {
+            width: 60px;
+            font-size: 13px;
+            color: #4b5563;
+        }
+        
+        .dimension-bar-track {
+            flex: 1;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .dimension-bar-fill {
+            height: 100%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .dimension-value {
+            width: 30px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        /* 统计信息 */
+        .mastery-stats {
+            display: flex;
+            justify-content: space-around;
+            padding: 16px;
+            background: #f9fafb;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+            color: #1f2937;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: #6b7280;
+        }
+        
+        /* 时间线 */
+        .mastery-timeline {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 16px;
+            font-size: 12px;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        /* 单词卡片中的掌握度指示 */
+        .word-mastery-indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+        }
+    `;
+    document.head.appendChild(style);
+}
+
+// 导出V1功能
+window.initWordMastery = initWordMastery;
+window.updateWordMastery = updateWordMastery;
+window.getWordMastery = getWordMastery;
+window.getMasteryLevelInfo = getMasteryLevelInfo;
+window.renderMasteryBadge = renderMasteryBadge;
+window.renderMasteryCard = renderMasteryCard;
+window.getMasteryStats = getMasteryStats;
+window.addMasteryTrackingStyles = addMasteryTrackingStyles;
+
 // V11: 同义词/反义词数据
 var wordRelationsData = null;
 
@@ -76,6 +616,9 @@ var wordDifficultyData = null;
 
 // V15: 丰富例句数据
 var wordExamplesData = null;
+
+// V16: 真题词汇标记数据
+var wordExamTagsData = null;
 
 // ==================== V14: 科学助记系统 ====================
 // 基于认知心理学的10个维度改进
@@ -523,6 +1066,34 @@ function getWordExamples(word) {
     return wordExamplesData[lowerWord] || null;
 }
 
+// V16: 加载真题词汇标记数据
+function loadWordExamTags() {
+    if (wordExamTagsData) return Promise.resolve(wordExamTagsData);
+    
+    return fetch('word_exam_tags.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load exam tags');
+            return response.json();
+        })
+        .then(function(data) {
+            wordExamTagsData = data;
+            console.log('[V16] 真题词汇标记加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V16] 加载真题词汇标记失败:', err);
+            wordExamTagsData = {};
+            return {};
+        });
+}
+
+// V16: 获取单词真题标记
+function getWordExamTags(word) {
+    if (!wordExamTagsData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordExamTagsData[lowerWord] || null;
+}
+
 try {
     learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
     wordRatings = JSON.parse(localStorage.getItem('wordRatings') || '{}');
@@ -545,6 +1116,8 @@ function initVocabulary() {
     loadWordDifficulty();
     // V15: 加载丰富例句数据
     loadWordExamples();
+    // V16: 加载真题词汇标记数据
+    loadWordExamTags();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词
@@ -986,9 +1559,13 @@ function initSessionWords() {
     
     if (!window.vocabularyData || window.vocabularyData.length === 0) return;
     
+    // V2.6: 根据学习目标过滤词汇
+    var goalVocabulary = getGoalFilteredVocabulary();
+    var effectiveWordsPerSession = getEffectiveWordsPerSession();
+    
     // 随机选择指定数量的单词
     var allIndices = [];
-    for (var i = 0; i < window.vocabularyData.length; i++) {
+    for (var i = 0; i < goalVocabulary.length; i++) {
         allIndices.push(i);
     }
     
@@ -1000,10 +1577,10 @@ function initSessionWords() {
         allIndices[k] = temp;
     }
     
-    // 取前N个
-    var count = Math.min(wordsPerSession, allIndices.length);
+    // 取前N个（根据目标调整数量）
+    var count = Math.min(effectiveWordsPerSession, allIndices.length);
     for (var m = 0; m < count; m++) {
-        var wordData = window.vocabularyData[allIndices[m]];
+        var wordData = goalVocabulary[allIndices[m]];
         sessionWords.push(wordData);
         // 初始化本轮学习进度
         sessionWordProgress[wordData.word] = {
@@ -1015,6 +1592,115 @@ function initSessionWords() {
     
     // 构建间隔重复的学习队列
     buildLearningQueue();
+}
+
+// V2.6: 根据学习目标获取过滤后的词汇列表
+function getGoalFilteredVocabulary() {
+    var goal = null;
+    
+    // 尝试从ActivationSystem获取学习目标
+    if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getLearningGoal) {
+        goal = ActivationSystem.getLearningGoal();
+    } else {
+        // 备用：直接从localStorage获取
+        try {
+            var goalData = JSON.parse(localStorage.getItem('eb_learning_goal') || '{}');
+            goal = goalData.goal;
+        } catch(e) {
+            goal = null;
+        }
+    }
+    
+    console.log('[V2.6] 当前学习目标:', goal);
+    
+    // 如果没有设置目标或使用所有词汇
+    if (!goal) {
+        return window.vocabularyData;
+    }
+    
+    // 根据目标过滤词汇
+    var filteredWords = [];
+    var examTagsLoaded = wordExamTagsData && Object.keys(wordExamTagsData).length > 0;
+    
+    window.vocabularyData.forEach(function(wordData) {
+        var shouldInclude = false;
+        var wordLower = wordData.word.toLowerCase();
+        
+        if (goal === 'gre') {
+            // GRE模式：优先GRE高频词
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.gre || tags.gre_high_freq || tags.graduate;
+            }
+            // 如果没有标签数据，默认包含难度较高的词
+            if (!shouldInclude && wordDifficultyData && wordDifficultyData[wordLower]) {
+                var diff = wordDifficultyData[wordLower];
+                shouldInclude = diff.level === 'advanced' || diff.level === 'expert';
+            }
+            // 兜底：包含所有词汇
+            if (!shouldInclude && (!examTagsLoaded || !wordDifficultyData)) {
+                shouldInclude = true;
+            }
+        } else if (goal === 'toefl') {
+            // 托福模式：托福常考词
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.toefl || tags.toefl_high_freq || tags.academic;
+            }
+            if (!shouldInclude && wordDifficultyData && wordDifficultyData[wordLower]) {
+                var diff = wordDifficultyData[wordLower];
+                shouldInclude = diff.level === 'intermediate' || diff.level === 'advanced';
+            }
+            if (!shouldInclude && (!examTagsLoaded || !wordDifficultyData)) {
+                shouldInclude = true;
+            }
+        } else if (goal === 'academic') {
+            // 学术英语模式：AWL学术词汇
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.awl || tags.academic || tags.research;
+            }
+            // 检查是否为AWL词汇（通过标签或其他方式）
+            if (!shouldInclude && window.awlWordList && window.awlWordList.includes(wordLower)) {
+                shouldInclude = true;
+            }
+            if (!shouldInclude && (!examTagsLoaded || !window.awlWordList)) {
+                shouldInclude = true;
+            }
+        } else {
+            // 未知目标，包含所有
+            shouldInclude = true;
+        }
+        
+        if (shouldInclude) {
+            filteredWords.push(wordData);
+        }
+    });
+    
+    console.log('[V2.6] 目标过滤后词汇数:', filteredWords.length, '/', window.vocabularyData.length);
+    
+    // 如果过滤后词汇太少，返回全部
+    if (filteredWords.length < 20) {
+        console.log('[V2.6] 过滤后词汇不足，使用全部词汇');
+        return window.vocabularyData;
+    }
+    
+    return filteredWords;
+}
+
+// V2.7: 根据学习目标获取有效的每次学习单词数
+function getEffectiveWordsPerSession() {
+    var goal = null;
+    
+    if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getGoalDailyWords) {
+        var goalDailyWords = ActivationSystem.getGoalDailyWords();
+        if (goalDailyWords) {
+            // 使用目标配置的每日单词数，但不超过用户设置
+            return Math.min(goalDailyWords, wordsPerSession);
+        }
+    }
+    
+    return wordsPerSession;
 }
 
 // 构建间隔重复的学习队列
@@ -1202,6 +1888,9 @@ function showCurrentWord() {
     }
     if (!learningQueue || learningQueue.length === 0) return;
     
+    // 确保掌握度样式已加载
+    addMasteryTrackingStyles();
+    
     // 检查是否完成所有学习
     if (currentQueueIndex >= learningQueue.length) {
         showSessionSummary();
@@ -1236,8 +1925,14 @@ function showCurrentWord() {
     document.getElementById('wordMain').textContent = wordData.word;
     document.getElementById('wordPhonetic').textContent = wordData.phonetic || '';
     
+    // V1: 显示掌握度徽章
+    showMasteryBadge(wordData.word);
+    
     // V13: 显示难度等级标签
     showDifficultyBadge(wordData.word);
+    
+    // V16: 显示真题标记标签
+    showExamTagsBadge(wordData.word);
     
     // 隐藏释义区域
     document.getElementById('wordMeaning').classList.add('hidden');
@@ -1254,6 +1949,55 @@ function showCurrentWord() {
     
     // 自动朗读新单词
     speakWord();
+}
+
+// V1: 显示掌握度徽章
+function showMasteryBadge(word) {
+    var masteryContainer = document.getElementById('masteryBadgeContainer');
+    var wordMainEl = document.getElementById('wordMain');
+    
+    if (!masteryContainer && wordMainEl) {
+        masteryContainer = document.createElement('div');
+        masteryContainer.id = 'masteryBadgeContainer';
+        masteryContainer.style.cssText = 'display:flex;justify-content:center;margin-top:8px;';
+        wordMainEl.parentNode.insertBefore(masteryContainer, wordMainEl.nextSibling);
+    }
+    
+    if (masteryContainer) {
+        var mastery = getWordMastery(word);
+        masteryContainer.innerHTML = renderMasteryBadge(word, { size: 'normal' });
+        
+        // 点击徽章显示详细卡片
+        masteryContainer.onclick = function() {
+            showMasteryDetailPopup(word);
+        };
+        masteryContainer.style.cursor = 'pointer';
+    }
+}
+
+// V1: 显示掌握度详情弹窗
+function showMasteryDetailPopup(word) {
+    var overlay = document.createElement('div');
+    overlay.id = 'masteryDetailOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:10000;animation:fadeIn 0.2s ease;';
+    
+    var popup = document.createElement('div');
+    popup.style.cssText = 'background:white;border-radius:20px;max-width:340px;width:90%;max-height:80vh;overflow-y:auto;animation:slideUp 0.3s ease;';
+    
+    // 标题栏
+    var header = '<div style="padding:16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">';
+    header += '<span style="font-size:18px;font-weight:700;">📊 ' + word + ' 掌握度</span>';
+    header += '<button onclick="document.getElementById(\'masteryDetailOverlay\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;">✕</button>';
+    header += '</div>';
+    
+    popup.innerHTML = header + renderMasteryCard(word);
+    overlay.appendChild(popup);
+    
+    overlay.onclick = function(e) {
+        if (e.target === overlay) overlay.remove();
+    };
+    
+    document.body.appendChild(overlay);
 }
 
 // V13: 显示难度等级标签
@@ -1301,6 +2045,52 @@ function showDifficultyBadge(word) {
             badge.innerHTML = '<span>' + style.icon + '</span><span>' + style.label + '</span>' + sourceTags;
         } else {
             badge.style.display = 'none';
+        }
+    }
+}
+
+// V16: 显示真题标记标签
+function showExamTagsBadge(word) {
+    var examTags = getWordExamTags(word);
+    
+    // 查找或创建真题标签容器
+    var examBadge = document.getElementById('examTagsBadge');
+    var difficultyBadge = document.getElementById('difficultyBadge');
+    var phoneticEl = document.getElementById('wordPhonetic');
+    
+    if (!examBadge && (difficultyBadge || phoneticEl)) {
+        examBadge = document.createElement('span');
+        examBadge.id = 'examTagsBadge';
+        examBadge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
+        
+        // 插入到难度标签之后，或音标之后
+        if (difficultyBadge && difficultyBadge.parentNode) {
+            difficultyBadge.parentNode.insertBefore(examBadge, difficultyBadge.nextSibling);
+        } else if (phoneticEl && phoneticEl.parentNode) {
+            phoneticEl.parentNode.insertBefore(examBadge, phoneticEl.nextSibling);
+        }
+    }
+    
+    if (examBadge) {
+        if (examTags) {
+            examBadge.style.display = 'inline-flex';
+            examBadge.style.background = 'linear-gradient(135deg,#fef3c7 0%,#fde68a 100%)';
+            examBadge.style.color = '#92400e';
+            examBadge.style.border = '1px solid #fcd34d';
+            
+            var content = '<span>📚</span>';
+            if (examTags.gre) {
+                var greHeat = examTags.gre.count >= 12 ? '🔥🔥' : examTags.gre.count >= 8 ? '🔥' : '';
+                content += '<span style="background:#7c3aed;color:white;padding:1px 6px;border-radius:4px;font-size:9px;">GRE×' + examTags.gre.count + greHeat + '</span>';
+            }
+            if (examTags.toefl) {
+                var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥' : examTags.toefl.count >= 6 ? '🔥' : '';
+                content += '<span style="background:#2563eb;color:white;padding:1px 6px;border-radius:4px;font-size:9px;margin-left:2px;">TOEFL×' + examTags.toefl.count + toeflHeat + '</span>';
+            }
+            
+            examBadge.innerHTML = content;
+        } else {
+            examBadge.style.display = 'none';
         }
     }
 }
@@ -1427,6 +2217,50 @@ function showMeaning() {
     
     meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
     meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
+    
+    // V16: 真题词汇标记展示
+    var examTags = getWordExamTags(wordData.word);
+    if (examTags) {
+        meaningHtml += '<div class="exam-tags-section" style="margin-bottom:16px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:16px;border:1px solid #fcd34d;">';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:8px;box-shadow:0 2px 6px rgba(245,158,11,0.3);">';
+        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
+        meaningHtml += '</span>';
+        meaningHtml += '<span style="font-weight:700;font-size:14px;color:#92400e;">📚 真题高频词汇</span>';
+        meaningHtml += '</div>';
+        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+        
+        if (examTags.gre) {
+            var greHeat = examTags.gre.count >= 12 ? '🔥🔥🔥' : examTags.gre.count >= 8 ? '🔥🔥' : '🔥';
+            meaningHtml += '<div style="background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(124,58,237,0.3);">';
+            meaningHtml += '<span style="font-weight:700;font-size:13px;">GRE</span>';
+            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.gre.count + ' 次</span>';
+            meaningHtml += '<span style="font-size:11px;">' + greHeat + '</span>';
+            meaningHtml += '</div>';
+            if (examTags.gre.years && examTags.gre.years.length > 0) {
+                meaningHtml += '<div style="background:rgba(124,58,237,0.1);color:#6d28d9;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
+                meaningHtml += '<span>📅</span><span>' + examTags.gre.years.join(', ') + '</span>';
+                meaningHtml += '</div>';
+            }
+        }
+        
+        if (examTags.toefl) {
+            var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥🔥' : examTags.toefl.count >= 6 ? '🔥🔥' : '🔥';
+            meaningHtml += '<div style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.3);">';
+            meaningHtml += '<span style="font-weight:700;font-size:13px;">TOEFL</span>';
+            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.toefl.count + ' 次</span>';
+            meaningHtml += '<span style="font-size:11px;">' + toeflHeat + '</span>';
+            meaningHtml += '</div>';
+            if (examTags.toefl.years && examTags.toefl.years.length > 0) {
+                meaningHtml += '<div style="background:rgba(37,99,235,0.1);color:#1d4ed8;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
+                meaningHtml += '<span>📅</span><span>' + examTags.toefl.years.join(', ') + '</span>';
+                meaningHtml += '</div>';
+            }
+        }
+        
+        meaningHtml += '</div>';
+        meaningHtml += '</div>';
+    }
     
     // V14-V19: 科学助记系统 - UI优化增强版
     if (mnemonic || enhancedMnemonic.hasEnhancements) {
@@ -1651,6 +2485,44 @@ function showMeaning() {
         meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
     }
     
+    // V15: 丰富例句展示
+    var wordExamples = getWordExamples(wordData.word);
+    if (wordExamples && wordExamples.examples && wordExamples.examples.length > 0) {
+        meaningHtml += '<div class="rich-examples-section" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border-radius:8px;box-shadow:0 2px 6px rgba(139,92,246,0.3);">';
+        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
+        meaningHtml += '</span>';
+        meaningHtml += '<span style="font-weight:600;font-size:14px;color:#7c3aed;">丰富语境例句</span>';
+        meaningHtml += '<span style="font-size:12px;color:#9ca3af;margin-left:auto;">' + wordExamples.examples.length + ' 个例句</span>';
+        meaningHtml += '</div>';
+        
+        wordExamples.examples.forEach(function(example, index) {
+            var sourceColors = {
+                'GRE真题': { bg: '#fef3c7', text: '#d97706', border: '#fcd34d' },
+                'TOEFL真题': { bg: '#dbeafe', text: '#2563eb', border: '#93c5fd' },
+                '学术期刊': { bg: '#dcfce7', text: '#16a34a', border: '#86efac' },
+                '经济学人': { bg: '#fce7f3', text: '#db2777', border: '#f9a8d4' },
+                '纽约时报': { bg: '#e0e7ff', text: '#4f46e5', border: '#a5b4fc' },
+                '科学美国人': { bg: '#ccfbf1', text: '#0d9488', border: '#5eead4' },
+                '大西洋月刊': { bg: '#fef9c3', text: '#ca8a04', border: '#fde047' },
+                '名著文学': { bg: '#f3e8ff', text: '#9333ea', border: '#d8b4fe' }
+            };
+            var sourceStyle = sourceColors[example.source] || { bg: '#f3f4f6', text: '#6b7280', border: '#d1d5db' };
+            
+            meaningHtml += '<div style="background:linear-gradient(135deg,#fafafa 0%,#f5f5f5 100%);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e5e7eb;">';
+            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">';
+            meaningHtml += '<span style="width:20px;height:20px;background:#8b5cf6;color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">' + (index + 1) + '</span>';
+            meaningHtml += '<span style="font-size:11px;padding:3px 8px;background:' + sourceStyle.bg + ';color:' + sourceStyle.text + ';border:1px solid ' + sourceStyle.border + ';border-radius:12px;font-weight:500;">' + example.source + '</span>';
+            meaningHtml += '</div>';
+            meaningHtml += '<p style="font-size:14px;color:#374151;line-height:1.6;margin:0 0 8px 0;font-style:italic;">"' + example.en + '"</p>';
+            meaningHtml += '<p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;padding-left:12px;border-left:3px solid #8b5cf6;">' + example.cn + '</p>';
+            meaningHtml += '</div>';
+        });
+        
+        meaningHtml += '</div>';
+    }
+    
     document.getElementById('meaningCn').innerHTML = meaningHtml;
     document.getElementById('meaningEn').innerHTML = '';
     document.getElementById('wordExample').innerHTML = '';
@@ -1827,6 +2699,31 @@ function rateWord(rating) {
     
     // V8: 更新自适应难度
     updateAdaptiveDifficulty(rating);
+    
+    // V1: 更新掌握度追踪
+    var masteryResult = 'partial';
+    var masteryOptions = { type: 'review' };
+    
+    switch(rating) {
+        case 'again':
+            masteryResult = 'wrong';
+            masteryOptions.meaningScore = 20;
+            break;
+        case 'hard':
+            masteryResult = 'partial';
+            masteryOptions.meaningScore = 50;
+            break;
+        case 'good':
+            masteryResult = 'correct';
+            masteryOptions.meaningScore = 80;
+            break;
+        case 'easy':
+            masteryResult = 'correct';
+            masteryOptions.meaningScore = 100;
+            break;
+    }
+    
+    updateWordMastery(word, masteryResult, masteryOptions);
     
     // 更新本轮学习进度
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };

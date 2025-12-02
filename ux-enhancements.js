@@ -3106,176 +3106,73 @@
         }
     };
     
-    // ==================== V8.10: 精简统一控制面板 ====================
-    // V9.23: 添加遮罩点击关闭
+    // ==================== V9.33-V9.37: 删除解压面板功能 ====================
+    /**
+     * 解压面板功能评估：
+     * V9.33: 分析发现该功能存在以下问题：
+     *   1. 按钮位置干扰正常操作（左下角容易误触）
+     *   2. 面板关闭逻辑不稳定
+     *   3. 功能与主要学习目的不符
+     *   4. 占用屏幕空间
+     *   5. 用户几乎不使用
+     * 
+     * V9.34: 决定删除该功能，保留核心解压工具（沙画、泡泡等）
+     *        可通过设置中的开关单独启用
+     * 
+     * V9.35: 清理相关代码和样式
+     * V9.36: 移除浮动按钮
+     * V9.37: 完全禁用，用户可在设置中手动开启解压功能
+     */
+    
+    // 解压面板 - 已禁用 (V9.33-V9.37)
     const StressReliefPanel = {
         isVisible: false,
         overlay: null,
+        toggle: null,
+        panel: null,
         
         init() {
-            this.createElement();
-            this.setupEvents();
+            // V9.37: 完全禁用解压面板
+            // 不再创建浮动按钮，用户可通过设置开启单独功能
+            console.log('💤 解压面板已禁用 (V9.37)');
         },
         
         createElement() {
-            // V8.10: 只保留一个精简的控制按钮
-            const toggle = document.createElement('button');
-            toggle.className = 'stress-panel-toggle';
-            toggle.innerHTML = '🎮';
-            toggle.title = '解压工具';
-            document.body.appendChild(toggle);
-            
-            // V9.23: 添加遮罩层
-            // V9.31: 添加pointer-events: none防止拦截点击
-            const overlay = document.createElement('div');
-            overlay.className = 'stress-panel-overlay';
-            overlay.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0,0,0,0.3);
-                z-index: 9998;
-                opacity: 0;
-                visibility: hidden;
-                pointer-events: none;
-                transition: all 0.3s;
-            `;
-            document.body.appendChild(overlay);
-            this.overlay = overlay;
-            
-            // V8.10: 精简面板 - 只保留最核心的4个功能
-            const panel = document.createElement('div');
-            panel.className = 'stress-relief-panel';
-            panel.innerHTML = `
-                <div class="panel-header">
-                    <span>解压工具</span>
-                    <button class="panel-close-btn">×</button>
-                </div>
-                <div class="panel-grid">
-                    <div class="panel-item" data-action="sandbox">
-                        <span class="panel-item-icon">🏖️</span>
-                        <span class="panel-item-label">沙画</span>
-                    </div>
-                    <div class="panel-item" data-action="bubble">
-                        <span class="panel-item-icon">🫧</span>
-                        <span class="panel-item-label">泡泡纸</span>
-                    </div>
-                    <div class="panel-item" data-action="timer">
-                        <span class="panel-item-icon">🍅</span>
-                        <span class="panel-item-label">番茄钟</span>
-                    </div>
-                    <div class="panel-item" data-action="mood">
-                        <span class="panel-item-icon">🎨</span>
-                        <span class="panel-item-label">心情</span>
-                    </div>
-                </div>
-            `;
-            document.body.appendChild(panel);
-            
-            this.toggle = toggle;
-            this.panel = panel;
+            // 已禁用
         },
         
         setupEvents() {
-            // 切换面板
-            this.toggle.addEventListener('click', () => {
-                this.togglePanel();
-            });
-            
-            // 关闭按钮
-            this.panel.querySelector('.panel-close-btn').addEventListener('click', () => {
-                this.hidePanel();
-            });
-            
-            // V9.23: 遮罩点击关闭
-            this.overlay.addEventListener('click', () => {
-                this.hidePanel();
-            });
-            
-            // 面板项点击
-            this.panel.querySelectorAll('.panel-item').forEach(item => {
-                item.addEventListener('click', (e) => {
-                    const action = e.currentTarget.dataset.action;
-                    this.handleAction(action);
-                    this.hidePanel();
-                });
-            });
-            
-            // V8.10: 点击外部关闭
-            document.addEventListener('click', (e) => {
-                if (this.isVisible && 
-                    !this.panel.contains(e.target) && 
-                    !this.toggle.contains(e.target)) {
-                    this.hidePanel();
-                }
-            });
+            // 已禁用
         },
         
         togglePanel() {
-            if (this.isVisible) {
-                this.hidePanel();
-            } else {
-                this.showPanel();
-            }
+            // 已禁用
         },
         
         showPanel() {
-            this.isVisible = true;
-            this.panel.classList.add('visible');
-            this.toggle.classList.add('active');
-            // V9.23: 显示遮罩
-            // V9.31: 启用pointer-events
-            this.overlay.style.opacity = '1';
-            this.overlay.style.visibility = 'visible';
-            this.overlay.style.pointerEvents = 'auto';
-            CloseManager.register(this.panel, () => this.hidePanel());
+            // 已禁用
         },
         
         hidePanel() {
-            this.isVisible = false;
-            this.panel.classList.remove('visible');
-            this.toggle.classList.remove('active');
-            // V9.23: 隐藏遮罩
-            // V9.31: 禁用pointer-events
-            this.overlay.style.opacity = '0';
-            this.overlay.style.visibility = 'hidden';
-            this.overlay.style.pointerEvents = 'none';
-            CloseManager.unregister(this.panel);
+            // 已禁用
         },
         
         handleAction(action) {
-            switch(action) {
-                case 'sandbox':
-                    ZenSandbox.open();
-                    break;
-                case 'bubble':
-                    BubbleWrap.open();
-                    break;
-                case 'timer':
-                    FocusTimer.show();
-                    break;
-                case 'mood':
-                    MoodPalette.open();
-                    break;
-            }
+            // 已禁用
         }
     };
     
-    // V8.10: 精简版 StressReliefSystemV2
+    // V9.37: 精简版 StressReliefSystemV2 - 只初始化基础模块
     const StressReliefSystemV2 = {
         init() {
+            // V9.37: 只初始化基础模块，不显示面板
             ZenSandbox.init();
             MoodPalette.init();
             BubbleWrap.init();
             FocusTimer.init();
-            StressReliefPanel.init();
+            // V9.37: 不再初始化 StressReliefPanel
             
-            // V8.10: 不再初始化过多功能
-            // RhythmGame, ScratchCard, LuckyWheel, EmojiReactions, MeditationMode 按需加载
-            
-            console.log('✨ 解压互动系统 V8.6-V8.10 精简版已加载');
+            console.log('✨ 解压系统 V9.37 已加载（面板已移除，功能可通过设置开启）');
         }
     };
 

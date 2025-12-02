@@ -23,11 +23,98 @@
         isWriting: false,
         writingHistory: [],
         
+        // V2.9: 获取当前学习目标
+        getCurrentLearningGoal() {
+            if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getLearningGoal) {
+                return ActivationSystem.getLearningGoal();
+            }
+            try {
+                const goalData = JSON.parse(localStorage.getItem('eb_learning_goal') || '{}');
+                return goalData.goal || null;
+            } catch(e) {
+                return null;
+            }
+        },
+        
+        // V2.9: 根据学习目标获取推荐的写作类型
+        getRecommendedWritingType() {
+            const goal = this.getCurrentLearningGoal();
+            const mapping = {
+                'gre': 'gre',
+                'toefl': 'toefl',
+                'academic': 'gre' // 学术英语推荐GRE写作（分析性写作）
+            };
+            return mapping[goal] || null;
+        },
+        
         // 初始化
         init() {
             this.loadHistory();
             this.bindEvents();
+            
+            // V2.9: 根据学习目标自动选择写作类型
+            const recommendedType = this.getRecommendedWritingType();
+            if (recommendedType) {
+                console.log('✍️ V2.9: 根据学习目标自动选择写作类型:', recommendedType);
+                // 高亮推荐的类型
+                this.highlightRecommendedType(recommendedType);
+            }
+            
             console.log('✍️ 写作模块已加载');
+        },
+        
+        // V2.9: 高亮推荐的写作类型
+        highlightRecommendedType(type) {
+            const typeElements = document.querySelectorAll('.writing-exam-type');
+            typeElements.forEach(el => {
+                if (el.dataset.type === type) {
+                    el.classList.add('recommended');
+                    // 添加推荐标签
+                    if (!el.querySelector('.recommend-badge')) {
+                        const badge = document.createElement('span');
+                        badge.className = 'recommend-badge';
+                        badge.innerHTML = '推荐';
+                        el.appendChild(badge);
+                    }
+                }
+            });
+            
+            // 添加推荐样式
+            this.addRecommendStyles();
+        },
+        
+        // V2.9: 添加推荐样式
+        addRecommendStyles() {
+            if (document.getElementById('writing-recommend-styles')) return;
+            
+            const style = document.createElement('style');
+            style.id = 'writing-recommend-styles';
+            style.textContent = `
+                .writing-exam-type.recommended {
+                    border: 2px solid #6366f1 !important;
+                    box-shadow: 0 0 15px rgba(99, 102, 241, 0.3) !important;
+                    position: relative;
+                }
+                .writing-exam-type.recommended::after {
+                    content: '✨';
+                    position: absolute;
+                    top: -5px;
+                    right: -5px;
+                    font-size: 16px;
+                }
+                .recommend-badge {
+                    position: absolute;
+                    top: 5px;
+                    right: 5px;
+                    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+                    color: white;
+                    font-size: 10px;
+                    padding: 2px 6px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                }
+            `;
+            document.head.appendChild(style);
         },
         
         // 加载历史记录
@@ -57,6 +144,41 @@
             this.showTopicList(type);
         },
         
+        // V2.10: 获取学习目标专属的写作提示
+        getGoalWritingTips() {
+            const goal = this.getCurrentLearningGoal();
+            const tips = {
+                'gre': {
+                    focus: 'GRE分析性写作',
+                    advice: [
+                        '注重论证的逻辑性和条理性',
+                        '使用高级词汇展示语言能力',
+                        '分析论点的前提假设和逻辑漏洞',
+                        '提供具体例子支持观点'
+                    ]
+                },
+                'toefl': {
+                    focus: '托福综合写作',
+                    advice: [
+                        '准确概括阅读和听力材料要点',
+                        '清晰对比材料中的不同观点',
+                        '使用适当的过渡词连接段落',
+                        '控制好时间分配'
+                    ]
+                },
+                'academic': {
+                    focus: '学术论文写作',
+                    advice: [
+                        '使用正式的学术语言',
+                        '引用证据支持论点',
+                        '保持客观中立的语气',
+                        '注意论文结构规范'
+                    ]
+                }
+            };
+            return tips[goal] || null;
+        },
+        
         // 显示题目列表
         showTopicList(examType) {
             const container = document.getElementById('writing-topic-list');
@@ -68,6 +190,7 @@
             switch(examType) {
                 case 'toefl':
                     topics = [...(window.TOEFL_INTEGRATED_TOPICS || []), ...(window.TOEFL_DISCUSSION_TOPICS || [])];
+
                     typeName = 'TOEFL';
                     break;
                 case 'gre':
