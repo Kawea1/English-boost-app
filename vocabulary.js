@@ -1559,9 +1559,13 @@ function initSessionWords() {
     
     if (!window.vocabularyData || window.vocabularyData.length === 0) return;
     
+    // V2.6: 根据学习目标过滤词汇
+    var goalVocabulary = getGoalFilteredVocabulary();
+    var effectiveWordsPerSession = getEffectiveWordsPerSession();
+    
     // 随机选择指定数量的单词
     var allIndices = [];
-    for (var i = 0; i < window.vocabularyData.length; i++) {
+    for (var i = 0; i < goalVocabulary.length; i++) {
         allIndices.push(i);
     }
     
@@ -1573,10 +1577,10 @@ function initSessionWords() {
         allIndices[k] = temp;
     }
     
-    // 取前N个
-    var count = Math.min(wordsPerSession, allIndices.length);
+    // 取前N个（根据目标调整数量）
+    var count = Math.min(effectiveWordsPerSession, allIndices.length);
     for (var m = 0; m < count; m++) {
-        var wordData = window.vocabularyData[allIndices[m]];
+        var wordData = goalVocabulary[allIndices[m]];
         sessionWords.push(wordData);
         // 初始化本轮学习进度
         sessionWordProgress[wordData.word] = {
@@ -1588,6 +1592,115 @@ function initSessionWords() {
     
     // 构建间隔重复的学习队列
     buildLearningQueue();
+}
+
+// V2.6: 根据学习目标获取过滤后的词汇列表
+function getGoalFilteredVocabulary() {
+    var goal = null;
+    
+    // 尝试从ActivationSystem获取学习目标
+    if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getLearningGoal) {
+        goal = ActivationSystem.getLearningGoal();
+    } else {
+        // 备用：直接从localStorage获取
+        try {
+            var goalData = JSON.parse(localStorage.getItem('eb_learning_goal') || '{}');
+            goal = goalData.goal;
+        } catch(e) {
+            goal = null;
+        }
+    }
+    
+    console.log('[V2.6] 当前学习目标:', goal);
+    
+    // 如果没有设置目标或使用所有词汇
+    if (!goal) {
+        return window.vocabularyData;
+    }
+    
+    // 根据目标过滤词汇
+    var filteredWords = [];
+    var examTagsLoaded = wordExamTagsData && Object.keys(wordExamTagsData).length > 0;
+    
+    window.vocabularyData.forEach(function(wordData) {
+        var shouldInclude = false;
+        var wordLower = wordData.word.toLowerCase();
+        
+        if (goal === 'gre') {
+            // GRE模式：优先GRE高频词
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.gre || tags.gre_high_freq || tags.graduate;
+            }
+            // 如果没有标签数据，默认包含难度较高的词
+            if (!shouldInclude && wordDifficultyData && wordDifficultyData[wordLower]) {
+                var diff = wordDifficultyData[wordLower];
+                shouldInclude = diff.level === 'advanced' || diff.level === 'expert';
+            }
+            // 兜底：包含所有词汇
+            if (!shouldInclude && (!examTagsLoaded || !wordDifficultyData)) {
+                shouldInclude = true;
+            }
+        } else if (goal === 'toefl') {
+            // 托福模式：托福常考词
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.toefl || tags.toefl_high_freq || tags.academic;
+            }
+            if (!shouldInclude && wordDifficultyData && wordDifficultyData[wordLower]) {
+                var diff = wordDifficultyData[wordLower];
+                shouldInclude = diff.level === 'intermediate' || diff.level === 'advanced';
+            }
+            if (!shouldInclude && (!examTagsLoaded || !wordDifficultyData)) {
+                shouldInclude = true;
+            }
+        } else if (goal === 'academic') {
+            // 学术英语模式：AWL学术词汇
+            if (examTagsLoaded && wordExamTagsData[wordLower]) {
+                var tags = wordExamTagsData[wordLower];
+                shouldInclude = tags.awl || tags.academic || tags.research;
+            }
+            // 检查是否为AWL词汇（通过标签或其他方式）
+            if (!shouldInclude && window.awlWordList && window.awlWordList.includes(wordLower)) {
+                shouldInclude = true;
+            }
+            if (!shouldInclude && (!examTagsLoaded || !window.awlWordList)) {
+                shouldInclude = true;
+            }
+        } else {
+            // 未知目标，包含所有
+            shouldInclude = true;
+        }
+        
+        if (shouldInclude) {
+            filteredWords.push(wordData);
+        }
+    });
+    
+    console.log('[V2.6] 目标过滤后词汇数:', filteredWords.length, '/', window.vocabularyData.length);
+    
+    // 如果过滤后词汇太少，返回全部
+    if (filteredWords.length < 20) {
+        console.log('[V2.6] 过滤后词汇不足，使用全部词汇');
+        return window.vocabularyData;
+    }
+    
+    return filteredWords;
+}
+
+// V2.7: 根据学习目标获取有效的每次学习单词数
+function getEffectiveWordsPerSession() {
+    var goal = null;
+    
+    if (typeof ActivationSystem !== 'undefined' && ActivationSystem.getGoalDailyWords) {
+        var goalDailyWords = ActivationSystem.getGoalDailyWords();
+        if (goalDailyWords) {
+            // 使用目标配置的每日单词数，但不超过用户设置
+            return Math.min(goalDailyWords, wordsPerSession);
+        }
+    }
+    
+    return wordsPerSession;
 }
 
 // 构建间隔重复的学习队列

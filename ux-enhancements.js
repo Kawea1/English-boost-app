@@ -3286,148 +3286,320 @@
         StressReliefSystem.init();
     }
 
-    // ==================== 宠物陪伴系统 v11 实体宠物版 ====================
-    // 5个版本迭代：用CSS绘制可爱实体宠物，像汤姆猫一样
+    // ==================== 宠物陪伴系统 v12 可爱动物版 ====================
+    // 6个版本迭代：使用SVG绘制符合人类认知的可爱动物形象
     
-    // v11.1: 宠物类型 - 使用CSS实体代替emoji
+    // v12.1: 宠物类型定义
     const PET_TYPES = {
-        cat: { 
-            name: '小猫咪', 
-            sound: '喵~',
-            color: '#FFB6C1',      // 主色
-            accent: '#FF69B4',     // 强调色
-            eyeColor: '#333',
-            features: 'cat'        // 特征类型
-        },
-        dog: { 
-            name: '小狗狗', 
-            sound: '汪汪~',
-            color: '#DEB887',
-            accent: '#CD853F',
-            eyeColor: '#333',
-            features: 'dog'
-        },
-        rabbit: { 
-            name: '小兔兔', 
-            sound: '吱吱~',
-            color: '#FFF0F5',
-            accent: '#FFB6C1',
-            eyeColor: '#FF69B4',
-            features: 'rabbit'
-        },
-        bear: { 
-            name: '小熊熊', 
-            sound: '哼哼~',
-            color: '#DEB887',
-            accent: '#8B4513',
-            eyeColor: '#333',
-            features: 'bear'
-        },
-        panda: { 
-            name: '小熊猫', 
-            sound: '嘤嘤~',
-            color: '#FFFFFF',
-            accent: '#333333',
-            eyeColor: '#333',
-            features: 'panda'
-        },
-        fox: { 
-            name: '小狐狸', 
-            sound: '呜呜~',
-            color: '#FF8C00',
-            accent: '#FF4500',
-            eyeColor: '#333',
-            features: 'fox'
-        },
-        penguin: { 
-            name: '小企鹅', 
-            sound: '嘎嘎~',
-            color: '#333333',
-            accent: '#FFD700',
-            eyeColor: '#333',
-            features: 'penguin'
-        },
-        hamster: { 
-            name: '小仓鼠', 
-            sound: '吱吱~',
-            color: '#F4A460',
-            accent: '#FFE4C4',
-            eyeColor: '#333',
-            features: 'hamster'
-        },
-        owl: { 
-            name: '猫头鹰', 
-            sound: '咕咕~',
-            color: '#8B4513',
-            accent: '#DEB887',
-            eyeColor: '#FFD700',
-            features: 'owl'
-        },
-        shark: { 
-            name: '小鲨鲨', 
-            sound: '咕噜~',
-            color: '#708090',
-            accent: '#B0C4DE',
-            eyeColor: '#333',
-            features: 'shark'
-        }
+        cat: { name: '小猫咪', sound: '喵~' },
+        dog: { name: '小狗狗', sound: '汪汪~' },
+        rabbit: { name: '小兔兔', sound: '~' },
+        bear: { name: '小熊熊', sound: '哼哼~' },
+        panda: { name: '熊猫', sound: '嘤嘤~' },
+        fox: { name: '小狐狸', sound: '呜~' },
+        penguin: { name: '小企鹅', sound: '嘎嘎~' },
+        hamster: { name: '小仓鼠', sound: '吱吱~' },
+        owl: { name: '猫头鹰', sound: '咕咕~' },
+        shark: { name: '小鲨鲨', sound: '咕噜~' }
     };
     
-    // v11.2: 生成CSS实体宠物的HTML
-    function generatePetBody(type, size = 'normal') {
-        const pet = PET_TYPES[type];
-        const s = size === 'small' ? 0.6 : size === 'large' ? 1.5 : 1;
+    // v12.2: 使用SVG绘制可爱动物 - 更符合人类认知
+    function generatePetSVG(type, size = 50) {
+        const svgs = {
+            // 小猫咪 - 圆脸尖耳朵
+            cat: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="catGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#FFD4E5"/><stop offset="100%" style="stop-color:#FFB6C1"/></linearGradient></defs>
+                <!-- 耳朵 -->
+                <path d="M25 35 L20 10 L40 25 Z" fill="url(#catGrad)" stroke="#FF69B4" stroke-width="1"/>
+                <path d="M75 35 L80 10 L60 25 Z" fill="url(#catGrad)" stroke="#FF69B4" stroke-width="1"/>
+                <path d="M27 30 L24 15 L38 26 Z" fill="#FFB6C1"/>
+                <path d="M73 30 L76 15 L62 26 Z" fill="#FFB6C1"/>
+                <!-- 脸 -->
+                <ellipse cx="50" cy="55" rx="35" ry="32" fill="url(#catGrad)" stroke="#FF69B4" stroke-width="1"/>
+                <!-- 眼睛 -->
+                <ellipse cx="35" cy="50" rx="8" ry="10" fill="white"/>
+                <ellipse cx="65" cy="50" rx="8" ry="10" fill="white"/>
+                <ellipse cx="36" cy="52" rx="5" ry="6" fill="#333"/>
+                <ellipse cx="66" cy="52" rx="5" ry="6" fill="#333"/>
+                <circle cx="34" cy="49" r="2" fill="white"/>
+                <circle cx="64" cy="49" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="62" rx="4" ry="3" fill="#FF69B4"/>
+                <!-- 嘴巴 -->
+                <path d="M50 65 Q45 72 40 68" fill="none" stroke="#FF69B4" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M50 65 Q55 72 60 68" fill="none" stroke="#FF69B4" stroke-width="1.5" stroke-linecap="round"/>
+                <!-- 胡须 -->
+                <line x1="20" y1="58" x2="32" y2="60" stroke="#FF69B4" stroke-width="1"/>
+                <line x1="20" y1="65" x2="32" y2="65" stroke="#FF69B4" stroke-width="1"/>
+                <line x1="68" y1="60" x2="80" y2="58" stroke="#FF69B4" stroke-width="1"/>
+                <line x1="68" y1="65" x2="80" y2="65" stroke="#FF69B4" stroke-width="1"/>
+                <!-- 腮红 -->
+                <ellipse cx="25" cy="62" rx="6" ry="4" fill="#FFB6C1" opacity="0.6"/>
+                <ellipse cx="75" cy="62" rx="6" ry="4" fill="#FFB6C1" opacity="0.6"/>
+            </svg>`,
+            
+            // 小狗狗 - 垂耳朵大鼻子
+            dog: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="dogGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#F5DEB3"/><stop offset="100%" style="stop-color:#DEB887"/></linearGradient></defs>
+                <!-- 垂耳朵 -->
+                <ellipse cx="22" cy="50" rx="12" ry="25" fill="#CD853F"/>
+                <ellipse cx="78" cy="50" rx="12" ry="25" fill="#CD853F"/>
+                <!-- 脸 -->
+                <ellipse cx="50" cy="50" rx="32" ry="30" fill="url(#dogGrad)" stroke="#CD853F" stroke-width="1"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="45" rx="7" ry="8" fill="white"/>
+                <ellipse cx="62" cy="45" rx="7" ry="8" fill="white"/>
+                <ellipse cx="39" cy="47" rx="4" ry="5" fill="#333"/>
+                <ellipse cx="63" cy="47" rx="4" ry="5" fill="#333"/>
+                <circle cx="37" cy="44" r="2" fill="white"/>
+                <circle cx="61" cy="44" r="2" fill="white"/>
+                <!-- 大鼻子 -->
+                <ellipse cx="50" cy="58" rx="8" ry="6" fill="#333"/>
+                <ellipse cx="48" cy="56" rx="2" ry="1.5" fill="#666"/>
+                <!-- 嘴巴 -->
+                <path d="M50 64 Q50 72 42 70" fill="none" stroke="#CD853F" stroke-width="2" stroke-linecap="round"/>
+                <path d="M50 64 Q50 72 58 70" fill="none" stroke="#CD853F" stroke-width="2" stroke-linecap="round"/>
+                <!-- 舌头 -->
+                <ellipse cx="50" cy="73" rx="5" ry="6" fill="#FF6B6B"/>
+                <!-- 腮红 -->
+                <ellipse cx="28" cy="55" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+                <ellipse cx="72" cy="55" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+            </svg>`,
+            
+            // 小兔兔 - 长耳朵红眼睛
+            rabbit: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="rabbitGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#FFFFFF"/><stop offset="100%" style="stop-color:#FFF0F5"/></linearGradient></defs>
+                <!-- 长耳朵 -->
+                <ellipse cx="35" cy="22" rx="10" ry="25" fill="url(#rabbitGrad)" stroke="#FFB6C1" stroke-width="1"/>
+                <ellipse cx="65" cy="22" rx="10" ry="25" fill="url(#rabbitGrad)" stroke="#FFB6C1" stroke-width="1"/>
+                <ellipse cx="35" cy="22" rx="5" ry="18" fill="#FFB6C1" opacity="0.4"/>
+                <ellipse cx="65" cy="22" rx="5" ry="18" fill="#FFB6C1" opacity="0.4"/>
+                <!-- 脸 -->
+                <ellipse cx="50" cy="62" rx="30" ry="28" fill="url(#rabbitGrad)" stroke="#FFB6C1" stroke-width="1"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="55" rx="8" ry="10" fill="white"/>
+                <ellipse cx="62" cy="55" rx="8" ry="10" fill="white"/>
+                <ellipse cx="39" cy="57" rx="5" ry="6" fill="#FF6B8A"/>
+                <ellipse cx="63" cy="57" rx="5" ry="6" fill="#FF6B8A"/>
+                <circle cx="37" cy="54" r="2" fill="white"/>
+                <circle cx="61" cy="54" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="68" rx="4" ry="3" fill="#FFB6C1"/>
+                <!-- Y形嘴巴 -->
+                <line x1="50" y1="71" x2="50" y2="76" stroke="#FFB6C1" stroke-width="1.5"/>
+                <path d="M44 80 Q50 76 56 80" fill="none" stroke="#FFB6C1" stroke-width="1.5"/>
+                <!-- 腮红 -->
+                <ellipse cx="28" cy="65" rx="6" ry="4" fill="#FFB6C1" opacity="0.5"/>
+                <ellipse cx="72" cy="65" rx="6" ry="4" fill="#FFB6C1" opacity="0.5"/>
+            </svg>`,
+            
+            // 小熊熊 - 圆耳朵棕色
+            bear: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="bearGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#DEB887"/><stop offset="100%" style="stop-color:#CD853F"/></linearGradient></defs>
+                <!-- 圆耳朵 -->
+                <circle cx="25" cy="28" r="14" fill="url(#bearGrad)" stroke="#8B4513" stroke-width="1"/>
+                <circle cx="75" cy="28" r="14" fill="url(#bearGrad)" stroke="#8B4513" stroke-width="1"/>
+                <circle cx="25" cy="28" r="8" fill="#C4A67C"/>
+                <circle cx="75" cy="28" r="8" fill="#C4A67C"/>
+                <!-- 脸 -->
+                <ellipse cx="50" cy="55" rx="35" ry="32" fill="url(#bearGrad)" stroke="#8B4513" stroke-width="1"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="48" rx="5" ry="6" fill="#333"/>
+                <ellipse cx="62" cy="48" rx="5" ry="6" fill="#333"/>
+                <circle cx="36" cy="46" r="2" fill="white"/>
+                <circle cx="60" cy="46" r="2" fill="white"/>
+                <!-- 口鼻区域 -->
+                <ellipse cx="50" cy="65" rx="15" ry="12" fill="#C4A67C"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="60" rx="6" ry="4" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M50 64 Q45 72 42 68" fill="none" stroke="#8B4513" stroke-width="1.5"/>
+                <path d="M50 64 Q55 72 58 68" fill="none" stroke="#8B4513" stroke-width="1.5"/>
+                <!-- 腮红 -->
+                <ellipse cx="28" cy="58" rx="5" ry="3" fill="#FFB6C1" opacity="0.4"/>
+                <ellipse cx="72" cy="58" rx="5" ry="3" fill="#FFB6C1" opacity="0.4"/>
+            </svg>`,
+            
+            // 熊猫 - 黑眼圈标志性
+            panda: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <!-- 黑耳朵 -->
+                <circle cx="25" cy="25" r="14" fill="#333"/>
+                <circle cx="75" cy="25" r="14" fill="#333"/>
+                <!-- 白脸 -->
+                <ellipse cx="50" cy="55" rx="35" ry="32" fill="white" stroke="#ddd" stroke-width="1"/>
+                <!-- 黑眼圈 -->
+                <ellipse cx="35" cy="48" rx="14" ry="12" fill="#333"/>
+                <ellipse cx="65" cy="48" rx="14" ry="12" fill="#333"/>
+                <!-- 眼睛 -->
+                <ellipse cx="35" cy="48" rx="6" ry="7" fill="white"/>
+                <ellipse cx="65" cy="48" rx="6" ry="7" fill="white"/>
+                <ellipse cx="36" cy="50" rx="3" ry="4" fill="#333"/>
+                <ellipse cx="66" cy="50" rx="3" ry="4" fill="#333"/>
+                <circle cx="34" cy="47" r="1.5" fill="white"/>
+                <circle cx="64" cy="47" r="1.5" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="62" rx="5" ry="4" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M50 66 Q45 73 40 70" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M50 66 Q55 73 60 70" fill="none" stroke="#333" stroke-width="1.5"/>
+                <!-- 腮红 -->
+                <ellipse cx="25" cy="60" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+                <ellipse cx="75" cy="60" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+            </svg>`,
+            
+            // 小狐狸 - 尖脸大尾巴
+            fox: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="foxGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#FF8C00"/><stop offset="100%" style="stop-color:#FF6600"/></linearGradient></defs>
+                <!-- 尖耳朵 -->
+                <path d="M28 40 L18 8 L42 30 Z" fill="url(#foxGrad)" stroke="#CC5500" stroke-width="1"/>
+                <path d="M72 40 L82 8 L58 30 Z" fill="url(#foxGrad)" stroke="#CC5500" stroke-width="1"/>
+                <path d="M28 35 L22 15 L38 30 Z" fill="#FFE4C4"/>
+                <path d="M72 35 L78 15 L62 30 Z" fill="#FFE4C4"/>
+                <!-- 尖脸 -->
+                <path d="M15 45 Q50 40 85 45 Q85 75 50 88 Q15 75 15 45 Z" fill="url(#foxGrad)" stroke="#CC5500" stroke-width="1"/>
+                <!-- 白色脸部 -->
+                <path d="M30 55 Q50 50 70 55 Q70 75 50 85 Q30 75 30 55 Z" fill="white"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="50" rx="6" ry="7" fill="white" stroke="#CC5500" stroke-width="0.5"/>
+                <ellipse cx="62" cy="50" rx="6" ry="7" fill="white" stroke="#CC5500" stroke-width="0.5"/>
+                <ellipse cx="39" cy="52" rx="3" ry="4" fill="#333"/>
+                <ellipse cx="63" cy="52" rx="3" ry="4" fill="#333"/>
+                <circle cx="37" cy="49" r="1.5" fill="white"/>
+                <circle cx="61" cy="49" r="1.5" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="65" rx="4" ry="3" fill="#333"/>
+                <!-- 嘴巴 -->
+                <path d="M50 68 Q47 73 44 70" fill="none" stroke="#CC5500" stroke-width="1"/>
+                <path d="M50 68 Q53 73 56 70" fill="none" stroke="#CC5500" stroke-width="1"/>
+            </svg>`,
+            
+            // 小企鹅 - 圆身白肚子
+            penguin: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <!-- 身体 -->
+                <ellipse cx="50" cy="55" rx="35" ry="40" fill="#333"/>
+                <!-- 白肚子 -->
+                <ellipse cx="50" cy="60" rx="22" ry="30" fill="white"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="40" rx="8" ry="9" fill="white"/>
+                <ellipse cx="62" cy="40" rx="8" ry="9" fill="white"/>
+                <ellipse cx="39" cy="42" rx="4" ry="5" fill="#333"/>
+                <ellipse cx="63" cy="42" rx="4" ry="5" fill="#333"/>
+                <circle cx="37" cy="39" r="2" fill="white"/>
+                <circle cx="61" cy="39" r="2" fill="white"/>
+                <!-- 嘴巴 -->
+                <path d="M40 52 L50 58 L60 52 Z" fill="#FF8C00"/>
+                <!-- 腮红 -->
+                <ellipse cx="30" cy="48" rx="5" ry="3" fill="#FFB6C1" opacity="0.6"/>
+                <ellipse cx="70" cy="48" rx="5" ry="3" fill="#FFB6C1" opacity="0.6"/>
+                <!-- 脚 -->
+                <ellipse cx="40" cy="92" rx="8" ry="4" fill="#FF8C00"/>
+                <ellipse cx="60" cy="92" rx="8" ry="4" fill="#FF8C00"/>
+            </svg>`,
+            
+            // 小仓鼠 - 胖脸大腮帮
+            hamster: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="hamGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#FFE4C4"/><stop offset="100%" style="stop-color:#F4A460"/></linearGradient></defs>
+                <!-- 圆耳朵 -->
+                <circle cx="22" cy="32" r="10" fill="url(#hamGrad)" stroke="#CD853F" stroke-width="1"/>
+                <circle cx="78" cy="32" r="10" fill="url(#hamGrad)" stroke="#CD853F" stroke-width="1"/>
+                <circle cx="22" cy="32" r="5" fill="#FFB6C1"/>
+                <circle cx="78" cy="32" r="5" fill="#FFB6C1"/>
+                <!-- 胖脸 -->
+                <ellipse cx="50" cy="55" rx="38" ry="35" fill="url(#hamGrad)" stroke="#CD853F" stroke-width="1"/>
+                <!-- 眼睛 -->
+                <ellipse cx="38" cy="48" rx="6" ry="7" fill="#333"/>
+                <ellipse cx="62" cy="48" rx="6" ry="7" fill="#333"/>
+                <circle cx="36" cy="46" r="2" fill="white"/>
+                <circle cx="60" cy="46" r="2" fill="white"/>
+                <!-- 鼻子 -->
+                <ellipse cx="50" cy="58" rx="3" ry="2" fill="#FF9999"/>
+                <!-- 嘴巴 -->
+                <path d="M50 60 Q47 66 44 63" fill="none" stroke="#CD853F" stroke-width="1.5"/>
+                <path d="M50 60 Q53 66 56 63" fill="none" stroke="#CD853F" stroke-width="1.5"/>
+                <!-- 大腮帮 -->
+                <ellipse cx="25" cy="60" rx="12" ry="10" fill="#FFE4C4" stroke="#F4A460" stroke-width="1"/>
+                <ellipse cx="75" cy="60" rx="12" ry="10" fill="#FFE4C4" stroke="#F4A460" stroke-width="1"/>
+                <!-- 腮红 -->
+                <ellipse cx="25" cy="60" rx="6" ry="4" fill="#FFB6C1" opacity="0.6"/>
+                <ellipse cx="75" cy="60" rx="6" ry="4" fill="#FFB6C1" opacity="0.6"/>
+            </svg>`,
+            
+            // 猫头鹰 - 大眼睛
+            owl: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="owlGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#DEB887"/><stop offset="100%" style="stop-color:#8B4513"/></linearGradient></defs>
+                <!-- 角/耳朵 -->
+                <path d="M28 35 L22 12 L38 28 Z" fill="url(#owlGrad)"/>
+                <path d="M72 35 L78 12 L62 28 Z" fill="url(#owlGrad)"/>
+                <!-- 身体 -->
+                <ellipse cx="50" cy="55" rx="35" ry="38" fill="url(#owlGrad)" stroke="#6B4423" stroke-width="1"/>
+                <!-- 脸部羽毛圈 -->
+                <ellipse cx="35" cy="45" rx="18" ry="18" fill="#F5DEB3"/>
+                <ellipse cx="65" cy="45" rx="18" ry="18" fill="#F5DEB3"/>
+                <!-- 大眼睛 -->
+                <circle cx="35" cy="45" r="12" fill="white" stroke="#8B4513" stroke-width="1"/>
+                <circle cx="65" cy="45" r="12" fill="white" stroke="#8B4513" stroke-width="1"/>
+                <circle cx="35" cy="47" r="7" fill="#FFD700"/>
+                <circle cx="65" cy="47" r="7" fill="#FFD700"/>
+                <circle cx="35" cy="47" r="4" fill="#333"/>
+                <circle cx="65" cy="47" r="4" fill="#333"/>
+                <circle cx="33" cy="44" r="2" fill="white"/>
+                <circle cx="63" cy="44" r="2" fill="white"/>
+                <!-- 喙 -->
+                <path d="M45 58 L50 68 L55 58 Z" fill="#FF8C00"/>
+                <!-- 胸前羽毛 -->
+                <ellipse cx="50" cy="78" rx="18" ry="12" fill="#F5DEB3"/>
+                <path d="M42 72 L50 82 L58 72" fill="none" stroke="#CD853F" stroke-width="1"/>
+                <path d="M38 78 L50 88 L62 78" fill="none" stroke="#CD853F" stroke-width="1"/>
+            </svg>`,
+            
+            // 小鲨鲨 - 可爱版
+            shark: `<svg viewBox="0 0 100 100" width="${size}" height="${size}">
+                <defs><linearGradient id="sharkGrad" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" style="stop-color:#708090"/><stop offset="100%" style="stop-color:#4682B4"/></linearGradient></defs>
+                <!-- 背鳍 -->
+                <path d="M50 15 L45 35 L55 35 Z" fill="url(#sharkGrad)"/>
+                <!-- 身体 -->
+                <ellipse cx="50" cy="55" rx="38" ry="30" fill="url(#sharkGrad)" stroke="#4169E1" stroke-width="1"/>
+                <!-- 白肚子 -->
+                <ellipse cx="50" cy="62" rx="25" ry="18" fill="white"/>
+                <!-- 眼睛 -->
+                <ellipse cx="35" cy="48" rx="8" ry="9" fill="white"/>
+                <ellipse cx="65" cy="48" rx="8" ry="9" fill="white"/>
+                <ellipse cx="36" cy="50" rx="4" ry="5" fill="#333"/>
+                <ellipse cx="66" cy="50" rx="4" ry="5" fill="#333"/>
+                <circle cx="34" cy="47" r="2" fill="white"/>
+                <circle cx="64" cy="47" r="2" fill="white"/>
+                <!-- 腮 -->
+                <line x1="18" y1="55" x2="28" y2="52" stroke="#4169E1" stroke-width="1.5"/>
+                <line x1="18" y1="60" x2="28" y2="58" stroke="#4169E1" stroke-width="1.5"/>
+                <line x1="82" y1="55" x2="72" y2="52" stroke="#4169E1" stroke-width="1.5"/>
+                <line x1="82" y1="60" x2="72" y2="58" stroke="#4169E1" stroke-width="1.5"/>
+                <!-- 嘴巴 -->
+                <path d="M40 68 Q50 75 60 68" fill="none" stroke="#4169E1" stroke-width="2"/>
+                <!-- 腮红 -->
+                <ellipse cx="28" cy="58" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+                <ellipse cx="72" cy="58" rx="5" ry="3" fill="#FFB6C1" opacity="0.5"/>
+                <!-- 侧鳍 -->
+                <ellipse cx="18" cy="55" rx="8" ry="4" fill="url(#sharkGrad)" transform="rotate(-20 18 55)"/>
+                <ellipse cx="82" cy="55" rx="8" ry="4" fill="url(#sharkGrad)" transform="rotate(20 82 55)"/>
+            </svg>`
+        };
         
-        return `
-            <div class="pet-body pet-${pet.features}" style="--pet-color: ${pet.color}; --pet-accent: ${pet.accent}; --pet-eye: ${pet.eyeColor}; --pet-scale: ${s}">
-                <div class="pet-head">
-                    <div class="pet-ears">
-                        <div class="pet-ear left"></div>
-                        <div class="pet-ear right"></div>
-                    </div>
-                    <div class="pet-face">
-                        <div class="pet-eyes">
-                            <div class="pet-eye left"><div class="pet-pupil"></div></div>
-                            <div class="pet-eye right"><div class="pet-pupil"></div></div>
-                        </div>
-                        <div class="pet-nose"></div>
-                        <div class="pet-mouth"></div>
-                        <div class="pet-cheeks">
-                            <div class="pet-cheek left"></div>
-                            <div class="pet-cheek right"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="pet-torso">
-                    <div class="pet-belly"></div>
-                    <div class="pet-arms">
-                        <div class="pet-arm left"></div>
-                        <div class="pet-arm right"></div>
-                    </div>
-                </div>
-                <div class="pet-legs">
-                    <div class="pet-leg left"></div>
-                    <div class="pet-leg right"></div>
-                </div>
-                <div class="pet-tail"></div>
-            </div>
-        `;
+        return svgs[type] || svgs.cat;
     }
     
-    // v11.3: 精简食物和成就
+    // v12.3: 精简食物
     const FOOD_TYPES = {
-        apple: { name: '苹果', hunger: 20, icon: '🍎' },
-        cookie: { name: '饼干', hunger: 30, icon: '🍪' },
-        cake: { name: '蛋糕', hunger: 50, icon: '🍰' }
+        apple: { name: '苹果', hunger: 20 },
+        cookie: { name: '饼干', hunger: 30 },
+        cake: { name: '蛋糕', hunger: 50 }
     };
     const ACCESSORIES = {};
     const PET_ACHIEVEMENTS = [];
     
-    // v11.4-v11.5: 宠物系统主模块
+    // v12.4-v12.6: 宠物系统主模块
     const VirtualPetSystem = {
         data: null,
         container: null,
-        animationFrame: null,
         
         getDefaultData() {
             return {
@@ -3437,7 +3609,6 @@
                 petName: '',
                 hunger: 100,
                 happiness: 100,
-                mood: 'happy', // happy, sad, sleepy, excited
                 lastVisit: null
             };
         },
@@ -3448,9 +3619,8 @@
                 this.showPetSelection();
             } else if (this.data.hasPet) {
                 this.createPetUI();
-                this.startAnimations();
             }
-            console.log('🐾 宠物系统 v11 实体宠物版已加载');
+            console.log('🐾 宠物系统 v12 可爱动物版已加载');
         },
         
         showAdoptionAgain() {
@@ -3468,7 +3638,7 @@
             localStorage.setItem('virtualPetData', JSON.stringify(this.data));
         },
         
-        // v11.4: 宠物选择界面 - 展示实体宠物
+        // v12.4: 宠物选择界面
         showPetSelection() {
             const overlay = document.createElement('div');
             overlay.className = 'pet-select-overlay';
@@ -3480,7 +3650,7 @@
                     <div class="pet-list">
                         ${Object.entries(PET_TYPES).map(([key, pet]) => `
                             <div class="pet-card" data-type="${key}">
-                                <div class="pet-preview">${generatePetBody(key, 'small')}</div>
+                                <div class="pet-preview">${generatePetSVG(key, 45)}</div>
                                 <span class="pet-name">${pet.name}</span>
                             </div>
                         `).join('')}
@@ -3538,11 +3708,10 @@
             this.data.lastVisit = new Date().toDateString();
             this.saveData();
             this.createPetUI();
-            this.startAnimations();
             showSmartToast(`${name}成为了你的伙伴！`, 'success');
         },
         
-        // v11.5: 创建实体宠物UI
+        // v12.5: 创建SVG宠物UI
         createPetUI() {
             if (this.container) return;
             const pet = PET_TYPES[this.data.petType];
@@ -3550,8 +3719,8 @@
             this.container = document.createElement('div');
             this.container.className = 'pet-widget';
             this.container.innerHTML = `
-                <div class="pet-avatar-body">
-                    ${generatePetBody(this.data.petType)}
+                <div class="pet-avatar-svg">
+                    ${generatePetSVG(this.data.petType, 60)}
                 </div>
                 <div class="pet-bubble" style="display:none;"></div>
                 <div class="pet-name-tag">${this.data.petName}</div>
@@ -3562,42 +3731,16 @@
             setTimeout(() => this.greet(), 1000);
         },
         
-        // 启动动画循环
-        startAnimations() {
-            this.animateIdle();
-            this.blinkInterval = setInterval(() => this.blink(), 3000 + Math.random() * 2000);
-        },
-        
-        // 眨眼动画
-        blink() {
-            const eyes = this.container?.querySelectorAll('.pet-eye');
-            if (!eyes) return;
-            eyes.forEach(eye => {
-                eye.classList.add('blink');
-                setTimeout(() => eye.classList.remove('blink'), 150);
-            });
-        },
-        
-        // 空闲动画
-        animateIdle() {
-            const body = this.container?.querySelector('.pet-body');
-            if (!body) return;
-            body.classList.add('idle');
-        },
-        
+        // v12.6: 互动效果
         interact() {
             this.data.happiness = Math.min(100, this.data.happiness + 5);
             this.saveData();
             
-            // 开心跳跃动画
-            const body = this.container?.querySelector('.pet-body');
-            if (body) {
-                body.classList.remove('idle');
-                body.classList.add('jump');
-                setTimeout(() => {
-                    body.classList.remove('jump');
-                    body.classList.add('idle');
-                }, 500);
+            // 跳跃动画
+            const avatar = this.container?.querySelector('.pet-avatar-svg');
+            if (avatar) {
+                avatar.classList.add('bounce');
+                setTimeout(() => avatar.classList.remove('bounce'), 500);
             }
             
             // 显示爱心

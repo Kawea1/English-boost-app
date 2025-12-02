@@ -2603,6 +2603,76 @@ const ActivationUI = {
             typeWriter();
         }, 1500);
     },
+    
+    /**
+     * V2.5: 更新学习目标预览内容
+     * 当用户切换学习目标时，实时更新预览区域显示对应内容
+     */
+    updateGoalPreview(goal, config) {
+        console.log('V2.5: 更新目标预览:', goal, config);
+        
+        // 更新预览标题
+        const previewTitle = document.querySelector('.preview-title');
+        if (previewTitle) {
+            const goalNames = {
+                'gre': 'GRE考试',
+                'toefl': '托福考试', 
+                'academic': '学术英语'
+            };
+            previewTitle.textContent = `${goalNames[goal] || '英语学习'}专属学习内容`;
+        }
+        
+        // 更新预览列表
+        const previewList = document.querySelector('.preview-list');
+        if (previewList && config) {
+            let previewItems = [];
+            
+            if (goal === 'gre') {
+                previewItems = [
+                    { icon: '📚', text: `每日${config.dailyWords}个GRE高频词汇` },
+                    { icon: '✍️', text: 'Argument & Issue写作训练' },
+                    { icon: '📊', text: '词汇难度分级 (基础/进阶/高级)' },
+                    { icon: '🧠', text: '词根词缀深度解析' },
+                    { icon: '📈', text: '模拟考试数据分析' }
+                ];
+            } else if (goal === 'toefl') {
+                previewItems = [
+                    { icon: '🎧', text: '托福听力精听训练' },
+                    { icon: '🎤', text: 'AI口语评分与纠正' },
+                    { icon: '📝', text: '综合写作+独立写作' },
+                    { icon: '📖', text: '学术阅读理解训练' },
+                    { icon: '📊', text: `每日${config.dailyWords}词汇学习计划` }
+                ];
+            } else if (goal === 'academic') {
+                previewItems = [
+                    { icon: '📚', text: 'AWL学术词汇表专项' },
+                    { icon: '📄', text: '学术论文阅读训练' },
+                    { icon: '✍️', text: '论文写作规范指导' },
+                    { icon: '🔬', text: '分领域词汇学习' },
+                    { icon: '📊', text: `每日${config.dailyWords}词汇巩固` }
+                ];
+            }
+            
+            // 渲染预览项
+            previewList.innerHTML = previewItems.map(item => `
+                <li class="preview-item">
+                    <span class="preview-icon">${item.icon}</span>
+                    <span class="preview-text">${item.text}</span>
+                </li>
+            `).join('');
+            
+            // 添加动画效果
+            previewList.querySelectorAll('.preview-item').forEach((item, index) => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateX(-20px)';
+                setTimeout(() => {
+                    item.style.transition = 'all 0.3s ease';
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateX(0)';
+                }, index * 100);
+            });
+        }
+    },
 
     /**
      * v10: 初始化星空背景
@@ -3685,12 +3755,15 @@ const ActivationUI = {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 gap: 6px;
                 padding: 14px 8px;
                 background: #f8fafc;
                 border: 2px solid #e2e8f0;
                 border-radius: 12px;
                 transition: all 0.2s ease;
+                min-height: 80px;
+                box-sizing: border-box;
             }
             
             .goal-option input:checked + .goal-card {
@@ -3700,12 +3773,15 @@ const ActivationUI = {
             
             .goal-icon {
                 font-size: 24px;
+                line-height: 1;
             }
             
             .goal-name {
                 font-size: 12px;
                 font-weight: 600;
                 color: #475569;
+                text-align: center;
+                white-space: nowrap;
             }
             
             .goal-option input:checked + .goal-card .goal-name {
