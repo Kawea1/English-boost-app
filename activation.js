@@ -6192,12 +6192,14 @@ const ActivationUI = {
 window.ActivationSystem = ActivationSystem;
 window.ActivationUI = ActivationUI;
 
-// 自动初始化
+// V16: 禁用自动弹出激活对话框
+// 改用 index.html 中的登录页面，更友好的用户体验
 document.addEventListener('DOMContentLoaded', () => {
     ActivationSystem.init().then(isActivated => {
-        if (!isActivated) {
-            // 未激活，显示激活对话框
-            ActivationUI.showActivationDialog();
-        }
+        console.log('🔐 激活系统初始化完成, 已激活:', isActivated);
+        // 不再自动弹出对话框，由 app.js 控制登录页面显示
+        // if (!isActivated) {
+        //     ActivationUI.showActivationDialog();
+        // }
     });
 });
