@@ -490,42 +490,29 @@ function checkTrialSectionVisibility() {
 // 页面加载时检查
 document.addEventListener('DOMContentLoaded', checkTrialSectionVisibility);
 
-// ==================== V1-V5: 输入框格式化 ====================
+// ==================== V6-V10: 简化输入框处理 ====================
 
 /**
- * V1-V5: 格式化激活码输入
- * - 自动转大写
- * - 自动添加短横线分隔
- * - 过滤非法字符
+ * V6-V10: 简化的激活码输入格式化
+ * 移除复杂逻辑，只做基本转换
  */
 function formatActivationInput(input) {
-    // V1: 获取当前光标位置
-    const cursorPos = input.selectionStart;
-    const oldLength = input.value.length;
-    
-    // V2: 移除所有非字母数字字符，转大写
-    let value = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-    
-    // V3: 每4个字符添加短横线（如果需要）
-    if (value.length > 4) {
-        let formatted = '';
-        for (let i = 0; i < value.length; i++) {
-            if (i > 0 && i % 4 === 0) {
-                formatted += '-';
-            }
-            formatted += value[i];
+    // V6: 简单转大写，不做其他处理
+    // 延迟处理避免输入卡顿
+    setTimeout(() => {
+        const start = input.selectionStart;
+        const end = input.selectionEnd;
+        const upper = input.value.toUpperCase();
+        if (input.value !== upper) {
+            input.value = upper;
+            input.setSelectionRange(start, end);
         }
-        value = formatted;
-    }
-    
-    // V4: 更新输入框值
-    input.value = value;
-    
-    // V5: 恢复光标位置（考虑添加的短横线）
-    const newLength = input.value.length;
-    const diff = newLength - oldLength;
-    const newCursorPos = Math.min(cursorPos + diff, newLength);
-    input.setSelectionRange(newCursorPos, newCursorPos);
+    }, 0);
+}
+
+// V7: 键盘事件处理备用
+function handleActivationKeydown(e) {
+    // 不阻止任何输入
 }
 
 // 导出全局函数
@@ -543,3 +530,4 @@ window.pasteActivationCode = pasteActivationCode;
 window.showGetCodeHelp = showGetCodeHelp;
 window.showDeviceMigration = showDeviceMigration;
 window.formatActivationInput = formatActivationInput;
+window.handleActivationKeydown = handleActivationKeydown;

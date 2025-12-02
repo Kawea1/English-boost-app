@@ -74,7 +74,7 @@
             <!-- 激活码输入（可折叠） -->
             <div class="login-form" id="activationForm">
                 <!-- 改进的输入框 -->
-                <!-- V1-V5: 改进的激活码输入框 -->
+                <!-- V6-V10: 简化的激活码输入框 -->
                 <div class="activation-input-wrapper">
                     <label class="input-label-v2">激活码</label>
                     <div class="input-group-v2">
@@ -82,20 +82,17 @@
                                id="activationKey" 
                                placeholder="请输入激活码" 
                                class="login-input login-input-v2"
-                               maxlength="30"
                                autocomplete="off"
-                               autocapitalize="none"
+                               autocapitalize="off"
                                autocorrect="off"
-                               spellcheck="false"
-                               inputmode="text"
-                               oninput="formatActivationInput(this)">
+                               spellcheck="false">
                         <button type="button" class="paste-btn-v2" onclick="pasteActivationCode()" title="粘贴">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
                             </svg>
                         </button>
                     </div>
-                    <p class="input-hint" id="inputHint">支持直接粘贴激活码</p>
+                    <p class="input-hint" id="inputHint">输入激活码或点击粘贴按钮</p>
                 </div>
                 
                 <!-- 协议同意勾选 -->
