@@ -4394,5 +4394,3575 @@
       "dull",
       "murky"
     ]
+  },
+  "magnanimous": {
+    "synonyms": [
+      "generous",
+      "noble",
+      "forgiving",
+      "benevolent"
+    ],
+    "antonyms": [
+      "petty",
+      "mean",
+      "vengeful",
+      "selfish"
+    ]
+  },
+  "malevolent": {
+    "synonyms": [
+      "hostile",
+      "malicious",
+      "spiteful",
+      "evil"
+    ],
+    "antonyms": [
+      "benevolent",
+      "kind",
+      "friendly",
+      "charitable"
+    ]
+  },
+  "malign": {
+    "synonyms": [
+      "defame",
+      "slander",
+      "vilify",
+      "disparage"
+    ],
+    "antonyms": [
+      "praise",
+      "compliment",
+      "commend",
+      "defend"
+    ]
+  },
+  "malleable": {
+    "synonyms": [
+      "pliable",
+      "flexible",
+      "adaptable",
+      "moldable"
+    ],
+    "antonyms": [
+      "rigid",
+      "inflexible",
+      "stubborn",
+      "unyielding"
+    ]
+  },
+  "manifest": {
+    "synonyms": [
+      "obvious",
+      "evident",
+      "clear",
+      "apparent"
+    ],
+    "antonyms": [
+      "hidden",
+      "obscure",
+      "concealed",
+      "unclear"
+    ]
+  },
+  "marginal": {
+    "synonyms": [
+      "peripheral",
+      "minor",
+      "insignificant",
+      "borderline"
+    ],
+    "antonyms": [
+      "central",
+      "significant",
+      "major",
+      "important"
+    ]
+  },
+  "meager": {
+    "synonyms": [
+      "scarce",
+      "sparse",
+      "inadequate",
+      "insufficient"
+    ],
+    "antonyms": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "generous"
+    ]
+  },
+  "meander": {
+    "synonyms": [
+      "wander",
+      "roam",
+      "ramble",
+      "wind"
+    ],
+    "antonyms": [
+      "rush",
+      "hurry",
+      "go straight",
+      "march"
+    ]
+  },
+  "melancholy": {
+    "synonyms": [
+      "sadness",
+      "gloom",
+      "depression",
+      "sorrow"
+    ],
+    "antonyms": [
+      "joy",
+      "happiness",
+      "cheerfulness",
+      "elation"
+    ]
+  },
+  "mercurial": {
+    "synonyms": [
+      "volatile",
+      "changeable",
+      "unpredictable",
+      "fickle"
+    ],
+    "antonyms": [
+      "stable",
+      "constant",
+      "steady",
+      "predictable"
+    ]
+  },
+  "meticulous": {
+    "synonyms": [
+      "careful",
+      "precise",
+      "thorough",
+      "scrupulous"
+    ],
+    "antonyms": [
+      "careless",
+      "sloppy",
+      "negligent",
+      "haphazard"
+    ]
+  },
+  "mitigate": {
+    "synonyms": [
+      "alleviate",
+      "lessen",
+      "reduce",
+      "moderate"
+    ],
+    "antonyms": [
+      "aggravate",
+      "worsen",
+      "intensify",
+      "exacerbate"
+    ]
+  },
+  "mock": {
+    "synonyms": [
+      "ridicule",
+      "deride",
+      "scorn",
+      "taunt"
+    ],
+    "antonyms": [
+      "praise",
+      "respect",
+      "honor",
+      "admire"
+    ]
+  },
+  "mollify": {
+    "synonyms": [
+      "appease",
+      "soothe",
+      "calm",
+      "placate"
+    ],
+    "antonyms": [
+      "aggravate",
+      "provoke",
+      "irritate",
+      "anger"
+    ]
+  },
+  "momentous": {
+    "synonyms": [
+      "important",
+      "significant",
+      "historic",
+      "crucial"
+    ],
+    "antonyms": [
+      "trivial",
+      "insignificant",
+      "minor",
+      "unimportant"
+    ]
+  },
+  "monotonous": {
+    "synonyms": [
+      "boring",
+      "tedious",
+      "repetitive",
+      "dull"
+    ],
+    "antonyms": [
+      "interesting",
+      "varied",
+      "exciting",
+      "stimulating"
+    ]
+  },
+  "morose": {
+    "synonyms": [
+      "sullen",
+      "gloomy",
+      "melancholic",
+      "depressed"
+    ],
+    "antonyms": [
+      "cheerful",
+      "happy",
+      "jovial",
+      "optimistic"
+    ]
+  },
+  "mundane": {
+    "synonyms": [
+      "ordinary",
+      "commonplace",
+      "routine",
+      "everyday"
+    ],
+    "antonyms": [
+      "extraordinary",
+      "unusual",
+      "remarkable",
+      "exceptional"
+    ]
+  },
+  "munificent": {
+    "synonyms": [
+      "generous",
+      "lavish",
+      "bountiful",
+      "liberal"
+    ],
+    "antonyms": [
+      "stingy",
+      "miserly",
+      "mean",
+      "parsimonious"
+    ]
+  },
+  "mutable": {
+    "synonyms": [
+      "changeable",
+      "variable",
+      "inconstant",
+      "fluctuating"
+    ],
+    "antonyms": [
+      "immutable",
+      "constant",
+      "unchanging",
+      "stable"
+    ]
+  },
+  "myopic": {
+    "synonyms": [
+      "shortsighted",
+      "narrow-minded",
+      "unimaginative",
+      "limited"
+    ],
+    "antonyms": [
+      "farsighted",
+      "visionary",
+      "broad-minded",
+      "perceptive"
+    ]
+  },
+  "naive": {
+    "synonyms": [
+      "innocent",
+      "unsophisticated",
+      "inexperienced",
+      "guileless"
+    ],
+    "antonyms": [
+      "sophisticated",
+      "worldly",
+      "experienced",
+      "cynical"
+    ]
+  },
+  "nascent": {
+    "synonyms": [
+      "emerging",
+      "developing",
+      "budding",
+      "incipient"
+    ],
+    "antonyms": [
+      "mature",
+      "developed",
+      "established",
+      "declining"
+    ]
+  },
+  "nebulous": {
+    "synonyms": [
+      "vague",
+      "unclear",
+      "hazy",
+      "indistinct"
+    ],
+    "antonyms": [
+      "clear",
+      "distinct",
+      "precise",
+      "definite"
+    ]
+  },
+  "negate": {
+    "synonyms": [
+      "nullify",
+      "deny",
+      "invalidate",
+      "cancel"
+    ],
+    "antonyms": [
+      "affirm",
+      "confirm",
+      "validate",
+      "support"
+    ]
+  },
+  "negligible": {
+    "synonyms": [
+      "trivial",
+      "insignificant",
+      "minor",
+      "negligent"
+    ],
+    "antonyms": [
+      "significant",
+      "substantial",
+      "considerable",
+      "important"
+    ]
+  },
+  "neophyte": {
+    "synonyms": [
+      "beginner",
+      "novice",
+      "newcomer",
+      "amateur"
+    ],
+    "antonyms": [
+      "expert",
+      "veteran",
+      "master",
+      "professional"
+    ]
+  },
+  "nonchalant": {
+    "synonyms": [
+      "casual",
+      "indifferent",
+      "unconcerned",
+      "relaxed"
+    ],
+    "antonyms": [
+      "concerned",
+      "anxious",
+      "worried",
+      "attentive"
+    ]
+  },
+  "notorious": {
+    "synonyms": [
+      "infamous",
+      "disreputable",
+      "scandalous",
+      "well-known"
+    ],
+    "antonyms": [
+      "unknown",
+      "reputable",
+      "respected",
+      "obscure"
+    ]
+  },
+  "novel": {
+    "synonyms": [
+      "new",
+      "original",
+      "innovative",
+      "fresh"
+    ],
+    "antonyms": [
+      "old",
+      "familiar",
+      "conventional",
+      "hackneyed"
+    ]
+  },
+  "noxious": {
+    "synonyms": [
+      "harmful",
+      "poisonous",
+      "toxic",
+      "injurious"
+    ],
+    "antonyms": [
+      "harmless",
+      "beneficial",
+      "healthy",
+      "wholesome"
+    ]
+  },
+  "nullify": {
+    "synonyms": [
+      "invalidate",
+      "cancel",
+      "annul",
+      "negate"
+    ],
+    "antonyms": [
+      "validate",
+      "confirm",
+      "ratify",
+      "uphold"
+    ]
+  },
+  "obdurate": {
+    "synonyms": [
+      "stubborn",
+      "unyielding",
+      "inflexible",
+      "obstinate"
+    ],
+    "antonyms": [
+      "flexible",
+      "yielding",
+      "compliant",
+      "amenable"
+    ]
+  },
+  "obfuscate": {
+    "synonyms": [
+      "confuse",
+      "obscure",
+      "muddle",
+      "bewilder"
+    ],
+    "antonyms": [
+      "clarify",
+      "illuminate",
+      "explain",
+      "elucidate"
+    ]
+  },
+  "oblique": {
+    "synonyms": [
+      "indirect",
+      "slanting",
+      "evasive",
+      "sloped"
+    ],
+    "antonyms": [
+      "direct",
+      "straight",
+      "straightforward",
+      "explicit"
+    ]
+  },
+  "oblivious": {
+    "synonyms": [
+      "unaware",
+      "unconscious",
+      "ignorant",
+      "heedless"
+    ],
+    "antonyms": [
+      "aware",
+      "conscious",
+      "mindful",
+      "attentive"
+    ]
+  },
+  "obscure": {
+    "synonyms": [
+      "unclear",
+      "vague",
+      "hidden",
+      "ambiguous"
+    ],
+    "antonyms": [
+      "clear",
+      "obvious",
+      "prominent",
+      "famous"
+    ]
+  },
+  "obsequious": {
+    "synonyms": [
+      "servile",
+      "sycophantic",
+      "fawning",
+      "submissive"
+    ],
+    "antonyms": [
+      "assertive",
+      "domineering",
+      "independent",
+      "proud"
+    ]
+  },
+  "obsolete": {
+    "synonyms": [
+      "outdated",
+      "antiquated",
+      "archaic",
+      "defunct"
+    ],
+    "antonyms": [
+      "modern",
+      "current",
+      "contemporary",
+      "up-to-date"
+    ]
+  },
+  "obstinate": {
+    "synonyms": [
+      "stubborn",
+      "persistent",
+      "headstrong",
+      "unyielding"
+    ],
+    "antonyms": [
+      "flexible",
+      "compliant",
+      "yielding",
+      "amenable"
+    ]
+  },
+  "obtuse": {
+    "synonyms": [
+      "dull",
+      "slow",
+      "stupid",
+      "insensitive"
+    ],
+    "antonyms": [
+      "sharp",
+      "acute",
+      "intelligent",
+      "perceptive"
+    ]
+  },
+  "occlude": {
+    "synonyms": [
+      "block",
+      "obstruct",
+      "close",
+      "shut"
+    ],
+    "antonyms": [
+      "open",
+      "unblock",
+      "clear",
+      "release"
+    ]
+  },
+  "ominous": {
+    "synonyms": [
+      "threatening",
+      "foreboding",
+      "sinister",
+      "menacing"
+    ],
+    "antonyms": [
+      "promising",
+      "auspicious",
+      "favorable",
+      "reassuring"
+    ]
+  },
+  "onerous": {
+    "synonyms": [
+      "burdensome",
+      "demanding",
+      "oppressive",
+      "taxing"
+    ],
+    "antonyms": [
+      "easy",
+      "light",
+      "effortless",
+      "undemanding"
+    ]
+  },
+  "opaque": {
+    "synonyms": [
+      "unclear",
+      "obscure",
+      "impenetrable",
+      "murky"
+    ],
+    "antonyms": [
+      "transparent",
+      "clear",
+      "translucent",
+      "lucid"
+    ]
+  },
+  "opportunist": {
+    "synonyms": [
+      "exploiter",
+      "self-seeker",
+      "pragmatist",
+      "schemer"
+    ],
+    "antonyms": [
+      "idealist",
+      "altruist",
+      "principled person",
+      "philanthropist"
+    ]
+  },
+  "opulent": {
+    "synonyms": [
+      "luxurious",
+      "lavish",
+      "wealthy",
+      "affluent"
+    ],
+    "antonyms": [
+      "poor",
+      "austere",
+      "modest",
+      "sparse"
+    ]
+  },
+  "orthodox": {
+    "synonyms": [
+      "conventional",
+      "traditional",
+      "conformist",
+      "mainstream"
+    ],
+    "antonyms": [
+      "unorthodox",
+      "unconventional",
+      "heterodox",
+      "radical"
+    ]
+  },
+  "oscillate": {
+    "synonyms": [
+      "fluctuate",
+      "waver",
+      "swing",
+      "vacillate"
+    ],
+    "antonyms": [
+      "stabilize",
+      "steady",
+      "remain constant",
+      "settle"
+    ]
+  },
+  "ostentatious": {
+    "synonyms": [
+      "showy",
+      "flashy",
+      "pretentious",
+      "flamboyant"
+    ],
+    "antonyms": [
+      "modest",
+      "understated",
+      "humble",
+      "simple"
+    ]
+  },
+  "overt": {
+    "synonyms": [
+      "open",
+      "obvious",
+      "apparent",
+      "public"
+    ],
+    "antonyms": [
+      "covert",
+      "hidden",
+      "secret",
+      "concealed"
+    ]
+  },
+  "pacify": {
+    "synonyms": [
+      "calm",
+      "soothe",
+      "appease",
+      "placate"
+    ],
+    "antonyms": [
+      "agitate",
+      "provoke",
+      "anger",
+      "irritate"
+    ]
+  },
+  "painstaking": {
+    "synonyms": [
+      "careful",
+      "meticulous",
+      "thorough",
+      "diligent"
+    ],
+    "antonyms": [
+      "careless",
+      "sloppy",
+      "negligent",
+      "hasty"
+    ]
+  },
+  "palpable": {
+    "synonyms": [
+      "tangible",
+      "perceptible",
+      "noticeable",
+      "obvious"
+    ],
+    "antonyms": [
+      "imperceptible",
+      "intangible",
+      "subtle",
+      "hidden"
+    ]
+  },
+  "paradigm": {
+    "synonyms": [
+      "model",
+      "pattern",
+      "example",
+      "standard"
+    ],
+    "antonyms": [
+      "anomaly",
+      "exception",
+      "deviation",
+      "aberration"
+    ]
+  },
+  "paradox": {
+    "synonyms": [
+      "contradiction",
+      "inconsistency",
+      "anomaly",
+      "puzzle"
+    ],
+    "antonyms": [
+      "consistency",
+      "agreement",
+      "harmony",
+      "logic"
+    ]
+  },
+  "paragon": {
+    "synonyms": [
+      "model",
+      "ideal",
+      "exemplar",
+      "epitome"
+    ],
+    "antonyms": [
+      "failure",
+      "imperfection",
+      "worst example",
+      "antithesis"
+    ]
+  },
+  "partisan": {
+    "synonyms": [
+      "biased",
+      "partial",
+      "one-sided",
+      "prejudiced"
+    ],
+    "antonyms": [
+      "neutral",
+      "impartial",
+      "unbiased",
+      "objective"
+    ]
+  },
+  "paucity": {
+    "synonyms": [
+      "scarcity",
+      "shortage",
+      "lack",
+      "dearth"
+    ],
+    "antonyms": [
+      "abundance",
+      "plenty",
+      "surplus",
+      "excess"
+    ]
+  },
+  "pedantic": {
+    "synonyms": [
+      "academic",
+      "bookish",
+      "scholarly",
+      "nitpicking"
+    ],
+    "antonyms": [
+      "practical",
+      "informal",
+      "casual",
+      "flexible"
+    ]
+  },
+  "pejorative": {
+    "synonyms": [
+      "derogatory",
+      "disparaging",
+      "negative",
+      "critical"
+    ],
+    "antonyms": [
+      "complimentary",
+      "flattering",
+      "positive",
+      "laudatory"
+    ]
+  },
+  "penchant": {
+    "synonyms": [
+      "liking",
+      "fondness",
+      "preference",
+      "inclination"
+    ],
+    "antonyms": [
+      "aversion",
+      "dislike",
+      "antipathy",
+      "hatred"
+    ]
+  },
+  "pensive": {
+    "synonyms": [
+      "thoughtful",
+      "reflective",
+      "contemplative",
+      "meditative"
+    ],
+    "antonyms": [
+      "carefree",
+      "thoughtless",
+      "superficial",
+      "frivolous"
+    ]
+  },
+  "penurious": {
+    "synonyms": [
+      "poor",
+      "stingy",
+      "miserly",
+      "frugal"
+    ],
+    "antonyms": [
+      "wealthy",
+      "generous",
+      "lavish",
+      "affluent"
+    ]
+  },
+  "perennial": {
+    "synonyms": [
+      "permanent",
+      "lasting",
+      "enduring",
+      "perpetual"
+    ],
+    "antonyms": [
+      "temporary",
+      "brief",
+      "fleeting",
+      "transient"
+    ]
+  },
+  "perfidious": {
+    "synonyms": [
+      "treacherous",
+      "disloyal",
+      "deceitful",
+      "faithless"
+    ],
+    "antonyms": [
+      "loyal",
+      "faithful",
+      "trustworthy",
+      "reliable"
+    ]
+  },
+  "perfunctory": {
+    "synonyms": [
+      "cursory",
+      "superficial",
+      "hasty",
+      "mechanical"
+    ],
+    "antonyms": [
+      "thorough",
+      "careful",
+      "meticulous",
+      "diligent"
+    ]
+  },
+  "peripheral": {
+    "synonyms": [
+      "marginal",
+      "secondary",
+      "minor",
+      "outer"
+    ],
+    "antonyms": [
+      "central",
+      "primary",
+      "main",
+      "essential"
+    ]
+  },
+  "pernicious": {
+    "synonyms": [
+      "harmful",
+      "destructive",
+      "deadly",
+      "injurious"
+    ],
+    "antonyms": [
+      "beneficial",
+      "helpful",
+      "harmless",
+      "wholesome"
+    ]
+  },
+  "perpetuate": {
+    "synonyms": [
+      "continue",
+      "maintain",
+      "preserve",
+      "sustain"
+    ],
+    "antonyms": [
+      "end",
+      "stop",
+      "terminate",
+      "discontinue"
+    ]
+  },
+  "perplexed": {
+    "synonyms": [
+      "confused",
+      "puzzled",
+      "bewildered",
+      "baffled"
+    ],
+    "antonyms": [
+      "clear",
+      "certain",
+      "understanding",
+      "enlightened"
+    ]
+  },
+  "persevere": {
+    "synonyms": [
+      "persist",
+      "continue",
+      "endure",
+      "persist"
+    ],
+    "antonyms": [
+      "quit",
+      "give up",
+      "abandon",
+      "surrender"
+    ]
+  },
+  "pervasive": {
+    "synonyms": [
+      "widespread",
+      "prevalent",
+      "ubiquitous",
+      "omnipresent"
+    ],
+    "antonyms": [
+      "limited",
+      "localized",
+      "rare",
+      "uncommon"
+    ]
+  },
+  "petulant": {
+    "synonyms": [
+      "irritable",
+      "peevish",
+      "sulky",
+      "cranky"
+    ],
+    "antonyms": [
+      "cheerful",
+      "pleasant",
+      "good-natured",
+      "patient"
+    ]
+  },
+  "philanthropic": {
+    "synonyms": [
+      "charitable",
+      "benevolent",
+      "generous",
+      "humanitarian"
+    ],
+    "antonyms": [
+      "miserly",
+      "selfish",
+      "uncharitable",
+      "greedy"
+    ]
+  },
+  "phlegmatic": {
+    "synonyms": [
+      "calm",
+      "unemotional",
+      "stoic",
+      "impassive"
+    ],
+    "antonyms": [
+      "emotional",
+      "excitable",
+      "passionate",
+      "temperamental"
+    ]
+  },
+  "pithy": {
+    "synonyms": [
+      "concise",
+      "succinct",
+      "terse",
+      "brief"
+    ],
+    "antonyms": [
+      "verbose",
+      "wordy",
+      "lengthy",
+      "rambling"
+    ]
+  },
+  "placate": {
+    "synonyms": [
+      "appease",
+      "pacify",
+      "soothe",
+      "calm"
+    ],
+    "antonyms": [
+      "provoke",
+      "anger",
+      "irritate",
+      "agitate"
+    ]
+  },
+  "placid": {
+    "synonyms": [
+      "calm",
+      "peaceful",
+      "tranquil",
+      "serene"
+    ],
+    "antonyms": [
+      "agitated",
+      "turbulent",
+      "stormy",
+      "restless"
+    ]
+  },
+  "plaintive": {
+    "synonyms": [
+      "mournful",
+      "sad",
+      "melancholic",
+      "sorrowful"
+    ],
+    "antonyms": [
+      "cheerful",
+      "joyful",
+      "happy",
+      "upbeat"
+    ]
+  },
+  "plausible": {
+    "synonyms": [
+      "believable",
+      "credible",
+      "reasonable",
+      "likely"
+    ],
+    "antonyms": [
+      "implausible",
+      "unbelievable",
+      "unlikely",
+      "incredible"
+    ]
+  },
+  "plethora": {
+    "synonyms": [
+      "excess",
+      "abundance",
+      "surplus",
+      "profusion"
+    ],
+    "antonyms": [
+      "scarcity",
+      "shortage",
+      "lack",
+      "dearth"
+    ]
+  },
+  "polemical": {
+    "synonyms": [
+      "controversial",
+      "argumentative",
+      "contentious",
+      "disputatious"
+    ],
+    "antonyms": [
+      "agreeable",
+      "uncontroversial",
+      "harmonious",
+      "peaceful"
+    ]
+  },
+  "ponderous": {
+    "synonyms": [
+      "heavy",
+      "clumsy",
+      "laborious",
+      "unwieldy"
+    ],
+    "antonyms": [
+      "light",
+      "agile",
+      "nimble",
+      "graceful"
+    ]
+  },
+  "pragmatic": {
+    "synonyms": [
+      "practical",
+      "realistic",
+      "sensible",
+      "down-to-earth"
+    ],
+    "antonyms": [
+      "idealistic",
+      "impractical",
+      "unrealistic",
+      "theoretical"
+    ]
+  },
+  "precarious": {
+    "synonyms": [
+      "unstable",
+      "risky",
+      "uncertain",
+      "dangerous"
+    ],
+    "antonyms": [
+      "stable",
+      "secure",
+      "safe",
+      "certain"
+    ]
+  },
+  "precedent": {
+    "synonyms": [
+      "example",
+      "model",
+      "standard",
+      "pattern"
+    ],
+    "antonyms": [
+      "novelty",
+      "exception",
+      "innovation",
+      "anomaly"
+    ]
+  },
+  "precipitate": {
+    "synonyms": [
+      "hasten",
+      "accelerate",
+      "trigger",
+      "cause"
+    ],
+    "antonyms": [
+      "slow",
+      "delay",
+      "retard",
+      "prevent"
+    ]
+  },
+  "preclude": {
+    "synonyms": [
+      "prevent",
+      "exclude",
+      "rule out",
+      "prohibit"
+    ],
+    "antonyms": [
+      "allow",
+      "permit",
+      "enable",
+      "include"
+    ]
+  },
+  "precocious": {
+    "synonyms": [
+      "advanced",
+      "gifted",
+      "mature",
+      "prodigious"
+    ],
+    "antonyms": [
+      "backward",
+      "slow",
+      "undeveloped",
+      "immature"
+    ]
+  },
+  "predilection": {
+    "synonyms": [
+      "preference",
+      "fondness",
+      "liking",
+      "inclination"
+    ],
+    "antonyms": [
+      "aversion",
+      "dislike",
+      "antipathy",
+      "distaste"
+    ]
+  },
+  "preeminent": {
+    "synonyms": [
+      "outstanding",
+      "superior",
+      "distinguished",
+      "foremost"
+    ],
+    "antonyms": [
+      "inferior",
+      "mediocre",
+      "ordinary",
+      "unimportant"
+    ]
+  },
+  "prescient": {
+    "synonyms": [
+      "prophetic",
+      "farsighted",
+      "clairvoyant",
+      "visionary"
+    ],
+    "antonyms": [
+      "shortsighted",
+      "unaware",
+      "blind",
+      "oblivious"
+    ]
+  },
+  "presumptuous": {
+    "synonyms": [
+      "arrogant",
+      "bold",
+      "forward",
+      "audacious"
+    ],
+    "antonyms": [
+      "humble",
+      "modest",
+      "respectful",
+      "deferential"
+    ]
+  },
+  "prevalent": {
+    "synonyms": [
+      "widespread",
+      "common",
+      "frequent",
+      "predominant"
+    ],
+    "antonyms": [
+      "rare",
+      "uncommon",
+      "scarce",
+      "infrequent"
+    ]
+  },
+  "prevaricate": {
+    "synonyms": [
+      "lie",
+      "equivocate",
+      "deceive",
+      "evade"
+    ],
+    "antonyms": [
+      "tell truth",
+      "be honest",
+      "be straightforward",
+      "confess"
+    ]
+  },
+  "pristine": {
+    "synonyms": [
+      "pure",
+      "unspoiled",
+      "immaculate",
+      "perfect"
+    ],
+    "antonyms": [
+      "contaminated",
+      "spoiled",
+      "dirty",
+      "damaged"
+    ]
+  },
+  "prodigal": {
+    "synonyms": [
+      "wasteful",
+      "extravagant",
+      "lavish",
+      "spendthrift"
+    ],
+    "antonyms": [
+      "frugal",
+      "thrifty",
+      "economical",
+      "prudent"
+    ]
+  },
+  "prodigious": {
+    "synonyms": [
+      "enormous",
+      "immense",
+      "remarkable",
+      "extraordinary"
+    ],
+    "antonyms": [
+      "small",
+      "ordinary",
+      "insignificant",
+      "unremarkable"
+    ]
+  },
+  "profane": {
+    "synonyms": [
+      "irreverent",
+      "blasphemous",
+      "vulgar",
+      "secular"
+    ],
+    "antonyms": [
+      "sacred",
+      "holy",
+      "reverent",
+      "religious"
+    ]
+  },
+  "profuse": {
+    "synonyms": [
+      "abundant",
+      "plentiful",
+      "copious",
+      "lavish"
+    ],
+    "antonyms": [
+      "scarce",
+      "sparse",
+      "meager",
+      "limited"
+    ]
+  },
+  "prolific": {
+    "synonyms": [
+      "productive",
+      "fertile",
+      "fruitful",
+      "abundant"
+    ],
+    "antonyms": [
+      "unproductive",
+      "barren",
+      "sterile",
+      "inactive"
+    ]
+  },
+  "prolix": {
+    "synonyms": [
+      "verbose",
+      "wordy",
+      "long-winded",
+      "rambling"
+    ],
+    "antonyms": [
+      "concise",
+      "brief",
+      "succinct",
+      "terse"
+    ]
+  },
+  "propensity": {
+    "synonyms": [
+      "tendency",
+      "inclination",
+      "predisposition",
+      "proclivity"
+    ],
+    "antonyms": [
+      "aversion",
+      "disinclination",
+      "reluctance",
+      "antipathy"
+    ]
+  },
+  "propitiate": {
+    "synonyms": [
+      "appease",
+      "placate",
+      "pacify",
+      "conciliate"
+    ],
+    "antonyms": [
+      "anger",
+      "provoke",
+      "antagonize",
+      "offend"
+    ]
+  },
+  "prosaic": {
+    "synonyms": [
+      "ordinary",
+      "mundane",
+      "dull",
+      "unimaginative"
+    ],
+    "antonyms": [
+      "poetic",
+      "imaginative",
+      "creative",
+      "exciting"
+    ]
+  },
+  "proscribe": {
+    "synonyms": [
+      "prohibit",
+      "forbid",
+      "ban",
+      "outlaw"
+    ],
+    "antonyms": [
+      "allow",
+      "permit",
+      "authorize",
+      "sanction"
+    ]
+  },
+  "provincial": {
+    "synonyms": [
+      "narrow-minded",
+      "parochial",
+      "unsophisticated",
+      "rustic"
+    ],
+    "antonyms": [
+      "cosmopolitan",
+      "sophisticated",
+      "worldly",
+      "broad-minded"
+    ]
+  },
+  "prudent": {
+    "synonyms": [
+      "wise",
+      "careful",
+      "cautious",
+      "sensible"
+    ],
+    "antonyms": [
+      "reckless",
+      "foolish",
+      "imprudent",
+      "careless"
+    ]
+  },
+  "pugnacious": {
+    "synonyms": [
+      "aggressive",
+      "combative",
+      "belligerent",
+      "quarrelsome"
+    ],
+    "antonyms": [
+      "peaceful",
+      "friendly",
+      "amiable",
+      "conciliatory"
+    ]
+  },
+  "punctilious": {
+    "synonyms": [
+      "meticulous",
+      "precise",
+      "scrupulous",
+      "careful"
+    ],
+    "antonyms": [
+      "careless",
+      "negligent",
+      "sloppy",
+      "lax"
+    ]
+  },
+  "quaint": {
+    "synonyms": [
+      "charming",
+      "picturesque",
+      "old-fashioned",
+      "unusual"
+    ],
+    "antonyms": [
+      "modern",
+      "ordinary",
+      "contemporary",
+      "commonplace"
+    ]
+  },
+  "quandary": {
+    "synonyms": [
+      "dilemma",
+      "predicament",
+      "difficulty",
+      "perplexity"
+    ],
+    "antonyms": [
+      "solution",
+      "certainty",
+      "clarity",
+      "ease"
+    ]
+  },
+  "querulous": {
+    "synonyms": [
+      "complaining",
+      "whining",
+      "petulant",
+      "irritable"
+    ],
+    "antonyms": [
+      "content",
+      "cheerful",
+      "uncomplaining",
+      "pleasant"
+    ]
+  },
+  "quiescent": {
+    "synonyms": [
+      "inactive",
+      "dormant",
+      "quiet",
+      "still"
+    ],
+    "antonyms": [
+      "active",
+      "lively",
+      "bustling",
+      "dynamic"
+    ]
+  },
+  "quintessential": {
+    "synonyms": [
+      "typical",
+      "ideal",
+      "perfect",
+      "archetypal"
+    ],
+    "antonyms": [
+      "atypical",
+      "unusual",
+      "aberrant",
+      "uncharacteristic"
+    ]
+  },
+  "rampant": {
+    "synonyms": [
+      "widespread",
+      "uncontrolled",
+      "unchecked",
+      "prevalent"
+    ],
+    "antonyms": [
+      "controlled",
+      "restrained",
+      "contained",
+      "limited"
+    ]
+  },
+  "rancor": {
+    "synonyms": [
+      "bitterness",
+      "resentment",
+      "hostility",
+      "animosity"
+    ],
+    "antonyms": [
+      "goodwill",
+      "forgiveness",
+      "friendliness",
+      "amity"
+    ]
+  },
+  "rarefied": {
+    "synonyms": [
+      "exclusive",
+      "elevated",
+      "refined",
+      "esoteric"
+    ],
+    "antonyms": [
+      "common",
+      "ordinary",
+      "accessible",
+      "vulgar"
+    ]
+  },
+  "rash": {
+    "synonyms": [
+      "impulsive",
+      "reckless",
+      "hasty",
+      "impetuous"
+    ],
+    "antonyms": [
+      "cautious",
+      "prudent",
+      "careful",
+      "deliberate"
+    ]
+  },
+  "ratify": {
+    "synonyms": [
+      "approve",
+      "confirm",
+      "endorse",
+      "validate"
+    ],
+    "antonyms": [
+      "reject",
+      "deny",
+      "veto",
+      "invalidate"
+    ]
+  },
+  "raucous": {
+    "synonyms": [
+      "loud",
+      "noisy",
+      "boisterous",
+      "rowdy"
+    ],
+    "antonyms": [
+      "quiet",
+      "peaceful",
+      "calm",
+      "subdued"
+    ]
+  },
+  "recalcitrant": {
+    "synonyms": [
+      "defiant",
+      "uncooperative",
+      "stubborn",
+      "rebellious"
+    ],
+    "antonyms": [
+      "obedient",
+      "compliant",
+      "cooperative",
+      "amenable"
+    ]
+  },
+  "recant": {
+    "synonyms": [
+      "retract",
+      "withdraw",
+      "renounce",
+      "disavow"
+    ],
+    "antonyms": [
+      "affirm",
+      "maintain",
+      "uphold",
+      "confirm"
+    ]
+  },
+  "reclusive": {
+    "synonyms": [
+      "solitary",
+      "isolated",
+      "withdrawn",
+      "hermit-like"
+    ],
+    "antonyms": [
+      "sociable",
+      "gregarious",
+      "outgoing",
+      "social"
+    ]
+  },
+  "reconcile": {
+    "synonyms": [
+      "harmonize",
+      "settle",
+      "resolve",
+      "reunite"
+    ],
+    "antonyms": [
+      "alienate",
+      "estrange",
+      "separate",
+      "divide"
+    ]
+  },
+  "recondite": {
+    "synonyms": [
+      "obscure",
+      "abstruse",
+      "esoteric",
+      "arcane"
+    ],
+    "antonyms": [
+      "simple",
+      "obvious",
+      "clear",
+      "accessible"
+    ]
+  },
+  "rectify": {
+    "synonyms": [
+      "correct",
+      "fix",
+      "amend",
+      "remedy"
+    ],
+    "antonyms": [
+      "damage",
+      "worsen",
+      "corrupt",
+      "break"
+    ]
+  },
+  "redundant": {
+    "synonyms": [
+      "superfluous",
+      "unnecessary",
+      "excessive",
+      "surplus"
+    ],
+    "antonyms": [
+      "necessary",
+      "essential",
+      "needed",
+      "required"
+    ]
+  },
+  "refute": {
+    "synonyms": [
+      "disprove",
+      "rebut",
+      "contradict",
+      "deny"
+    ],
+    "antonyms": [
+      "confirm",
+      "prove",
+      "support",
+      "validate"
+    ]
+  },
+  "relegate": {
+    "synonyms": [
+      "demote",
+      "downgrade",
+      "assign",
+      "banish"
+    ],
+    "antonyms": [
+      "promote",
+      "elevate",
+      "upgrade",
+      "advance"
+    ]
+  },
+  "relentless": {
+    "synonyms": [
+      "persistent",
+      "unyielding",
+      "unremitting",
+      "tireless"
+    ],
+    "antonyms": [
+      "lenient",
+      "yielding",
+      "merciful",
+      "intermittent"
+    ]
+  },
+  "relinquish": {
+    "synonyms": [
+      "surrender",
+      "abandon",
+      "give up",
+      "renounce"
+    ],
+    "antonyms": [
+      "keep",
+      "retain",
+      "hold",
+      "maintain"
+    ]
+  },
+  "remorse": {
+    "synonyms": [
+      "regret",
+      "guilt",
+      "contrition",
+      "penitence"
+    ],
+    "antonyms": [
+      "satisfaction",
+      "pride",
+      "indifference",
+      "impenitence"
+    ]
+  },
+  "renounce": {
+    "synonyms": [
+      "abandon",
+      "reject",
+      "disown",
+      "forsake"
+    ],
+    "antonyms": [
+      "embrace",
+      "accept",
+      "claim",
+      "maintain"
+    ]
+  },
+  "replete": {
+    "synonyms": [
+      "full",
+      "filled",
+      "abundant",
+      "teeming"
+    ],
+    "antonyms": [
+      "empty",
+      "lacking",
+      "deficient",
+      "barren"
+    ]
+  },
+  "reprehensible": {
+    "synonyms": [
+      "blameworthy",
+      "shameful",
+      "deplorable",
+      "disgraceful"
+    ],
+    "antonyms": [
+      "commendable",
+      "praiseworthy",
+      "admirable",
+      "laudable"
+    ]
+  },
+  "repudiate": {
+    "synonyms": [
+      "reject",
+      "deny",
+      "disown",
+      "renounce"
+    ],
+    "antonyms": [
+      "accept",
+      "embrace",
+      "acknowledge",
+      "affirm"
+    ]
+  },
+  "rescind": {
+    "synonyms": [
+      "cancel",
+      "revoke",
+      "annul",
+      "repeal"
+    ],
+    "antonyms": [
+      "enforce",
+      "enact",
+      "implement",
+      "uphold"
+    ]
+  },
+  "resilient": {
+    "synonyms": [
+      "flexible",
+      "adaptable",
+      "tough",
+      "hardy"
+    ],
+    "antonyms": [
+      "fragile",
+      "weak",
+      "rigid",
+      "vulnerable"
+    ]
+  },
+  "resolute": {
+    "synonyms": [
+      "determined",
+      "firm",
+      "unwavering",
+      "steadfast"
+    ],
+    "antonyms": [
+      "irresolute",
+      "wavering",
+      "uncertain",
+      "hesitant"
+    ]
+  },
+  "reticent": {
+    "synonyms": [
+      "reserved",
+      "quiet",
+      "taciturn",
+      "uncommunicative"
+    ],
+    "antonyms": [
+      "talkative",
+      "forthcoming",
+      "open",
+      "communicative"
+    ]
+  },
+  "revere": {
+    "synonyms": [
+      "respect",
+      "admire",
+      "venerate",
+      "honor"
+    ],
+    "antonyms": [
+      "despise",
+      "scorn",
+      "disrespect",
+      "disdain"
+    ]
+  },
+  "rhetoric": {
+    "synonyms": [
+      "oratory",
+      "eloquence",
+      "discourse",
+      "persuasion"
+    ],
+    "antonyms": [
+      "silence",
+      "brevity",
+      "plainness",
+      "simplicity"
+    ]
+  },
+  "rigorous": {
+    "synonyms": [
+      "strict",
+      "demanding",
+      "thorough",
+      "exacting"
+    ],
+    "antonyms": [
+      "lenient",
+      "lax",
+      "easygoing",
+      "flexible"
+    ]
+  },
+  "robust": {
+    "synonyms": [
+      "strong",
+      "sturdy",
+      "healthy",
+      "vigorous"
+    ],
+    "antonyms": [
+      "weak",
+      "frail",
+      "feeble",
+      "delicate"
+    ]
+  },
+  "rudimentary": {
+    "synonyms": [
+      "basic",
+      "elementary",
+      "fundamental",
+      "primitive"
+    ],
+    "antonyms": [
+      "advanced",
+      "sophisticated",
+      "complex",
+      "developed"
+    ]
+  },
+  "ruminate": {
+    "synonyms": [
+      "ponder",
+      "reflect",
+      "contemplate",
+      "meditate"
+    ],
+    "antonyms": [
+      "ignore",
+      "neglect",
+      "disregard",
+      "overlook"
+    ]
+  },
+  "rustic": {
+    "synonyms": [
+      "rural",
+      "simple",
+      "unsophisticated",
+      "pastoral"
+    ],
+    "antonyms": [
+      "urban",
+      "sophisticated",
+      "refined",
+      "polished"
+    ]
+  },
+  "sacrosanct": {
+    "synonyms": [
+      "sacred",
+      "inviolable",
+      "holy",
+      "untouchable"
+    ],
+    "antonyms": [
+      "profane",
+      "secular",
+      "violable",
+      "common"
+    ]
+  },
+  "sagacious": {
+    "synonyms": [
+      "wise",
+      "shrewd",
+      "astute",
+      "discerning"
+    ],
+    "antonyms": [
+      "foolish",
+      "unwise",
+      "naive",
+      "stupid"
+    ]
+  },
+  "salient": {
+    "synonyms": [
+      "prominent",
+      "notable",
+      "conspicuous",
+      "striking"
+    ],
+    "antonyms": [
+      "inconspicuous",
+      "minor",
+      "unimportant",
+      "hidden"
+    ]
+  },
+  "sanction": {
+    "synonyms": [
+      "approve",
+      "authorize",
+      "ratify",
+      "endorse"
+    ],
+    "antonyms": [
+      "prohibit",
+      "forbid",
+      "ban",
+      "reject"
+    ]
+  },
+  "sanguine": {
+    "synonyms": [
+      "optimistic",
+      "hopeful",
+      "confident",
+      "positive"
+    ],
+    "antonyms": [
+      "pessimistic",
+      "gloomy",
+      "despairing",
+      "negative"
+    ]
+  },
+  "sardonic": {
+    "synonyms": [
+      "mocking",
+      "cynical",
+      "scornful",
+      "sarcastic"
+    ],
+    "antonyms": [
+      "sincere",
+      "earnest",
+      "genuine",
+      "respectful"
+    ]
+  },
+  "satiate": {
+    "synonyms": [
+      "satisfy",
+      "fill",
+      "sate",
+      "gratify"
+    ],
+    "antonyms": [
+      "starve",
+      "deprive",
+      "dissatisfy",
+      "tantalize"
+    ]
+  },
+  "saturate": {
+    "synonyms": [
+      "soak",
+      "drench",
+      "flood",
+      "permeate"
+    ],
+    "antonyms": [
+      "dry",
+      "drain",
+      "empty",
+      "dehydrate"
+    ]
+  },
+  "scanty": {
+    "synonyms": [
+      "meager",
+      "sparse",
+      "insufficient",
+      "inadequate"
+    ],
+    "antonyms": [
+      "abundant",
+      "plentiful",
+      "ample",
+      "generous"
+    ]
+  },
+  "scathing": {
+    "synonyms": [
+      "harsh",
+      "severe",
+      "biting",
+      "caustic"
+    ],
+    "antonyms": [
+      "mild",
+      "gentle",
+      "kind",
+      "complimentary"
+    ]
+  },
+  "scrupulous": {
+    "synonyms": [
+      "careful",
+      "meticulous",
+      "conscientious",
+      "thorough"
+    ],
+    "antonyms": [
+      "careless",
+      "unscrupulous",
+      "negligent",
+      "dishonest"
+    ]
+  },
+  "scrutinize": {
+    "synonyms": [
+      "examine",
+      "inspect",
+      "analyze",
+      "study"
+    ],
+    "antonyms": [
+      "ignore",
+      "overlook",
+      "neglect",
+      "skim"
+    ]
+  },
+  "sedulous": {
+    "synonyms": [
+      "diligent",
+      "assiduous",
+      "industrious",
+      "persistent"
+    ],
+    "antonyms": [
+      "lazy",
+      "idle",
+      "negligent",
+      "careless"
+    ]
+  },
+  "serene": {
+    "synonyms": [
+      "calm",
+      "peaceful",
+      "tranquil",
+      "placid"
+    ],
+    "antonyms": [
+      "agitated",
+      "turbulent",
+      "stormy",
+      "anxious"
+    ]
+  },
+  "shrewd": {
+    "synonyms": [
+      "astute",
+      "clever",
+      "sharp",
+      "perceptive"
+    ],
+    "antonyms": [
+      "naive",
+      "gullible",
+      "foolish",
+      "unperceptive"
+    ]
+  },
+  "skeptical": {
+    "synonyms": [
+      "doubtful",
+      "questioning",
+      "cynical",
+      "dubious"
+    ],
+    "antonyms": [
+      "trusting",
+      "believing",
+      "credulous",
+      "gullible"
+    ]
+  },
+  "slander": {
+    "synonyms": [
+      "defame",
+      "malign",
+      "libel",
+      "vilify"
+    ],
+    "antonyms": [
+      "praise",
+      "compliment",
+      "defend",
+      "honor"
+    ]
+  },
+  "solemn": {
+    "synonyms": [
+      "serious",
+      "grave",
+      "earnest",
+      "sober"
+    ],
+    "antonyms": [
+      "lighthearted",
+      "cheerful",
+      "frivolous",
+      "playful"
+    ]
+  },
+  "solicitous": {
+    "synonyms": [
+      "concerned",
+      "attentive",
+      "caring",
+      "anxious"
+    ],
+    "antonyms": [
+      "indifferent",
+      "unconcerned",
+      "neglectful",
+      "careless"
+    ]
+  },
+  "somber": {
+    "synonyms": [
+      "dark",
+      "gloomy",
+      "melancholic",
+      "grave"
+    ],
+    "antonyms": [
+      "bright",
+      "cheerful",
+      "lively",
+      "joyful"
+    ]
+  },
+  "soporific": {
+    "synonyms": [
+      "sleep-inducing",
+      "drowsy",
+      "sedative",
+      "hypnotic"
+    ],
+    "antonyms": [
+      "stimulating",
+      "invigorating",
+      "energizing",
+      "exciting"
+    ]
+  },
+  "sparse": {
+    "synonyms": [
+      "scarce",
+      "meager",
+      "scattered",
+      "thin"
+    ],
+    "antonyms": [
+      "abundant",
+      "dense",
+      "plentiful",
+      "thick"
+    ]
+  },
+  "specious": {
+    "synonyms": [
+      "misleading",
+      "deceptive",
+      "fallacious",
+      "plausible"
+    ],
+    "antonyms": [
+      "genuine",
+      "valid",
+      "authentic",
+      "truthful"
+    ]
+  },
+  "sporadic": {
+    "synonyms": [
+      "occasional",
+      "irregular",
+      "intermittent",
+      "scattered"
+    ],
+    "antonyms": [
+      "constant",
+      "regular",
+      "continuous",
+      "frequent"
+    ]
+  },
+  "spurious": {
+    "synonyms": [
+      "false",
+      "fake",
+      "counterfeit",
+      "bogus"
+    ],
+    "antonyms": [
+      "genuine",
+      "authentic",
+      "real",
+      "legitimate"
+    ]
+  },
+  "squander": {
+    "synonyms": [
+      "waste",
+      "dissipate",
+      "fritter",
+      "misspend"
+    ],
+    "antonyms": [
+      "save",
+      "conserve",
+      "preserve",
+      "economize"
+    ]
+  },
+  "stagnant": {
+    "synonyms": [
+      "motionless",
+      "static",
+      "dormant",
+      "sluggish"
+    ],
+    "antonyms": [
+      "flowing",
+      "dynamic",
+      "active",
+      "thriving"
+    ]
+  },
+  "steadfast": {
+    "synonyms": [
+      "loyal",
+      "faithful",
+      "unwavering",
+      "constant"
+    ],
+    "antonyms": [
+      "disloyal",
+      "unfaithful",
+      "fickle",
+      "wavering"
+    ]
+  },
+  "stoic": {
+    "synonyms": [
+      "unemotional",
+      "impassive",
+      "calm",
+      "unfeeling"
+    ],
+    "antonyms": [
+      "emotional",
+      "expressive",
+      "sensitive",
+      "demonstrative"
+    ]
+  },
+  "strident": {
+    "synonyms": [
+      "harsh",
+      "loud",
+      "shrill",
+      "grating"
+    ],
+    "antonyms": [
+      "soft",
+      "gentle",
+      "melodious",
+      "quiet"
+    ]
+  },
+  "stringent": {
+    "synonyms": [
+      "strict",
+      "rigorous",
+      "severe",
+      "demanding"
+    ],
+    "antonyms": [
+      "lenient",
+      "lax",
+      "flexible",
+      "relaxed"
+    ]
+  },
+  "subservient": {
+    "synonyms": [
+      "submissive",
+      "obsequious",
+      "servile",
+      "deferential"
+    ],
+    "antonyms": [
+      "dominant",
+      "assertive",
+      "independent",
+      "commanding"
+    ]
+  },
+  "substantiate": {
+    "synonyms": [
+      "verify",
+      "confirm",
+      "prove",
+      "validate"
+    ],
+    "antonyms": [
+      "disprove",
+      "refute",
+      "contradict",
+      "invalidate"
+    ]
+  },
+  "subtle": {
+    "synonyms": [
+      "delicate",
+      "understated",
+      "nuanced",
+      "refined"
+    ],
+    "antonyms": [
+      "obvious",
+      "blatant",
+      "crude",
+      "overt"
+    ]
+  },
+  "succinct": {
+    "synonyms": [
+      "brief",
+      "concise",
+      "terse",
+      "compact"
+    ],
+    "antonyms": [
+      "verbose",
+      "wordy",
+      "lengthy",
+      "rambling"
+    ]
+  },
+  "superficial": {
+    "synonyms": [
+      "shallow",
+      "surface",
+      "cursory",
+      "trivial"
+    ],
+    "antonyms": [
+      "deep",
+      "profound",
+      "thorough",
+      "substantial"
+    ]
+  },
+  "superfluous": {
+    "synonyms": [
+      "unnecessary",
+      "excessive",
+      "redundant",
+      "surplus"
+    ],
+    "antonyms": [
+      "necessary",
+      "essential",
+      "needed",
+      "required"
+    ]
+  },
+  "supplant": {
+    "synonyms": [
+      "replace",
+      "displace",
+      "supersede",
+      "oust"
+    ],
+    "antonyms": [
+      "support",
+      "uphold",
+      "maintain",
+      "keep"
+    ]
+  },
+  "suppress": {
+    "synonyms": [
+      "restrain",
+      "stifle",
+      "repress",
+      "subdue"
+    ],
+    "antonyms": [
+      "express",
+      "release",
+      "encourage",
+      "promote"
+    ]
+  },
+  "surfeit": {
+    "synonyms": [
+      "excess",
+      "surplus",
+      "overabundance",
+      "glut"
+    ],
+    "antonyms": [
+      "shortage",
+      "lack",
+      "scarcity",
+      "dearth"
+    ]
+  },
+  "surly": {
+    "synonyms": [
+      "grumpy",
+      "sullen",
+      "bad-tempered",
+      "churlish"
+    ],
+    "antonyms": [
+      "friendly",
+      "pleasant",
+      "cheerful",
+      "amiable"
+    ]
+  },
+  "surreptitious": {
+    "synonyms": [
+      "secret",
+      "stealthy",
+      "covert",
+      "clandestine"
+    ],
+    "antonyms": [
+      "open",
+      "obvious",
+      "overt",
+      "public"
+    ]
+  },
+  "sycophant": {
+    "synonyms": [
+      "flatterer",
+      "toady",
+      "yes-man",
+      "fawner"
+    ],
+    "antonyms": [
+      "critic",
+      "detractor",
+      "independent thinker",
+      "dissenter"
+    ]
+  },
+  "tacit": {
+    "synonyms": [
+      "implicit",
+      "unspoken",
+      "understood",
+      "silent"
+    ],
+    "antonyms": [
+      "explicit",
+      "stated",
+      "expressed",
+      "spoken"
+    ]
+  },
+  "taciturn": {
+    "synonyms": [
+      "quiet",
+      "reserved",
+      "uncommunicative",
+      "reticent"
+    ],
+    "antonyms": [
+      "talkative",
+      "loquacious",
+      "garrulous",
+      "chatty"
+    ]
+  },
+  "tangential": {
+    "synonyms": [
+      "peripheral",
+      "irrelevant",
+      "digressive",
+      "unrelated"
+    ],
+    "antonyms": [
+      "central",
+      "relevant",
+      "pertinent",
+      "essential"
+    ]
+  },
+  "tantamount": {
+    "synonyms": [
+      "equivalent",
+      "equal",
+      "synonymous",
+      "comparable"
+    ],
+    "antonyms": [
+      "different",
+      "unequal",
+      "unlike",
+      "dissimilar"
+    ]
+  },
+  "tedious": {
+    "synonyms": [
+      "boring",
+      "monotonous",
+      "dull",
+      "tiresome"
+    ],
+    "antonyms": [
+      "interesting",
+      "exciting",
+      "engaging",
+      "stimulating"
+    ]
+  },
+  "temerity": {
+    "synonyms": [
+      "boldness",
+      "audacity",
+      "recklessness",
+      "nerve"
+    ],
+    "antonyms": [
+      "caution",
+      "timidity",
+      "prudence",
+      "hesitation"
+    ]
+  },
+  "temper": {
+    "synonyms": [
+      "moderate",
+      "soften",
+      "mitigate",
+      "restrain"
+    ],
+    "antonyms": [
+      "intensify",
+      "aggravate",
+      "strengthen",
+      "worsen"
+    ]
+  },
+  "tenacious": {
+    "synonyms": [
+      "persistent",
+      "determined",
+      "stubborn",
+      "resolute"
+    ],
+    "antonyms": [
+      "yielding",
+      "irresolute",
+      "weak",
+      "wavering"
+    ]
+  },
+  "tentative": {
+    "synonyms": [
+      "uncertain",
+      "hesitant",
+      "provisional",
+      "unsure"
+    ],
+    "antonyms": [
+      "definite",
+      "certain",
+      "confident",
+      "decisive"
+    ]
+  },
+  "tenuous": {
+    "synonyms": [
+      "weak",
+      "flimsy",
+      "insubstantial",
+      "fragile"
+    ],
+    "antonyms": [
+      "strong",
+      "substantial",
+      "solid",
+      "firm"
+    ]
+  },
+  "terse": {
+    "synonyms": [
+      "brief",
+      "concise",
+      "curt",
+      "succinct"
+    ],
+    "antonyms": [
+      "verbose",
+      "wordy",
+      "lengthy",
+      "elaborate"
+    ]
+  },
+  "timorous": {
+    "synonyms": [
+      "timid",
+      "fearful",
+      "apprehensive",
+      "nervous"
+    ],
+    "antonyms": [
+      "bold",
+      "brave",
+      "courageous",
+      "confident"
+    ]
+  },
+  "torpid": {
+    "synonyms": [
+      "sluggish",
+      "lethargic",
+      "inactive",
+      "dormant"
+    ],
+    "antonyms": [
+      "active",
+      "energetic",
+      "lively",
+      "vigorous"
+    ]
+  },
+  "tortuous": {
+    "synonyms": [
+      "winding",
+      "twisting",
+      "convoluted",
+      "complex"
+    ],
+    "antonyms": [
+      "straight",
+      "direct",
+      "simple",
+      "straightforward"
+    ]
+  },
+  "tractable": {
+    "synonyms": [
+      "manageable",
+      "obedient",
+      "compliant",
+      "docile"
+    ],
+    "antonyms": [
+      "stubborn",
+      "unruly",
+      "defiant",
+      "intractable"
+    ]
+  },
+  "transient": {
+    "synonyms": [
+      "temporary",
+      "fleeting",
+      "brief",
+      "ephemeral"
+    ],
+    "antonyms": [
+      "permanent",
+      "lasting",
+      "enduring",
+      "eternal"
+    ]
+  },
+  "trepidation": {
+    "synonyms": [
+      "fear",
+      "anxiety",
+      "apprehension",
+      "nervousness"
+    ],
+    "antonyms": [
+      "confidence",
+      "calmness",
+      "courage",
+      "composure"
+    ]
+  },
+  "trite": {
+    "synonyms": [
+      "clichéd",
+      "hackneyed",
+      "banal",
+      "stale"
+    ],
+    "antonyms": [
+      "original",
+      "fresh",
+      "novel",
+      "innovative"
+    ]
+  },
+  "trivial": {
+    "synonyms": [
+      "unimportant",
+      "minor",
+      "insignificant",
+      "petty"
+    ],
+    "antonyms": [
+      "important",
+      "significant",
+      "major",
+      "crucial"
+    ]
+  },
+  "truculent": {
+    "synonyms": [
+      "aggressive",
+      "hostile",
+      "belligerent",
+      "pugnacious"
+    ],
+    "antonyms": [
+      "peaceful",
+      "friendly",
+      "gentle",
+      "amiable"
+    ]
+  },
+  "turbulent": {
+    "synonyms": [
+      "chaotic",
+      "stormy",
+      "tumultuous",
+      "violent"
+    ],
+    "antonyms": [
+      "calm",
+      "peaceful",
+      "tranquil",
+      "serene"
+    ]
+  },
+  "turgid": {
+    "synonyms": [
+      "pompous",
+      "bombastic",
+      "inflated",
+      "swollen"
+    ],
+    "antonyms": [
+      "simple",
+      "plain",
+      "concise",
+      "understated"
+    ]
+  },
+  "ubiquitous": {
+    "synonyms": [
+      "omnipresent",
+      "universal",
+      "pervasive",
+      "everywhere"
+    ],
+    "antonyms": [
+      "rare",
+      "scarce",
+      "uncommon",
+      "localized"
+    ]
+  },
+  "undermine": {
+    "synonyms": [
+      "weaken",
+      "sabotage",
+      "subvert",
+      "damage"
+    ],
+    "antonyms": [
+      "strengthen",
+      "support",
+      "reinforce",
+      "bolster"
+    ]
+  },
+  "uniform": {
+    "synonyms": [
+      "consistent",
+      "identical",
+      "standard",
+      "regular"
+    ],
+    "antonyms": [
+      "varied",
+      "diverse",
+      "different",
+      "irregular"
+    ]
+  },
+  "unorthodox": {
+    "synonyms": [
+      "unconventional",
+      "unusual",
+      "nonconformist",
+      "innovative"
+    ],
+    "antonyms": [
+      "orthodox",
+      "conventional",
+      "traditional",
+      "conformist"
+    ]
+  },
+  "unprecedented": {
+    "synonyms": [
+      "unparalleled",
+      "unique",
+      "novel",
+      "extraordinary"
+    ],
+    "antonyms": [
+      "common",
+      "usual",
+      "precedented",
+      "ordinary"
+    ]
+  },
+  "unruly": {
+    "synonyms": [
+      "disorderly",
+      "uncontrollable",
+      "rebellious",
+      "rowdy"
+    ],
+    "antonyms": [
+      "obedient",
+      "disciplined",
+      "orderly",
+      "compliant"
+    ]
+  },
+  "untenable": {
+    "synonyms": [
+      "indefensible",
+      "unsustainable",
+      "unsupportable",
+      "weak"
+    ],
+    "antonyms": [
+      "tenable",
+      "defensible",
+      "sustainable",
+      "valid"
+    ]
+  },
+  "unwitting": {
+    "synonyms": [
+      "unaware",
+      "unknowing",
+      "unconscious",
+      "inadvertent"
+    ],
+    "antonyms": [
+      "knowing",
+      "deliberate",
+      "intentional",
+      "aware"
+    ]
+  },
+  "unyielding": {
+    "synonyms": [
+      "inflexible",
+      "rigid",
+      "stubborn",
+      "adamant"
+    ],
+    "antonyms": [
+      "flexible",
+      "yielding",
+      "compliant",
+      "adaptable"
+    ]
+  },
+  "upbraid": {
+    "synonyms": [
+      "scold",
+      "rebuke",
+      "reprimand",
+      "criticize"
+    ],
+    "antonyms": [
+      "praise",
+      "commend",
+      "compliment",
+      "applaud"
+    ]
+  },
+  "usurp": {
+    "synonyms": [
+      "seize",
+      "take over",
+      "appropriate",
+      "commandeer"
+    ],
+    "antonyms": [
+      "relinquish",
+      "surrender",
+      "give up",
+      "return"
+    ]
+  },
+  "utilitarian": {
+    "synonyms": [
+      "practical",
+      "functional",
+      "useful",
+      "pragmatic"
+    ],
+    "antonyms": [
+      "impractical",
+      "ornamental",
+      "decorative",
+      "useless"
+    ]
+  },
+  "vacillate": {
+    "synonyms": [
+      "waver",
+      "hesitate",
+      "fluctuate",
+      "oscillate"
+    ],
+    "antonyms": [
+      "decide",
+      "commit",
+      "resolve",
+      "persist"
+    ]
+  },
+  "vapid": {
+    "synonyms": [
+      "dull",
+      "boring",
+      "insipid",
+      "flat"
+    ],
+    "antonyms": [
+      "interesting",
+      "lively",
+      "exciting",
+      "stimulating"
+    ]
+  },
+  "vehement": {
+    "synonyms": [
+      "passionate",
+      "intense",
+      "forceful",
+      "fervent"
+    ],
+    "antonyms": [
+      "mild",
+      "apathetic",
+      "indifferent",
+      "calm"
+    ]
+  },
+  "venerate": {
+    "synonyms": [
+      "revere",
+      "respect",
+      "honor",
+      "worship"
+    ],
+    "antonyms": [
+      "despise",
+      "disrespect",
+      "scorn",
+      "disdain"
+    ]
+  },
+  "veracious": {
+    "synonyms": [
+      "truthful",
+      "honest",
+      "accurate",
+      "sincere"
+    ],
+    "antonyms": [
+      "dishonest",
+      "false",
+      "untruthful",
+      "deceptive"
+    ]
+  },
+  "verbose": {
+    "synonyms": [
+      "wordy",
+      "long-winded",
+      "prolix",
+      "rambling"
+    ],
+    "antonyms": [
+      "concise",
+      "brief",
+      "succinct",
+      "terse"
+    ]
+  },
+  "veritable": {
+    "synonyms": [
+      "true",
+      "genuine",
+      "actual",
+      "authentic"
+    ],
+    "antonyms": [
+      "false",
+      "fake",
+      "spurious",
+      "counterfeit"
+    ]
+  },
+  "vex": {
+    "synonyms": [
+      "annoy",
+      "irritate",
+      "frustrate",
+      "aggravate"
+    ],
+    "antonyms": [
+      "please",
+      "soothe",
+      "calm",
+      "delight"
+    ]
+  },
+  "viable": {
+    "synonyms": [
+      "feasible",
+      "practical",
+      "workable",
+      "possible"
+    ],
+    "antonyms": [
+      "impractical",
+      "unfeasible",
+      "unworkable",
+      "impossible"
+    ]
+  },
+  "vilify": {
+    "synonyms": [
+      "defame",
+      "malign",
+      "slander",
+      "disparage"
+    ],
+    "antonyms": [
+      "praise",
+      "commend",
+      "honor",
+      "extol"
+    ]
+  },
+  "vindicate": {
+    "synonyms": [
+      "justify",
+      "clear",
+      "exonerate",
+      "acquit"
+    ],
+    "antonyms": [
+      "blame",
+      "condemn",
+      "convict",
+      "incriminate"
+    ]
+  },
+  "virulent": {
+    "synonyms": [
+      "hostile",
+      "malicious",
+      "venomous",
+      "toxic"
+    ],
+    "antonyms": [
+      "harmless",
+      "benign",
+      "friendly",
+      "mild"
+    ]
+  },
+  "visceral": {
+    "synonyms": [
+      "instinctive",
+      "emotional",
+      "gut",
+      "deep-seated"
+    ],
+    "antonyms": [
+      "rational",
+      "intellectual",
+      "cerebral",
+      "logical"
+    ]
+  },
+  "vitriolic": {
+    "synonyms": [
+      "caustic",
+      "scathing",
+      "bitter",
+      "acrimonious"
+    ],
+    "antonyms": [
+      "kind",
+      "gentle",
+      "pleasant",
+      "mild"
+    ]
+  },
+  "vituperate": {
+    "synonyms": [
+      "criticize",
+      "berate",
+      "censure",
+      "denounce"
+    ],
+    "antonyms": [
+      "praise",
+      "commend",
+      "applaud",
+      "compliment"
+    ]
+  },
+  "vivacious": {
+    "synonyms": [
+      "lively",
+      "spirited",
+      "animated",
+      "energetic"
+    ],
+    "antonyms": [
+      "dull",
+      "listless",
+      "sluggish",
+      "lethargic"
+    ]
+  },
+  "volatile": {
+    "synonyms": [
+      "unstable",
+      "unpredictable",
+      "changeable",
+      "explosive"
+    ],
+    "antonyms": [
+      "stable",
+      "steady",
+      "constant",
+      "calm"
+    ]
+  },
+  "voracious": {
+    "synonyms": [
+      "greedy",
+      "insatiable",
+      "ravenous",
+      "gluttonous"
+    ],
+    "antonyms": [
+      "moderate",
+      "satisfied",
+      "content",
+      "abstemious"
+    ]
+  },
+  "wane": {
+    "synonyms": [
+      "decrease",
+      "decline",
+      "diminish",
+      "fade"
+    ],
+    "antonyms": [
+      "increase",
+      "grow",
+      "wax",
+      "strengthen"
+    ]
+  },
+  "wary": {
+    "synonyms": [
+      "cautious",
+      "careful",
+      "watchful",
+      "alert"
+    ],
+    "antonyms": [
+      "careless",
+      "reckless",
+      "unwary",
+      "heedless"
+    ]
+  },
+  "waver": {
+    "synonyms": [
+      "hesitate",
+      "vacillate",
+      "falter",
+      "fluctuate"
+    ],
+    "antonyms": [
+      "persist",
+      "decide",
+      "commit",
+      "resolve"
+    ]
+  },
+  "whimsical": {
+    "synonyms": [
+      "fanciful",
+      "playful",
+      "capricious",
+      "quirky"
+    ],
+    "antonyms": [
+      "serious",
+      "practical",
+      "predictable",
+      "sensible"
+    ]
+  },
+  "wily": {
+    "synonyms": [
+      "cunning",
+      "crafty",
+      "sly",
+      "shrewd"
+    ],
+    "antonyms": [
+      "naive",
+      "straightforward",
+      "honest",
+      "guileless"
+    ]
+  },
+  "wistful": {
+    "synonyms": [
+      "longing",
+      "yearning",
+      "melancholic",
+      "nostalgic"
+    ],
+    "antonyms": [
+      "content",
+      "satisfied",
+      "cheerful",
+      "happy"
+    ]
+  },
+  "withstand": {
+    "synonyms": [
+      "resist",
+      "endure",
+      "tolerate",
+      "survive"
+    ],
+    "antonyms": [
+      "yield",
+      "surrender",
+      "succumb",
+      "collapse"
+    ]
+  },
+  "wrath": {
+    "synonyms": [
+      "anger",
+      "fury",
+      "rage",
+      "indignation"
+    ],
+    "antonyms": [
+      "calm",
+      "peace",
+      "serenity",
+      "forgiveness"
+    ]
+  },
+  "zeal": {
+    "synonyms": [
+      "enthusiasm",
+      "passion",
+      "fervor",
+      "eagerness"
+    ],
+    "antonyms": [
+      "apathy",
+      "indifference",
+      "lethargy",
+      "disinterest"
+    ]
+  },
+  "zealot": {
+    "synonyms": [
+      "fanatic",
+      "extremist",
+      "enthusiast",
+      "radical"
+    ],
+    "antonyms": [
+      "moderate",
+      "skeptic",
+      "indifferent person",
+      "neutral"
+    ]
+  },
+  "zenith": {
+    "synonyms": [
+      "peak",
+      "summit",
+      "apex",
+      "pinnacle"
+    ],
+    "antonyms": [
+      "nadir",
+      "bottom",
+      "lowest point",
+      "depth"
+    ]
   }
 }

@@ -815,9 +815,529 @@
         }
     };
     
-    // ========== 初始化与事件绑定 ==========
+    // ==================== UI 改进 v6.1-v6.10 ====================
     
-    // 全局设置
+    // ========== v6.1: 微交互动画系统 ==========
+    const MicroAnimations = {
+        // 添加进入动画到元素
+        addEntryAnimation(elements, type = 'fadeInUp') {
+            const els = typeof elements === 'string' ? document.querySelectorAll(elements) : elements;
+            els.forEach((el, index) => {
+                el.style.animation = `${type} 0.4s ease-out ${index * 0.05}s both`;
+            });
+        },
+        
+        // 添加呼吸灯效果
+        addBreathingGlow(element) {
+            element.classList.add('breathing-glow');
+        },
+        
+        // 移除呼吸灯效果
+        removeBreathingGlow(element) {
+            element.classList.remove('breathing-glow');
+        },
+        
+        // 成功打勾动画
+        showCheckmark(container) {
+            container.innerHTML = `
+                <svg class="animated-checkmark" width="60" height="60" viewBox="0 0 60 60">
+                    <circle cx="30" cy="30" r="28" fill="none" stroke="#10b981" stroke-width="2"/>
+                    <path d="M18 30 L26 38 L42 22" fill="none" stroke="#10b981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            `;
+        }
+    };
+    
+    // ========== v6.2: 骨架屏加载系统 ==========
+    const SkeletonLoader = {
+        // 创建卡片骨架屏
+        createCardSkeleton() {
+            return `
+                <div class="skeleton-card">
+                    <div class="skeleton skeleton-avatar"></div>
+                    <div class="skeleton skeleton-title"></div>
+                    <div class="skeleton skeleton-text"></div>
+                    <div class="skeleton skeleton-text short"></div>
+                    <div class="skeleton skeleton-button"></div>
+                </div>
+            `;
+        },
+        
+        // 创建单词卡片骨架屏
+        createWordCardSkeleton() {
+            return `
+                <div class="word-card-skeleton">
+                    <div class="skeleton skeleton-word"></div>
+                    <div class="skeleton skeleton-phonetic"></div>
+                    <div class="skeleton skeleton-meaning"></div>
+                </div>
+            `;
+        },
+        
+        // 创建列表骨架屏
+        createListSkeleton(count = 5) {
+            let html = '';
+            for (let i = 0; i < count; i++) {
+                html += `
+                    <div class="list-skeleton-item">
+                        <div class="skeleton skeleton-icon"></div>
+                        <div class="skeleton-content">
+                            <div class="skeleton skeleton-title" style="width: ${60 + Math.random() * 30}%"></div>
+                            <div class="skeleton skeleton-text" style="width: ${40 + Math.random() * 40}%"></div>
+                        </div>
+                    </div>
+                `;
+            }
+            return html;
+        },
+        
+        // 显示骨架屏
+        show(container, type = 'card') {
+            const el = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!el) return;
+            
+            el.setAttribute('data-original-content', el.innerHTML);
+            
+            switch (type) {
+                case 'word':
+                    el.innerHTML = this.createWordCardSkeleton();
+                    break;
+                case 'list':
+                    el.innerHTML = this.createListSkeleton();
+                    break;
+                default:
+                    el.innerHTML = this.createCardSkeleton();
+            }
+        },
+        
+        // 隐藏骨架屏
+        hide(container) {
+            const el = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!el) return;
+            
+            const original = el.getAttribute('data-original-content');
+            if (original) {
+                el.innerHTML = original;
+                el.removeAttribute('data-original-content');
+            }
+        }
+    };
+    
+    // ========== v6.3: 触觉反馈增强 ==========
+    const TouchFeedback = {
+        // 按压效果
+        addPressEffect(element) {
+            element.classList.add('press-effect');
+        },
+        
+        // 长按效果
+        addLongPressEffect(element, callback, duration = 500) {
+            let timer = null;
+            let startTime = 0;
+            
+            element.classList.add('long-press-btn');
+            
+            element.addEventListener('touchstart', (e) => {
+                startTime = Date.now();
+                timer = setTimeout(() => {
+                    HapticFeedback.success();
+                    callback(e);
+                }, duration);
+            });
+            
+            element.addEventListener('touchend', () => {
+                clearTimeout(timer);
+                if (Date.now() - startTime < duration) {
+                    HapticFeedback.light();
+                }
+            });
+            
+            element.addEventListener('touchcancel', () => {
+                clearTimeout(timer);
+            });
+        },
+        
+        // 卡片按压
+        addCardPress(element) {
+            element.classList.add('card-press');
+        },
+        
+        // 列表项按压
+        addListItemPress(element) {
+            element.classList.add('list-item-press');
+        }
+    };
+    
+    // ========== v6.4: 3D 悬浮效果 ==========
+    const Card3D = {
+        // 启用 3D 效果
+        enable(element) {
+            element.classList.add('card-3d');
+            
+            element.addEventListener('mousemove', (e) => {
+                const rect = element.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                element.style.transform = `
+                    perspective(1000px) 
+                    rotateX(${rotateX}deg) 
+                    rotateY(${rotateY}deg) 
+                    translateZ(10px)
+                `;
+            });
+            
+            element.addEventListener('mouseleave', () => {
+                element.style.transform = '';
+            });
+        },
+        
+        // 添加 3D 阴影
+        add3DShadow(element) {
+            element.classList.add('shadow-3d');
+        }
+    };
+    
+    // ========== v6.5: 数字动画系统 ==========
+    const NumberAnimation = {
+        // 数字递增动画
+        countUp(element, target, duration = 1000) {
+            const start = parseInt(element.textContent) || 0;
+            const startTime = performance.now();
+            const diff = target - start;
+            
+            const animate = (currentTime) => {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // 缓动函数
+                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                const current = Math.floor(start + diff * easeOutQuart);
+                
+                element.textContent = current;
+                element.classList.add('updating');
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    element.classList.remove('updating');
+                    element.classList.add('count-up');
+                }
+            };
+            
+            requestAnimationFrame(animate);
+        },
+        
+        // 百分比动画
+        animatePercentage(element, target, duration = 800) {
+            this.countUp(element, target, duration);
+            element.classList.add('percentage-bounce');
+            setTimeout(() => element.classList.remove('percentage-bounce'), 500);
+        },
+        
+        // 连击数字效果
+        comboEffect(element) {
+            element.classList.add('combo-number');
+            setTimeout(() => element.classList.remove('combo-number'), 500);
+        },
+        
+        // 进度条动画
+        animateProgress(progressBar, target) {
+            progressBar.classList.add('progress-fill-animated');
+            progressBar.style.width = `${target}%`;
+        },
+        
+        // 环形进度动画
+        animateRingProgress(circle, target, total = 100) {
+            const circumference = 2 * Math.PI * parseFloat(circle.getAttribute('r'));
+            const offset = circumference - (target / total) * circumference;
+            
+            circle.style.strokeDasharray = circumference;
+            circle.style.strokeDashoffset = circumference;
+            
+            requestAnimationFrame(() => {
+                circle.classList.add('ring-progress');
+                circle.style.strokeDashoffset = offset;
+            });
+        }
+    };
+    
+    // ========== v6.6: 主题过渡系统 ==========
+    const ThemeTransition = {
+        // 平滑切换主题
+        switchTheme(newTheme) {
+            const body = document.body;
+            
+            // 添加过渡类
+            body.classList.add('theme-transitioning');
+            
+            // 移除旧主题
+            const themeClasses = ['theme-default', 'theme-ocean', 'theme-forest', 
+                                  'theme-sunset', 'theme-rose', 'theme-dark',
+                                  'theme-mint', 'theme-coffee', 'theme-lavender'];
+            themeClasses.forEach(cls => body.classList.remove(cls));
+            
+            // 添加新主题
+            if (newTheme !== 'default') {
+                body.classList.add(`theme-${newTheme}`);
+            }
+            
+            // 触发动画
+            setTimeout(() => {
+                body.classList.remove('theme-transitioning');
+            }, 500);
+            
+            // 保存设置
+            localStorage.setItem('selectedTheme', newTheme);
+            
+            // 触发反馈
+            HapticFeedback.medium();
+        },
+        
+        // 主题预览
+        previewTheme(theme) {
+            const preview = document.querySelector(`.theme-option[data-theme="${theme}"]`);
+            if (preview) {
+                preview.classList.add('previewing');
+                setTimeout(() => preview.classList.remove('previewing'), 300);
+            }
+        }
+    };
+    
+    // ========== v6.7: 滚动效果系统 ==========
+    const ScrollEffects = {
+        // 初始化滚动监听
+        init() {
+            this.observeElements();
+            this.setupStickyHeader();
+        },
+        
+        // 监听元素进入视口
+        observeElements() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            });
+            
+            document.querySelectorAll('.scroll-reveal, .stagger-reveal').forEach(el => {
+                observer.observe(el);
+            });
+        },
+        
+        // 设置粘性头部
+        setupStickyHeader() {
+            const header = document.querySelector('.sticky-header');
+            if (!header) return;
+            
+            let lastScroll = 0;
+            
+            window.addEventListener('scroll', () => {
+                const currentScroll = window.pageYOffset;
+                
+                if (currentScroll > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+                
+                lastScroll = currentScroll;
+            }, { passive: true });
+        },
+        
+        // 添加滚动显示效果
+        addScrollReveal(element) {
+            element.classList.add('scroll-reveal');
+        },
+        
+        // 添加交错显示效果
+        addStaggerReveal(elements) {
+            elements.forEach((el, index) => {
+                el.classList.add('stagger-reveal');
+                el.style.setProperty('--stagger-index', index);
+            });
+        }
+    };
+    
+    // ========== v6.8: 涟漪效果增强 ==========
+    const RippleEffect = {
+        // 创建涟漪
+        create(event, element, color = 'rgba(255, 255, 255, 0.4)') {
+            const rect = element.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+            
+            element.style.setProperty('--ripple-x', `${x}px`);
+            element.style.setProperty('--ripple-y', `${y}px`);
+            element.classList.add('btn-ripple');
+        },
+        
+        // 添加发光效果
+        addGlow(element) {
+            element.classList.add('btn-glow');
+        },
+        
+        // 添加边框动画
+        addBorderAnimation(element) {
+            element.classList.add('btn-border-anim');
+        },
+        
+        // 绑定到按钮
+        bindToButtons() {
+            document.addEventListener('mousedown', (e) => {
+                const btn = e.target.closest('button:not(.no-ripple)');
+                if (btn) {
+                    this.create(e, btn);
+                }
+            });
+        }
+    };
+    
+    // ========== v6.9: 空状态管理 ==========
+    const EmptyState = {
+        // 显示空状态
+        show(container, type = 'default', options = {}) {
+            const el = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!el) return;
+            
+            const configs = {
+                default: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>`,
+                    title: '暂无数据',
+                    desc: '数据正在加载中...'
+                },
+                offline: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1 1l22 22M16.72 11.06A10.94 10.94 0 0119 12.55M5 12.55a10.94 10.94 0 015.17-2.39M10.71 5.05A16 16 0 0122.58 9M1.42 9a15.91 15.91 0 014.7-2.88M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>`,
+                    title: '网络已断开',
+                    desc: '请检查您的网络连接后重试'
+                },
+                noResults: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/><path d="M11 8v6M8 11h6"/></svg>`,
+                    title: '未找到结果',
+                    desc: '尝试使用不同的关键词搜索'
+                },
+                error: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M15 9l-6 6M9 9l6 6"/></svg>`,
+                    title: '加载失败',
+                    desc: '出了点问题，请稍后重试'
+                },
+                success: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+                    title: '完成',
+                    desc: '太棒了！你已经完成所有任务'
+                },
+                noData: {
+                    icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+                    title: '暂无内容',
+                    desc: '开始添加一些内容吧'
+                }
+            };
+            
+            const config = { ...configs[type], ...options };
+            
+            el.innerHTML = `
+                <div class="empty-state ${type}">
+                    <div class="empty-state-icon">
+                        ${config.icon}
+                    </div>
+                    <h3 class="empty-state-title">${config.title}</h3>
+                    <p class="empty-state-desc">${config.desc}</p>
+                    ${config.actionText ? `
+                        <button class="empty-state-action" onclick="${config.actionHandler || ''}">
+                            ${config.actionText}
+                        </button>
+                    ` : ''}
+                </div>
+            `;
+        },
+        
+        // 隐藏空状态
+        hide(container) {
+            const el = typeof container === 'string' ? document.querySelector(container) : container;
+            if (!el) return;
+            const emptyState = el.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+        }
+    };
+    
+    // ========== v6.10: 底部导航增强 ==========
+    const BottomNavEnhancer = {
+        // 初始化
+        init() {
+            this.bindEvents();
+            this.updateIndicator();
+        },
+        
+        // 绑定事件
+        bindEvents() {
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            navItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    // 添加切换动画
+                    item.classList.add('switching');
+                    setTimeout(() => item.classList.remove('switching'), 400);
+                    
+                    // 触觉反馈
+                    HapticFeedback.light();
+                    
+                    // 更新指示器
+                    setTimeout(() => this.updateIndicator(), 50);
+                });
+            });
+        },
+        
+        // 更新指示器位置
+        updateIndicator() {
+            const activeItem = document.querySelector('.nav-item.active');
+            const indicator = document.querySelector('.nav-indicator');
+            
+            if (!activeItem || !indicator) return;
+            
+            const rect = activeItem.getBoundingClientRect();
+            const navRect = activeItem.parentElement.getBoundingClientRect();
+            const centerX = rect.left - navRect.left + rect.width / 2 - 20;
+            
+            indicator.style.transform = `translateX(${centerX}px)`;
+        },
+        
+        // 显示徽章
+        showBadge(tabName, count) {
+            const item = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
+            if (!item) return;
+            
+            let badge = item.querySelector('.nav-badge');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'nav-badge';
+                item.appendChild(badge);
+            }
+            
+            badge.textContent = count > 99 ? '99+' : count;
+            badge.style.display = count > 0 ? 'flex' : 'none';
+        },
+        
+        // 隐藏徽章
+        hideBadge(tabName) {
+            const item = document.querySelector(`.nav-item[data-tab="${tabName}"]`);
+            if (!item) return;
+            
+            const badge = item.querySelector('.nav-badge');
+            if (badge) badge.style.display = 'none';
+        }
+    };
+    
+    // ========== 全局设置 ==========
     window.uxSettings = {
         soundEnabled: localStorage.getItem('uxSoundEnabled') !== 'false',
         hapticEnabled: localStorage.getItem('uxHapticEnabled') !== 'false',
@@ -854,7 +1374,19 @@
         // 检查成就
         Achievements.checkTime();
         
-        console.log('[UX] Enhancements v1-v5 initialized');
+        // v6.7: 初始化滚动效果
+        ScrollEffects.init();
+        
+        // v6.8: 初始化涟漪效果
+        RippleEffect.bindToButtons();
+        
+        // v6.10: 初始化底部导航
+        BottomNavEnhancer.init();
+        
+        // 给模块卡片添加进入动画
+        MicroAnimations.addEntryAnimation('.module-card');
+        
+        console.log('[UX] Enhancements v1-v5, UI v6.1-v6.10 initialized');
     }
     
     // DOM 加载后初始化
@@ -885,6 +1417,17 @@
         LearningAnalytics,
         SmartReminder,
         EncouragementSystem,
+        // v6.1-v6.10 新增 API
+        MicroAnimations,
+        SkeletonLoader,
+        TouchFeedback,
+        Card3D,
+        NumberAnimation,
+        ThemeTransition,
+        ScrollEffects,
+        RippleEffect,
+        EmptyState,
+        BottomNavEnhancer,
         settings: window.uxSettings
     };
     

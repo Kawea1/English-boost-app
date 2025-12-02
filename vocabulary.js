@@ -65,6 +65,37 @@ var wordRatings = {};
 var wordLearningProgress = {}; // 记录每个单词的学习进度
 var sessionWordProgress = {}; // 本轮学习中每个单词的进度（用于间隔重复）
 
+// V11: 同义词/反义词数据
+var wordRelationsData = null;
+
+// V11: 加载同义词/反义词数据
+function loadWordRelations() {
+    if (wordRelationsData) return Promise.resolve(wordRelationsData);
+    
+    return fetch('word_relations.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word relations');
+            return response.json();
+        })
+        .then(function(data) {
+            wordRelationsData = data;
+            console.log('[V11] 同义词/反义词数据加载成功，共', Object.keys(data).length, '组');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V11] 加载同义词/反义词数据失败:', err);
+            wordRelationsData = {};
+            return {};
+        });
+}
+
+// V11: 获取单词的同义词/反义词
+function getWordRelations(word) {
+    if (!wordRelationsData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordRelationsData[lowerWord] || null;
+}
+
 try {
     learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
     wordRatings = JSON.parse(localStorage.getItem('wordRatings') || '{}');
@@ -79,6 +110,8 @@ try {
 function initVocabulary() {
     // V8: 加载自适应难度数据
     loadAdaptiveDifficulty();
+    // V11: 加载同义词/反义词数据
+    loadWordRelations();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词
@@ -883,6 +916,9 @@ function showMeaning() {
         dictData = queryDictionary(wordData.word);
     }
     
+    // V11: 获取同义词/反义词
+    var relations = getWordRelations(wordData.word);
+    
     // 构建释义HTML（中英文双语）
     var meaningHtml = '';
     
@@ -900,6 +936,35 @@ function showMeaning() {
     
     meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
     meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
+    
+    // V11: 同义词/反义词显示
+    if (relations) {
+        meaningHtml += '<div class="word-relations" style="margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border-radius:12px;border:1px solid rgba(234,179,8,0.2);">';
+        
+        // 同义词
+        if (relations.synonyms && relations.synonyms.length > 0) {
+            meaningHtml += '<div style="margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">';
+            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border-radius:7px;box-shadow:0 2px 6px rgba(34,197,94,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>';
+            meaningHtml += '<div><span style="font-weight:700;color:#15803d;font-size:13px;">同义词 Synonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            relations.synonyms.forEach(function(syn) {
+                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#166534;border:1px solid #bbf7d0;font-weight:500;">' + syn + '</span>';
+            });
+            meaningHtml += '</div></div></div>';
+        }
+        
+        // 反义词
+        if (relations.antonyms && relations.antonyms.length > 0) {
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border-radius:7px;box-shadow:0 2px 6px rgba(239,68,68,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14"/></svg></span>';
+            meaningHtml += '<div><span style="font-weight:700;color:#b91c1c;font-size:13px;">反义词 Antonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            relations.antonyms.forEach(function(ant) {
+                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#991b1b;border:1px solid #fecaca;font-weight:500;">' + ant + '</span>';
+            });
+            meaningHtml += '</div></div></div>';
+        }
+        
+        meaningHtml += '</div>';
+    }
     
     if (wordData.example) {
         meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';

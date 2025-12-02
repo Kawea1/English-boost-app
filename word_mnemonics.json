@@ -1,0 +1,2642 @@
+{
+  "abandon": {
+    "mnemonic": "a + band + on = 一个乐队散了(band弃了)",
+    "type": "谐音联想",
+    "association": "想象一个乐队解散的场景",
+    "roots": "拉丁语 bannum (命令)"
+  },
+  "aberrant": {
+    "mnemonic": "ab(偏离) + err(错误) + ant = 偏离正道犯错的",
+    "type": "词根分解",
+    "association": "一只蚂蚁(ant)走错路了",
+    "roots": "ab-(偏离) + errare(漫游,犯错)"
+  },
+  "abhor": {
+    "mnemonic": "ab(离开) + hor(恐惧horror) = 恐惧得离开,厌恶",
+    "type": "词根分解",
+    "association": "深恶痛绝",
+    "roots": "ab- + horrere(害怕)"
+  },
+  "abridge": {
+    "mnemonic": "a + bridge = 一座桥把两岸连起来,缩短距离",
+    "type": "形象联想",
+    "association": "桥把路程缩短了",
+    "roots": "ad-(to) + breviare(缩短)"
+  },
+  "abstract": {
+    "mnemonic": "abs(离开) + tract(拉) = 从具体中抽离出来,抽象的",
+    "type": "词根分解",
+    "association": "把具体事物拉开变成概念",
+    "roots": "abs-(away) + trahere(拉)"
+  },
+  "acclaim": {
+    "mnemonic": "ac(加强) + claim(喊叫) = 大声喊叫赞美",
+    "type": "词根分解",
+    "association": "观众大喊喝彩",
+    "roots": "ad-(to) + clamare(喊叫)"
+  },
+  "acerbic": {
+    "mnemonic": "acer(尖酸) + bic = 像柠檬一样尖酸刻薄",
+    "type": "词根分解",
+    "association": "像未熟的柿子一样尖酸",
+    "roots": "acer(尖锐,酸)"
+  },
+  "acquiesce": {
+    "mnemonic": "ac + quie(安静quiet) + sce = 安静接受,默许",
+    "type": "词根分解",
+    "association": "默默同意",
+    "roots": "ad- + quiescere(安静)"
+  },
+  "acrimony": {
+    "mnemonic": "acri(尖酸) + mony = 尖酸的金钱纠纷,激烈争执",
+    "type": "词根联想",
+    "association": "为钱争吵充满火药味",
+    "roots": "acer, acri-(尖锐)"
+  },
+  "adamant": {
+    "mnemonic": "adam(亚当) + ant = 像亚当一样坚定不移",
+    "type": "联想记忆",
+    "association": "亚当面对诱惑时应该坚定",
+    "roots": "希腊语 adamas(无法征服的)"
+  },
+  "admonish": {
+    "mnemonic": "ad(to) + mon(提醒monitor) + ish = 提醒警告",
+    "type": "词根分解",
+    "association": "像监控器一样提醒警告",
+    "roots": "ad- + monere(警告)"
+  },
+  "advocate": {
+    "mnemonic": "ad(to) + voc(声音) + ate = 为...发声,提倡",
+    "type": "词根分解",
+    "association": "大声为某事站台",
+    "roots": "ad- + vocare(叫喊)"
+  },
+  "affable": {
+    "mnemonic": "af + fa(说fable) + ble = 能说话交谈的,和蔼的",
+    "type": "词根分解",
+    "association": "平易近人",
+    "roots": "ad- + fari(说话)"
+  },
+  "affluent": {
+    "mnemonic": "af + flu(流) + ent = 财富流向你,富裕的",
+    "type": "词根分解",
+    "association": "钱像水一样流过来",
+    "roots": "ad- + fluere(流动)"
+  },
+  "alacrity": {
+    "mnemonic": "a lack of rity = 毫不缺乏热情,敏捷热情",
+    "type": "联想记忆",
+    "association": "敏捷又热情地行动",
+    "roots": "alacer(活泼的)"
+  },
+  "alleviate": {
+    "mnemonic": "al + lev(轻light) + iate = 使变轻,减轻",
+    "type": "词根分解",
+    "association": "像电梯(elevator)一样减轻负担",
+    "roots": "ad- + levis(轻)"
+  },
+  "aloof": {
+    "mnemonic": "a + loof(roof屋顶) = 站在屋顶上,冷漠疏远",
+    "type": "形象联想",
+    "association": "高高在上不亲近",
+    "roots": "a- + luff(迎风航行)"
+  },
+  "altruistic": {
+    "mnemonic": "altru(其他other) + istic = 为他人的,利他主义的",
+    "type": "词根分解",
+    "association": "心中有他人",
+    "roots": "alter(其他)"
+  },
+  "ambiguous": {
+    "mnemonic": "ambi(两边) + guous = 两边都有可能,模糊的",
+    "type": "词根分解",
+    "association": "在两个意思之间摇摆",
+    "roots": "ambi-(两边) + agere(驱动)"
+  },
+  "ameliorate": {
+    "mnemonic": "a + melior(更好) + ate = 使更好,改善",
+    "type": "词根分解",
+    "association": "让事情变得更美好(better)",
+    "roots": "melior(更好的)"
+  },
+  "anomaly": {
+    "mnemonic": "a(无) + nom(规则) + aly = 没有规则,异常",
+    "type": "词根分解",
+    "association": "不符合正常规律的事物",
+    "roots": "an-(无) + homalos(均匀的)"
+  },
+  "apathy": {
+    "mnemonic": "a(无) + pathy(感情) = 没有感情,冷漠",
+    "type": "词根分解",
+    "association": "对一切都无动于衷",
+    "roots": "a-(无) + pathos(感情)"
+  },
+  "appease": {
+    "mnemonic": "ap + pease(和平peace) = 使和平,安抚",
+    "type": "词根分解",
+    "association": "息事宁人",
+    "roots": "ad- + pais(和平)"
+  },
+  "arcane": {
+    "mnemonic": "arc(弧,封闭) + ane = 被封闭的秘密,神秘的",
+    "type": "形象联想",
+    "association": "锁在柜子(arc)里的秘密",
+    "roots": "arca(箱子,柜)"
+  },
+  "arduous": {
+    "mnemonic": "ard(努力hard) + uous = 需要努力的,艰苦的",
+    "type": "谐音联想",
+    "association": "像爬陡坡一样艰难",
+    "roots": "arduus(陡峭的)"
+  },
+  "articulate": {
+    "mnemonic": "artic(关节joint) + ulate = 像关节一样灵活,清晰表达",
+    "type": "词根分解",
+    "association": "说话像关节一样流畅连贯",
+    "roots": "articulus(关节)"
+  },
+  "ascetic": {
+    "mnemonic": "asc(苦修) + etic = 苦修的,禁欲的",
+    "type": "词根分解",
+    "association": "苦行僧",
+    "roots": "asketes(修行者)"
+  },
+  "assiduous": {
+    "mnemonic": "assi(坐sit) + du(做do) + ous = 坐着努力做,勤勉的",
+    "type": "词根分解",
+    "association": "坐在那里一直做",
+    "roots": "ad- + sedere(坐)"
+  },
+  "astute": {
+    "mnemonic": "as + tute = 老师(tutor)般精明",
+    "type": "联想记忆",
+    "association": "像狐狸一样精明",
+    "roots": "astus(狡猾)"
+  },
+  "attenuate": {
+    "mnemonic": "at + tenu(薄thin) + ate = 使变薄,削弱",
+    "type": "词根分解",
+    "association": "像信号变弱一样",
+    "roots": "ad- + tenuis(薄的)"
+  },
+  "audacious": {
+    "mnemonic": "aud(敢于dare) + acious = 敢于做的,大胆的",
+    "type": "词根分解",
+    "association": "audience也敢于发言的",
+    "roots": "audax(大胆的)"
+  },
+  "augment": {
+    "mnemonic": "aug(增加) + ment = 增加",
+    "type": "词根分解",
+    "association": "在August(八月)收获季节增加",
+    "roots": "augere(增加)"
+  },
+  "auspicious": {
+    "mnemonic": "au + spic(看) + ious = 从鸟看吉兆,吉利的",
+    "type": "词根分解",
+    "association": "好兆头",
+    "roots": "avis(鸟) + specere(看)"
+  },
+  "austere": {
+    "mnemonic": "aust(干燥) + ere = 干燥简朴,朴素严峻",
+    "type": "词根分解",
+    "association": "像沙漠一样简朴严峻",
+    "roots": "austerus(干燥的,严厉的)"
+  },
+  "banal": {
+    "mnemonic": "ban(禁止) + al = 被禁止创新的,平庸的",
+    "type": "联想记忆",
+    "association": "禁止新意,陈腐",
+    "roots": "ban(命令)"
+  },
+  "belligerent": {
+    "mnemonic": "bell(战争) + ger(带来) + ent = 带来战争的,好战的",
+    "type": "词根分解",
+    "association": "bell像战争的钟声",
+    "roots": "bellum(战争) + gerere(进行)"
+  },
+  "benevolent": {
+    "mnemonic": "bene(好) + vol(意愿) + ent = 好意愿的,仁慈的",
+    "type": "词根分解",
+    "association": "心怀善意的人",
+    "roots": "bene(好) + velle(希望)"
+  },
+  "bolster": {
+    "mnemonic": "bolt(螺栓) + ster = 像螺栓一样加固支撑",
+    "type": "形象联想",
+    "association": "像枕头一样支撑",
+    "roots": "古英语 bolster(枕头)"
+  },
+  "bombastic": {
+    "mnemonic": "bomb(炸弹) + astic = 像炸弹一样夸张,浮夸的",
+    "type": "形象联想",
+    "association": "说话像扔炸弹一样夸张",
+    "roots": "bombax(棉花)"
+  },
+  "burgeon": {
+    "mnemonic": "bur(芽) + geon = 发芽,迅速发展",
+    "type": "词根分解",
+    "association": "蓬勃发展",
+    "roots": "古法语 borjon(芽)"
+  },
+  "cacophony": {
+    "mnemonic": "caco(坏) + phon(声音) + y = 难听的声音,刺耳声",
+    "type": "词根分解",
+    "association": "一群乌鸦的叫声",
+    "roots": "kakos(坏的) + phone(声音)"
+  },
+  "callous": {
+    "mnemonic": "call(叫) + ous = 怎么叫都不心软,冷酷的",
+    "type": "联想记忆",
+    "association": "像老茧一样麻木无感",
+    "roots": "callum(老茧)"
+  },
+  "candid": {
+    "mnemonic": "cand(白色,纯洁) + id = 纯洁坦率的",
+    "type": "词根分解",
+    "association": "像蜡烛一样纯白透明",
+    "roots": "candidus(白色的)"
+  },
+  "capricious": {
+    "mnemonic": "capri(山羊) + cious = 像山羊一样跳来跳去,反复无常",
+    "type": "词根分解",
+    "association": "像山羊一样难以预测",
+    "roots": "caper(山羊)"
+  },
+  "castigate": {
+    "mnemonic": "cast(纯洁) + ig + ate = 使纯洁,严惩",
+    "type": "词根分解",
+    "association": "严厉批评",
+    "roots": "castus(纯洁的)"
+  },
+  "censure": {
+    "mnemonic": "cens(评价) + ure = 给予负面评价,谴责",
+    "type": "词根分解",
+    "association": "口诛笔伐",
+    "roots": "censere(评估)"
+  },
+  "circumspect": {
+    "mnemonic": "circum(周围) + spect(看) = 四周都看,谨慎的",
+    "type": "词根分解",
+    "association": "小心翼翼",
+    "roots": "circum- + specere(看)"
+  },
+  "clandestine": {
+    "mnemonic": "cland(秘密) + estine = 秘密的,暗中的",
+    "type": "词根分解",
+    "association": "偷偷摸摸",
+    "roots": "clam(秘密地)"
+  },
+  "coalesce": {
+    "mnemonic": "co + alesce(成长) = 一起成长,合并",
+    "type": "词根分解",
+    "association": "融为一体",
+    "roots": "co- + alescere(成长)"
+  },
+  "coerce": {
+    "mnemonic": "co(共同) + erce(力量force) = 用力量强迫,胁迫",
+    "type": "词根分解",
+    "association": "用暴力co-erce迫使",
+    "roots": "co- + arcere(包围)"
+  },
+  "cogent": {
+    "mnemonic": "cog(思考) + ent = 有思考的,有说服力的",
+    "type": "词根分解",
+    "association": "像齿轮(cog)一样环环相扣有逻辑",
+    "roots": "co- + agere(驱动)"
+  },
+  "complacent": {
+    "mnemonic": "com + plac(高兴please) + ent = 非常高兴,自满的",
+    "type": "词根分解",
+    "association": "沾沾自喜",
+    "roots": "com- + placere(取悦)"
+  },
+  "concise": {
+    "mnemonic": "con + cise(切) = 把多余的切掉,简洁的",
+    "type": "词根分解",
+    "association": "像precise一样精准简短",
+    "roots": "con- + caedere(切)"
+  },
+  "condone": {
+    "mnemonic": "con + done = 认为做了就算了,宽恕",
+    "type": "联想记忆",
+    "association": "事情做了(done)就既往不咎",
+    "roots": "con- + donare(给予)"
+  },
+  "confound": {
+    "mnemonic": "con + found(发现) = 发现一切都混乱了,困惑",
+    "type": "联想记忆",
+    "association": "各种事物混在一起让人困惑",
+    "roots": "con- + fundere(倾倒)"
+  },
+  "conspicuous": {
+    "mnemonic": "con + spic(看) + uous = 大家都能看到,显眼的",
+    "type": "词根分解",
+    "association": "所有人的目光焦点",
+    "roots": "con- + spicere(看)"
+  },
+  "contrite": {
+    "mnemonic": "con + trite(磨损) = 心被磨损,悔恨的",
+    "type": "词根分解",
+    "association": "追悔莫及",
+    "roots": "con- + terere(磨)"
+  },
+  "copious": {
+    "mnemonic": "cop(丰富) + ious = 丰富的,大量的",
+    "type": "词根分解",
+    "association": "数不胜数",
+    "roots": "copia(丰富)"
+  },
+  "corroborate": {
+    "mnemonic": "cor + robor(力量robust) + ate = 增强力量,证实",
+    "type": "词根分解",
+    "association": "用证据使论点更强壮",
+    "roots": "con- + roborare(加强)"
+  },
+  "craven": {
+    "mnemonic": "crave(渴望) + n = 渴望安全,胆小的",
+    "type": "联想记忆",
+    "association": "crave安全,胆小",
+    "roots": "古法语 cravanter(击倒)"
+  },
+  "credulous": {
+    "mnemonic": "cred(相信) + ulous = 容易相信的,轻信的",
+    "type": "词根分解",
+    "association": "耳根子软",
+    "roots": "credere(相信)"
+  },
+  "cryptic": {
+    "mnemonic": "crypt(隐藏,地窖) + ic = 像地窖一样隐藏,神秘的",
+    "type": "词根分解",
+    "association": "藏在地下室的秘密",
+    "roots": "kryptos(隐藏)"
+  },
+  "cursory": {
+    "mnemonic": "curs(跑run) + ory = 跑着看的,草率的",
+    "type": "词根分解",
+    "association": "走马观花",
+    "roots": "currere(跑)"
+  },
+  "cynical": {
+    "mnemonic": "cyn(狗dog) + ical = 像狗一样吠叫批评,愤世嫉俗的",
+    "type": "联想记忆",
+    "association": "冷嘲热讽",
+    "roots": "kynikos(犬儒派的)"
+  },
+  "daunt": {
+    "mnemonic": "daunt = 当头一棒",
+    "type": "谐音记忆",
+    "association": "吓得不敢动",
+    "roots": "domitare(驯服)"
+  },
+  "dearth": {
+    "mnemonic": "dear(珍贵) + th = 东西珍贵说明缺乏",
+    "type": "联想记忆",
+    "association": "物以稀为贵",
+    "roots": "古英语 deorthe(珍贵)"
+  },
+  "debilitate": {
+    "mnemonic": "de(向下) + bil(能力ability) + itate = 能力下降,削弱",
+    "type": "词根分解",
+    "association": "能力被削弱",
+    "roots": "de- + habilis(能干的)"
+  },
+  "decry": {
+    "mnemonic": "de(向下) + cry = 向下喊叫,谴责",
+    "type": "词根分解",
+    "association": "大声批评谴责",
+    "roots": "de- + Old French crier(喊叫)"
+  },
+  "defunct": {
+    "mnemonic": "de(不) + funct(功能function) = 没有功能了,死的",
+    "type": "词根分解",
+    "association": "功能失效了",
+    "roots": "de- + fungi(执行)"
+  },
+  "deleterious": {
+    "mnemonic": "delete(删除) + rious = 像删除一样有害",
+    "type": "联想记忆",
+    "association": "删除健康的东西,有害的",
+    "roots": "deleterios(有害的)"
+  },
+  "delineate": {
+    "mnemonic": "de + line(线) + ate = 用线条勾勒,描述",
+    "type": "词根分解",
+    "association": "用线条画出轮廓",
+    "roots": "de- + linea(线)"
+  },
+  "demure": {
+    "mnemonic": "de + mure(成熟mature) = 成熟稳重,端庄的",
+    "type": "联想记忆",
+    "association": "成熟稳重的样子",
+    "roots": "Old French mur(成熟的)"
+  },
+  "denigrate": {
+    "mnemonic": "de + nigr(黑negro) + ate = 使变黑,诋毁",
+    "type": "词根分解",
+    "association": "抹黑别人",
+    "roots": "de- + niger(黑的)"
+  },
+  "deplete": {
+    "mnemonic": "de(向下) + plete(充满complete) = 充满程度下降,耗尽",
+    "type": "词根分解",
+    "association": "把满的东西抽空",
+    "roots": "de- + plere(填满)"
+  },
+  "deride": {
+    "mnemonic": "de + ride(笑) = 向下笑,嘲笑",
+    "type": "词根分解",
+    "association": "冷嘲热讽",
+    "roots": "de- + ridere(笑)"
+  },
+  "despondent": {
+    "mnemonic": "de(向下) + spond(承诺respond) + ent = 承诺落空,沮丧的",
+    "type": "词根分解",
+    "association": "希望落空后的沮丧",
+    "roots": "de- + spondere(承诺)"
+  },
+  "desultory": {
+    "mnemonic": "de + sult(跳) + ory = 跳来跳去的,漫无目的的",
+    "type": "词根分解",
+    "association": "东一榔头西一棒",
+    "roots": "de- + salire(跳)"
+  },
+  "deter": {
+    "mnemonic": "de(向下) + ter(恐惧terror) = 用恐惧阻止",
+    "type": "词根分解",
+    "association": "吓退敌人",
+    "roots": "de- + terrere(吓)"
+  },
+  "devious": {
+    "mnemonic": "de + vi(路via) + ous = 偏离正道的,狡猾的",
+    "type": "词根分解",
+    "association": "走歪门邪道的",
+    "roots": "de- + via(路)"
+  },
+  "didactic": {
+    "mnemonic": "did(教) + actic = 教导的,说教的",
+    "type": "词根分解",
+    "association": "谆谆教诲",
+    "roots": "didaskein(教)"
+  },
+  "diffident": {
+    "mnemonic": "dif(不) + fid(信任faith) + ent = 不自信,羞怯的",
+    "type": "词根分解",
+    "association": "对自己缺乏信心",
+    "roots": "dis- + fidere(信任)"
+  },
+  "digress": {
+    "mnemonic": "di(离开) + gress(走progress) = 走开话题,离题",
+    "type": "词根分解",
+    "association": "说着说着跑题了",
+    "roots": "di- + gradi(走)"
+  },
+  "diligent": {
+    "mnemonic": "dil(爱love) + ig + ent = 爱工作的,勤勉的",
+    "type": "词根分解",
+    "association": "热爱工作所以勤奋",
+    "roots": "diligere(珍视)"
+  },
+  "discern": {
+    "mnemonic": "dis + cern(分辨) = 分辨出来,识别",
+    "type": "词根分解",
+    "association": "明辨是非",
+    "roots": "dis- + cernere(分辨)"
+  },
+  "discord": {
+    "mnemonic": "dis(不) + cord(心heart) = 心不合,不和谐",
+    "type": "词根分解",
+    "association": "心意不一致",
+    "roots": "dis- + cor(心)"
+  },
+  "disparage": {
+    "mnemonic": "dis + par(相等) + age = 使不相等,贬低",
+    "type": "词根分解",
+    "association": "看不起人",
+    "roots": "dis- + par(相等的)"
+  },
+  "disparate": {
+    "mnemonic": "dis + par(相等) + ate = 不相等的,迥异的",
+    "type": "词根分解",
+    "association": "天壤之别",
+    "roots": "dis- + par(相等的)"
+  },
+  "disseminate": {
+    "mnemonic": "dis + semin(种子semen) + ate = 散播种子,传播",
+    "type": "词根分解",
+    "association": "广而告之",
+    "roots": "dis- + seminare(播种)"
+  },
+  "diverge": {
+    "mnemonic": "di(分开) + verge(转向) = 分道扬镳,分歧",
+    "type": "词根分解",
+    "association": "两条路分开了",
+    "roots": "di- + vergere(转向)"
+  },
+  "divulge": {
+    "mnemonic": "di(分开) + vulge(大众vulgar) = 向大众公开,透露",
+    "type": "词根分解",
+    "association": "把秘密公之于众",
+    "roots": "di- + vulgare(公开)"
+  },
+  "docile": {
+    "mnemonic": "doc(教doctor) + ile = 容易被教导的,温顺的",
+    "type": "词根分解",
+    "association": "像乖学生一样听话",
+    "roots": "docere(教)"
+  },
+  "dogmatic": {
+    "mnemonic": "dog(狗) + matic = 像狗一样固执己见,武断的",
+    "type": "联想记忆",
+    "association": "固执得像狗追骨头",
+    "roots": "dogma(教条)"
+  },
+  "dubious": {
+    "mnemonic": "dub(两个double) + ious = 两个想法,怀疑的",
+    "type": "词根分解",
+    "association": "心里有两个声音在打架",
+    "roots": "dubium(怀疑)"
+  },
+  "ebullient": {
+    "mnemonic": "e(出) + bull(沸腾boil) + ient = 沸腾出来的,热情洋溢的",
+    "type": "词根分解",
+    "association": "热情似火",
+    "roots": "e- + bullire(沸腾)"
+  },
+  "eccentric": {
+    "mnemonic": "ec(外) + centr(中心) + ic = 偏离中心,古怪的",
+    "type": "词根分解",
+    "association": "不走寻常路的人",
+    "roots": "ek- + kentron(中心)"
+  },
+  "eclectic": {
+    "mnemonic": "ec(出) + lect(选择select) + ic = 从各处选择,折衷的",
+    "type": "词根分解",
+    "association": "博采众长",
+    "roots": "ek- + legein(选择)"
+  },
+  "edify": {
+    "mnemonic": "edi(建造edifice) + fy = 建造人格,教化",
+    "type": "词根分解",
+    "association": "启迪心智",
+    "roots": "aedificare(建造)"
+  },
+  "efface": {
+    "mnemonic": "ef(出) + face(脸) = 把脸抹掉,抹去",
+    "type": "词根分解",
+    "association": "把痕迹抹去",
+    "roots": "ex- + facies(面)"
+  },
+  "efficacious": {
+    "mnemonic": "ef + fic(做) + acious = 能做成事的,有效的",
+    "type": "词根分解",
+    "association": "做事有效果",
+    "roots": "ex- + facere(做)"
+  },
+  "effusive": {
+    "mnemonic": "ef(出) + fus(流pour) + ive = 感情流出,热情洋溢的",
+    "type": "词根分解",
+    "association": "感情像泉水一样涌出",
+    "roots": "ex- + fundere(倾倒)"
+  },
+  "egregious": {
+    "mnemonic": "e(出) + greg(群gregarious) + ious = 从群体中突出的,极坏的",
+    "type": "词根分解",
+    "association": "骇人听闻",
+    "roots": "e- + grex(群)"
+  },
+  "elated": {
+    "mnemonic": "e(出) + lat(带carry) + ed = 被带上高处,兴高采烈的",
+    "type": "词根分解",
+    "association": "心情被举到高处",
+    "roots": "ex- + latus(携带)"
+  },
+  "elicit": {
+    "mnemonic": "e(出) + lic(引诱) + it = 引诱出来,引出",
+    "type": "词根分解",
+    "association": "套话技术",
+    "roots": "e- + lacere(引诱)"
+  },
+  "elucidate": {
+    "mnemonic": "e(出) + lucid(清楚) + ate = 使清楚,阐明",
+    "type": "词根分解",
+    "association": "让事情变得清晰明了",
+    "roots": "ex- + lucidus(明亮的)"
+  },
+  "elusive": {
+    "mnemonic": "e(出) + lus(玩illusion) + ive = 像幻觉一样难以捉摸",
+    "type": "词根分解",
+    "association": "像影子一样抓不住",
+    "roots": "ex- + ludere(玩)"
+  },
+  "emancipate": {
+    "mnemonic": "e + man(手) + cip(拿) + ate = 从手中释放,解放",
+    "type": "词根分解",
+    "association": "获得自由",
+    "roots": "e- + manus(手) + capere(拿)"
+  },
+  "eminent": {
+    "mnemonic": "e(出) + min(突出mountain) + ent = 突出的,杰出的",
+    "type": "词根分解",
+    "association": "像山峰一样突出",
+    "roots": "ex- + minere(突出)"
+  },
+  "empirical": {
+    "mnemonic": "em + pir(经验) + ical = 来自经验的,经验主义的",
+    "type": "词根分解",
+    "association": "实践出真知",
+    "roots": "empeirikos(有经验的)"
+  },
+  "emulate": {
+    "mnemonic": "em + ul(超过) + ate = 努力超过,效仿",
+    "type": "词根分解",
+    "association": "见贤思齐",
+    "roots": "aemulari(竞争)"
+  },
+  "endemic": {
+    "mnemonic": "en(在内) + dem(人民democracy) + ic = 在某群人中的,地方性的",
+    "type": "词根分解",
+    "association": "只在特定地区流行",
+    "roots": "en- + demos(人民)"
+  },
+  "enervate": {
+    "mnemonic": "e(出) + nerv(神经nerve) + ate = 抽走神经,使虚弱",
+    "type": "词根分解",
+    "association": "筋疲力尽",
+    "roots": "e- + nervus(神经)"
+  },
+  "enigmatic": {
+    "mnemonic": "enigma(谜) + tic = 像谜一样神秘",
+    "type": "词根分解",
+    "association": "像斯芬克斯的谜一样难解",
+    "roots": "ainigma(谜语)"
+  },
+  "ephemeral": {
+    "mnemonic": "epher(一天) + meral = 只有一天的,短暂的",
+    "type": "词根分解",
+    "association": "朝生暮死",
+    "roots": "ephemeros(只活一天的)"
+  },
+  "equanimity": {
+    "mnemonic": "equ(平等) + anim(心灵) + ity = 心态平和,镇定",
+    "type": "词根分解",
+    "association": "心如止水的状态",
+    "roots": "aequus(平等) + animus(心灵)"
+  },
+  "equivocal": {
+    "mnemonic": "equi(平等) + voc(声音) + al = 两种声音一样,模棱两可的",
+    "type": "词根分解",
+    "association": "话说得模棱两可",
+    "roots": "aequus(平等) + vocare(叫)"
+  },
+  "eradicate": {
+    "mnemonic": "e(出) + radic(根root) + ate = 连根拔出,根除",
+    "type": "词根分解",
+    "association": "把问题连根拔起",
+    "roots": "ex- + radix(根)"
+  },
+  "erratic": {
+    "mnemonic": "err(错误error) + atic = 到处犯错的,不规律的",
+    "type": "词根分解",
+    "association": "飘忽不定",
+    "roots": "errare(漫游)"
+  },
+  "erudite": {
+    "mnemonic": "e + rud(粗糙rude) + ite = 去除粗糙的,博学的",
+    "type": "词根分解",
+    "association": "学富五车",
+    "roots": "e- + rudis(未加工的)"
+  },
+  "esoteric": {
+    "mnemonic": "eso(内部) + teric = 内部的,深奥的",
+    "type": "词根分解",
+    "association": "高深莫测",
+    "roots": "esoterikos(内部的)"
+  },
+  "ethereal": {
+    "mnemonic": "ether(以太) + eal = 像以太一样轻盈,飘渺的",
+    "type": "词根分解",
+    "association": "像仙女一样轻盈飘渺",
+    "roots": "aither(上层空气)"
+  },
+  "exacerbate": {
+    "mnemonic": "ex + acer(尖锐acrid) + bate = 使更尖锐,恶化",
+    "type": "词根分解",
+    "association": "雪上加霜",
+    "roots": "ex- + acerbus(苦的)"
+  },
+  "exonerate": {
+    "mnemonic": "ex + oner(负担onerous) + ate = 从负担中解脱,免除",
+    "type": "词根分解",
+    "association": "洗清冤屈",
+    "roots": "ex- + onus(负担)"
+  },
+  "expedient": {
+    "mnemonic": "ex + ped(脚foot) + ient = 解放脚的,权宜的",
+    "type": "词根分解",
+    "association": "权宜之计",
+    "roots": "ex- + pes(脚)"
+  },
+  "extol": {
+    "mnemonic": "ex + tol(举起toll) = 高高举起,赞美",
+    "type": "词根分解",
+    "association": "大加赞赏",
+    "roots": "ex- + tollere(举起)"
+  },
+  "exuberant": {
+    "mnemonic": "ex(加强) + uber(丰富) + ant = 非常丰富,热情洋溢的",
+    "type": "词根分解",
+    "association": "精力充沛得溢出来",
+    "roots": "ex- + uber(丰富的)"
+  },
+  "facilitate": {
+    "mnemonic": "facil(容易) + itate = 使容易,促进",
+    "type": "词根分解",
+    "association": "为...提供便利",
+    "roots": "facilis(容易的)"
+  },
+  "fallacious": {
+    "mnemonic": "fall(跌落) + acious = 跌入错误的,谬误的",
+    "type": "联想记忆",
+    "association": "站不住脚",
+    "roots": "fallax(欺骗的)"
+  },
+  "fastidious": {
+    "mnemonic": "fast(快) + id + ious = 快速挑剔,苛求的",
+    "type": "联想记忆",
+    "association": "对细节极其挑剔",
+    "roots": "fastidium(厌恶)"
+  },
+  "fathom": {
+    "mnemonic": "fat(脂肪) + hom = 深到连脂肪都能感到,理解深度",
+    "type": "联想记忆",
+    "association": "探测水深,理解深意",
+    "roots": "faethm(伸开的双臂)"
+  },
+  "fervent": {
+    "mnemonic": "ferv(沸腾fever) + ent = 像发烧一样热情",
+    "type": "词根分解",
+    "association": "热情似火",
+    "roots": "fervere(沸腾)"
+  },
+  "fickle": {
+    "mnemonic": "f + ickle(tickle挠痒) = 像被挠痒一样变来变去",
+    "type": "联想记忆",
+    "association": "心意不定,变化无常",
+    "roots": "ficol(欺骗的)"
+  },
+  "flagrant": {
+    "mnemonic": "flag(旗帜) + rant = 像挥舞旗帜一样明目张胆",
+    "type": "联想记忆",
+    "association": "公然挑衅",
+    "roots": "flagrare(燃烧)"
+  },
+  "florid": {
+    "mnemonic": "flor(花flower) + id = 像花一样,华丽的",
+    "type": "词根分解",
+    "association": "花里胡哨",
+    "roots": "floridus(开花的)"
+  },
+  "foment": {
+    "mnemonic": "fo + ment(提到mention) = 反复提及煽动",
+    "type": "联想记忆",
+    "association": "煽风点火",
+    "roots": "fovere(温暖)"
+  },
+  "forthright": {
+    "mnemonic": "forth(向前) + right(正确) = 直接说对的,直率的",
+    "type": "词根分解",
+    "association": "直来直去不拐弯抹角",
+    "roots": "forth + right"
+  },
+  "fortuitous": {
+    "mnemonic": "fortuit(偶然) + ous = 偶然的,意外的",
+    "type": "词根分解",
+    "association": "天赐良机",
+    "roots": "fors(机会)"
+  },
+  "frugal": {
+    "mnemonic": "frug(果实fruit) + al = 只吃果实不浪费,节俭的",
+    "type": "联想记忆",
+    "association": "精打细算",
+    "roots": "frugi(节俭的)"
+  },
+  "furtive": {
+    "mnemonic": "furt(偷) + ive = 偷偷摸摸的,鬼鬼祟祟的",
+    "type": "词根分解",
+    "association": "做贼心虚",
+    "roots": "furtum(偷窃)"
+  },
+  "futile": {
+    "mnemonic": "fut(流) + ile = 像水流走,徒劳的",
+    "type": "词根分解",
+    "association": "白费力气",
+    "roots": "futilis(易漏的)"
+  },
+  "galvanize": {
+    "mnemonic": "galvan(电) + ize = 像电击一样激励",
+    "type": "词根分解",
+    "association": "电流刺激肌肉,激励行动",
+    "roots": "Galvani(科学家名)"
+  },
+  "garrulous": {
+    "mnemonic": "garr(叫) + ulous = 爱叫的,饶舌的",
+    "type": "词根分解",
+    "association": "喋喋不休",
+    "roots": "garrire(喋喋不休)"
+  },
+  "germane": {
+    "mnemonic": "germ(种子) + ane = 同一种子的,相关的",
+    "type": "词根分解",
+    "association": "切题相关",
+    "roots": "germanus(真正的)"
+  },
+  "grandiose": {
+    "mnemonic": "grand(宏大) + iose = 过于宏大,浮夸的",
+    "type": "词根分解",
+    "association": "华而不实的宏大",
+    "roots": "grandis(大的)"
+  },
+  "gregarious": {
+    "mnemonic": "greg(群) + arious = 爱群居的,合群的",
+    "type": "词根分解",
+    "association": "喜欢热闹",
+    "roots": "grex(群)"
+  },
+  "guile": {
+    "mnemonic": "gui(鬼) + le = 像鬼一样狡猾,诡计",
+    "type": "谐音记忆",
+    "association": "阴谋诡计",
+    "roots": "古法语 guile(欺骗)"
+  },
+  "hackneyed": {
+    "mnemonic": "hack(砍) + neyed = 被反复砍用,陈腐的",
+    "type": "联想记忆",
+    "association": "用烂了的老套路",
+    "roots": "Hackney(伦敦地名,马出租地)"
+  },
+  "hamper": {
+    "mnemonic": "ham(火腿) + per = 火腿太重妨碍行动",
+    "type": "联想记忆",
+    "association": "阻碍前进",
+    "roots": "古法语 hanapier(盒子)"
+  },
+  "haughty": {
+    "mnemonic": "haugh(高high) + ty = 高高在上,傲慢的",
+    "type": "谐音记忆",
+    "association": "目中无人",
+    "roots": "haut(高)"
+  },
+  "hedonistic": {
+    "mnemonic": "hedon(快乐) + istic = 追求快乐的,享乐主义的",
+    "type": "词根分解",
+    "association": "今朝有酒今朝醉",
+    "roots": "hedone(快乐)"
+  },
+  "heretic": {
+    "mnemonic": "here(这里) + tic = 站在这里不随大流,异端者",
+    "type": "联想记忆",
+    "association": "持不同意见的人",
+    "roots": "hairetikos(能选择的)"
+  },
+  "heterogeneous": {
+    "mnemonic": "hetero(不同) + gen(产生) + eous = 产生不同的,异质的",
+    "type": "词根分解",
+    "association": "五花八门",
+    "roots": "heteros(其他的) + genos(种类)"
+  },
+  "hierarchy": {
+    "mnemonic": "hier(神圣) + arch(统治) + y = 神圣的统治顺序,等级制度",
+    "type": "词根分解",
+    "association": "金字塔式的等级",
+    "roots": "hieros(神圣的) + arkhein(统治)"
+  },
+  "hubris": {
+    "mnemonic": "hu(虎) + bris = 虎胆,傲慢自大",
+    "type": "谐音记忆",
+    "association": "过度自信导致失败",
+    "roots": "hybris(傲慢)"
+  },
+  "hyperbole": {
+    "mnemonic": "hyper(超过) + bole(投) = 夸大其词,夸张",
+    "type": "词根分解",
+    "association": "把话说过头了",
+    "roots": "hyper(超过) + ballein(投)"
+  },
+  "iconoclast": {
+    "mnemonic": "icon(偶像) + clast(打破) = 打破偶像的人,叛逆者",
+    "type": "词根分解",
+    "association": "挑战权威的人",
+    "roots": "eikon(图像) + klan(打破)"
+  },
+  "immutable": {
+    "mnemonic": "im(不) + mut(变mutate) + able = 不能变的,不变的",
+    "type": "词根分解",
+    "association": "像石头一样不变",
+    "roots": "in- + mutare(改变)"
+  },
+  "impartial": {
+    "mnemonic": "im(不) + partial(偏向) = 不偏向的,公正的",
+    "type": "词根分解",
+    "association": "一碗水端平",
+    "roots": "in- + pars(部分)"
+  },
+  "impeccable": {
+    "mnemonic": "im(不) + pecc(罪sin) + able = 没有罪过的,无可挑剔的",
+    "type": "词根分解",
+    "association": "完美无缺",
+    "roots": "in- + peccare(犯罪)"
+  },
+  "impede": {
+    "mnemonic": "im(进入) + ped(脚) = 脚被绊住,阻碍",
+    "type": "词根分解",
+    "association": "脚下绊了一跤",
+    "roots": "in- + pes(脚)"
+  },
+  "imperative": {
+    "mnemonic": "im + per(通过) + ative = 必须通过的,紧迫的",
+    "type": "词根分解",
+    "association": "刻不容缓",
+    "roots": "imperare(命令)"
+  },
+  "impetuous": {
+    "mnemonic": "im + pet(冲) + uous = 猛冲的,冲动的",
+    "type": "词根分解",
+    "association": "不假思索就冲上去",
+    "roots": "in- + petere(冲向)"
+  },
+  "implicit": {
+    "mnemonic": "im(在内) + plic(折叠) + it = 折叠在内的,含蓄的",
+    "type": "词根分解",
+    "association": "话里有话",
+    "roots": "in- + plicare(折叠)"
+  },
+  "inadvertent": {
+    "mnemonic": "in(不) + ad + vert(转向) + ent = 没有转向注意的,疏忽的",
+    "type": "词根分解",
+    "association": "一不留神",
+    "roots": "in- + advertere(注意)"
+  },
+  "incisive": {
+    "mnemonic": "in + cis(切) + ive = 切入要害的,敏锐的",
+    "type": "词根分解",
+    "association": "一针见血",
+    "roots": "in- + caedere(切)"
+  },
+  "incongruous": {
+    "mnemonic": "in(不) + con + gru(一致) + ous = 不一致的,不协调的",
+    "type": "词根分解",
+    "association": "格格不入",
+    "roots": "in- + congruere(一致)"
+  },
+  "incontrovertible": {
+    "mnemonic": "in(不) + controvert(争论) + ible = 无法争论的,无可辩驳的",
+    "type": "词根分解",
+    "association": "铁证如山",
+    "roots": "in- + controversia(争论)"
+  },
+  "incredulous": {
+    "mnemonic": "in(不) + cred(相信) + ulous = 不相信的,怀疑的",
+    "type": "词根分解",
+    "association": "满脸怀疑",
+    "roots": "in- + credere(相信)"
+  },
+  "indigenous": {
+    "mnemonic": "indi(内部) + gen(产生) + ous = 内部产生的,本土的",
+    "type": "词根分解",
+    "association": "土生土长的",
+    "roots": "indu- + gignere(产生)"
+  },
+  "indolent": {
+    "mnemonic": "in(不) + dol(痛苦dolor) + ent = 不觉得痛苦就不动,懒惰的",
+    "type": "词根分解",
+    "association": "好吃懒做",
+    "roots": "in- + dolere(痛苦)"
+  },
+  "ineffable": {
+    "mnemonic": "in(不) + ef + fa(说fable) + ble = 说不出来的,难以言喻的",
+    "type": "词根分解",
+    "association": "美得无法形容",
+    "roots": "in- + effari(说出)"
+  },
+  "ingenious": {
+    "mnemonic": "in + gen(产生genius) + ious = 有天才产生的,巧妙的",
+    "type": "词根分解",
+    "association": "聪明绝顶",
+    "roots": "in- + gignere(产生)"
+  },
+  "ingenuous": {
+    "mnemonic": "in + gen + uous = 天生的本性,天真的",
+    "type": "词根分解",
+    "association": "单纯不做作",
+    "roots": "ingenuus(天生的)"
+  },
+  "inherent": {
+    "mnemonic": "in(在内) + her(粘附here) + ent = 粘附在内的,固有的",
+    "type": "词根分解",
+    "association": "与生俱来的",
+    "roots": "in- + haerere(粘附)"
+  },
+  "innocuous": {
+    "mnemonic": "in(不) + noc(伤害) + uous = 不会伤害的,无害的",
+    "type": "词根分解",
+    "association": "人畜无害",
+    "roots": "in- + nocere(伤害)"
+  },
+  "insidious": {
+    "mnemonic": "in + sid(坐) + ious = 坐在暗处的,阴险的",
+    "type": "词根分解",
+    "association": "暗中使坏",
+    "roots": "in- + sedere(坐)"
+  },
+  "insipid": {
+    "mnemonic": "in(不) + sip(味道sapid) + id = 没有味道的,乏味的",
+    "type": "词根分解",
+    "association": "淡如白水",
+    "roots": "in- + sapidus(有味道的)"
+  },
+  "intrepid": {
+    "mnemonic": "in(不) + trep(颤抖) + id = 不颤抖的,勇敢的",
+    "type": "词根分解",
+    "association": "勇往直前",
+    "roots": "in- + trepidus(颤抖的)"
+  },
+  "intricate": {
+    "mnemonic": "in + tric(复杂trick) + ate = 充满花招的,复杂的",
+    "type": "词根分解",
+    "association": "错综复杂",
+    "roots": "in- + tricae(困难)"
+  },
+  "inundate": {
+    "mnemonic": "in + und(波浪wave) + ate = 波浪涌入,淹没",
+    "type": "词根分解",
+    "association": "洪水般涌来",
+    "roots": "in- + unda(波浪)"
+  },
+  "invective": {
+    "mnemonic": "in + vect(带来) + ive = 带来攻击的言语,辱骂",
+    "type": "词根分解",
+    "association": "恶言恶语",
+    "roots": "in- + vehere(携带)"
+  },
+  "irascible": {
+    "mnemonic": "ira(愤怒ire) + scible = 容易愤怒的,易怒的",
+    "type": "词根分解",
+    "association": "一点就炸",
+    "roots": "irasci(发怒)"
+  },
+  "judicious": {
+    "mnemonic": "jud(判断judge) + icious = 有判断力的,明智的",
+    "type": "词根分解",
+    "association": "深思熟虑",
+    "roots": "judicium(判断)"
+  },
+  "laconic": {
+    "mnemonic": "lac + onic = 像拉科尼亚人一样简洁",
+    "type": "联想记忆",
+    "association": "惜字如金",
+    "roots": "Lakon(拉科尼亚人)"
+  },
+  "languish": {
+    "mnemonic": "lang(疲倦) + uish = 无精打采,衰弱",
+    "type": "词根分解",
+    "association": "萎靡不振",
+    "roots": "languere(变弱)"
+  },
+  "laud": {
+    "mnemonic": "l + aud(听audience) = 让大家听到赞美",
+    "type": "联想记忆",
+    "association": "大声赞美",
+    "roots": "laudare(赞美)"
+  },
+  "lethargic": {
+    "mnemonic": "leth(死亡lethal) + argic = 像死了一样没精神,昏睡的",
+    "type": "词根分解",
+    "association": "浑身无力",
+    "roots": "lethargia(昏睡)"
+  },
+  "licentious": {
+    "mnemonic": "license(执照) + tious = 有执照就放纵,放荡的",
+    "type": "联想记忆",
+    "association": "无法无天",
+    "roots": "licentia(自由)"
+  },
+  "loquacious": {
+    "mnemonic": "loqu(说talk) + acious = 爱说话的,健谈的",
+    "type": "词根分解",
+    "association": "口若悬河",
+    "roots": "loqui(说话)"
+  },
+  "lucid": {
+    "mnemonic": "luc(光light) + id = 像光一样清晰,清楚的",
+    "type": "词根分解",
+    "association": "一目了然",
+    "roots": "lucidus(明亮的)"
+  },
+  "magnanimous": {
+    "mnemonic": "magn(大) + anim(心灵) + ous = 心胸宽大的,宽宏大量的",
+    "type": "词根分解",
+    "association": "宰相肚里能撑船",
+    "roots": "magnus(大) + animus(心灵)"
+  },
+  "malevolent": {
+    "mnemonic": "mal(坏) + vol(意愿) + ent = 坏意愿的,恶意的",
+    "type": "词根分解",
+    "association": "心怀恶意",
+    "roots": "male(坏) + velle(希望)"
+  },
+  "malleable": {
+    "mnemonic": "mall(锤打) + eable = 可以锤打的,可塑的",
+    "type": "词根分解",
+    "association": "像橡皮泥一样可塑",
+    "roots": "malleus(锤子)"
+  },
+  "meticulous": {
+    "mnemonic": "meti(害怕) + culous = 害怕出错,一丝不苟的",
+    "type": "词根分解",
+    "association": "精益求精",
+    "roots": "metus(害怕)"
+  },
+  "mitigate": {
+    "mnemonic": "mit(温和mild) + ig + ate = 使温和,缓解",
+    "type": "词根分解",
+    "association": "缓和矛盾",
+    "roots": "mitis(温和的)"
+  },
+  "mollify": {
+    "mnemonic": "moll(软soft) + ify = 使软化,安抚",
+    "type": "词根分解",
+    "association": "软化态度",
+    "roots": "mollis(软的)"
+  },
+  "mundane": {
+    "mnemonic": "mund(世界world) + ane = 世俗的,平凡的",
+    "type": "词根分解",
+    "association": "柴米油盐",
+    "roots": "mundus(世界)"
+  },
+  "nefarious": {
+    "mnemonic": "ne(不) + far(正确) + ious = 不正确的,邪恶的",
+    "type": "词根分解",
+    "association": "穷凶极恶",
+    "roots": "ne- + fas(神圣法则)"
+  },
+  "neophyte": {
+    "mnemonic": "neo(新) + phyte(植物) = 新芽,新手",
+    "type": "词根分解",
+    "association": "初出茅庐",
+    "roots": "neos(新) + phyton(植物)"
+  },
+  "obdurate": {
+    "mnemonic": "ob(加强) + dur(硬durable) + ate = 非常硬的,顽固的",
+    "type": "词根分解",
+    "association": "铁石心肠",
+    "roots": "ob- + durare(变硬)"
+  },
+  "obfuscate": {
+    "mnemonic": "ob(加强) + fusc(暗) + ate = 使变暗,混淆",
+    "type": "词根分解",
+    "association": "故意搞糊涂",
+    "roots": "ob- + fuscare(变暗)"
+  },
+  "obsequious": {
+    "mnemonic": "ob + sequ(跟随sequence) + ious = 紧紧跟随,卑躬屈膝的",
+    "type": "词根分解",
+    "association": "溜须拍马",
+    "roots": "ob- + sequi(跟随)"
+  },
+  "obsolete": {
+    "mnemonic": "ob + sol(习惯) + ete = 不再习惯用的,过时的",
+    "type": "词根分解",
+    "association": "老掉牙",
+    "roots": "ob- + solere(习惯于)"
+  },
+  "obstinate": {
+    "mnemonic": "ob + stin(站stand) + ate = 站着不动,固执的",
+    "type": "词根分解",
+    "association": "一条道走到黑",
+    "roots": "ob- + stinare(坚持)"
+  },
+  "onerous": {
+    "mnemonic": "oner(负担) + ous = 有负担的,繁重的",
+    "type": "词根分解",
+    "association": "压得喘不过气",
+    "roots": "onus(负担)"
+  },
+  "opaque": {
+    "mnemonic": "op + aque = 看不透的,不透明的",
+    "type": "联想记忆",
+    "association": "像墙一样看不穿",
+    "roots": "opacus(阴暗的)"
+  },
+  "ostentatious": {
+    "mnemonic": "ostent(展示) + atious = 爱展示的,炫耀的",
+    "type": "词根分解",
+    "association": "招摇过市",
+    "roots": "ostentare(展示)"
+  },
+  "palatable": {
+    "mnemonic": "palat(上颚palate) + able = 对上颚友好的,美味的",
+    "type": "词根分解",
+    "association": "口齿留香",
+    "roots": "palatum(上颚)"
+  },
+  "palliate": {
+    "mnemonic": "pall(遮盖) + iate = 用外衣遮盖,减轻",
+    "type": "词根分解",
+    "association": "缓解症状但不根治",
+    "roots": "pallium(斗篷)"
+  },
+  "panacea": {
+    "mnemonic": "pan(全部) + acea(治愈) = 治愈一切的,万能药",
+    "type": "词根分解",
+    "association": "包治百病",
+    "roots": "pan(全) + akos(治愈)"
+  },
+  "paradigm": {
+    "mnemonic": "para(旁边) + digm(展示) = 展示在旁边作为参考,典范",
+    "type": "词根分解",
+    "association": "教科书式的范例",
+    "roots": "para(旁边) + deigma(展示)"
+  },
+  "paragon": {
+    "mnemonic": "para + gon = 放在旁边比较的标准,楷模",
+    "type": "联想记忆",
+    "association": "人中龙凤",
+    "roots": "parakonan(磨砺)"
+  },
+  "parochial": {
+    "mnemonic": "par + ochial(教区) = 像小教区一样,狭隘的",
+    "type": "联想记忆",
+    "association": "坐井观天",
+    "roots": "parochia(教区)"
+  },
+  "parsimony": {
+    "mnemonic": "pars(节省) + imony = 过度节省,吝啬",
+    "type": "词根分解",
+    "association": "一毛不拔",
+    "roots": "parcere(节省)"
+  },
+  "partisan": {
+    "mnemonic": "part(部分) + isan = 属于某一部分的,党派的",
+    "type": "词根分解",
+    "association": "拉帮结派",
+    "roots": "pars(部分)"
+  },
+  "paucity": {
+    "mnemonic": "pauc(少few) + ity = 少量,稀缺",
+    "type": "词根分解",
+    "association": "寥寥无几",
+    "roots": "paucus(少的)"
+  },
+  "pedantic": {
+    "mnemonic": "ped(教育) + antic = 过分强调教育的,迂腐的",
+    "type": "词根分解",
+    "association": "书呆子气",
+    "roots": "paideia(教育)"
+  },
+  "penchant": {
+    "mnemonic": "pen(倾斜) + chant = 心向往之,爱好",
+    "type": "词根分解",
+    "association": "情有独钟",
+    "roots": "pendere(倾斜)"
+  },
+  "pernicious": {
+    "mnemonic": "per(完全) + nic(杀) + ious = 完全致命的,有害的",
+    "type": "词根分解",
+    "association": "遗害无穷",
+    "roots": "per- + nex(死亡)"
+  },
+  "perspicacious": {
+    "mnemonic": "per + spic(看) + acious = 看透一切的,敏锐的",
+    "type": "词根分解",
+    "association": "火眼金睛",
+    "roots": "per- + specere(看)"
+  },
+  "pervasive": {
+    "mnemonic": "per(全面) + vas(走) + ive = 走遍各处的,普遍的",
+    "type": "词根分解",
+    "association": "无处不在",
+    "roots": "per- + vadere(走)"
+  },
+  "petulant": {
+    "mnemonic": "pet(请求) + ulant = 不断请求的,易怒的",
+    "type": "词根分解",
+    "association": "动不动就发脾气",
+    "roots": "petere(请求)"
+  },
+  "phenomenon": {
+    "mnemonic": "phen(显示) + omen + on = 显示出来的现象",
+    "type": "词根分解",
+    "association": "不同寻常的事物",
+    "roots": "phainein(显示)"
+  },
+  "phlegmatic": {
+    "mnemonic": "phlegm(黏液) + atic = 像黏液一样迟缓,冷漠的",
+    "type": "联想记忆",
+    "association": "波澜不惊",
+    "roots": "phlegma(黏液)"
+  },
+  "placate": {
+    "mnemonic": "plac(平静please) + ate = 使平静,安抚",
+    "type": "词根分解",
+    "association": "息事宁人",
+    "roots": "placare(安抚)"
+  },
+  "platitude": {
+    "mnemonic": "plat(平flat) + itude = 平淡无奇的话,陈词滥调",
+    "type": "词根分解",
+    "association": "老生常谈",
+    "roots": "platus(平的)"
+  },
+  "plethora": {
+    "mnemonic": "pleth(充满) + ora = 充满的,过量",
+    "type": "词根分解",
+    "association": "多得用不完",
+    "roots": "plethein(充满)"
+  },
+  "polemical": {
+    "mnemonic": "polem(战争) + ical = 像战争一样的,争论的",
+    "type": "词根分解",
+    "association": "唇枪舌剑",
+    "roots": "polemos(战争)"
+  },
+  "pragmatic": {
+    "mnemonic": "pragma(行动) + tic = 注重行动的,务实的",
+    "type": "词根分解",
+    "association": "脚踏实地",
+    "roots": "pragma(行为)"
+  },
+  "precipitate": {
+    "mnemonic": "pre(向前) + cipit(头) + ate = 头朝下冲,仓促的",
+    "type": "词根分解",
+    "association": "冒然行事",
+    "roots": "prae- + caput(头)"
+  },
+  "precursor": {
+    "mnemonic": "pre(在前) + curs(跑) + or = 跑在前面的人,先驱",
+    "type": "词根分解",
+    "association": "开路先锋",
+    "roots": "prae- + currere(跑)"
+  },
+  "predilection": {
+    "mnemonic": "pre + di + lect(选择) + ion = 预先选择的,偏爱",
+    "type": "词根分解",
+    "association": "情有独钟",
+    "roots": "prae- + diligere(喜爱)"
+  },
+  "prescient": {
+    "mnemonic": "pre(提前) + sci(知道) + ent = 提前知道的,有先见之明的",
+    "type": "词根分解",
+    "association": "未卜先知",
+    "roots": "prae- + scire(知道)"
+  },
+  "presumptuous": {
+    "mnemonic": "pre + sumpt(拿assume) + uous = 提前拿走的,放肆的",
+    "type": "词根分解",
+    "association": "不知天高地厚",
+    "roots": "prae- + sumere(拿)"
+  },
+  "pretentious": {
+    "mnemonic": "pre + tent(伸展) + ious = 过分伸展的,做作的",
+    "type": "词根分解",
+    "association": "装腔作势",
+    "roots": "prae- + tendere(伸展)"
+  },
+  "prevalent": {
+    "mnemonic": "pre + val(力量) + ent = 有力量占上风的,流行的",
+    "type": "词根分解",
+    "association": "蔚然成风",
+    "roots": "prae- + valere(有力)"
+  },
+  "probity": {
+    "mnemonic": "prob(正直prove) + ity = 经得起检验的正直,诚实",
+    "type": "词根分解",
+    "association": "品行端正",
+    "roots": "probus(正直的)"
+  },
+  "proclivity": {
+    "mnemonic": "pro(向前) + cliv(倾斜) + ity = 向某方向倾斜,倾向",
+    "type": "词根分解",
+    "association": "天生的喜好",
+    "roots": "pro- + clivus(斜坡)"
+  },
+  "prodigal": {
+    "mnemonic": "pro(向前) + dig(驱赶) + al = 驱赶出去的钱,挥霍的",
+    "type": "联想记忆",
+    "association": "大手大脚",
+    "roots": "prodigus(浪费的)"
+  },
+  "profound": {
+    "mnemonic": "pro(向前) + found(基础) = 深入基础的,深刻的",
+    "type": "词根分解",
+    "association": "意义深远",
+    "roots": "pro- + fundus(底部)"
+  },
+  "proliferate": {
+    "mnemonic": "pro + lifer(后代) + ate = 产生后代,激增",
+    "type": "词根分解",
+    "association": "像兔子一样繁殖",
+    "roots": "proles(后代) + ferre(产生)"
+  },
+  "propensity": {
+    "mnemonic": "pro + pens(悬挂) + ity = 悬向某方向,倾向",
+    "type": "词根分解",
+    "association": "有此嗜好",
+    "roots": "pro- + pendere(悬挂)"
+  },
+  "propitiate": {
+    "mnemonic": "pro + piti(有利) + ate = 使有利,取悦",
+    "type": "词根分解",
+    "association": "讨好神灵",
+    "roots": "propitius(有利的)"
+  },
+  "prosaic": {
+    "mnemonic": "pros(散文prose) + aic = 像散文一样的,平淡的",
+    "type": "联想记忆",
+    "association": "平铺直叙",
+    "roots": "prosa(散文)"
+  },
+  "proscribe": {
+    "mnemonic": "pro + scribe(写) = 写出来公布禁止,禁止",
+    "type": "词根分解",
+    "association": "明令禁止",
+    "roots": "pro- + scribere(写)"
+  },
+  "protean": {
+    "mnemonic": "Prote(普罗透斯) + an = 像普罗透斯一样,多变的",
+    "type": "联想记忆",
+    "association": "千变万化",
+    "roots": "Proteus(希腊海神)"
+  },
+  "provincial": {
+    "mnemonic": "pro + vinc(征服) + ial = 被征服的地区,狭隘的",
+    "type": "词根分解",
+    "association": "乡下人没见过世面",
+    "roots": "provincia(行省)"
+  },
+  "prudent": {
+    "mnemonic": "prud(智慧provide) + ent = 有智慧的,谨慎的",
+    "type": "词根分解",
+    "association": "深谋远虑",
+    "roots": "prudens(有远见的)"
+  },
+  "querulous": {
+    "mnemonic": "quer(抱怨) + ulous = 爱抱怨的,爱发牢骚的",
+    "type": "词根分解",
+    "association": "牢骚满腹",
+    "roots": "queri(抱怨)"
+  },
+  "quiescent": {
+    "mnemonic": "qui(安静quiet) + escent = 变安静的,静止的",
+    "type": "词根分解",
+    "association": "风平浪静",
+    "roots": "quiescere(休息)"
+  },
+  "quotidian": {
+    "mnemonic": "quot(每天quote) + idian = 每天的,日常的",
+    "type": "词根分解",
+    "association": "司空见惯",
+    "roots": "quotus(多少) + dies(天)"
+  },
+  "rancor": {
+    "mnemonic": "ranc(恶臭) + or = 像恶臭一样令人厌恶,怨恨",
+    "type": "联想记忆",
+    "association": "深仇大恨",
+    "roots": "rancor(陈腐)"
+  },
+  "raucous": {
+    "mnemonic": "rauc(沙哑) + ous = 声音沙哑的,刺耳的",
+    "type": "词根分解",
+    "association": "喧哗吵闹",
+    "roots": "raucus(沙哑的)"
+  },
+  "recalcitrant": {
+    "mnemonic": "re + calc(踢) + itrant = 向后踢的马,倔强的",
+    "type": "词根分解",
+    "association": "软硬不吃",
+    "roots": "re- + calcitrare(踢)"
+  },
+  "recondite": {
+    "mnemonic": "re + cond(藏hide) + ite = 藏起来的,深奥的",
+    "type": "词根分解",
+    "association": "高深莫测",
+    "roots": "re- + condere(隐藏)"
+  },
+  "redundant": {
+    "mnemonic": "re + dund(波浪) + ant = 波浪反复涌来,冗余的",
+    "type": "词根分解",
+    "association": "多此一举",
+    "roots": "re- + undare(涌浪)"
+  },
+  "refute": {
+    "mnemonic": "re + fute(打beat) = 反击回去,反驳",
+    "type": "词根分解",
+    "association": "驳得体无完肤",
+    "roots": "re- + futare(驳斥)"
+  },
+  "relegate": {
+    "mnemonic": "re + leg(派送) + ate = 派送到远处,贬黜",
+    "type": "词根分解",
+    "association": "打入冷宫",
+    "roots": "re- + legare(派遣)"
+  },
+  "relentless": {
+    "mnemonic": "re + lent(软化) + less = 不软化的,无情的",
+    "type": "词根分解",
+    "association": "铁石心肠",
+    "roots": "re- + lentus(柔软的)"
+  },
+  "relinquish": {
+    "mnemonic": "re + linqu(离开leave) + ish = 离开,放弃",
+    "type": "词根分解",
+    "association": "拱手相让",
+    "roots": "re- + linquere(离开)"
+  },
+  "reprehensible": {
+    "mnemonic": "re + prehens(抓) + ible = 应该被抓住惩罚的,应受谴责的",
+    "type": "词根分解",
+    "association": "罪不可恕",
+    "roots": "re- + prehendere(抓住)"
+  },
+  "repudiate": {
+    "mnemonic": "re + pudi(羞耻) + ate = 因羞耻而拒绝,否认",
+    "type": "词根分解",
+    "association": "断然否认",
+    "roots": "re- + pudere(羞耻)"
+  },
+  "rescind": {
+    "mnemonic": "re + scind(切) = 切断协议,废除",
+    "type": "词根分解",
+    "association": "撕毁合同",
+    "roots": "re- + scindere(切)"
+  },
+  "reticent": {
+    "mnemonic": "re + tic(沉默tacit) + ent = 保持沉默的,沉默寡言的",
+    "type": "词根分解",
+    "association": "守口如瓶",
+    "roots": "re- + tacere(沉默)"
+  },
+  "reverent": {
+    "mnemonic": "rever(敬畏) + ent = 充满敬畏的,虔诚的",
+    "type": "词根分解",
+    "association": "毕恭毕敬",
+    "roots": "revereri(敬畏)"
+  },
+  "rhetoric": {
+    "mnemonic": "rhet(说) + oric = 说话的艺术,修辞",
+    "type": "词根分解",
+    "association": "花言巧语",
+    "roots": "rhetor(演说家)"
+  },
+  "rudimentary": {
+    "mnemonic": "rudi(原始) + ment + ary = 原始的,基本的",
+    "type": "词根分解",
+    "association": "最基础的",
+    "roots": "rudis(未加工的)"
+  },
+  "sacrosanct": {
+    "mnemonic": "sacro(神圣) + sanct(神圣) = 双重神圣,不可侵犯的",
+    "type": "词根分解",
+    "association": "神圣不可亵渎",
+    "roots": "sacer(神圣的) + sanctus(神圣的)"
+  },
+  "sagacious": {
+    "mnemonic": "sag(智慧sage) + acious = 像智者一样,睿智的",
+    "type": "词根分解",
+    "association": "明察秋毫",
+    "roots": "sagax(敏锐的)"
+  },
+  "salubrious": {
+    "mnemonic": "salub(健康salute) + rious = 有益健康的",
+    "type": "词根分解",
+    "association": "神清气爽",
+    "roots": "salus(健康)"
+  },
+  "sanguine": {
+    "mnemonic": "sangu(血) + ine = 血气方刚的,乐观的",
+    "type": "词根分解",
+    "association": "面带红光满面",
+    "roots": "sanguis(血)"
+  },
+  "sardonic": {
+    "mnemonic": "sardon(撒丁岛) + ic = 撒丁岛有毒草使人笑,讥讽的",
+    "type": "联想记忆",
+    "association": "冷嘲热讽",
+    "roots": "Sardinia(撒丁岛)"
+  },
+  "scrupulous": {
+    "mnemonic": "scrup(小石子) + ulous = 连小石子都注意,一丝不苟的",
+    "type": "词根分解",
+    "association": "认真负责",
+    "roots": "scrupulus(小石子)"
+  },
+  "secular": {
+    "mnemonic": "secul(世俗) + ar = 世俗的,非宗教的",
+    "type": "词根分解",
+    "association": "与宗教无关",
+    "roots": "saeculum(时代)"
+  },
+  "sedulous": {
+    "mnemonic": "sed(坐) + ulous = 坐着努力工作,勤勉的",
+    "type": "词根分解",
+    "association": "兢兢业业",
+    "roots": "sedulus(勤勉的)"
+  },
+  "sententious": {
+    "mnemonic": "sent(感觉) + entious = 充满深意的,说教的",
+    "type": "词根分解",
+    "association": "咬文嚼字",
+    "roots": "sententia(意见)"
+  },
+  "skeptical": {
+    "mnemonic": "skept(怀疑) + ical = 怀疑的",
+    "type": "词根分解",
+    "association": "半信半疑",
+    "roots": "skeptikos(善于考虑的)"
+  },
+  "soporific": {
+    "mnemonic": "sopor(睡眠) + ific = 导致睡眠的,催眠的",
+    "type": "词根分解",
+    "association": "听着就犯困",
+    "roots": "sopor(深睡)"
+  },
+  "specious": {
+    "mnemonic": "spec(看) + ious = 看起来好的,似是而非的",
+    "type": "词根分解",
+    "association": "金玉其外败絮其中",
+    "roots": "speciosus(好看的)"
+  },
+  "sporadic": {
+    "mnemonic": "spor(散播) + adic = 散播各处的,零星的",
+    "type": "词根分解",
+    "association": "三三两两",
+    "roots": "sporadikos(分散的)"
+  },
+  "spurious": {
+    "mnemonic": "spur(假冒) + ious = 假冒的,虚假的",
+    "type": "词根分解",
+    "association": "鱼目混珠",
+    "roots": "spurius(私生的)"
+  },
+  "stolid": {
+    "mnemonic": "stol(傻) + id = 像傻了一样,迟钝的",
+    "type": "联想记忆",
+    "association": "木讷呆滞",
+    "roots": "stolidus(愚笨的)"
+  },
+  "strident": {
+    "mnemonic": "strid(刺耳) + ent = 刺耳的,尖锐的",
+    "type": "词根分解",
+    "association": "刺耳尖叫",
+    "roots": "stridere(发出刺耳声)"
+  },
+  "stringent": {
+    "mnemonic": "string(绳子) + ent = 用绳子勒紧的,严格的",
+    "type": "联想记忆",
+    "association": "滴水不漏",
+    "roots": "stringere(拉紧)"
+  },
+  "subservient": {
+    "mnemonic": "sub(在下) + serv(服务) + ient = 在下面服务,卑躬屈膝的",
+    "type": "词根分解",
+    "association": "俯首帖耳",
+    "roots": "sub- + servire(服务)"
+  },
+  "substantiate": {
+    "mnemonic": "sub + stant(站) + iate = 站在下面支撑,证实",
+    "type": "词根分解",
+    "association": "有理有据",
+    "roots": "sub- + stare(站立)"
+  },
+  "subtle": {
+    "mnemonic": "sub(在下) + tle = 在下面不易察觉的,微妙的",
+    "type": "词根分解",
+    "association": "不动声色",
+    "roots": "subtilis(精细的)"
+  },
+  "succinct": {
+    "mnemonic": "suc + cinct(束紧) = 束紧的,简洁的",
+    "type": "词根分解",
+    "association": "言简意赅",
+    "roots": "sub- + cingere(束紧)"
+  },
+  "superficial": {
+    "mnemonic": "super(表面) + fic(做) + ial = 只做表面的,肤浅的",
+    "type": "词根分解",
+    "association": "浮于表面",
+    "roots": "super- + facies(表面)"
+  },
+  "superfluous": {
+    "mnemonic": "super(超过) + flu(流) + ous = 流出来的,多余的",
+    "type": "词根分解",
+    "association": "多此一举",
+    "roots": "super- + fluere(流)"
+  },
+  "supine": {
+    "mnemonic": "sup(在下) + ine = 躺在下面,消极的",
+    "type": "词根分解",
+    "association": "无所作为",
+    "roots": "supinus(仰卧的)"
+  },
+  "supplant": {
+    "mnemonic": "sup + plant(种植) = 种上新的取代旧的,取代",
+    "type": "联想记忆",
+    "association": "取而代之",
+    "roots": "sub- + planta(脚掌)"
+  },
+  "sycophant": {
+    "mnemonic": "syco(无花果) + phant(展示) = 告发无花果贼,谄媚者",
+    "type": "词根分解",
+    "association": "马屁精",
+    "roots": "sykon(无花果) + phainein(展示)"
+  },
+  "tacit": {
+    "mnemonic": "tac(沉默) + it = 沉默的,心照不宣的",
+    "type": "词根分解",
+    "association": "不言而喻",
+    "roots": "tacere(沉默)"
+  },
+  "taciturn": {
+    "mnemonic": "tacit(沉默) + urn = 沉默寡言的",
+    "type": "词根分解",
+    "association": "惜字如金",
+    "roots": "taciturnus(沉默的)"
+  },
+  "tangential": {
+    "mnemonic": "tang(接触touch) + ential = 只接触一点的,离题的",
+    "type": "词根分解",
+    "association": "不着边际",
+    "roots": "tangere(接触)"
+  },
+  "tantamount": {
+    "mnemonic": "tant(那么多) + amount = 那么多数量,等于",
+    "type": "联想记忆",
+    "association": "相当于",
+    "roots": "tantus(那么多) + amount(总数)"
+  },
+  "tenacious": {
+    "mnemonic": "ten(抓住) + acious = 抓住不放的,顽强的",
+    "type": "词根分解",
+    "association": "咬定青山不放松",
+    "roots": "tenere(持有)"
+  },
+  "tenet": {
+    "mnemonic": "ten(持有) + et = 持有的信念,原则",
+    "type": "词根分解",
+    "association": "金科玉律",
+    "roots": "tenere(持有)"
+  },
+  "tenuous": {
+    "mnemonic": "tenu(薄thin) + ous = 薄的,脆弱的",
+    "type": "词根分解",
+    "association": "不堪一击",
+    "roots": "tenuis(薄的)"
+  },
+  "tirade": {
+    "mnemonic": "ti + rade(射击) = 连珠炮式射击,长篇大论",
+    "type": "联想记忆",
+    "association": "滔滔不绝的批评",
+    "roots": "tirer(拉)"
+  },
+  "torpid": {
+    "mnemonic": "torp(麻木) + id = 麻木的,迟钝的",
+    "type": "词根分解",
+    "association": "呆若木鸡",
+    "roots": "torpere(麻木)"
+  },
+  "transient": {
+    "mnemonic": "trans(穿过) + ient = 穿过就走的,短暂的",
+    "type": "词根分解",
+    "association": "昙花一现",
+    "roots": "trans- + ire(走)"
+  },
+  "trepidation": {
+    "mnemonic": "trep(颤抖intrepid) + idation = 颤抖,恐惧",
+    "type": "词根分解",
+    "association": "战战兢兢",
+    "roots": "trepidare(颤抖)"
+  },
+  "truculent": {
+    "mnemonic": "truc(凶猛) + ulent = 凶猛的,好斗的",
+    "type": "词根分解",
+    "association": "杀气腾腾",
+    "roots": "truculentus(残忍的)"
+  },
+  "ubiquitous": {
+    "mnemonic": "ubi(哪里) + quit(everywhere) + ous = 哪里都有的,无处不在的",
+    "type": "词根分解",
+    "association": "遍地开花",
+    "roots": "ubique(到处)"
+  },
+  "unequivocal": {
+    "mnemonic": "un + equi(相等) + voc(声音) + al = 声音不含糊的,明确的",
+    "type": "词根分解",
+    "association": "毫不含糊",
+    "roots": "un- + aequus(相等) + vocare(叫)"
+  },
+  "untenable": {
+    "mnemonic": "un + ten(持有) + able = 无法持有的,站不住脚的",
+    "type": "词根分解",
+    "association": "不攻自破",
+    "roots": "un- + tenere(持有)"
+  },
+  "vacillate": {
+    "mnemonic": "vac(摇摆) + illate = 摇摆不定,犹豫",
+    "type": "词根分解",
+    "association": "左右为难",
+    "roots": "vacillare(摇摆)"
+  },
+  "vapid": {
+    "mnemonic": "vap(蒸发) + id = 精华蒸发了,乏味的",
+    "type": "词根分解",
+    "association": "淡而无味",
+    "roots": "vapidus(走了味的)"
+  },
+  "vehement": {
+    "mnemonic": "veh(运送vehicle) + ement = 有力运送的,激烈的",
+    "type": "词根分解",
+    "association": "慷慨激昂",
+    "roots": "vehere(运送)"
+  },
+  "venal": {
+    "mnemonic": "ven(卖sell) + al = 可以卖的,贪污的",
+    "type": "词根分解",
+    "association": "唯利是图",
+    "roots": "venalis(可出售的)"
+  },
+  "venerate": {
+    "mnemonic": "vener(爱Venus) + ate = 像爱维纳斯一样,崇敬",
+    "type": "词根分解",
+    "association": "顶礼膜拜",
+    "roots": "venerari(崇拜)"
+  },
+  "veracious": {
+    "mnemonic": "ver(真实very) + acious = 真实的,诚实的",
+    "type": "词根分解",
+    "association": "言出必行",
+    "roots": "verax(真实的)"
+  },
+  "verbose": {
+    "mnemonic": "verb(词word) + ose = 词多的,冗长的",
+    "type": "词根分解",
+    "association": "废话连篇",
+    "roots": "verbum(词)"
+  },
+  "vestige": {
+    "mnemonic": "vest(痕迹vest) + ige = 残留的痕迹,遗迹",
+    "type": "词根分解",
+    "association": "蛛丝马迹",
+    "roots": "vestigium(脚印)"
+  },
+  "vex": {
+    "mnemonic": "vex = 维克斯恼怒了",
+    "type": "谐音记忆",
+    "association": "大动肝火",
+    "roots": "vexare(骚扰)"
+  },
+  "viable": {
+    "mnemonic": "vi(生命life) + able = 有生命力的,可行的",
+    "type": "词根分解",
+    "association": "切实可行",
+    "roots": "vita(生命)"
+  },
+  "vicarious": {
+    "mnemonic": "vicar(代理人) + ious = 代理的,间接体验的",
+    "type": "词根分解",
+    "association": "身临其境",
+    "roots": "vicis(变化)"
+  },
+  "vindicate": {
+    "mnemonic": "vind(力量) + icate = 用力证明,证明无辜",
+    "type": "词根分解",
+    "association": "洗清冤屈",
+    "roots": "vindicare(要求)"
+  },
+  "virtuoso": {
+    "mnemonic": "virtu(品德virtue) + oso = 有品德技艺的,大师",
+    "type": "词根分解",
+    "association": "炉火纯青",
+    "roots": "virtus(技艺)"
+  },
+  "vitriolic": {
+    "mnemonic": "vitriol(硫酸) + ic = 像硫酸一样刻薄的,尖刻的",
+    "type": "联想记忆",
+    "association": "恶毒攻击",
+    "roots": "vitriolum(硫酸盐)"
+  },
+  "vociferous": {
+    "mnemonic": "voc(声音voice) + ifer(带来) + ous = 大声带来的,喧闹的",
+    "type": "词根分解",
+    "association": "大吵大闹",
+    "roots": "vox(声音) + ferre(带来)"
+  },
+  "volatile": {
+    "mnemonic": "volat(飞fly) + ile = 能飞走的,易变的",
+    "type": "词根分解",
+    "association": "反复无常",
+    "roots": "volare(飞)"
+  },
+  "zealous": {
+    "mnemonic": "zeal(热情) + ous = 充满热情的,狂热的",
+    "type": "词根分解",
+    "association": "热情高涨",
+    "roots": "zelos(热情)"
+  },
+  "abstain": {
+    "mnemonic": "abs(离开) + tain(持有) = 不持有,戒绝",
+    "type": "词根分解",
+    "association": "坚决不碰",
+    "roots": "abs- + tenere(持有)"
+  },
+  "abstruse": {
+    "mnemonic": "abs(离开) + truse(推thrust) = 推得很远,深奥的",
+    "type": "词根分解",
+    "association": "晦涩难懂",
+    "roots": "abs- + trudere(推)"
+  },
+  "accolade": {
+    "mnemonic": "ac + coll(脖子collar) + ade = 挂在脖子上的奖章,荣誉",
+    "type": "联想记忆",
+    "association": "备受赞誉",
+    "roots": "ad- + collum(脖子)"
+  },
+  "acrid": {
+    "mnemonic": "acr(尖锐acre) + id = 尖锐刺鼻的,辛辣的",
+    "type": "词根分解",
+    "association": "刺鼻难闻",
+    "roots": "acer(尖锐的)"
+  },
+  "aggrandize": {
+    "mnemonic": "ag + grand(大) + ize = 使变大,夸大",
+    "type": "词根分解",
+    "association": "往脸上贴金",
+    "roots": "ad- + grandis(大的)"
+  },
+  "allay": {
+    "mnemonic": "al + lay(放下) = 放下担心,减轻",
+    "type": "联想记忆",
+    "association": "消除顾虑",
+    "roots": "古英语 alecgan(放下)"
+  },
+  "amalgamate": {
+    "mnemonic": "a + malga(混合) + mate = 混合在一起,合并",
+    "type": "词根分解",
+    "association": "融为一体",
+    "roots": "汞合金"
+  },
+  "amenable": {
+    "mnemonic": "amen(阿门) + able = 像说阿门一样顺从,顺从的",
+    "type": "联想记忆",
+    "association": "言听计从",
+    "roots": "amener(带到)"
+  },
+  "anachronistic": {
+    "mnemonic": "ana(错误) + chron(时间) + istic = 时间错误的,时代错误的",
+    "type": "词根分解",
+    "association": "不合时宜",
+    "roots": "ana- + chronos(时间)"
+  },
+  "anathema": {
+    "mnemonic": "ana(向上) + thema(放置) = 被高高放起诅咒,令人厌恶之物",
+    "type": "词根分解",
+    "association": "眼中钉肉中刺",
+    "roots": "anatithenai(诅咒)"
+  },
+  "antipathy": {
+    "mnemonic": "anti(反对) + pathy(感情) = 反对的感情,反感",
+    "type": "词根分解",
+    "association": "水火不容",
+    "roots": "anti- + pathos(感情)"
+  },
+  "apocryphal": {
+    "mnemonic": "apo(远离) + cryph(隐藏) + al = 隐藏起来的,可疑的",
+    "type": "词根分解",
+    "association": "无从考证",
+    "roots": "apo- + kryptein(隐藏)"
+  },
+  "approbation": {
+    "mnemonic": "ap + prob(证明prove) + ation = 证明好的,赞同",
+    "type": "词根分解",
+    "association": "拍手叫好",
+    "roots": "ad- + probare(证明)"
+  },
+  "arbitrary": {
+    "mnemonic": "arbitr(仲裁) + ary = 仲裁者说了算,武断的",
+    "type": "词根分解",
+    "association": "独断专行",
+    "roots": "arbiter(仲裁者)"
+  },
+  "assuage": {
+    "mnemonic": "as + suage(甜suave) = 使变甜,缓解",
+    "type": "词根分解",
+    "association": "药到病除",
+    "roots": "ad- + suavis(甜的)"
+  },
+  "avarice": {
+    "mnemonic": "avar(贪婪) + ice = 贪婪,贪财",
+    "type": "词根分解",
+    "association": "财迷心窍",
+    "roots": "avere(渴望)"
+  },
+  "belie": {
+    "mnemonic": "be + lie(谎言) = 用谎言掩盖,掩饰",
+    "type": "词根分解",
+    "association": "言行不一",
+    "roots": "古英语 beleogan(欺骗)"
+  },
+  "bellicose": {
+    "mnemonic": "bell(战争) + icose = 爱战争的,好战的",
+    "type": "词根分解",
+    "association": "穷兵黩武",
+    "roots": "bellum(战争)"
+  },
+  "beneficent": {
+    "mnemonic": "bene(好) + fic(做) + ent = 做好事的,仁慈的",
+    "type": "词根分解",
+    "association": "乐善好施",
+    "roots": "bene- + facere(做)"
+  },
+  "boorish": {
+    "mnemonic": "boor(农夫) + ish = 像农夫一样粗鲁的,粗野的",
+    "type": "联想记忆",
+    "association": "举止粗鲁",
+    "roots": "boer(农民)"
+  },
+  "buttress": {
+    "mnemonic": "butt(撞击) + ress = 撞击支撑,支持",
+    "type": "联想记忆",
+    "association": "大力支持",
+    "roots": "古法语 boter(推)"
+  },
+  "canonical": {
+    "mnemonic": "canon(规则) + ical = 符合规则的,经典的",
+    "type": "词根分解",
+    "association": "奉为圭臬",
+    "roots": "kanon(规则)"
+  },
+  "capitulate": {
+    "mnemonic": "capit(头) + ulate = 低头,投降",
+    "type": "词根分解",
+    "association": "举手投降",
+    "roots": "caput(头)"
+  },
+  "catalyst": {
+    "mnemonic": "cata(向下) + lyst(解开) = 向下解开加速反应,催化剂",
+    "type": "词根分解",
+    "association": "推波助澜",
+    "roots": "kata- + lyein(解开)"
+  },
+  "chauvinism": {
+    "mnemonic": "Chauvin(沙文) + ism = 沙文主义,盲目爱国",
+    "type": "联想记忆",
+    "association": "极端民族主义",
+    "roots": "Nicolas Chauvin(人名)"
+  },
+  "chicanery": {
+    "mnemonic": "chic(时髦) + anery = 时髦的欺骗,诡计",
+    "type": "联想记忆",
+    "association": "耍花招",
+    "roots": "chicane(诡辩)"
+  },
+  "circuitous": {
+    "mnemonic": "circuit(环路) + ous = 绕圈子的,迂回的",
+    "type": "词根分解",
+    "association": "兜圈子",
+    "roots": "circum- + ire(走)"
+  },
+  "codify": {
+    "mnemonic": "cod(代码code) + ify = 编成法典,编纂",
+    "type": "词根分解",
+    "association": "编写成册",
+    "roots": "codex(法典)"
+  },
+  "commensurate": {
+    "mnemonic": "com + mensur(测量measure) + ate = 一起测量,相称的",
+    "type": "词根分解",
+    "association": "相得益彰",
+    "roots": "com- + mensurare(测量)"
+  },
+  "compendium": {
+    "mnemonic": "com + pend(称重) + ium = 一起称重的,概要",
+    "type": "词根分解",
+    "association": "精华荟萃",
+    "roots": "com- + pendere(称重)"
+  },
+  "compliant": {
+    "mnemonic": "com + pli(弯曲) + ant = 弯曲顺从,顺从的",
+    "type": "词根分解",
+    "association": "唯命是从",
+    "roots": "com- + plicare(折叠)"
+  },
+  "connoisseur": {
+    "mnemonic": "conn(知道) + oisseur = 知道很多的人,鉴赏家",
+    "type": "词根分解",
+    "association": "行家里手",
+    "roots": "connaître(知道)"
+  },
+  "consecrate": {
+    "mnemonic": "con + secr(神圣sacred) + ate = 使神圣,奉献",
+    "type": "词根分解",
+    "association": "献身于",
+    "roots": "con- + sacrare(使神圣)"
+  },
+  "consummate": {
+    "mnemonic": "con + summ(最高sum) + ate = 达到最高,完美的",
+    "type": "词根分解",
+    "association": "炉火纯青",
+    "roots": "con- + summus(最高的)"
+  },
+  "contentious": {
+    "mnemonic": "con + tent(拉伸) + ious = 互相拉扯的,有争议的",
+    "type": "词根分解",
+    "association": "争论不休",
+    "roots": "con- + tendere(拉伸)"
+  },
+  "convoluted": {
+    "mnemonic": "con + volut(卷roll) + ed = 卷在一起的,复杂的",
+    "type": "词根分解",
+    "association": "错综复杂",
+    "roots": "con- + volvere(卷)"
+  },
+  "covet": {
+    "mnemonic": "cov(渴望) + et = 强烈渴望,觊觎",
+    "type": "词根分解",
+    "association": "垂涎三尺",
+    "roots": "cupiditas(欲望)"
+  },
+  "decorum": {
+    "mnemonic": "decor(装饰) + um = 装饰得当,礼仪",
+    "type": "词根分解",
+    "association": "彬彬有礼",
+    "roots": "decorus(合适的)"
+  },
+  "deference": {
+    "mnemonic": "de + fer(带来) + ence = 带来尊重,敬重",
+    "type": "词根分解",
+    "association": "毕恭毕敬",
+    "roots": "de- + ferre(带来)"
+  },
+  "demur": {
+    "mnemonic": "de + mur(拖延) = 拖延反对,反对",
+    "type": "词根分解",
+    "association": "提出异议",
+    "roots": "de- + morari(拖延)"
+  },
+  "denounce": {
+    "mnemonic": "de(向下) + nounce(宣布) = 向下宣布,谴责",
+    "type": "词根分解",
+    "association": "公开谴责",
+    "roots": "de- + nuntiare(宣布)"
+  },
+  "depravity": {
+    "mnemonic": "de + prav(歪曲) + ity = 歪曲道德,堕落",
+    "type": "词根分解",
+    "association": "道德败坏",
+    "roots": "de- + pravus(歪曲的)"
+  },
+  "deprecate": {
+    "mnemonic": "de + prec(祈祷) + ate = 祈祷远离,反对",
+    "type": "词根分解",
+    "association": "强烈反对",
+    "roots": "de- + precari(祈祷)"
+  },
+  "derivative": {
+    "mnemonic": "de + riv(河流river) + ative = 从河流来的,衍生的",
+    "type": "词根分解",
+    "association": "顺流而下",
+    "roots": "de- + rivus(小河)"
+  },
+  "desiccate": {
+    "mnemonic": "de + sicc(干燥) + ate = 使变干,干燥",
+    "type": "词根分解",
+    "association": "干瘪枯萎",
+    "roots": "de- + siccare(变干)"
+  },
+  "diffidence": {
+    "mnemonic": "dif(不) + fid(信任faith) + ence = 不自信,羞怯",
+    "type": "词根分解",
+    "association": "缩手缩脚",
+    "roots": "dis- + fidere(信任)"
+  },
+  "dilatory": {
+    "mnemonic": "di + lat(带来) + ory = 拖延带来的,拖延的",
+    "type": "词根分解",
+    "association": "磨磨蹭蹭",
+    "roots": "dilatus(延迟的)"
+  },
+  "dilettante": {
+    "mnemonic": "dilett(喜爱delight) + ante = 喜爱但不精通,业余爱好者",
+    "type": "联想记忆",
+    "association": "三分钟热度",
+    "roots": "dilettare(使高兴)"
+  },
+  "disabuse": {
+    "mnemonic": "dis(去除) + abuse(误用) = 去除误解,使醒悟",
+    "type": "词根分解",
+    "association": "纠正错误认识",
+    "roots": "dis- + abuser(欺骗)"
+  },
+  "discordant": {
+    "mnemonic": "dis(不) + cord(心) + ant = 心不一致的,不和谐的",
+    "type": "词根分解",
+    "association": "格格不入",
+    "roots": "dis- + cor(心)"
+  },
+  "dispassionate": {
+    "mnemonic": "dis(不) + passion(激情) + ate = 没有激情的,冷静的",
+    "type": "词根分解",
+    "association": "不带感情色彩",
+    "roots": "dis- + passio(感情)"
+  },
+  "dissemble": {
+    "mnemonic": "dis + semble(相似resemble) = 使不相似,掩饰",
+    "type": "词根分解",
+    "association": "口是心非",
+    "roots": "dis- + simulare(假装)"
+  },
+  "dissolution": {
+    "mnemonic": "dis + solut(松开) + ion = 松开分解,解散",
+    "type": "词根分解",
+    "association": "土崩瓦解",
+    "roots": "dis- + solvere(松开)"
+  },
+  "dissonance": {
+    "mnemonic": "dis(不) + son(声音sound) + ance = 声音不和谐,不和谐",
+    "type": "词根分解",
+    "association": "杂音刺耳",
+    "roots": "dis- + sonare(发声)"
+  },
+  "effervescent": {
+    "mnemonic": "ef + ferv(沸腾fervent) + escent = 沸腾冒泡的,兴奋的",
+    "type": "词根分解",
+    "association": "热情洋溢",
+    "roots": "ex- + fervescere(开始沸腾)"
+  },
+  "efficacy": {
+    "mnemonic": "ef + fic(做) + acy = 能做出效果的,功效",
+    "type": "词根分解",
+    "association": "药到病除",
+    "roots": "ex- + facere(做)"
+  },
+  "effrontery": {
+    "mnemonic": "ef + front(前额forehead) + ery = 把脸凑上去,厚颜无耻",
+    "type": "词根分解",
+    "association": "恬不知耻",
+    "roots": "ex- + frons(前额)"
+  },
+  "elaborate": {
+    "mnemonic": "e + labor(劳动) + ate = 用心劳动的,精心制作的",
+    "type": "词根分解",
+    "association": "精雕细琢",
+    "roots": "e- + laborare(工作)"
+  },
+  "eloquent": {
+    "mnemonic": "e(出) + loqu(说) + ent = 说得好的,雄辩的",
+    "type": "词根分解",
+    "association": "口若悬河",
+    "roots": "e- + loqui(说话)"
+  },
+  "embellish": {
+    "mnemonic": "em + bell(美丽belle) + ish = 使美丽,修饰",
+    "type": "词根分解",
+    "association": "添油加醋",
+    "roots": "en- + bellus(美丽的)"
+  },
+  "engender": {
+    "mnemonic": "en + gender(产生) = 产生,引起",
+    "type": "词根分解",
+    "association": "引发后果",
+    "roots": "en- + generare(产生)"
+  },
+  "enmity": {
+    "mnemonic": "en + mity(敌意enemy) = 敌意,仇恨",
+    "type": "词根分解",
+    "association": "反目成仇",
+    "roots": "inimicus(敌人)"
+  },
+  "enumerate": {
+    "mnemonic": "e + numer(数number) + ate = 一个个数出来,列举",
+    "type": "词根分解",
+    "association": "如数家珍",
+    "roots": "e- + numerare(数)"
+  },
+  "equitable": {
+    "mnemonic": "equit(公平equal) + able = 公平的",
+    "type": "词根分解",
+    "association": "公平合理",
+    "roots": "aequus(相等的)"
+  },
+  "eschew": {
+    "mnemonic": "es + chew(咀嚼) = 吐出不嚼,避开",
+    "type": "联想记忆",
+    "association": "敬而远之",
+    "roots": "古法语 eschiver(逃避)"
+  },
+  "espouse": {
+    "mnemonic": "e + spouse(配偶) = 像娶妻一样拥护,支持",
+    "type": "联想记忆",
+    "association": "坚定拥护",
+    "roots": "sponsus(订婚的)"
+  },
+  "euphemism": {
+    "mnemonic": "eu(好) + phem(说) + ism = 说好话,委婉语",
+    "type": "词根分解",
+    "association": "委婉表达",
+    "roots": "eu- + pheme(说话)"
+  },
+  "exacting": {
+    "mnemonic": "ex + act(行动) + ing = 强迫行动的,严格的",
+    "type": "词根分解",
+    "association": "严格要求",
+    "roots": "ex- + agere(驱动)"
+  },
+  "exculpate": {
+    "mnemonic": "ex(出) + culp(罪culprit) + ate = 从罪中出来,开脱",
+    "type": "词根分解",
+    "association": "洗清罪名",
+    "roots": "ex- + culpa(罪)"
+  },
+  "exemplary": {
+    "mnemonic": "ex + empl(范例example) + ary = 可作范例的,模范的",
+    "type": "词根分解",
+    "association": "可圈可点",
+    "roots": "exemplum(样本)"
+  },
+  "exigent": {
+    "mnemonic": "ex + ig(驱动) + ent = 驱动迫切的,紧急的",
+    "type": "词根分解",
+    "association": "刻不容缓",
+    "roots": "exigere(要求)"
+  },
+  "explicit": {
+    "mnemonic": "ex + plic(折叠) + it = 展开的,明确的",
+    "type": "词根分解",
+    "association": "毫不隐晦",
+    "roots": "ex- + plicare(折叠)"
+  },
+  "extant": {
+    "mnemonic": "ex + tant(站stand) = 站着存在的,现存的",
+    "type": "词根分解",
+    "association": "仍然存在",
+    "roots": "ex- + stare(站立)"
+  },
+  "extemporaneous": {
+    "mnemonic": "ex + tempor(时间) + aneous = 超出时间准备的,即兴的",
+    "type": "词根分解",
+    "association": "信口开河",
+    "roots": "ex- + tempus(时间)"
+  },
+  "extraneous": {
+    "mnemonic": "extra(外部) + neous = 外部的,无关的",
+    "type": "词根分解",
+    "association": "不相干的",
+    "roots": "extraneus(外部的)"
+  },
+  "fatuous": {
+    "mnemonic": "fat(胖) + uous = 脑袋肥,愚蠢的",
+    "type": "联想记忆",
+    "association": "自以为是",
+    "roots": "fatuus(愚蠢的)"
+  },
+  "fecund": {
+    "mnemonic": "fe + cund(产生) = 能产生的,多产的",
+    "type": "词根分解",
+    "association": "硕果累累",
+    "roots": "fecundus(肥沃的)"
+  },
+  "fervid": {
+    "mnemonic": "ferv(沸腾) + id = 沸腾的,狂热的",
+    "type": "词根分解",
+    "association": "热血沸腾",
+    "roots": "fervere(沸腾)"
+  },
+  "forestall": {
+    "mnemonic": "fore(前) + stall(阻止) = 提前阻止,预防",
+    "type": "词根分解",
+    "association": "防患于未然",
+    "roots": "fore- + steall(位置)"
+  },
+  "fractious": {
+    "mnemonic": "fract(打破) + ious = 爱打破规矩的,易怒的",
+    "type": "词根分解",
+    "association": "不服管教",
+    "roots": "frangere(打破)"
+  },
+  "glib": {
+    "mnemonic": "g + lib(舌头lip) = 舌头灵活的,油嘴滑舌的",
+    "type": "联想记忆",
+    "association": "巧舌如簧",
+    "roots": "古英语 glibber(滑的)"
+  },
+  "grandiloquent": {
+    "mnemonic": "grand(大) + loqu(说) + ent = 说大话的,夸张的",
+    "type": "词根分解",
+    "association": "言过其实",
+    "roots": "grandis(大) + loqui(说)"
+  },
+  "gratuitous": {
+    "mnemonic": "grat(感谢) + uitous = 免费给的,无理由的",
+    "type": "词根分解",
+    "association": "无缘无故",
+    "roots": "gratuitus(免费的)"
+  },
+  "hapless": {
+    "mnemonic": "hap(运气) + less = 没运气的,不幸的",
+    "type": "词根分解",
+    "association": "命运多舛",
+    "roots": "hap(运气)"
+  },
+  "harangue": {
+    "mnemonic": "har + angue(长话) = 长篇大论的训斥",
+    "type": "联想记忆",
+    "association": "慷慨激昂地演讲",
+    "roots": "古法语 arenge(公开演讲)"
+  },
+  "impassive": {
+    "mnemonic": "im(不) + passive(被动) = 不被感情影响的,冷漠的",
+    "type": "词根分解",
+    "association": "面无表情",
+    "roots": "in- + pati(忍受)"
+  },
+  "impervious": {
+    "mnemonic": "im(不) + perv(穿过) + ious = 穿不过的,不受影响的",
+    "type": "词根分解",
+    "association": "刀枪不入",
+    "roots": "in- + pervius(可穿过的)"
+  },
+  "implacable": {
+    "mnemonic": "im(不) + plac(平静please) + able = 不能平静的,不能安抚的",
+    "type": "词根分解",
+    "association": "不依不饶",
+    "roots": "in- + placare(安抚)"
+  },
+  "impugn": {
+    "mnemonic": "im + pugn(打fight) = 攻击,质疑",
+    "type": "词根分解",
+    "association": "横加指责",
+    "roots": "in- + pugnare(战斗)"
+  },
+  "impute": {
+    "mnemonic": "im + pute(思考compute) = 往某人身上想,归咎于",
+    "type": "词根分解",
+    "association": "嫁祸于人",
+    "roots": "in- + putare(认为)"
+  },
+  "inchoate": {
+    "mnemonic": "in + cho(开始) + ate = 刚开始的,初期的",
+    "type": "词根分解",
+    "association": "尚未成形",
+    "roots": "in- + cohare(开始)"
+  },
+  "incorrigible": {
+    "mnemonic": "in(不) + corrig(改正correct) + ible = 不能改正的,屡教不改的",
+    "type": "词根分解",
+    "association": "死不悔改",
+    "roots": "in- + corrigere(改正)"
+  },
+  "indifferent": {
+    "mnemonic": "in(不) + different(不同) = 无差别对待,漠不关心的",
+    "type": "词根分解",
+    "association": "置身事外",
+    "roots": "in- + differre(不同)"
+  },
+  "indignant": {
+    "mnemonic": "in(不) + dign(尊严dignity) + ant = 不受尊重的,愤怒的",
+    "type": "词根分解",
+    "association": "义愤填膺",
+    "roots": "in- + dignus(值得的)"
+  },
+  "indomitable": {
+    "mnemonic": "in(不) + domit(驯服) + able = 不能驯服的,不屈的",
+    "type": "词根分解",
+    "association": "百折不挠",
+    "roots": "in- + domare(驯服)"
+  },
+  "indulgent": {
+    "mnemonic": "in + dulg(甜sweet) + ent = 给甜的,纵容的",
+    "type": "词根分解",
+    "association": "百依百顺",
+    "roots": "indulgere(放纵)"
+  },
+  "ineluctable": {
+    "mnemonic": "in(不) + e + luct(挣扎) + able = 无法挣脱的,不可避免的",
+    "type": "词根分解",
+    "association": "在劫难逃",
+    "roots": "in- + eluctari(挣脱)"
+  },
+  "inexorable": {
+    "mnemonic": "in(不) + exor(祈求) + able = 祈求也没用的,无情的",
+    "type": "词根分解",
+    "association": "铁面无私",
+    "roots": "in- + exorare(恳求)"
+  },
+  "inimical": {
+    "mnemonic": "in + imic(敌人enemy) + al = 敌对的,有害的",
+    "type": "词根分解",
+    "association": "水火不容",
+    "roots": "inimicus(敌人)"
+  },
+  "inscrutable": {
+    "mnemonic": "in(不) + scrut(检查) + able = 无法检查的,难以理解的",
+    "type": "词根分解",
+    "association": "高深莫测",
+    "roots": "in- + scrutari(检查)"
+  },
+  "insolent": {
+    "mnemonic": "in(不) + sol(习惯) + ent = 不习惯服从的,傲慢的",
+    "type": "词根分解",
+    "association": "目中无人",
+    "roots": "in- + solere(习惯于)"
+  },
+  "instigate": {
+    "mnemonic": "in + stig(刺激) + ate = 刺激促使,煽动",
+    "type": "词根分解",
+    "association": "挑拨离间",
+    "roots": "in- + stigare(刺激)"
+  },
+  "integrity": {
+    "mnemonic": "in + tegr(完整integer) + ity = 完整性,正直",
+    "type": "词根分解",
+    "association": "表里如一",
+    "roots": "integer(完整的)"
+  },
+  "interminable": {
+    "mnemonic": "in(不) + termin(结束terminate) + able = 不能结束的,无止境的",
+    "type": "词根分解",
+    "association": "没完没了",
+    "roots": "in- + terminare(结束)"
+  },
+  "intractable": {
+    "mnemonic": "in(不) + tract(拉) + able = 拉不动的,难对付的",
+    "type": "词根分解",
+    "association": "油盐不进",
+    "roots": "in- + tractare(拉)"
+  },
+  "intransigent": {
+    "mnemonic": "in(不) + trans(穿过) + ig + ent = 不让穿过的,不妥协的",
+    "type": "词根分解",
+    "association": "寸步不让",
+    "roots": "in- + transigere(达成协议)"
+  },
+  "inveterate": {
+    "mnemonic": "in + veter(老veteran) + ate = 根深蒂固的",
+    "type": "词根分解",
+    "association": "积习难改",
+    "roots": "in- + vetus(老的)"
+  },
+  "invidious": {
+    "mnemonic": "in + vid(看video) + ious = 看了嫉妒的,惹人反感的",
+    "type": "词根分解",
+    "association": "招人嫉妒",
+    "roots": "in- + videre(看)"
+  },
+  "jocular": {
+    "mnemonic": "joc(笑话joke) + ular = 爱说笑话的,诙谐的",
+    "type": "词根分解",
+    "association": "插科打诨",
+    "roots": "joculus(小笑话)"
+  },
+  "juxtapose": {
+    "mnemonic": "juxta(旁边) + pose(放置) = 放在旁边,并列",
+    "type": "词根分解",
+    "association": "放在一起比较",
+    "roots": "juxta- + ponere(放置)"
+  },
+  "labyrinthine": {
+    "mnemonic": "labyrinth(迷宫) + ine = 像迷宫一样,错综复杂的",
+    "type": "词根分解",
+    "association": "九曲十八弯",
+    "roots": "labyrinthos(迷宫)"
+  },
+  "lachrymose": {
+    "mnemonic": "lachrym(眼泪) + ose = 爱流泪的,悲伤的",
+    "type": "词根分解",
+    "association": "动辄落泪",
+    "roots": "lacrima(眼泪)"
+  },
+  "latent": {
+    "mnemonic": "lat(隐藏) + ent = 隐藏的,潜在的",
+    "type": "词根分解",
+    "association": "潜伏待发",
+    "roots": "latere(隐藏)"
+  },
+  "laudable": {
+    "mnemonic": "laud(赞美) + able = 值得赞美的,值得称赞的",
+    "type": "词根分解",
+    "association": "可圈可点",
+    "roots": "laudare(赞美)"
+  },
+  "levity": {
+    "mnemonic": "lev(轻light) + ity = 轻率,轻浮",
+    "type": "词根分解",
+    "association": "举重若轻",
+    "roots": "levis(轻的)"
+  },
+  "litigate": {
+    "mnemonic": "lit(争论) + ig + ate = 争论打官司,诉讼",
+    "type": "词根分解",
+    "association": "对簿公堂",
+    "roots": "lis(诉讼)"
+  }
+}
