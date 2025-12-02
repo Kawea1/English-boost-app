@@ -1017,15 +1017,43 @@ function openModule(moduleName) {
                 if (typeof initResourcesModule === 'function') initResourcesModule();
                 else console.error('initResourcesModule not found');
                 break;
+            case 'writing':
+                console.log('Initializing writing module');
+                // 写作模块使用module-page而非modal
+                var writingModule = document.getElementById('writing-module');
+                if (writingModule) {
+                    writingModule.classList.remove('hidden');
+                    if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
+                        WritingModule.showHistory();
+                    }
+                }
+                break;
         }
         console.log('Module initialization complete');
     } else {
-        console.error('Modal not found for:', modalId);
+        // 检查是否是module-page类型的模块
+        if (moduleName === 'writing') {
+            var writingModule = document.getElementById('writing-module');
+            if (writingModule) {
+                writingModule.classList.remove('hidden');
+                var bottomNav = document.getElementById('bottomNav');
+                if (bottomNav) bottomNav.classList.add('hidden');
+                if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
+                    WritingModule.showHistory();
+                }
+            }
+        } else {
+            console.error('Modal not found for:', modalId);
+        }
     }
 }
 
 function closeModule() {
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    
+    // 关闭module-page类型的模块
+    document.querySelectorAll('.module-page').forEach(m => m.classList.add('hidden'));
+    
     currentModule = null;
     
     // 显示底部导航栏
@@ -1386,6 +1414,7 @@ function cleanupSettingsBottomBar() {
 // ==================== 应用初始化 ====================
 document.addEventListener('DOMContentLoaded', function() {
     console.log('=== English Boost App Initializing ===');
+    console.log('📅 时间:', new Date().toISOString());
     
     // 版本10：首次使用时显示适龄提示（《未成年人保护法》合规）
     if (typeof checkAgeDisclaimer === 'function') {
@@ -1407,10 +1436,76 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('  - mainApp:', !!document.getElementById('mainApp'));
     console.log('  - vocabularyModal:', !!document.getElementById('vocabularyModal'));
     
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-    console.log('3. 登录状态:', isLoggedIn);
+    // V1-V10: 改进的登录状态检查
+    console.log('3. V1-V10: 开始登录状态检查...');
     
-    if (isLoggedIn) {
+    // V1: 直接检查isLoggedIn
+    let finalLoginStatus = localStorage.getItem('isLoggedIn') === 'true';
+    console.log('V1: isLoggedIn直接检查:', finalLoginStatus);
+    
+    // V2: 如果isLoggedIn为false，检查checkAuth函数
+    if (!finalLoginStatus && typeof checkAuth === 'function') {
+        finalLoginStatus = checkAuth();
+        console.log('V2: checkAuth结果:', finalLoginStatus);
+    }
+    
+    // V3: 检查checkTrialActivation
+    if (!finalLoginStatus && typeof checkTrialActivation === 'function') {
+        finalLoginStatus = checkTrialActivation();
+        console.log('V3: checkTrialActivation结果:', finalLoginStatus);
+    }
+    
+    // V4: 检查isDeviceActivated
+    if (!finalLoginStatus && typeof isDeviceActivated === 'function') {
+        finalLoginStatus = isDeviceActivated();
+        console.log('V4: isDeviceActivated结果:', finalLoginStatus);
+    }
+    
+    // V5: 直接读取eb_activation_state（最后防线）
+    if (!finalLoginStatus) {
+        try {
+            const activationState = JSON.parse(localStorage.getItem('eb_activation_state') || 'null');
+            if (activationState) {
+                console.log('V5: eb_activation_state内容:', {
+                    isActivated: activationState.isActivated,
+                    trialStartDate: activationState.trialStartDate ? '有' : '无'
+                });
+                
+                // V6: 检查是否激活（试用或正式）
+                if (activationState.isActivated) {
+                    // 如果是试用，检查是否过期
+                    if (activationState.trialStartDate) {
+                        const trialDays = activationState.trialDays || 30;
+                        const trialEnd = activationState.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+                        if (Date.now() < trialEnd) {
+                            localStorage.setItem('isLoggedIn', 'true');
+                            finalLoginStatus = true;
+                            console.log('V6: 试用有效，已自动登录');
+                        } else {
+                            console.log('V6: 试用已过期');
+                        }
+                    } else {
+                        // 非试用激活
+                        localStorage.setItem('isLoggedIn', 'true');
+                        finalLoginStatus = true;
+                        console.log('V6: 正式激活有效');
+                    }
+                }
+            }
+        } catch (e) {
+            console.warn('V5-V6: 检查激活状态失败', e);
+        }
+    }
+    
+    // V7: 最终再次确认isLoggedIn
+    if (finalLoginStatus && localStorage.getItem('isLoggedIn') !== 'true') {
+        localStorage.setItem('isLoggedIn', 'true');
+        console.log('V7: 强制设置isLoggedIn=true');
+    }
+    
+    console.log('📊 最终登录状态:', finalLoginStatus);
+    
+    if (finalLoginStatus) {
         const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
         const savedDeviceId = localStorage.getItem('deviceId');
         

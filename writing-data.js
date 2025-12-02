@@ -1976,6 +1976,454 @@ function getRandomTopic(filters = {}) {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// ==================== V31-V35: 扩展更多题目 ====================
+
+// V31: 更多 GRE Issue 题目
+GRE_ISSUE_TOPICS.push({
+  id: 'gre_issue_004',
+  type: WRITING_TYPES.GRE_ISSUE,
+  topic: TOPIC_CATEGORIES.SOCIETY,
+  difficulty: DIFFICULTY_LEVELS.ADVANCED,
+  timeLimit: 1800,
+  wordCount: { min: 500, max: 700 },
+  
+  title: "Competition vs. Cooperation",
+  
+  prompt: "Competition for high grades seriously limits the quality of learning at all levels of education.",
+  
+  instructions: "Write a response in which you discuss the extent to which you agree or disagree with the statement and explain your reasoning for the position you take. In developing and supporting your position, you should consider ways in which the statement might or might not hold true and explain how these considerations shape your position.",
+  
+  keyConsiderations: [
+    "Different types of learning goals",
+    "Intrinsic vs. extrinsic motivation",
+    "Effects on collaboration and knowledge sharing",
+    "Stress and mental health implications",
+    "Real-world applicability of competitive skills"
+  ],
+  
+  sampleOutline: {
+    position: "Partially agree - competition has mixed effects depending on context",
+    paragraph1: "Competition can motivate effort but may distort learning priorities",
+    paragraph2: "Grade focus encourages strategic rather than deep learning",
+    paragraph3: "However, some competitive pressure prepares students for real-world challenges",
+    conclusion: "Balanced approach combining healthy competition with collaborative learning"
+  },
+  
+  sampleResponse: `The claim that competition for high grades limits learning quality captures an important tension in educational design. While I partially agree that excessive grade competition can distort learning priorities, the relationship between competition and educational quality is more nuanced than the statement suggests.
+
+Competition for grades does create problematic incentives in several ways. When students focus primarily on maximizing scores, they may adopt strategic behaviors that undermine genuine understanding. Memorizing information for tests rather than developing conceptual mastery, choosing easier courses to protect GPAs, and viewing classmates as rivals rather than collaborators all represent rational responses to competitive pressures that nevertheless diminish educational value. Research consistently shows that intrinsic motivation—curiosity, interest, sense of purpose—produces deeper and more lasting learning than extrinsic rewards like grades.
+
+Furthermore, intense grade competition can damage the collaborative dynamics essential to modern learning. Complex problems increasingly require diverse perspectives and collective intelligence. When students compete rather than cooperate, they may hoard insights rather than share them, creating an environment where collective knowledge growth is limited. The competitive classroom models an outdated individualistic paradigm poorly suited to contemporary professional realities.
+
+However, the statement overstates its case by suggesting competition universally limits learning quality. Moderate competitive pressure can energize students who might otherwise coast, providing external structure for those who struggle with self-motivation. Competition also teaches valuable meta-skills—performing under pressure, managing time strategically, accepting and learning from setbacks—that serve students beyond academic contexts. The problem lies not in competition itself but in systems that make grades the dominant or exclusive metric of success.
+
+The resolution lies in designing educational environments that harness competition's motivational benefits while mitigating its distorting effects. This might include multiple assessment methods that reward different types of excellence, grading systems that emphasize mastery over relative ranking, and explicit cultivation of collaborative skills alongside individual achievement.
+
+In conclusion, while unrestrained grade competition can indeed limit learning quality by distorting incentives and undermining collaboration, well-designed educational systems can channel competitive instincts productively. The goal should be not eliminating competition but balancing it with structures that promote deep learning and cooperative skill development.`,
+  
+  scoringCriteria: {
+    analysis: "Nuanced examination of competition's effects",
+    reasoning: "Consideration of both benefits and drawbacks",
+    organization: "Clear structure with balanced treatment",
+    language: "Sophisticated academic vocabulary"
+  }
+});
+
+// V31: 更多 GRE Argument 题目
+GRE_ARGUMENT_TOPICS.push({
+  id: 'gre_arg_003',
+  type: WRITING_TYPES.GRE_ARGUMENT,
+  topic: TOPIC_CATEGORIES.HEALTH,
+  difficulty: DIFFICULTY_LEVELS.ADVANCED,
+  timeLimit: 1800,
+  wordCount: { min: 500, max: 700 },
+  
+  title: "Health Supplement Recommendation",
+  
+  prompt: `The following appeared in a health magazine:
+
+"A study of over 1,000 adults found that those who took a daily vitamin D supplement had 40% fewer respiratory infections over a two-year period than those who did not take supplements. The study participants who took supplements also reported higher energy levels and better mood. Therefore, all adults should take daily vitamin D supplements to improve their health and prevent respiratory infections."`,
+  
+  instructions: "Write a response in which you discuss what specific evidence is needed to evaluate the argument and explain how the evidence would weaken or strengthen the argument.",
+  
+  logicalFlaws: [
+    "Correlation vs. causation not established",
+    "Self-selection bias in supplement users",
+    "No control for confounding variables (diet, exercise, lifestyle)",
+    "Self-reported outcomes (energy, mood) unreliable",
+    "Generalization from specific population to all adults"
+  ],
+  
+  sampleResponse: `The health magazine's recommendation that all adults take daily vitamin D supplements rests on a study with significant methodological limitations. Before accepting this sweeping recommendation, we would need additional evidence addressing several critical gaps.
+
+First, we need evidence about how study participants were assigned to the supplement and non-supplement groups. If participants self-selected—choosing whether to take supplements based on personal preferences—the two groups likely differ in ways beyond vitamin D intake. Health-conscious individuals who choose supplements may also exercise more, eat better, sleep adequately, and manage stress effectively. These confounding factors, rather than vitamin D itself, might explain the observed health differences. Evidence from a randomized controlled trial, where participants are randomly assigned to supplement or placebo groups, would substantially strengthen the causal claim.
+
+Second, information about participants' baseline vitamin D levels would help evaluate the argument. If supplement-takers were vitamin D deficient while non-takers had adequate levels, the benefits might reflect correcting deficiency rather than general supplementation value. Conversely, if both groups had similar starting levels, the case for universal supplementation would be stronger. Without this data, we cannot determine whether supplements benefit everyone or only those with existing deficiencies.
+
+Third, we need objective measures of the reported outcomes. The study mentions participants "reported" higher energy levels and better mood—subjective assessments vulnerable to placebo effects and expectation bias. People who believe supplements improve health may perceive benefits even without physiological changes. Laboratory measures of immune function, validated depression scales, or objective productivity metrics would provide more reliable evidence than self-reports.
+
+Fourth, evidence about the study population's characteristics would help assess generalizability. The recommendation targets "all adults," but the study participants may represent a narrow demographic—perhaps predominantly one age group, geographic region, or health status. If participants were elderly individuals in northern climates with limited sun exposure, results might not apply to young adults in sunny regions. Information about participant diversity is essential for evaluating the universal recommendation.
+
+Finally, we would benefit from evidence about potential risks of vitamin D supplementation. The argument focuses exclusively on benefits while ignoring possible harms. Excessive vitamin D can cause toxicity, and long-term supplementation effects may differ from short-term outcomes. A complete evaluation requires weighing benefits against potential risks.
+
+In conclusion, while the study provides suggestive evidence that vitamin D supplements may benefit some adults, the evidence needed to justify universal supplementation includes randomized trial data, baseline vitamin D measurements, objective outcome measures, diverse participant demographics, and risk assessment. Without such evidence, the sweeping recommendation is premature.`,
+  
+  scoringCriteria: {
+    analysis: "Identification of specific evidence needs",
+    reasoning: "Clear explanation of how evidence affects argument",
+    organization: "Systematic treatment of evidentiary gaps",
+    language: "Precise analytical expression"
+  }
+});
+
+// V32: 更多雅思 Task 1 题目 - 表格
+IELTS_TASK1_TOPICS.push({
+  id: 'ielts_t1_004',
+  type: WRITING_TYPES.IELTS_TASK1_TABLE,
+  topic: TOPIC_CATEGORIES.EDUCATION,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 1200,
+  wordCount: { min: 150, max: 200 },
+  
+  title: "University Graduate Employment Rates",
+  
+  chartDescription: "The table shows the percentage of university graduates in employment within six months of graduation, by field of study, in 2010 and 2020.",
+  
+  chartData: {
+    type: "table",
+    headers: ["Field of Study", "2010 (%)", "2020 (%)"],
+    rows: [
+      ["Medicine", 98, 99],
+      ["Engineering", 89, 92],
+      ["Computer Science", 85, 95],
+      ["Business", 78, 82],
+      ["Law", 82, 75],
+      ["Arts & Humanities", 65, 58],
+      ["Social Sciences", 70, 68]
+    ]
+  },
+  
+  prompt: "Summarise the information by selecting and reporting the main features, and make comparisons where relevant.",
+  
+  keyFeatures: [
+    "Medicine consistently highest employment rate",
+    "Computer Science showed largest increase",
+    "Law and Arts/Humanities declined",
+    "Overall trend: STEM fields improved, humanities declined",
+    "Gap between highest and lowest widened"
+  ],
+  
+  sampleResponse: `The table compares graduate employment rates across seven fields of study in 2010 and 2020, measuring the percentage employed within six months of graduation.
+
+Overall, STEM-related fields generally maintained or improved their employment rates, while humanities and some social sciences experienced declines. Medicine remained the highest-performing field throughout, while Arts and Humanities had the lowest rates in both years.
+
+Medicine graduates achieved near-universal employment, rising slightly from 98% to 99%. Computer Science showed the most dramatic improvement, jumping from 85% to 95%—a 10 percentage point increase that reflects growing demand for technology professionals. Engineering also improved moderately, from 89% to 92%.
+
+In contrast, several fields experienced declining employment prospects. Law dropped notably from 82% to 75%, suggesting increased competition in the legal profession. Arts and Humanities fell from an already low 65% to just 58%, while Social Sciences edged down slightly from 70% to 68%.
+
+Business graduates saw modest improvement from 78% to 82%, positioning them in the middle range.
+
+In summary, the data reveals a widening gap between technology-oriented fields and humanities, with the difference between highest and lowest employment rates expanding from 33 to 41 percentage points over the decade.`,
+  
+  vocabulary: ["employment rate", "percentage point", "dramatic improvement", "declining prospects", "widening gap"]
+});
+
+// V32: 更多雅思 Task 2 题目
+IELTS_TASK2_TOPICS.push({
+  id: 'ielts_t2_003',
+  type: WRITING_TYPES.IELTS_TASK2,
+  topic: TOPIC_CATEGORIES.TECHNOLOGY,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 2400,
+  wordCount: { min: 250, max: 300 },
+  
+  title: "Social Media Age Restrictions",
+  
+  questionType: "Advantages/Disadvantages + Opinion",
+  
+  prompt: "Many people believe that social media sites should set a minimum age limit for users. What are the advantages and disadvantages of this? Give your own opinion.",
+  
+  keyPoints: {
+    advantages: [
+      "Protects children from cyberbullying and harmful content",
+      "Reduces social comparison and mental health issues",
+      "Allows time for emotional maturity before online exposure"
+    ],
+    disadvantages: [
+      "Difficult to enforce effectively",
+      "May push children to lie about age or use alternative platforms",
+      "Excludes children from educational benefits and social connections"
+    ]
+  },
+  
+  sampleResponse: `The question of whether social media platforms should enforce minimum age requirements has become increasingly relevant as digital technology pervades children's lives. While age restrictions offer significant protective benefits, they also present practical challenges that deserve careful consideration.
+
+The primary advantage of minimum age limits is protection from documented harms. Research consistently links early social media use with increased anxiety, depression, and body image issues among young people. Children lack the emotional maturity to navigate online social dynamics, making them vulnerable to cyberbullying and manipulation. Age restrictions would provide a buffer period for developing resilience before exposure to these pressures.
+
+Additionally, limiting young children's access could reduce harmful social comparison behaviors. Platforms designed to maximize engagement often promote unrealistic lifestyle portrayals that negatively affect developing self-esteem. Delaying exposure until adolescence might allow children to develop more secure identities.
+
+However, significant disadvantages complicate this approach. Enforcement presents enormous practical challenges—children can easily lie about their ages, and parents may create accounts on children's behalf. Strict restrictions might simply drive usage underground, where parental oversight becomes even more difficult.
+
+Furthermore, social media offers genuine educational and social benefits that age restrictions would deny young users. Many children use platforms to connect with family, pursue creative interests, and access educational content. Complete exclusion seems both impractical and potentially counterproductive.
+
+In my view, rather than strict age cutoffs, a more effective approach combines graduated access with robust parental controls and digital literacy education. Platforms could offer age-appropriate versions with limited features, while schools teach critical evaluation of online content. This balanced strategy addresses legitimate protection concerns while acknowledging the impossibility of complete restriction in our digital age.`,
+  
+  vocabulary: ["pervades", "documented harms", "resilience", "social comparison", "graduated access", "digital literacy"]
+});
+
+// V33: 更多考研作文题目
+KAOYAN_TOPICS.push({
+  id: 'kaoyan_app_003',
+  type: WRITING_TYPES.KAOYAN_APPLICATION,
+  topic: TOPIC_CATEGORIES.EDUCATION,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 900,
+  wordCount: { min: 100, max: 150 },
+  
+  title: "感谢信",
+  
+  prompt: "Directions: You have just received a scholarship from a foundation. Write a letter to express your gratitude. Your letter should include: 1) your appreciation for the scholarship, 2) how you plan to use the opportunity, 3) your future goals.",
+  
+  format: {
+    greeting: "Dear Sir or Madam,",
+    body: "Three paragraphs as specified",
+    closing: "Yours sincerely, Li Ming"
+  },
+  
+  sampleResponse: `Dear Sir or Madam,
+
+I am writing to express my heartfelt gratitude for being selected as a recipient of the Excellence Scholarship from your foundation. This generous support means a great deal to me and will significantly impact my academic journey.
+
+With this scholarship, I plan to dedicate more time to my research without the burden of part-time work. I intend to use part of the funds to purchase essential research materials and attend academic conferences in my field. This financial support will allow me to focus entirely on my studies and produce higher quality work.
+
+My ultimate goal is to complete my doctoral dissertation with distinction and contribute meaningful research to my field. I hope to eventually become a university professor and continue the tradition of supporting deserving students, just as your foundation has supported me. I promise to work diligently to justify your confidence in my potential.
+
+Yours sincerely,
+Li Ming`,
+  
+  keyElements: [
+    "Express genuine gratitude",
+    "Specific plans for using the scholarship",
+    "Connect to future aspirations",
+    "Promise of dedication"
+  ]
+});
+
+// V33: 更多图画作文
+KAOYAN_TOPICS.push({
+  id: 'kaoyan_pic_002',
+  type: WRITING_TYPES.KAOYAN_PICTURE,
+  topic: TOPIC_CATEGORIES.CULTURE,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 2400,
+  wordCount: { min: 160, max: 200 },
+  
+  title: "传统文化传承",
+  
+  pictureDescription: "A cartoon showing two images side by side: on the left, an elderly person teaching a child traditional calligraphy; on the right, the same child years later teaching their own child. The caption reads: 'Passing the torch'",
+  
+  prompt: "Write an essay based on the picture above. In your essay, you should: 1) describe the picture briefly, 2) interpret its meaning, 3) give your comments.",
+  
+  sampleResponse: `The cartoon presents a touching scene of cultural transmission across generations. On the left, an elderly person patiently teaches a child the art of traditional Chinese calligraphy. On the right, years later, that same child—now an adult—is teaching their own child the same skill. The caption "Passing the torch" elegantly captures the essence of this generational relay.
+
+This illustration conveys a profound message about the preservation and continuation of traditional culture. Each generation serves as both learner and teacher, receiving cultural heritage from elders and transmitting it to descendants. The calligraphy in the image symbolizes not merely an art form but the broader tradition of Chinese cultural wisdom that must be actively passed down rather than passively inherited.
+
+The implications of this image are significant in our rapidly modernizing society. As technology dominates daily life, traditional arts risk being forgotten. The cartoon reminds us that cultural preservation requires conscious effort and personal commitment. Parents and grandparents bear responsibility for introducing young people to their heritage, while the younger generation must value and continue these traditions.
+
+In my view, the vitality of any culture depends on this chain of transmission remaining unbroken. We should create opportunities for intergenerational learning, whether through family activities, school programs, or community events. Only through such dedicated effort can we ensure that our cultural treasures survive and thrive for future generations.`,
+  
+  vocabulary: ["cultural transmission", "generational relay", "heritage", "preservation", "intergenerational"]
+});
+
+// V34: 更多六级作文题目
+CET6_TOPICS.push({
+  id: 'cet6_essay_002',
+  type: WRITING_TYPES.CET6_ESSAY,
+  topic: TOPIC_CATEGORIES.TECHNOLOGY,
+  difficulty: DIFFICULTY_LEVELS.BASIC,
+  timeLimit: 1800,
+  wordCount: { min: 150, max: 200 },
+  
+  title: "人工智能对就业的影响",
+  
+  prompt: "Directions: For this part, you are allowed 30 minutes to write an essay on the impact of artificial intelligence on employment. You should write at least 150 words but no more than 200 words.",
+  
+  outline: {
+    introduction: "AI's growing presence in the workforce",
+    body1: "Jobs at risk of automation",
+    body2: "New opportunities created by AI",
+    conclusion: "Balanced perspective and adaptation strategies"
+  },
+  
+  sampleResponse: `Artificial intelligence is rapidly transforming the employment landscape, sparking both concern and optimism about the future of work. This technological revolution presents complex challenges that require thoughtful consideration.
+
+Undeniably, AI poses significant threats to certain occupations. Routine tasks in manufacturing, data entry, and customer service are increasingly automated. Traditional middle-skill jobs that once provided stable incomes are particularly vulnerable. Workers in these sectors face genuine uncertainty about their future employability.
+
+However, AI simultaneously creates new opportunities. The technology industry itself demands specialists in machine learning, data science, and AI ethics. Furthermore, AI enhances human capabilities in fields like healthcare and education, enabling professionals to work more effectively rather than replacing them entirely. New categories of jobs—AI trainers, algorithm auditors, human-machine interaction designers—are emerging.
+
+The key to navigating this transition lies in adaptation. Educational systems must emphasize skills that complement rather than compete with AI: creativity, emotional intelligence, and complex problem-solving. Governments should invest in retraining programs for displaced workers.
+
+In conclusion, while AI will undoubtedly eliminate certain jobs, it will also create new ones. The workers who thrive will be those who continuously develop skills that machines cannot easily replicate.`,
+  
+  vocabulary: ["employment landscape", "automation", "vulnerable", "emerging", "complement", "displaced workers"]
+});
+
+// V34: 更多六级图画题
+CET6_TOPICS.push({
+  id: 'cet6_pic_002',
+  type: WRITING_TYPES.CET6_PICTURE,
+  topic: TOPIC_CATEGORIES.ENVIRONMENT,
+  difficulty: DIFFICULTY_LEVELS.BASIC,
+  timeLimit: 1800,
+  wordCount: { min: 150, max: 200 },
+  
+  title: "环境保护意识",
+  
+  pictureDescription: "An illustration showing a person standing at a crossroads. One path leads to a green, thriving forest; the other leads to a polluted, barren wasteland. The person holds a bag of trash, deciding which way to go.",
+  
+  prompt: "Directions: For this part, you are allowed 30 minutes to write an essay based on the picture below. You should describe the picture and explain what message it conveys, then give your comments.",
+  
+  sampleResponse: `The thought-provoking illustration depicts a person standing at a crossroads, facing a critical choice. One path leads toward a lush, green forest representing environmental health, while the other descends into a polluted wasteland of destruction. The person, holding a bag of trash, must decide which direction to take.
+
+This image powerfully symbolizes the environmental choices we face individually and collectively. The bag of trash represents our daily consumption and waste—small decisions that cumulatively determine our planet's future. The contrasting paths illustrate that our choices have consequences: responsible behavior leads to sustainability, while negligence leads to degradation.
+
+The cartoon's message is clear: environmental protection is not someone else's responsibility but ours. Every individual stands at this metaphorical crossroads multiple times daily—when deciding whether to recycle, reduce plastic use, or choose sustainable products. The collective impact of billions of such decisions shapes our environmental destiny.
+
+In my opinion, this image should inspire action rather than paralysis. While individual efforts alone cannot solve global environmental challenges, they contribute to cultural change and demonstrate demand for sustainable alternatives. We must choose the green path repeatedly and encourage others to do the same. Our planet's future depends on the accumulated choices of everyone at this crossroads.`,
+  
+  vocabulary: ["crossroads", "lush", "cumulatively", "sustainability", "degradation", "metaphorical"]
+});
+
+// V35: 更多 TOEFL 综合写作
+TOEFL_INTEGRATED_TOPICS.push({
+  id: 'toefl_int_011',
+  type: WRITING_TYPES.TOEFL_INTEGRATED,
+  topic: TOPIC_CATEGORIES.HISTORY,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 1200,
+  wordCount: { min: 150, max: 225 },
+  
+  title: "Easter Island Statues Mystery",
+  
+  reading: {
+    text: `The massive stone statues of Easter Island, called moai, have puzzled researchers for centuries. How did the ancient Polynesian inhabitants move these enormous figures, some weighing over 80 tons, from the quarries to platforms around the island's coast? Recent research supports the theory that the statues were "walked" to their destinations.
+
+First, the shape of the moai suggests they were designed for upright transport. The statues have a forward-leaning center of gravity and a distinctive D-shaped base that would facilitate rocking motion. Computer simulations confirm that with this design, a team of people could rock the statue from side to side while pulling it forward, essentially "walking" it.
+
+Second, experimental archaeology supports this theory. Researchers successfully moved a replica moai using the walking technique with just 18 people pulling ropes. The movement resembled the way one might walk a refrigerator across a room. This method requires far fewer people than the alternative theories involving log rollers or sledges.
+
+Third, oral traditions of Easter Island describe the statues as having "walked" to their locations. According to local legends, the statues were animated by spiritual power and walked themselves. This oral history may preserve actual memory of the walking transport method.`,
+    readingTime: 180
+  },
+  
+  lecture: {
+    transcript: `The walking theory for moai transport has captured public imagination, but there are significant problems with it that the reading overlooks.
+
+First, about that design argument—yes, the statues could theoretically be walked, but that doesn't mean they were. The forward lean and base shape could equally serve other purposes, like stability when standing on platforms. We can't assume design features were intended for transport just because they happen to work for walking. Also, note that many statues were transported lying down—we find them fallen along ancient roads in horizontal positions, which contradicts the upright walking theory.
+
+Second, the experimental replicas weren't truly representative. The replica used in walking experiments was about 5 tons—much smaller than the largest moai, which exceeded 80 tons. Walking a refrigerator is very different from walking an 80-ton giant. The forces involved scale up dramatically. Furthermore, the experiments occurred on relatively smooth, prepared ground. Easter Island's ancient roads were rough and uneven, making the rocking motion far more dangerous and difficult.
+
+Third, interpreting oral traditions literally is problematic. "The statues walked" could be metaphorical language for many transport methods—or it could reflect religious beliefs about the statues' spiritual animation rather than describing actual movement technique. Many cultures describe inanimate objects as having life or agency without meaning it literally. We shouldn't treat mythology as historical documentation.`,
+    audioUrl: null
+  },
+  
+  prompt: "Summarize the points made in the lecture, explaining how they challenge the claims made in the reading passage.",
+  
+  keyPoints: [
+    "Design features could serve other purposes; many statues found horizontal",
+    "Experimental replicas too small and conditions too ideal",
+    "Oral traditions may be metaphorical, not literal descriptions"
+  ],
+  
+  sampleResponse: `The lecture challenges the reading's claim that Easter Island's moai statues were transported by "walking" them to their destinations.
+
+First, the professor disputes the design argument. While the reading suggests the statues' forward lean and D-shaped base indicate they were designed for upright walking transport, the lecturer points out these features could serve other purposes, such as stability when standing. More significantly, many statues have been found lying horizontally along ancient roads, which contradicts the theory that they were transported upright.
+
+Second, the experimental evidence is questioned. The lecturer notes that the replica used in walking experiments weighed only about 5 tons—far less than the largest moai at over 80 tons. Scaling up the forces involved would make the walking technique dramatically more difficult and dangerous. Additionally, the experiments were conducted on smooth, prepared ground rather than the rough, uneven ancient roads of Easter Island.
+
+Third, the interpretation of oral traditions is challenged. The professor argues that the phrase "the statues walked" could be metaphorical or reflect religious beliefs about spiritual animation rather than literal descriptions of transport technique. Many cultures attribute agency to inanimate objects without meaning it literally, so treating mythology as historical evidence is methodologically questionable.`,
+  
+  vocabulary: ["moai", "quarries", "experimental archaeology", "oral traditions", "metaphorical", "methodology"]
+});
+
+// V35: 更多 TOEFL 学术讨论
+TOEFL_DISCUSSION_TOPICS.push({
+  id: 'toefl_disc_011',
+  type: WRITING_TYPES.TOEFL_DISCUSSION,
+  topic: TOPIC_CATEGORIES.SCIENCE,
+  difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+  timeLimit: 600,
+  wordCount: { min: 100, max: 150 },
+  
+  title: "Space Exploration Funding",
+  
+  professorQuestion: {
+    name: "Dr. Reynolds",
+    context: "We've been examining the allocation of scientific research funding in our society.",
+    question: "Given limited resources, should governments prioritize funding for space exploration or focus those resources on solving problems here on Earth, such as climate change, disease, and poverty?"
+  },
+  
+  studentResponses: [
+    {
+      name: "Chen",
+      response: "Earth's problems must come first. With millions facing hunger, disease, and the existential threat of climate change, spending billions on space missions seems morally irresponsible. We should solve our problems here before venturing elsewhere. Space can wait; suffering people cannot."
+    },
+    {
+      name: "Aisha",
+      response: "Space exploration isn't separate from solving Earth's problems—it contributes to solutions. Satellite technology helps us monitor climate change, medical research in space leads to health innovations, and the space industry creates jobs. Besides, inspiring human achievement matters. We can do both."
+    }
+  ],
+  
+  prompt: "Express your opinion on this topic and engage with both perspectives.",
+  
+  sampleResponse: `Both Chen and Aisha raise important points, but I believe they present a false dichotomy. The choice isn't between space exploration and addressing Earth's problems—rather, it's about optimizing resource allocation across both domains.
+
+Chen's moral argument has emotional weight, but the premise that space funding significantly diverts resources from humanitarian needs is questionable. NASA's budget represents less than 0.5% of U.S. federal spending, while defense exceeds 15%. Eliminating space programs wouldn't meaningfully address poverty or climate change.
+
+Aisha correctly notes that space research generates practical benefits. GPS navigation, weather prediction, and telecommunications all derive from space technology. Climate scientists rely heavily on satellite data. However, these benefits don't automatically justify every space initiative—each program should demonstrate value.
+
+The strongest position acknowledges that both domains deserve funding, with allocations reflecting careful cost-benefit analysis. Pure exploration should continue at modest levels for its inspirational and scientific value, while applied space technology should receive robust support when it addresses terrestrial needs. The goal isn't choosing one or the other but investing wisely in both.`,
+  
+  keyElements: [
+    "Challenge false dichotomy",
+    "Contextualize budget claims",
+    "Acknowledge valid points from both sides",
+    "Propose nuanced allocation approach"
+  ]
+});
+
+// 更新统计信息
+writingData.stats.totalTopics = 
+  TOEFL_INTEGRATED_TOPICS.length + 
+  TOEFL_DISCUSSION_TOPICS.length +
+  GRE_ISSUE_TOPICS.length +
+  GRE_ARGUMENT_TOPICS.length +
+  IELTS_TASK1_TOPICS.length +
+  IELTS_TASK2_TOPICS.length +
+  KAOYAN_TOPICS.length +
+  CET6_TOPICS.length;
+
+writingData.stats.byType.toefl_integrated = TOEFL_INTEGRATED_TOPICS.length;
+writingData.stats.byType.toefl_discussion = TOEFL_DISCUSSION_TOPICS.length;
+writingData.stats.byType.gre_issue = GRE_ISSUE_TOPICS.length;
+writingData.stats.byType.gre_argument = GRE_ARGUMENT_TOPICS.length;
+writingData.stats.byType.ielts_task1 = IELTS_TASK1_TOPICS.length;
+writingData.stats.byType.ielts_task2 = IELTS_TASK2_TOPICS.length;
+writingData.stats.byType.kaoyan = KAOYAN_TOPICS.length;
+writingData.stats.byType.cet6 = CET6_TOPICS.length;
+
+console.log('✅ V31-V35 写作题目扩展完成');
+console.log(`📊 新增题目统计:`);
+console.log(`  - GRE Issue: +1 (共${GRE_ISSUE_TOPICS.length}道)`);
+console.log(`  - GRE Argument: +1 (共${GRE_ARGUMENT_TOPICS.length}道)`);
+console.log(`  - IELTS Task 1: +1 (共${IELTS_TASK1_TOPICS.length}道)`);
+console.log(`  - IELTS Task 2: +1 (共${IELTS_TASK2_TOPICS.length}道)`);
+console.log(`  - 考研作文: +2 (共${KAOYAN_TOPICS.length}道)`);
+console.log(`  - 六级作文: +2 (共${CET6_TOPICS.length}道)`);
+console.log(`  - TOEFL综合写作: +1 (共${TOEFL_INTEGRATED_TOPICS.length}道)`);
+console.log(`  - TOEFL学术讨论: +1 (共${TOEFL_DISCUSSION_TOPICS.length}道)`);
+console.log(`📚 总计: ${writingData.stats.totalTopics} 道写作题目`);
+
 // 导出所有新增内容
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -1989,7 +2437,7 @@ if (typeof module !== 'undefined' && module.exports) {
     TOEFL_DISCUSSION_TOPICS,
     getRandomWritingTopic,
     getWritingTopicsByType,
-    // V16-V30 新增导出
+    // V16-V35 导出
     GRE_ISSUE_TOPICS,
     GRE_ARGUMENT_TOPICS,
     IELTS_TASK1_TOPICS,
@@ -2003,4 +2451,4 @@ if (typeof module !== 'undefined' && module.exports) {
   };
 }
 
-console.log('✅ 写作数据模块加载完成 (V1-V30)');
+console.log('✅ 写作数据模块加载完成 (V1-V35)');

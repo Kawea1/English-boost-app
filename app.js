@@ -1017,15 +1017,43 @@ function openModule(moduleName) {
                 if (typeof initResourcesModule === 'function') initResourcesModule();
                 else console.error('initResourcesModule not found');
                 break;
+            case 'writing':
+                console.log('Initializing writing module');
+                // 写作模块使用module-page而非modal
+                var writingModule = document.getElementById('writing-module');
+                if (writingModule) {
+                    writingModule.classList.remove('hidden');
+                    if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
+                        WritingModule.showHistory();
+                    }
+                }
+                break;
         }
         console.log('Module initialization complete');
     } else {
-        console.error('Modal not found for:', modalId);
+        // 检查是否是module-page类型的模块
+        if (moduleName === 'writing') {
+            var writingModule = document.getElementById('writing-module');
+            if (writingModule) {
+                writingModule.classList.remove('hidden');
+                var bottomNav = document.getElementById('bottomNav');
+                if (bottomNav) bottomNav.classList.add('hidden');
+                if (typeof WritingModule !== 'undefined' && WritingModule.showHistory) {
+                    WritingModule.showHistory();
+                }
+            }
+        } else {
+            console.error('Modal not found for:', modalId);
+        }
     }
 }
 
 function closeModule() {
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('active'));
+    
+    // 关闭module-page类型的模块
+    document.querySelectorAll('.module-page').forEach(m => m.classList.add('hidden'));
+    
     currentModule = null;
     
     // 显示底部导航栏

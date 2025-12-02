@@ -352,6 +352,19 @@
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                         </div>
                     </div>
+                    <div class="module-card" onclick="openModule('writing')">
+                        <div class="module-icon-wrapper write-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
+                                <path d="M15 5l4 4"/>
+                            </svg>
+                        </div>
+                        <h3>写作练习</h3>
+                        <p>托福/GRE/雅思真题</p>
+                        <div class="module-arrow">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        </div>
+                    </div>
                     <div class="module-card" onclick="openModule('resources')">
                         <div class="module-icon-wrapper resource-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
@@ -1181,6 +1194,77 @@
                 </div>
             </div>
 
+            <!-- 写作模块 -->
+            <div class="module-page hidden" id="writing-module">
+                <div class="module-header">
+                    <button class="back-btn" onclick="closeModule()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
+                    </button>
+                    <h2>✍️ 写作练习</h2>
+                </div>
+                
+                <div id="writing-main">
+                    <!-- 考试类型选择 -->
+                    <div class="writing-exam-types">
+                        <h3>选择考试类型</h3>
+                        <div class="exam-type-grid">
+                            <div class="writing-exam-type" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">
+                                <div class="exam-icon">🎯</div>
+                                <div class="exam-name">TOEFL</div>
+                                <div class="exam-desc">综合写作 + 学术讨论</div>
+                            </div>
+                            <div class="writing-exam-type" data-type="gre" onclick="WritingModule.selectExamType('gre')">
+                                <div class="exam-icon">📊</div>
+                                <div class="exam-name">GRE</div>
+                                <div class="exam-desc">Issue + Argument</div>
+                            </div>
+                            <div class="writing-exam-type" data-type="ielts" onclick="WritingModule.selectExamType('ielts')">
+                                <div class="exam-icon">🌍</div>
+                                <div class="exam-name">雅思</div>
+                                <div class="exam-desc">Task1 + Task2</div>
+                            </div>
+                            <div class="writing-exam-type" data-type="kaoyan" onclick="WritingModule.selectExamType('kaoyan')">
+                                <div class="exam-icon">📚</div>
+                                <div class="exam-name">考研</div>
+                                <div class="exam-desc">应用文 + 图画作文</div>
+                            </div>
+                            <div class="writing-exam-type" data-type="cet6" onclick="WritingModule.selectExamType('cet6')">
+                                <div class="exam-icon">🎓</div>
+                                <div class="exam-name">六级</div>
+                                <div class="exam-desc">议论文 + 图画题</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 题目列表 -->
+                    <div class="writing-topics-section">
+                        <h3>练习题目</h3>
+                        <div id="writing-topic-list" class="writing-topic-list">
+                            <div class="empty-state">
+                                <div class="empty-icon">👆</div>
+                                <p>请先选择考试类型</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 历史记录 -->
+                    <div class="writing-history-section">
+                        <h3>写作历史</h3>
+                        <div id="writing-history-list" class="writing-history-list">
+                            <div class="empty-state">
+                                <div class="empty-icon">📋</div>
+                                <p>暂无写作记录</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 写作练习区域 -->
+                <div id="writing-practice-area" class="hidden"></div>
+            </div>
+
             <!-- 设置模态 -->
             <div class="modal" id="settingsModal">
                 <!-- 固定的设置操作栏 -->
@@ -1969,6 +2053,7 @@
     <script src="reading-data.js?v=20251202150000"></script>
     <script src="speaking-data.js?v=20251202150000"></script>
     <script src="writing-data.js?v=20251202150000"></script>
+    <script src="writing-module.js?v=20251202150000"></script>
     <script src="sources.js?v=20251202150000"></script>
     <script src="online_sources.js?v=20251202150000"></script>
     <script src="modules.js?v=20251202150000"></script>

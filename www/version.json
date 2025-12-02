@@ -1,51 +1,19 @@
 {
-  "version": "3.5.0",
-  "versionCode": 350,
-  "buildTime": "20251201",
-  "releaseDate": "2025-12-01",
-  "minVersion": "3.0.0",
-  "forceUpdate": false,
-  "importance": "important",
-  "updateSize": "2.3 MB",
-  "changelog": [
-    "✨ 用户体验全面升级5个版本",
-    "🎯 v1: 微交互增强 - 涟漪/弹跳/翻转动画",
-    "💝 v2: 情感化设计 - 智能Toast和鼓励系统",
-    "📚 v3: 智能引导 - 新手教程和功能提示",
-    "🏆 v4: 成就系统 - 解锁徽章和等级系统",
-    "🎨 v5: 个性化体验 - 学习分析和智能提醒",
-    "🔄 更新系统大幅增强",
-    "📈 等级提升特效"
+  "version": "4.1.0",
+  "build": "20251202",
+  "releaseDate": "2025-12-02",
+  "features": [
+    "v4.1.0: 写作练习模块上线",
+    "支持TOEFL/GRE/雅思/考研/六级多种题型",
+    "限时写作练习与智能评分",
+    "词汇推荐与句型模板",
+    "范文参考与历史记录"
   ],
-  "downloadUrls": {
-    "web": "https://kawea1.github.io/English-boost-app/",
-    "ios": "https://apps.apple.com/app/id123456789",
-    "android": "https://play.google.com/store/apps/details?id=com.academic.english",
-    "mac": "https://github.com/Kawea1/English-boost-app/releases/latest",
-    "win": "https://github.com/Kawea1/English-boost-app/releases/latest",
-    "linux": "https://github.com/Kawea1/English-boost-app/releases/latest"
-  },
-  "features": {
-    "silentCheck": true,
-    "checkInterval": 1800000,
-    "showChangelog": true,
-    "remindLaterInterval": 1800000,
-    "multiSourceVerify": true,
-    "integrityCheck": true
-  },
-  "updateSources": {
-    "primary": "https://kawea1.github.io/English-boost-app/",
-    "cdn": "https://cdn.jsdelivr.net/gh/Kawea1/English-boost-app@main/",
-    "raw": "https://raw.githubusercontent.com/Kawea1/English-boost-app/main/"
-  },
-  "criticalResources": [
-    "app.js",
-    "styles.css", 
-    "index.html",
-    "sw.js"
-  ],
-  "integrity": {
-    "checkEnabled": true,
-    "algorithm": "sha256"
+  "changelog": {
+    "4.1.0": "新增写作练习模块",
+    "4.0.0": "重大更新：词汇难度分级、丰富例句、真题词汇标记",
+    "3.10.0": "新增词根词缀系统",
+    "3.9.0": "新增同义词反义词网络",
+    "3.8.0": "新增智能助记词"
   }
 }
