@@ -15510,4 +15510,894 @@ body.theme-dark .pet-speech::after {
     }
 }
 
+/* ==================== 解压互动系统 v7.11-v7.20 ==================== */
+
+/* ==================== v7.11: 禅意沙画板 ==================== */
+.zen-sandbox {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(to bottom, #f5e6d3, #e8d4b8);
+    z-index: 9998;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    touch-action: none;
+}
+
+.zen-sandbox.active {
+    height: 40vh;
+}
+
+.zen-sandbox-canvas {
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.zen-sandbox-toggle {
+    position: fixed;
+    bottom: 260px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #e8d4b8, #d4c4a8);
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
+}
+
+.zen-sandbox-toggle:hover {
+    transform: scale(1.1);
+}
+
+.zen-sandbox-tools {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.sandbox-tool {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 50%;
+    background: transparent;
+    cursor: pointer;
+    font-size: 18px;
+    transition: all 0.2s ease;
+}
+
+.sandbox-tool.active {
+    background: var(--primary);
+    color: white;
+    transform: scale(1.1);
+}
+
+/* ==================== v7.12: 心情调色板 ==================== */
+.mood-palette {
+    position: fixed;
+    top: 50%;
+    right: -280px;
+    transform: translateY(-50%);
+    width: 280px;
+    background: white;
+    border-radius: 20px 0 0 20px;
+    padding: 20px;
+    box-shadow: -5px 0 30px rgba(0, 0, 0, 0.15);
+    z-index: 9997;
+    transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mood-palette.active {
+    right: 0;
+}
+
+.mood-palette-toggle {
+    position: absolute;
+    left: -44px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 80px;
+    background: white;
+    border-radius: 20px 0 0 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+}
+
+.mood-colors {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.mood-color {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.mood-color:hover {
+    transform: scale(1.15);
+}
+
+.mood-color.selected {
+    border-color: var(--gray-800);
+    transform: scale(1.1);
+}
+
+.mood-color::after {
+    content: attr(data-mood);
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    color: var(--gray-500);
+    white-space: nowrap;
+}
+
+.mood-slider {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+    -webkit-appearance: none;
+    background: linear-gradient(to right, #94a3b8, #6366f1);
+}
+
+.mood-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+/* ==================== v7.13: 虚拟泡泡纸 ==================== */
+.bubble-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+    z-index: 9996;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    padding: 10px;
+}
+
+.bubble-wrap.active {
+    height: 35vh;
+}
+
+.bubble-wrap-toggle {
+    position: fixed;
+    bottom: 320px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #c7d2fe, #a5b4fc);
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 15px rgba(165, 180, 252, 0.4);
+    transition: all 0.3s ease;
+}
+
+.bubble-wrap-toggle:hover {
+    transform: scale(1.1);
+}
+
+.pop-bubble {
+    width: 40px;
+    height: 40px;
+    margin: 4px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(200, 200, 255, 0.6));
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: all 0.1s ease;
+    box-shadow: 
+        inset 0 -3px 8px rgba(0, 0, 0, 0.05),
+        0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.pop-bubble:hover:not(.popped) {
+    transform: scale(1.1);
+}
+
+.pop-bubble.popped {
+    transform: scale(0.3);
+    opacity: 0.3;
+    background: rgba(200, 200, 220, 0.3);
+    box-shadow: none;
+    cursor: default;
+}
+
+.pop-bubble.pop-animation {
+    animation: bubblePop 0.15s ease-out;
+}
+
+@keyframes bubblePop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); }
+    100% { transform: scale(0.3); opacity: 0.3; }
+}
+
+/* ==================== v7.14: 专注番茄钟 ==================== */
+.focus-timer {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-150%);
+    background: white;
+    border-radius: 20px;
+    padding: 20px 30px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    text-align: center;
+    min-width: 200px;
+}
+
+.focus-timer.active {
+    transform: translateX(-50%) translateY(0);
+}
+
+.timer-display {
+    font-size: 48px;
+    font-weight: 800;
+    color: var(--gray-800);
+    font-variant-numeric: tabular-nums;
+    margin-bottom: 15px;
+}
+
+.timer-progress {
+    width: 100%;
+    height: 6px;
+    background: var(--gray-200);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 15px;
+}
+
+.timer-progress-bar {
+    height: 100%;
+    background: var(--gradient-primary);
+    border-radius: 3px;
+    transition: width 1s linear;
+}
+
+.timer-controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.timer-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.timer-btn.primary {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.timer-btn.secondary {
+    background: var(--gray-100);
+    color: var(--gray-700);
+}
+
+.timer-btn:hover {
+    transform: scale(1.05);
+}
+
+.focus-timer-mini {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: var(--gradient-primary);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+    z-index: 101;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    display: none;
+}
+
+.focus-timer-mini.visible {
+    display: block;
+    animation: timerPulse 2s ease-in-out infinite;
+}
+
+@keyframes timerPulse {
+    0%, 100% { box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3); }
+    50% { box-shadow: 0 4px 25px rgba(99, 102, 241, 0.5); }
+}
+
+/* ==================== v7.15: 轻拍节奏游戏 ==================== */
+.rhythm-game {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0;
+    background: linear-gradient(to top, #1e1b4b, #312e81);
+    z-index: 9995;
+    transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.rhythm-game.active {
+    height: 45vh;
+}
+
+.rhythm-lanes {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    height: 100%;
+    padding-top: 20px;
+}
+
+.rhythm-lane {
+    width: 60px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.rhythm-hit-zone {
+    position: absolute;
+    bottom: 20px;
+    left: 5px;
+    right: 5px;
+    height: 60px;
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.rhythm-note {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    height: 50px;
+    background: var(--gradient-primary);
+    border-radius: 8px;
+    animation: notefall linear forwards;
+}
+
+@keyframes notefall {
+    0% { top: -50px; }
+    100% { top: calc(100% + 50px); }
+}
+
+.rhythm-score {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.rhythm-feedback {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 32px;
+    font-weight: 800;
+    color: #10b981;
+    opacity: 0;
+    animation: feedbackPop 0.5s ease-out forwards;
+}
+
+@keyframes feedbackPop {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+}
+
+/* ==================== v7.16: 随机奖励刮刮卡 ==================== */
+.scratch-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 280px;
+    height: 180px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 20px;
+    z-index: 10001;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+}
+
+.scratch-card.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.scratch-card-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.scratch-prize {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+.scratch-text {
+    font-size: 18px;
+    font-weight: 700;
+    color: #78350f;
+    text-align: center;
+}
+
+.scratch-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #9ca3af, #6b7280);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.scratch-cover::before {
+    content: '👆 刮一刮';
+    font-size: 20px;
+}
+
+.scratch-card-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.2);
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* ==================== v7.17: 幸运转盘 ==================== */
+.lucky-wheel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    z-index: 10002;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.lucky-wheel.show {
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.wheel-container {
+    position: relative;
+    width: 280px;
+    height: 280px;
+}
+
+.wheel {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: conic-gradient(
+        #ff6b6b 0deg 45deg,
+        #feca57 45deg 90deg,
+        #48dbfb 90deg 135deg,
+        #ff9ff3 135deg 180deg,
+        #1dd1a1 180deg 225deg,
+        #5f27cd 225deg 270deg,
+        #00d2d3 270deg 315deg,
+        #ff9f43 315deg 360deg
+    );
+    transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-top: 30px solid #1f2937;
+    z-index: 10;
+}
+
+.wheel-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-700);
+    cursor: pointer;
+}
+
+.wheel-close {
+    position: absolute;
+    top: -50px;
+    right: -20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* ==================== v7.18: 可爱表情反应 ==================== */
+.emoji-reactions {
+    position: fixed;
+    bottom: 380px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+}
+
+.emoji-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: white;
+    border: none;
+    cursor: pointer;
+    font-size: 22px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.12);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emoji-btn:hover {
+    transform: scale(1.2);
+}
+
+.emoji-btn:active {
+    transform: scale(0.9);
+}
+
+.emoji-explosion {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    font-size: 30px;
+    animation: emojiExplode 1s ease-out forwards;
+}
+
+@keyframes emojiExplode {
+    0% {
+        transform: scale(0) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(0.5) rotate(360deg) translateY(-100px);
+        opacity: 0;
+    }
+}
+
+/* ==================== v7.19: 冥想引导界面 ==================== */
+.meditation-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%);
+    z-index: 10003;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.meditation-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.meditation-orb {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.8), rgba(139, 92, 246, 0.4));
+    box-shadow: 
+        0 0 60px rgba(99, 102, 241, 0.5),
+        0 0 120px rgba(139, 92, 246, 0.3);
+    animation: meditationPulse 4s ease-in-out infinite;
+}
+
+@keyframes meditationPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 60px rgba(99, 102, 241, 0.5), 0 0 120px rgba(139, 92, 246, 0.3);
+    }
+    50% {
+        transform: scale(1.2);
+        box-shadow: 0 0 100px rgba(99, 102, 241, 0.7), 0 0 200px rgba(139, 92, 246, 0.5);
+    }
+}
+
+.meditation-text {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 24px;
+    font-weight: 300;
+    margin-top: 40px;
+    text-align: center;
+    letter-spacing: 2px;
+}
+
+.meditation-timer {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 48px;
+    font-weight: 200;
+    margin-top: 30px;
+    font-variant-numeric: tabular-nums;
+}
+
+.meditation-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.meditation-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: scale(1.1);
+}
+
+.meditation-stars {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.meditation-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: white;
+    border-radius: 50%;
+    animation: starTwinkle 2s ease-in-out infinite;
+}
+
+@keyframes starTwinkle {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.5); }
+}
+
+/* ==================== v7.20: 解压控制面板 ==================== */
+.stress-relief-panel {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 25px;
+    padding: 12px 20px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    z-index: 99;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-50%) translateY(20px);
+    transition: all 0.3s ease;
+}
+
+.stress-relief-panel.visible {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}
+
+.panel-toggle {
+    position: fixed;
+    bottom: 80px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    border: none;
+    cursor: pointer;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    transition: all 0.3s ease;
+}
+
+.panel-toggle:hover {
+    transform: scale(1.1);
+}
+
+.panel-toggle.active {
+    background: var(--gray-800);
+}
+
+.panel-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.panel-item:hover {
+    background: var(--gray-100);
+}
+
+.panel-item-icon {
+    font-size: 24px;
+}
+
+.panel-item-label {
+    font-size: 10px;
+    color: var(--gray-500);
+    white-space: nowrap;
+}
+
+/* 深色模式适配 v7.11-v7.20 */
+body.theme-dark .zen-sandbox {
+    background: linear-gradient(to bottom, #374151, #1f2937);
+}
+
+body.theme-dark .mood-palette {
+    background: #1f2937;
+}
+
+body.theme-dark .bubble-wrap {
+    background: linear-gradient(135deg, #312e81, #1e1b4b);
+}
+
+body.theme-dark .focus-timer {
+    background: #1f2937;
+}
+
+body.theme-dark .timer-display {
+    color: var(--gray-100);
+}
+
+body.theme-dark .stress-relief-panel {
+    background: rgba(31, 41, 55, 0.95);
+}
+
+body.theme-dark .panel-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+body.theme-dark .emoji-btn {
+    background: #374151;
+}
+
+/* 减少动画偏好 v7.11-v7.20 */
+@media (prefers-reduced-motion: reduce) {
+    .meditation-orb,
+    .rhythm-note,
+    .emoji-explosion,
+    .pop-bubble,
+    .wheel,
+    .meditation-star {
+        animation: none !important;
+    }
+}
+
 

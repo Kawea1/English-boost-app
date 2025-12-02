@@ -65,6 +65,325 @@ var wordRatings = {};
 var wordLearningProgress = {}; // 记录每个单词的学习进度
 var sessionWordProgress = {}; // 本轮学习中每个单词的进度（用于间隔重复）
 
+// V11: 同义词/反义词数据
+var wordRelationsData = null;
+
+// V12: 智能助记词数据
+var wordMnemonicsData = null;
+
+// V13: 词汇难度分级数据
+var wordDifficultyData = null;
+
+// ==================== V14: 科学助记系统 ====================
+// 基于认知心理学的10个维度改进
+
+// V14.1: 助记效果评估数据
+var mnemonicEffectivenessData = {};
+try {
+    mnemonicEffectivenessData = JSON.parse(localStorage.getItem('mnemonicEffectiveness') || '{}');
+} catch(e) {
+    mnemonicEffectivenessData = {};
+}
+
+// V14.2: 用户自定义助记词
+var userCustomMnemonics = {};
+try {
+    userCustomMnemonics = JSON.parse(localStorage.getItem('userCustomMnemonics') || '{}');
+} catch(e) {
+    userCustomMnemonics = {};
+}
+
+// V14.3: 记忆宫殿数据
+var memoryPalaceData = {};
+try {
+    memoryPalaceData = JSON.parse(localStorage.getItem('memoryPalace') || '{}');
+} catch(e) {
+    memoryPalaceData = {};
+}
+
+// V14.4: 情感锚定数据
+var emotionalAnchorData = {};
+try {
+    emotionalAnchorData = JSON.parse(localStorage.getItem('emotionalAnchors') || '{}');
+} catch(e) {
+    emotionalAnchorData = {};
+}
+
+// V14.5: 分块记忆组
+var chunkingGroups = {};
+try {
+    chunkingGroups = JSON.parse(localStorage.getItem('chunkingGroups') || '{}');
+} catch(e) {
+    chunkingGroups = {};
+}
+
+// V14: 科学记忆方法类型（基于研究）
+var MNEMONIC_SCIENCE = {
+    types: {
+        'etymology': { name: '词源分析', icon: '📚', color: '#166534', bg: '#dcfce7', effectiveness: 0.85, description: '基于词根词缀，建立深层语义联系' },
+        'phonetic': { name: '谐音记忆', icon: '🔊', color: '#92400e', bg: '#fef3c7', effectiveness: 0.72, description: '通过声音相似性建立快速联想' },
+        'visual': { name: '形象联想', icon: '🎨', color: '#1e40af', bg: '#dbeafe', effectiveness: 0.88, description: '创建生动视觉画面，激活视觉皮层' },
+        'story': { name: '故事记忆', icon: '📖', color: '#7c2d12', bg: '#ffedd5', effectiveness: 0.90, description: '编织叙事情节，利用情节记忆优势' },
+        'loci': { name: '记忆宫殿', icon: '🏛️', color: '#5b21b6', bg: '#ede9fe', effectiveness: 0.92, description: '空间定位法，世界记忆大师常用技术' },
+        'chunking': { name: '分块记忆', icon: '🧩', color: '#0f766e', bg: '#ccfbf1', effectiveness: 0.80, description: '信息分组，减轻工作记忆负担' },
+        'emotional': { name: '情感锚定', icon: '💖', color: '#be123c', bg: '#ffe4e6', effectiveness: 0.87, description: '建立情感连接，增强长期记忆' },
+        'kinesthetic': { name: '动作记忆', icon: '🤸', color: '#4338ca', bg: '#e0e7ff', effectiveness: 0.78, description: '身体动作参与，多感官编码' },
+        'elaboration': { name: '精细加工', icon: '🔬', color: '#6d28d9', bg: '#f3e8ff', effectiveness: 0.86, description: '深度处理信息，建立多重联结' },
+        'dual_coding': { name: '双重编码', icon: '🔗', color: '#0369a1', bg: '#e0f2fe', effectiveness: 0.89, description: '同时使用语言和图像编码' }
+    },
+    // 记忆强度计算（基于艾宾浩斯遗忘曲线修正）
+    calculateRetention: function(initialStrength, hoursSinceEncoding, reviewCount) {
+        // R = S * e^(-t/τ) + reinforcement_bonus
+        var tau = 24 * (1 + reviewCount * 0.5); // 复习增加记忆半衰期
+        var retention = initialStrength * Math.exp(-hoursSinceEncoding / tau);
+        var bonus = Math.min(0.3, reviewCount * 0.05);
+        return Math.min(1, retention + bonus);
+    },
+    // 推荐最佳助记类型（基于用户历史表现）
+    recommendType: function(word, userHistory) {
+        var scores = {};
+        var types = Object.keys(this.types);
+        
+        types.forEach(function(type) {
+            var baseScore = MNEMONIC_SCIENCE.types[type].effectiveness;
+            var userScore = userHistory[type] || baseScore;
+            scores[type] = (baseScore + userScore) / 2;
+        });
+        
+        // 根据词汇特征调整推荐
+        if (word.length > 8) scores['chunking'] *= 1.2;
+        if (/^(un|re|pre|dis|mis)/.test(word)) scores['etymology'] *= 1.3;
+        if (/tion$|sion$|ment$|ness$/.test(word)) scores['etymology'] *= 1.2;
+        
+        var best = types.reduce(function(a, b) {
+            return scores[a] > scores[b] ? a : b;
+        });
+        
+        return { type: best, score: scores[best], allScores: scores };
+    }
+};
+
+// V14.1: 记录助记效果
+function recordMnemonicEffectiveness(word, mnemonicType, wasEffective) {
+    if (!mnemonicEffectivenessData[word]) {
+        mnemonicEffectivenessData[word] = {
+            type: mnemonicType,
+            exposures: 0,
+            successes: 0,
+            lastReview: null,
+            effectiveness: 0.5
+        };
+    }
+    
+    var data = mnemonicEffectivenessData[word];
+    data.exposures++;
+    if (wasEffective) data.successes++;
+    data.lastReview = Date.now();
+    data.effectiveness = data.successes / data.exposures;
+    
+    // 更新类型总体效果
+    if (!mnemonicEffectivenessData._typeStats) {
+        mnemonicEffectivenessData._typeStats = {};
+    }
+    if (!mnemonicEffectivenessData._typeStats[mnemonicType]) {
+        mnemonicEffectivenessData._typeStats[mnemonicType] = { total: 0, success: 0 };
+    }
+    mnemonicEffectivenessData._typeStats[mnemonicType].total++;
+    if (wasEffective) mnemonicEffectivenessData._typeStats[mnemonicType].success++;
+    
+    localStorage.setItem('mnemonicEffectiveness', JSON.stringify(mnemonicEffectivenessData));
+}
+
+// V14.2: 保存用户自定义助记词
+function saveCustomMnemonic(word, mnemonic) {
+    userCustomMnemonics[word.toLowerCase()] = {
+        mnemonic: mnemonic.text,
+        type: mnemonic.type || 'custom',
+        createdAt: Date.now(),
+        visual: mnemonic.visual || null,
+        emotional: mnemonic.emotional || null,
+        story: mnemonic.story || null
+    };
+    localStorage.setItem('userCustomMnemonics', JSON.stringify(userCustomMnemonics));
+}
+
+// V14.3: 添加到记忆宫殿
+function addToMemoryPalace(word, location, imageDescription) {
+    if (!memoryPalaceData.locations) {
+        memoryPalaceData.locations = [
+            { id: 'home_entrance', name: '家门口', description: '熟悉的家门入口' },
+            { id: 'living_room', name: '客厅', description: '舒适的客厅' },
+            { id: 'kitchen', name: '厨房', description: '厨房' },
+            { id: 'bedroom', name: '卧室', description: '卧室' },
+            { id: 'bathroom', name: '卫生间', description: '卫生间' },
+            { id: 'balcony', name: '阳台', description: '阳台' },
+            { id: 'study', name: '书房', description: '书房' },
+            { id: 'garden', name: '花园', description: '花园' }
+        ];
+    }
+    
+    if (!memoryPalaceData.placements) {
+        memoryPalaceData.placements = {};
+    }
+    
+    memoryPalaceData.placements[word.toLowerCase()] = {
+        locationId: location,
+        image: imageDescription,
+        placedAt: Date.now()
+    };
+    
+    localStorage.setItem('memoryPalace', JSON.stringify(memoryPalaceData));
+}
+
+// V14.4: 设置情感锚定
+function setEmotionalAnchor(word, emotion, intensity) {
+    var emotions = {
+        'joy': { icon: '😊', name: '快乐', color: '#fbbf24' },
+        'surprise': { icon: '😲', name: '惊讶', color: '#8b5cf6' },
+        'fear': { icon: '😨', name: '恐惧', color: '#6b7280' },
+        'disgust': { icon: '🤢', name: '厌恶', color: '#22c55e' },
+        'anger': { icon: '😠', name: '愤怒', color: '#ef4444' },
+        'sadness': { icon: '😢', name: '悲伤', color: '#3b82f6' },
+        'love': { icon: '❤️', name: '爱', color: '#ec4899' },
+        'curiosity': { icon: '🤔', name: '好奇', color: '#f59e0b' }
+    };
+    
+    emotionalAnchorData[word.toLowerCase()] = {
+        emotion: emotion,
+        intensity: intensity || 5,
+        data: emotions[emotion],
+        setAt: Date.now()
+    };
+    
+    localStorage.setItem('emotionalAnchors', JSON.stringify(emotionalAnchorData));
+}
+
+// V14.5: 创建分块记忆组
+function createChunkingGroup(groupName, words, commonPattern) {
+    var groupId = 'chunk_' + Date.now();
+    chunkingGroups[groupId] = {
+        name: groupName,
+        words: words,
+        pattern: commonPattern,
+        createdAt: Date.now()
+    };
+    
+    // 标记每个单词属于哪个组
+    words.forEach(function(word) {
+        if (!chunkingGroups._wordToGroup) chunkingGroups._wordToGroup = {};
+        chunkingGroups._wordToGroup[word.toLowerCase()] = groupId;
+    });
+    
+    localStorage.setItem('chunkingGroups', JSON.stringify(chunkingGroups));
+    return groupId;
+}
+
+// V14.6: 获取增强版助记信息
+function getEnhancedMnemonic(word) {
+    var lowerWord = word.toLowerCase();
+    var baseMnemonic = getWordMnemonic(word);
+    var customMnemonic = userCustomMnemonics[lowerWord];
+    var effectiveness = mnemonicEffectivenessData[lowerWord];
+    var palace = memoryPalaceData.placements ? memoryPalaceData.placements[lowerWord] : null;
+    var emotion = emotionalAnchorData[lowerWord];
+    var chunk = chunkingGroups._wordToGroup ? chunkingGroups[chunkingGroups._wordToGroup[lowerWord]] : null;
+    
+    return {
+        base: baseMnemonic,
+        custom: customMnemonic,
+        effectiveness: effectiveness,
+        memoryPalace: palace,
+        emotionalAnchor: emotion,
+        chunkGroup: chunk,
+        hasEnhancements: !!(customMnemonic || palace || emotion || chunk),
+        recommended: MNEMONIC_SCIENCE.recommendType(word, mnemonicEffectivenessData._typeStats || {})
+    };
+}
+
+// V11: 加载同义词/反义词数据
+function loadWordRelations() {
+    if (wordRelationsData) return Promise.resolve(wordRelationsData);
+    
+    return fetch('word_relations.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word relations');
+            return response.json();
+        })
+        .then(function(data) {
+            wordRelationsData = data;
+            console.log('[V11] 同义词/反义词数据加载成功，共', Object.keys(data).length, '组');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V11] 加载同义词/反义词数据失败:', err);
+            wordRelationsData = {};
+            return {};
+        });
+}
+
+// V12: 加载智能助记词数据
+function loadWordMnemonics() {
+    if (wordMnemonicsData) return Promise.resolve(wordMnemonicsData);
+    
+    return fetch('word_mnemonics.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word mnemonics');
+            return response.json();
+        })
+        .then(function(data) {
+            wordMnemonicsData = data;
+            console.log('[V12] 智能助记词数据加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V12] 加载智能助记词数据失败:', err);
+            wordMnemonicsData = {};
+            return {};
+        });
+}
+
+// V13: 加载词汇难度分级数据
+function loadWordDifficulty() {
+    if (wordDifficultyData) return Promise.resolve(wordDifficultyData);
+    
+    return fetch('word_difficulty.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word difficulty');
+            return response.json();
+        })
+        .then(function(data) {
+            wordDifficultyData = data;
+            console.log('[V13] 词汇难度分级数据加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V13] 加载词汇难度分级数据失败:', err);
+            wordDifficultyData = {};
+            return {};
+        });
+}
+
+// V11: 获取单词的同义词/反义词
+function getWordRelations(word) {
+    if (!wordRelationsData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordRelationsData[lowerWord] || null;
+}
+
+// V12: 获取单词的助记词
+function getWordMnemonic(word) {
+    if (!wordMnemonicsData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordMnemonicsData[lowerWord] || null;
+}
+
+// V13: 获取单词难度等级
+function getWordDifficulty(word) {
+    if (!wordDifficultyData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordDifficultyData[lowerWord] || null;
+}
+
 try {
     learnedWords = JSON.parse(localStorage.getItem('learnedWords') || '[]');
     wordRatings = JSON.parse(localStorage.getItem('wordRatings') || '{}');
@@ -79,6 +398,12 @@ try {
 function initVocabulary() {
     // V8: 加载自适应难度数据
     loadAdaptiveDifficulty();
+    // V11: 加载同义词/反义词数据
+    loadWordRelations();
+    // V12: 加载智能助记词数据
+    loadWordMnemonics();
+    // V13: 加载词汇难度分级数据
+    loadWordDifficulty();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词
@@ -770,6 +1095,9 @@ function showCurrentWord() {
     document.getElementById('wordMain').textContent = wordData.word;
     document.getElementById('wordPhonetic').textContent = wordData.phonetic || '';
     
+    // V13: 显示难度等级标签
+    showDifficultyBadge(wordData.word);
+    
     // 隐藏释义区域
     document.getElementById('wordMeaning').classList.add('hidden');
     document.getElementById('rateButtons').classList.add('hidden');
@@ -785,6 +1113,55 @@ function showCurrentWord() {
     
     // 自动朗读新单词
     speakWord();
+}
+
+// V13: 显示难度等级标签
+function showDifficultyBadge(word) {
+    var difficulty = getWordDifficulty(word);
+    
+    // 查找或创建难度标签容器
+    var badge = document.getElementById('difficultyBadge');
+    var phoneticEl = document.getElementById('wordPhonetic');
+    
+    if (!badge && phoneticEl) {
+        badge = document.createElement('span');
+        badge.id = 'difficultyBadge';
+        badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:10px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
+        phoneticEl.parentNode.insertBefore(badge, phoneticEl.nextSibling);
+    }
+    
+    if (badge) {
+        if (difficulty) {
+            // 根据难度等级设置不同颜色
+            var levelStyles = {
+                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '🌱', label: '基础' },
+                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '📘', label: '中等' },
+                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '📙', label: '中高级' },
+                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '📕', label: '高级' },
+                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '🎓', label: '专业' }
+            };
+            var style = levelStyles[difficulty.level] || levelStyles[3];
+            badge.style.background = style.bg;
+            badge.style.color = style.color;
+            badge.style.border = '1px solid ' + style.border;
+            badge.style.display = 'inline-flex';
+            
+            // 构建标签内容
+            var sourceTags = '';
+            if (difficulty.sources && difficulty.sources.length > 0) {
+                difficulty.sources.slice(0, 2).forEach(function(src) {
+                    var srcStyle = src === 'GRE' ? 'background:#fee2e2;color:#991b1b;' : 
+                                   src === 'TOEFL' ? 'background:#e0e7ff;color:#3730a3;' : 
+                                   'background:#f3f4f6;color:#374151;';
+                    sourceTags += '<span style="' + srcStyle + 'padding:1px 5px;border-radius:4px;font-size:9px;margin-left:4px;">' + src + '</span>';
+                });
+            }
+            
+            badge.innerHTML = '<span>' + style.icon + '</span><span>' + style.label + '</span>' + sourceTags;
+        } else {
+            badge.style.display = 'none';
+        }
+    }
 }
 
 // 更新右上角学习次数徽章
@@ -883,6 +1260,15 @@ function showMeaning() {
         dictData = queryDictionary(wordData.word);
     }
     
+    // V11: 获取同义词/反义词
+    var relations = getWordRelations(wordData.word);
+    
+    // V12: 获取助记词
+    var mnemonic = getWordMnemonic(wordData.word);
+    
+    // V14: 获取增强版助记信息
+    var enhancedMnemonic = getEnhancedMnemonic(wordData.word);
+    
     // 构建释义HTML（中英文双语）
     var meaningHtml = '';
     
@@ -900,6 +1286,179 @@ function showMeaning() {
     
     meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
     meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
+    
+    // V14: 科学助记系统 - 增强版显示
+    if (mnemonic || enhancedMnemonic.hasEnhancements) {
+        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:16px;overflow:hidden;border:1px solid rgba(192,132,252,0.2);box-shadow:0 4px 12px rgba(168,85,247,0.1);">';
+        
+        // 头部：科学记忆标签
+        meaningHtml += '<div style="background:linear-gradient(135deg,#9333ea 0%,#7c3aed 50%,#6366f1 100%);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;">';
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:10px;backdrop-filter:blur(4px);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg></span>';
+        meaningHtml += '<div><div style="color:white;font-weight:700;font-size:14px;">🧠 科学记忆法</div>';
+        meaningHtml += '<div style="color:rgba(255,255,255,0.8);font-size:11px;">基于认知心理学研究</div></div>';
+        meaningHtml += '</div>';
+        
+        // 效果评估指示器
+        var effectivenessScore = enhancedMnemonic.effectiveness ? Math.round(enhancedMnemonic.effectiveness.effectiveness * 100) : null;
+        if (effectivenessScore !== null) {
+            var scoreColor = effectivenessScore >= 80 ? '#4ade80' : effectivenessScore >= 50 ? '#fbbf24' : '#f87171';
+            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);padding:4px 10px;border-radius:20px;">';
+            meaningHtml += '<span style="font-size:11px;color:white;">效果</span>';
+            meaningHtml += '<span style="font-weight:700;color:' + scoreColor + ';">' + effectivenessScore + '%</span>';
+            meaningHtml += '</div>';
+        }
+        meaningHtml += '</div>';
+        
+        // 主体内容区
+        meaningHtml += '<div style="background:linear-gradient(135deg,#fdf4ff 0%,#fae8ff 100%);padding:16px;">';
+        
+        // 选择最佳助记来源（用户自定义 > 系统生成）
+        var activeMnemonic = enhancedMnemonic.custom || mnemonic;
+        
+        if (activeMnemonic) {
+            // 助记类型标签（科学分类）
+            var mnemonicType = activeMnemonic.type || 'etymology';
+            var typeInfo = MNEMONIC_SCIENCE.types[mnemonicType] || MNEMONIC_SCIENCE.types['etymology'];
+            
+            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
+            meaningHtml += '<span style="font-size:20px;">' + typeInfo.icon + '</span>';
+            meaningHtml += '<span style="display:inline-block;padding:4px 12px;background:' + typeInfo.bg + ';border-radius:6px;font-size:12px;color:' + typeInfo.color + ';font-weight:600;">' + typeInfo.name + '</span>';
+            meaningHtml += '<span style="font-size:11px;color:#9ca3af;">科学有效性: ' + Math.round(typeInfo.effectiveness * 100) + '%</span>';
+            if (enhancedMnemonic.custom) {
+                meaningHtml += '<span style="display:inline-block;padding:2px 8px;background:#dbeafe;border-radius:4px;font-size:10px;color:#1e40af;font-weight:600;">✨ 我的记忆</span>';
+            }
+            meaningHtml += '</div>';
+            
+            // 主助记内容
+            meaningHtml += '<div style="font-size:16px;color:#581c87;line-height:1.7;font-weight:500;padding:12px;background:white;border-radius:10px;border-left:4px solid #a855f7;margin-bottom:12px;">';
+            meaningHtml += activeMnemonic.mnemonic;
+            meaningHtml += '</div>';
+            
+            // 词根信息（深度加工）
+            if (activeMnemonic.roots) {
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(139,92,246,0.08);border-radius:8px;margin-bottom:10px;">';
+                meaningHtml += '<span style="font-size:16px;">📚</span>';
+                meaningHtml += '<div><div style="font-size:11px;color:#7c3aed;font-weight:600;margin-bottom:4px;">词根解析 (Etymology)</div>';
+                meaningHtml += '<div style="font-size:13px;color:#6b21a8;">' + activeMnemonic.roots + '</div></div>';
+                meaningHtml += '</div>';
+            }
+            
+            // 联想画面（双重编码）
+            if (activeMnemonic.association) {
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(59,130,246,0.08);border-radius:8px;margin-bottom:10px;">';
+                meaningHtml += '<span style="font-size:16px;">🎨</span>';
+                meaningHtml += '<div><div style="font-size:11px;color:#2563eb;font-weight:600;margin-bottom:4px;">视觉联想 (Dual Coding)</div>';
+                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;">"' + activeMnemonic.association + '"</div></div>';
+                meaningHtml += '</div>';
+            }
+        }
+        
+        // V14.3: 记忆宫殿位置
+        if (enhancedMnemonic.memoryPalace) {
+            var location = memoryPalaceData.locations.find(function(l) { return l.id === enhancedMnemonic.memoryPalace.locationId; });
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(139,92,246,0.12);border-radius:8px;margin-bottom:10px;">';
+            meaningHtml += '<span style="font-size:16px;">🏛️</span>';
+            meaningHtml += '<div><div style="font-size:11px;color:#7c3aed;font-weight:600;margin-bottom:4px;">记忆宫殿位置</div>';
+            meaningHtml += '<div style="font-size:13px;color:#5b21b6;"><strong>' + (location ? location.name : '位置') + '</strong>: ' + enhancedMnemonic.memoryPalace.image + '</div></div>';
+            meaningHtml += '</div>';
+        }
+        
+        // V14.4: 情感锚定
+        if (enhancedMnemonic.emotionalAnchor) {
+            var emo = enhancedMnemonic.emotionalAnchor;
+            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;padding:10px;background:rgba(236,72,153,0.08);border-radius:8px;margin-bottom:10px;">';
+            meaningHtml += '<span style="font-size:20px;">' + emo.data.icon + '</span>';
+            meaningHtml += '<div><div style="font-size:11px;color:#be185d;font-weight:600;">情感锚定</div>';
+            meaningHtml += '<div style="font-size:13px;color:#9d174d;">' + emo.data.name + ' (强度: ' + emo.intensity + '/10)</div></div>';
+            meaningHtml += '</div>';
+        }
+        
+        // V14.5: 分块记忆组
+        if (enhancedMnemonic.chunkGroup) {
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:8px;padding:10px;background:rgba(20,184,166,0.08);border-radius:8px;margin-bottom:10px;">';
+            meaningHtml += '<span style="font-size:16px;">🧩</span>';
+            meaningHtml += '<div><div style="font-size:11px;color:#0f766e;font-weight:600;margin-bottom:4px;">记忆分块: ' + enhancedMnemonic.chunkGroup.name + '</div>';
+            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:4px;">';
+            enhancedMnemonic.chunkGroup.words.slice(0, 5).forEach(function(w) {
+                var isCurrent = w.toLowerCase() === wordData.word.toLowerCase();
+                meaningHtml += '<span style="padding:2px 8px;background:' + (isCurrent ? '#14b8a6' : '#ccfbf1') + ';color:' + (isCurrent ? 'white' : '#0f766e') + ';border-radius:4px;font-size:12px;font-weight:' + (isCurrent ? '700' : '500') + ';">' + w + '</span>';
+            });
+            if (enhancedMnemonic.chunkGroup.words.length > 5) {
+                meaningHtml += '<span style="padding:2px 8px;background:#f0fdfa;color:#0d9488;border-radius:4px;font-size:11px;">+' + (enhancedMnemonic.chunkGroup.words.length - 5) + '</span>';
+            }
+            meaningHtml += '</div></div></div>';
+        }
+        
+        // 操作按钮区
+        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;padding-top:14px;border-top:1px dashed rgba(168,85,247,0.3);">';
+        
+        // 效果反馈按钮
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;min-width:100px;padding:8px 10px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(34,197,94,0.3);">👍 记住了</button>';
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;min-width:100px;padding:8px 10px;background:linear-gradient(135deg,#f97316 0%,#ea580c 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(249,115,22,0.3);">🔄 需强化</button>';
+        
+        // 练习按钮
+        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(245,158,11,0.3);">🧠 练习</button>';
+        
+        // 自定义按钮
+        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(139,92,246,0.3);">✏️ 自定义</button>';
+        
+        // 记忆宫殿按钮
+        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:8px 10px;background:linear-gradient(135deg,#6366f1 0%,#4f46e5 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(99,102,241,0.3);">🏛️ 宫殿</button>';
+        
+        // 统计按钮
+        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:8px 10px;background:linear-gradient(135deg,#ec4899 0%,#db2777 100%);border:none;border-radius:8px;color:white;font-size:11px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px;box-shadow:0 2px 8px rgba(236,72,153,0.3);">📊 统计</button>';
+        
+        meaningHtml += '</div>';
+        
+        meaningHtml += '</div>'; // 主体内容区结束
+        meaningHtml += '</div>'; // 整个助记卡片结束
+    } else {
+        // 没有助记时显示添加建议
+        var recommended = MNEMONIC_SCIENCE.recommendType(wordData.word, mnemonicEffectivenessData._typeStats || {});
+        var recType = MNEMONIC_SCIENCE.types[recommended.type];
+        
+        meaningHtml += '<div style="margin-bottom:16px;padding:16px;background:linear-gradient(135deg,#f9fafb 0%,#f3f4f6 100%);border-radius:12px;border:2px dashed #d1d5db;">';
+        meaningHtml += '<div style="text-align:center;">';
+        meaningHtml += '<div style="font-size:32px;margin-bottom:8px;">💡</div>';
+        meaningHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:12px;">暂无记忆技巧，建议添加</div>';
+        meaningHtml += '<div style="margin-bottom:12px;padding:8px;background:' + recType.bg + ';border-radius:8px;display:inline-block;">';
+        meaningHtml += '<span style="font-size:16px;margin-right:6px;">' + recType.icon + '</span>';
+        meaningHtml += '<span style="color:' + recType.color + ';font-weight:600;font-size:13px;">推荐: ' + recType.name + '</span>';
+        meaningHtml += '<div style="font-size:11px;color:' + recType.color + ';opacity:0.8;margin-top:4px;">' + recType.description + '</div>';
+        meaningHtml += '</div>';
+        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 20px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,0.3);">✨ 创建我的记忆法</button>';
+        meaningHtml += '</div></div>';
+    }
+    
+    // V11: 同义词/反义词显示
+    if (relations) {
+        meaningHtml += '<div class="word-relations" style="margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border-radius:12px;border:1px solid rgba(234,179,8,0.2);">';
+        
+        // 同义词
+        if (relations.synonyms && relations.synonyms.length > 0) {
+            meaningHtml += '<div style="margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">';
+            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border-radius:7px;box-shadow:0 2px 6px rgba(34,197,94,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>';
+            meaningHtml += '<div><span style="font-weight:700;color:#15803d;font-size:13px;">同义词 Synonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            relations.synonyms.forEach(function(syn) {
+                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#166534;border:1px solid #bbf7d0;font-weight:500;">' + syn + '</span>';
+            });
+            meaningHtml += '</div></div></div>';
+        }
+        
+        // 反义词
+        if (relations.antonyms && relations.antonyms.length > 0) {
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border-radius:7px;box-shadow:0 2px 6px rgba(239,68,68,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14"/></svg></span>';
+            meaningHtml += '<div><span style="font-weight:700;color:#b91c1c;font-size:13px;">反义词 Antonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            relations.antonyms.forEach(function(ant) {
+                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#991b1b;border:1px solid #fecaca;font-weight:500;">' + ant + '</span>';
+            });
+            meaningHtml += '</div></div></div>';
+        }
+        
+        meaningHtml += '</div>';
+    }
     
     if (wordData.example) {
         meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
@@ -1747,3 +2306,867 @@ window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
 window.updateLearningProgressIndicator = updateLearningProgressIndicator;
 window.updateLearningBadge = updateLearningBadge;
+
+// ==================== V14: 科学助记交互功能 ====================
+
+// V14.7: 记录助记效果反馈
+function rateMnemonicEffectiveness(word, wasEffective) {
+    var mnemonic = getWordMnemonic(word);
+    var mnemonicType = mnemonic ? (mnemonic.type || 'etymology') : 'unknown';
+    
+    recordMnemonicEffectiveness(word, mnemonicType, wasEffective);
+    
+    // 显示反馈动画
+    var feedbackEl = document.createElement('div');
+    feedbackEl.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:' + 
+        (wasEffective ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#f97316,#ea580c)') + 
+        ';color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;' +
+        'box-shadow:0 8px 32px rgba(0,0,0,0.2);animation:mnemonicFeedback 0.5s ease-out;';
+    feedbackEl.innerHTML = wasEffective ? '👍 已记录！继续加油' : '🔄 已标记，会加强复习';
+    document.body.appendChild(feedbackEl);
+    
+    setTimeout(function() { feedbackEl.remove(); }, 1500);
+    
+    // 如果需要强化，添加到即时复习队列
+    if (!wasEffective && typeof immediateReviewQueue !== 'undefined') {
+        var wordData = learningQueue.find(function(w) { return w.word.toLowerCase() === word.toLowerCase(); });
+        if (wordData && immediateReviewQueue.indexOf(wordData) === -1) {
+            immediateReviewQueue.push(wordData);
+            console.log('[V14] 添加到强化复习队列:', word);
+        }
+    }
+}
+
+// V14.8: 显示自定义助记编辑器
+function showCustomMnemonicEditor(word) {
+    var existingCustom = userCustomMnemonics[word.toLowerCase()];
+    var baseMnemonic = getWordMnemonic(word);
+    
+    var overlayEl = document.createElement('div');
+    overlayEl.id = 'customMnemonicOverlay';
+    overlayEl.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    
+    var editorHtml = '<div style="background:white;border-radius:20px;width:90%;max-width:440px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);">';
+    
+    // 头部
+    editorHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 50%,#6366f1 100%);padding:20px;border-radius:20px 20px 0 0;">';
+    editorHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
+    editorHtml += '<div style="display:flex;align-items:center;gap:12px;">';
+    editorHtml += '<span style="font-size:32px;">✨</span>';
+    editorHtml += '<div><div style="color:white;font-size:18px;font-weight:700;">创建我的记忆法</div>';
+    editorHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">' + word + '</div></div>';
+    editorHtml += '</div>';
+    editorHtml += '<button onclick="closeCustomMnemonicEditor()" style="background:rgba(255,255,255,0.2);border:none;width:36px;height:36px;border-radius:12px;color:white;font-size:20px;cursor:pointer;">×</button>';
+    editorHtml += '</div></div>';
+    
+    // 内容区
+    editorHtml += '<div style="padding:20px;">';
+    
+    // 科学方法选择
+    editorHtml += '<div style="margin-bottom:16px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:8px;">🔬 选择记忆方法（基于科学研究）</label>';
+    editorHtml += '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;" id="mnemonicTypeGrid">';
+    
+    var types = Object.keys(MNEMONIC_SCIENCE.types);
+    types.forEach(function(type) {
+        var info = MNEMONIC_SCIENCE.types[type];
+        var isSelected = existingCustom && existingCustom.type === type;
+        editorHtml += '<div onclick="selectMnemonicType(\'' + type + '\')" id="typeBtn_' + type + '" style="padding:10px;background:' + (isSelected ? info.bg : '#f9fafb') + ';border:2px solid ' + (isSelected ? info.color : '#e5e7eb') + ';border-radius:10px;cursor:pointer;transition:all 0.2s;" data-type="' + type + '">';
+        editorHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+        editorHtml += '<span style="font-size:18px;">' + info.icon + '</span>';
+        editorHtml += '<div><div style="font-size:12px;font-weight:600;color:' + info.color + ';">' + info.name + '</div>';
+        editorHtml += '<div style="font-size:10px;color:#9ca3af;">' + Math.round(info.effectiveness * 100) + '% 有效</div></div>';
+        editorHtml += '</div></div>';
+    });
+    editorHtml += '</div></div>';
+    
+    // 助记内容输入
+    editorHtml += '<div style="margin-bottom:16px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:8px;">💡 我的记忆技巧</label>';
+    editorHtml += '<textarea id="customMnemonicText" placeholder="输入你独特的记忆方法..." style="width:100%;height:80px;padding:12px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;resize:none;box-sizing:border-box;">' + (existingCustom ? existingCustom.mnemonic : (baseMnemonic ? baseMnemonic.mnemonic : '')) + '</textarea>';
+    editorHtml += '</div>';
+    
+    // 视觉联想
+    editorHtml += '<div style="margin-bottom:16px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:8px;">🎨 视觉画面描述（双重编码）</label>';
+    editorHtml += '<input id="customVisual" type="text" placeholder="描述一个生动的画面..." value="' + (existingCustom && existingCustom.visual ? existingCustom.visual : (baseMnemonic && baseMnemonic.association ? baseMnemonic.association : '')) + '" style="width:100%;padding:12px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;box-sizing:border-box;">';
+    editorHtml += '</div>';
+    
+    // 情感锚定
+    editorHtml += '<div style="margin-bottom:16px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:8px;">💖 情感连接（选择一个情感）</label>';
+    editorHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;" id="emotionGrid">';
+    var emotions = ['joy', 'surprise', 'fear', 'love', 'curiosity', 'anger'];
+    var emotionData = {
+        'joy': { icon: '😊', name: '快乐' },
+        'surprise': { icon: '😲', name: '惊讶' },
+        'fear': { icon: '😨', name: '恐惧' },
+        'love': { icon: '❤️', name: '爱' },
+        'curiosity': { icon: '🤔', name: '好奇' },
+        'anger': { icon: '😠', name: '愤怒' }
+    };
+    emotions.forEach(function(emo) {
+        var data = emotionData[emo];
+        var isSelected = existingCustom && existingCustom.emotional === emo;
+        editorHtml += '<div onclick="selectEmotion(\'' + emo + '\')" id="emoBtn_' + emo + '" style="padding:8px 12px;background:' + (isSelected ? '#fce7f3' : '#f9fafb') + ';border:2px solid ' + (isSelected ? '#ec4899' : '#e5e7eb') + ';border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:4px;">';
+        editorHtml += '<span style="font-size:16px;">' + data.icon + '</span>';
+        editorHtml += '<span style="font-size:12px;color:#374151;">' + data.name + '</span>';
+        editorHtml += '</div>';
+    });
+    editorHtml += '</div></div>';
+    
+    // 保存按钮
+    editorHtml += '<button onclick="saveCustomMnemonicFromEditor(\'' + word + '\')" style="width:100%;padding:14px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:12px;color:white;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,0.3);">💾 保存我的记忆法</button>';
+    
+    editorHtml += '</div></div>';
+    
+    overlayEl.innerHTML = editorHtml;
+    document.body.appendChild(overlayEl);
+    
+    // 添加选择状态变量
+    window._selectedMnemonicType = existingCustom ? existingCustom.type : 'etymology';
+    window._selectedEmotion = existingCustom ? existingCustom.emotional : null;
+}
+
+// 选择助记类型
+function selectMnemonicType(type) {
+    window._selectedMnemonicType = type;
+    var grid = document.getElementById('mnemonicTypeGrid');
+    if (grid) {
+        var buttons = grid.querySelectorAll('[data-type]');
+        buttons.forEach(function(btn) {
+            var btnType = btn.getAttribute('data-type');
+            var info = MNEMONIC_SCIENCE.types[btnType];
+            if (btnType === type) {
+                btn.style.background = info.bg;
+                btn.style.borderColor = info.color;
+            } else {
+                btn.style.background = '#f9fafb';
+                btn.style.borderColor = '#e5e7eb';
+            }
+        });
+    }
+}
+
+// 选择情感
+function selectEmotion(emotion) {
+    window._selectedEmotion = window._selectedEmotion === emotion ? null : emotion;
+    var grid = document.getElementById('emotionGrid');
+    if (grid) {
+        var buttons = grid.querySelectorAll('[id^="emoBtn_"]');
+        buttons.forEach(function(btn) {
+            var emo = btn.id.replace('emoBtn_', '');
+            if (emo === window._selectedEmotion) {
+                btn.style.background = '#fce7f3';
+                btn.style.borderColor = '#ec4899';
+            } else {
+                btn.style.background = '#f9fafb';
+                btn.style.borderColor = '#e5e7eb';
+            }
+        });
+    }
+}
+
+// 保存自定义助记
+function saveCustomMnemonicFromEditor(word) {
+    var text = document.getElementById('customMnemonicText').value.trim();
+    var visual = document.getElementById('customVisual').value.trim();
+    
+    if (!text) {
+        alert('请输入记忆技巧！');
+        return;
+    }
+    
+    saveCustomMnemonic(word, {
+        text: text,
+        type: window._selectedMnemonicType || 'etymology',
+        visual: visual || null,
+        emotional: window._selectedEmotion || null
+    });
+    
+    // 如果选择了情感，也保存情感锚定
+    if (window._selectedEmotion) {
+        setEmotionalAnchor(word, window._selectedEmotion, 7);
+    }
+    
+    closeCustomMnemonicEditor();
+    
+    // 刷新显示
+    showMeaning();
+    
+    // 显示保存成功提示
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#22c55e,#16a34a);color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+    toast.innerHTML = '✅ 保存成功！';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 1500);
+}
+
+// 关闭自定义助记编辑器
+function closeCustomMnemonicEditor() {
+    var overlay = document.getElementById('customMnemonicOverlay');
+    if (overlay) overlay.remove();
+}
+
+// V14.9: 显示记忆宫殿编辑器
+function showMemoryPalaceEditor(word) {
+    var existingPlacement = memoryPalaceData.placements ? memoryPalaceData.placements[word.toLowerCase()] : null;
+    
+    var overlayEl = document.createElement('div');
+    overlayEl.id = 'memoryPalaceOverlay';
+    overlayEl.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    
+    // 初始化位置数据
+    if (!memoryPalaceData.locations) {
+        memoryPalaceData.locations = [
+            { id: 'home_entrance', name: '🚪 家门口', description: '推开门，第一眼看到的地方' },
+            { id: 'living_room', name: '🛋️ 客厅', description: '舒适的沙发和茶几' },
+            { id: 'kitchen', name: '🍳 厨房', description: '锅碗瓢盆的地方' },
+            { id: 'bedroom', name: '🛏️ 卧室', description: '休息的私人空间' },
+            { id: 'bathroom', name: '🚿 卫生间', description: '洗漱的地方' },
+            { id: 'balcony', name: '🌿 阳台', description: '阳光充足的地方' },
+            { id: 'study', name: '📚 书房', description: '学习和工作的地方' },
+            { id: 'garden', name: '🌸 花园', description: '花草树木的天地' }
+        ];
+    }
+    
+    var editorHtml = '<div style="background:white;border-radius:20px;width:90%;max-width:440px;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.3);">';
+    
+    // 头部
+    editorHtml += '<div style="background:linear-gradient(135deg,#6366f1 0%,#4f46e5 50%,#4338ca 100%);padding:20px;border-radius:20px 20px 0 0;">';
+    editorHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
+    editorHtml += '<div style="display:flex;align-items:center;gap:12px;">';
+    editorHtml += '<span style="font-size:32px;">🏛️</span>';
+    editorHtml += '<div><div style="color:white;font-size:18px;font-weight:700;">记忆宫殿</div>';
+    editorHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">将 "' + word + '" 放置在熟悉的位置</div></div>';
+    editorHtml += '</div>';
+    editorHtml += '<button onclick="closeMemoryPalaceEditor()" style="background:rgba(255,255,255,0.2);border:none;width:36px;height:36px;border-radius:12px;color:white;font-size:20px;cursor:pointer;">×</button>';
+    editorHtml += '</div></div>';
+    
+    // 科学说明
+    editorHtml += '<div style="padding:16px 20px;background:#eef2ff;border-bottom:1px solid #c7d2fe;">';
+    editorHtml += '<div style="font-size:12px;color:#4338ca;">💡 <strong>记忆宫殿法</strong>是世界记忆冠军使用的技术。将单词与熟悉地点结合，利用空间记忆增强词汇记忆。</div>';
+    editorHtml += '</div>';
+    
+    // 位置选择
+    editorHtml += '<div style="padding:20px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:12px;">📍 选择一个位置</label>';
+    editorHtml += '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;" id="locationGrid">';
+    
+    memoryPalaceData.locations.forEach(function(loc) {
+        var isSelected = existingPlacement && existingPlacement.locationId === loc.id;
+        editorHtml += '<div onclick="selectPalaceLocation(\'' + loc.id + '\')" id="locBtn_' + loc.id + '" style="padding:14px;background:' + (isSelected ? '#e0e7ff' : '#f9fafb') + ';border:2px solid ' + (isSelected ? '#6366f1' : '#e5e7eb') + ';border-radius:12px;cursor:pointer;transition:all 0.2s;">';
+        editorHtml += '<div style="font-size:16px;margin-bottom:4px;">' + loc.name + '</div>';
+        editorHtml += '<div style="font-size:11px;color:#6b7280;">' + loc.description + '</div>';
+        editorHtml += '</div>';
+    });
+    editorHtml += '</div>';
+    
+    // 画面描述
+    editorHtml += '<div style="margin-bottom:16px;">';
+    editorHtml += '<label style="display:block;font-size:13px;font-weight:600;color:#4b5563;margin-bottom:8px;">🎨 描述你看到的画面</label>';
+    editorHtml += '<textarea id="palaceImage" placeholder="想象这个单词在这个位置发生了什么有趣的事情..." style="width:100%;height:80px;padding:12px;border:2px solid #e5e7eb;border-radius:10px;font-size:14px;resize:none;box-sizing:border-box;">' + (existingPlacement ? existingPlacement.image : '') + '</textarea>';
+    editorHtml += '<div style="font-size:11px;color:#9ca3af;margin-top:6px;">💡 提示：画面越夸张、越有趣，记忆越深刻！</div>';
+    editorHtml += '</div>';
+    
+    // 保存按钮
+    editorHtml += '<button onclick="saveMemoryPalacePlacement(\'' + word + '\')" style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1 0%,#4f46e5 100%);border:none;border-radius:12px;color:white;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 12px rgba(99,102,241,0.3);">🏛️ 放入记忆宫殿</button>';
+    
+    editorHtml += '</div></div>';
+    
+    overlayEl.innerHTML = editorHtml;
+    document.body.appendChild(overlayEl);
+    
+    window._selectedLocation = existingPlacement ? existingPlacement.locationId : null;
+}
+
+// 选择宫殿位置
+function selectPalaceLocation(locId) {
+    window._selectedLocation = locId;
+    var grid = document.getElementById('locationGrid');
+    if (grid) {
+        var buttons = grid.querySelectorAll('[id^="locBtn_"]');
+        buttons.forEach(function(btn) {
+            var id = btn.id.replace('locBtn_', '');
+            if (id === locId) {
+                btn.style.background = '#e0e7ff';
+                btn.style.borderColor = '#6366f1';
+            } else {
+                btn.style.background = '#f9fafb';
+                btn.style.borderColor = '#e5e7eb';
+            }
+        });
+    }
+}
+
+// 保存记忆宫殿位置
+function saveMemoryPalacePlacement(word) {
+    var imageDesc = document.getElementById('palaceImage').value.trim();
+    
+    if (!window._selectedLocation) {
+        alert('请选择一个位置！');
+        return;
+    }
+    if (!imageDesc) {
+        alert('请描述这个画面！');
+        return;
+    }
+    
+    addToMemoryPalace(word, window._selectedLocation, imageDesc);
+    
+    closeMemoryPalaceEditor();
+    showMeaning();
+    
+    var toast = document.createElement('div');
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#6366f1,#4f46e5);color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
+    toast.innerHTML = '🏛️ 已放入记忆宫殿！';
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 1500);
+}
+
+// 关闭记忆宫殿编辑器
+function closeMemoryPalaceEditor() {
+    var overlay = document.getElementById('memoryPalaceOverlay');
+    if (overlay) overlay.remove();
+}
+
+// V14.10: 添加助记动画样式
+(function addMnemonicAnimationStyles() {
+    if (document.getElementById('mnemonicAnimStyles')) return;
+    var style = document.createElement('style');
+    style.id = 'mnemonicAnimStyles';
+    style.textContent = `
+        @keyframes mnemonicFeedback {
+            0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+            100% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+        
+        .word-mnemonic-v14 {
+            animation: mnemonicSlideIn 0.4s ease-out;
+        }
+        
+        @keyframes mnemonicSlideIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        #customMnemonicOverlay, #memoryPalaceOverlay {
+            animation: overlayFadeIn 0.3s ease-out;
+        }
+        
+        @keyframes overlayFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        #customMnemonicOverlay > div, #memoryPalaceOverlay > div {
+            animation: modalSlideUp 0.3s ease-out;
+        }
+        
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    `;
+    document.head.appendChild(style);
+})();
+
+// 导出新功能
+window.rateMnemonicEffectiveness = rateMnemonicEffectiveness;
+window.showCustomMnemonicEditor = showCustomMnemonicEditor;
+window.selectMnemonicType = selectMnemonicType;
+window.selectEmotion = selectEmotion;
+window.saveCustomMnemonicFromEditor = saveCustomMnemonicFromEditor;
+window.closeCustomMnemonicEditor = closeCustomMnemonicEditor;
+window.showMemoryPalaceEditor = showMemoryPalaceEditor;
+window.selectPalaceLocation = selectPalaceLocation;
+window.saveMemoryPalacePlacement = saveMemoryPalacePlacement;
+window.closeMemoryPalaceEditor = closeMemoryPalaceEditor;
+
+// ==================== V14.7-10: 高级科学记忆功能 ====================
+
+// V14.7: 间隔强化机制 - 根据遗忘曲线优化复习时机
+var spacedReinforcementData = {};
+try {
+    spacedReinforcementData = JSON.parse(localStorage.getItem('spacedReinforcement') || '{}');
+} catch(e) {
+    spacedReinforcementData = {};
+}
+
+function calculateOptimalReviewTime(word) {
+    var data = spacedReinforcementData[word.toLowerCase()];
+    if (!data) {
+        return { nextReview: Date.now(), interval: 1 }; // 新词，立即复习
+    }
+    
+    // 基于SM-2算法变体
+    var lastReview = data.lastReview || Date.now();
+    var easeFactor = data.easeFactor || 2.5;
+    var interval = data.interval || 1;
+    var reviews = data.reviews || 0;
+    
+    // 计算下次复习时间（小时）
+    var nextIntervalHours = interval * easeFactor * (1 + reviews * 0.1);
+    var nextReviewTime = lastReview + nextIntervalHours * 60 * 60 * 1000;
+    
+    return {
+        nextReview: nextReviewTime,
+        interval: nextIntervalHours,
+        isOverdue: Date.now() > nextReviewTime,
+        urgency: Math.max(0, (Date.now() - nextReviewTime) / (24 * 60 * 60 * 1000)) // 逾期天数
+    };
+}
+
+function updateSpacedReinforcement(word, quality) {
+    // quality: 0-5 (0=完全忘记, 5=完美记忆)
+    var lowerWord = word.toLowerCase();
+    var data = spacedReinforcementData[lowerWord] || {
+        easeFactor: 2.5,
+        interval: 1,
+        reviews: 0,
+        lastReview: null
+    };
+    
+    // 更新易度因子
+    data.easeFactor = Math.max(1.3, data.easeFactor + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    
+    // 更新间隔
+    if (quality >= 3) {
+        if (data.reviews === 0) {
+            data.interval = 1;
+        } else if (data.reviews === 1) {
+            data.interval = 6;
+        } else {
+            data.interval = data.interval * data.easeFactor;
+        }
+        data.reviews++;
+    } else {
+        data.reviews = 0;
+        data.interval = 1;
+    }
+    
+    data.lastReview = Date.now();
+    spacedReinforcementData[lowerWord] = data;
+    localStorage.setItem('spacedReinforcement', JSON.stringify(spacedReinforcementData));
+    
+    return data;
+}
+
+// V14.8: 分块记忆优化 - 自动检测词根词缀分组
+function autoDetectChunkingPattern(word) {
+    var patterns = {
+        prefixes: {
+            'un': '否定/相反',
+            're': '再次/返回',
+            'pre': '预先/之前',
+            'dis': '否定/分离',
+            'mis': '错误',
+            'sub': '在下/次级',
+            'super': '超级/上方',
+            'inter': '相互/之间',
+            'trans': '跨越/转变',
+            'anti': '反对',
+            'auto': '自动',
+            'bi': '双',
+            'co': '共同',
+            'de': '向下/去除',
+            'ex': '向外/前任',
+            'in': '在内/否定',
+            'im': '在内/否定',
+            'non': '非',
+            'over': '过度/在上',
+            'post': '之后',
+            'pro': '向前/支持',
+            'semi': '半',
+            'under': '不足/在下'
+        },
+        suffixes: {
+            'tion': '名词(动作/状态)',
+            'sion': '名词(动作/状态)',
+            'ment': '名词(结果/状态)',
+            'ness': '名词(性质)',
+            'ity': '名词(性质)',
+            'able': '形容词(能够)',
+            'ible': '形容词(能够)',
+            'ful': '形容词(充满)',
+            'less': '形容词(缺乏)',
+            'ous': '形容词(具有)',
+            'ive': '形容词(倾向)',
+            'al': '形容词/名词',
+            'ly': '副词',
+            'ize': '动词(使成为)',
+            'ify': '动词(使成为)',
+            'er': '名词(人/物)',
+            'or': '名词(人/物)',
+            'ist': '名词(从事者)',
+            'ism': '名词(主义/行为)'
+        }
+    };
+    
+    var detected = {
+        prefix: null,
+        suffix: null,
+        root: word
+    };
+    
+    // 检测前缀
+    for (var pre in patterns.prefixes) {
+        if (word.toLowerCase().startsWith(pre) && word.length > pre.length + 2) {
+            detected.prefix = { text: pre, meaning: patterns.prefixes[pre] };
+            detected.root = word.slice(pre.length);
+            break;
+        }
+    }
+    
+    // 检测后缀
+    for (var suf in patterns.suffixes) {
+        if (word.toLowerCase().endsWith(suf) && word.length > suf.length + 2) {
+            detected.suffix = { text: suf, meaning: patterns.suffixes[suf] };
+            if (!detected.prefix) {
+                detected.root = word.slice(0, -suf.length);
+            } else {
+                detected.root = detected.root.slice(0, -suf.length);
+            }
+            break;
+        }
+    }
+    
+    return detected;
+}
+
+// 查找相似词根的单词（用于分组记忆）
+function findSimilarRootWords(word) {
+    var pattern = autoDetectChunkingPattern(word);
+    if (!pattern.root || pattern.root.length < 3) return [];
+    
+    var similar = [];
+    var root = pattern.root.toLowerCase();
+    
+    // 从学习队列中查找
+    if (typeof learningQueue !== 'undefined' && learningQueue.length > 0) {
+        learningQueue.forEach(function(w) {
+            if (w.word.toLowerCase() !== word.toLowerCase()) {
+                var otherPattern = autoDetectChunkingPattern(w.word);
+                if (otherPattern.root && otherPattern.root.toLowerCase().includes(root.slice(0, 3))) {
+                    similar.push(w.word);
+                }
+            }
+        });
+    }
+    
+    return similar.slice(0, 5);
+}
+
+// V14.9: 交互式记忆练习
+function startMnemonicPractice(word) {
+    var mnemonic = getWordMnemonic(word);
+    var enhanced = getEnhancedMnemonic(word);
+    
+    var overlayEl = document.createElement('div');
+    overlayEl.id = 'mnemonicPracticeOverlay';
+    overlayEl.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.7);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);';
+    
+    var practiceHtml = '<div style="background:white;border-radius:24px;width:90%;max-width:400px;overflow:hidden;box-shadow:0 25px 80px rgba(0,0,0,0.4);">';
+    
+    // 头部
+    practiceHtml += '<div style="background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);padding:24px;text-align:center;">';
+    practiceHtml += '<div style="font-size:40px;margin-bottom:8px;">🧠</div>';
+    practiceHtml += '<div style="color:white;font-size:20px;font-weight:700;">记忆测验</div>';
+    practiceHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;margin-top:4px;">测试你的记忆效果</div>';
+    practiceHtml += '</div>';
+    
+    // 练习内容
+    practiceHtml += '<div style="padding:24px;">';
+    
+    // 第一步：显示单词，隐藏释义
+    practiceHtml += '<div id="practiceStep1">';
+    practiceHtml += '<div style="text-align:center;margin-bottom:20px;">';
+    practiceHtml += '<div style="font-size:32px;font-weight:700;color:#1e1b4b;margin-bottom:8px;">' + word + '</div>';
+    practiceHtml += '<div style="font-size:14px;color:#6b7280;">尝试回忆这个单词的意思</div>';
+    practiceHtml += '</div>';
+    
+    // 提示按钮
+    practiceHtml += '<div style="display:flex;gap:12px;margin-bottom:16px;">';
+    practiceHtml += '<button onclick="showPracticeHint(1)" style="flex:1;padding:12px;background:#f3f4f6;border:2px solid #e5e7eb;border-radius:12px;font-size:13px;cursor:pointer;">💡 助记提示</button>';
+    practiceHtml += '<button onclick="showPracticeHint(2)" style="flex:1;padding:12px;background:#f3f4f6;border:2px solid #e5e7eb;border-radius:12px;font-size:13px;cursor:pointer;">📚 词根提示</button>';
+    practiceHtml += '</div>';
+    
+    // 提示显示区
+    practiceHtml += '<div id="practiceHintArea" style="display:none;padding:16px;background:#fef3c7;border-radius:12px;margin-bottom:16px;"></div>';
+    
+    // 显示答案按钮
+    practiceHtml += '<button onclick="showPracticeAnswer()" style="width:100%;padding:14px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border:none;border-radius:12px;color:white;font-size:16px;font-weight:600;cursor:pointer;">👀 显示答案</button>';
+    practiceHtml += '</div>';
+    
+    // 第二步：评估记忆（初始隐藏）
+    practiceHtml += '<div id="practiceStep2" style="display:none;">';
+    practiceHtml += '<div style="text-align:center;margin-bottom:20px;">';
+    practiceHtml += '<div style="font-size:28px;font-weight:700;color:#1e1b4b;margin-bottom:12px;">' + word + '</div>';
+    var wordData = learningQueue ? learningQueue.find(function(w) { return w.word.toLowerCase() === word.toLowerCase(); }) : null;
+    practiceHtml += '<div style="font-size:18px;color:#059669;font-weight:600;">' + (wordData ? wordData.meaningCn : '暂无释义') + '</div>';
+    practiceHtml += '</div>';
+    
+    // 记忆评估按钮
+    practiceHtml += '<div style="font-size:14px;color:#6b7280;text-align:center;margin-bottom:12px;">你记住了吗？</div>';
+    practiceHtml += '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">';
+    practiceHtml += '<button onclick="ratePracticeResult(\'' + word + '\', 1)" style="padding:16px 8px;background:#fee2e2;border:2px solid #fecaca;border-radius:12px;cursor:pointer;"><div style="font-size:24px;">😫</div><div style="font-size:12px;color:#991b1b;font-weight:600;">忘记了</div></button>';
+    practiceHtml += '<button onclick="ratePracticeResult(\'' + word + '\', 3)" style="padding:16px 8px;background:#fef3c7;border:2px solid #fde68a;border-radius:12px;cursor:pointer;"><div style="font-size:24px;">🤔</div><div style="font-size:12px;color:#92400e;font-weight:600;">有点印象</div></button>';
+    practiceHtml += '<button onclick="ratePracticeResult(\'' + word + '\', 5)" style="padding:16px 8px;background:#dcfce7;border:2px solid #bbf7d0;border-radius:12px;cursor:pointer;"><div style="font-size:24px;">😊</div><div style="font-size:12px;color:#166534;font-weight:600;">完全记住</div></button>';
+    practiceHtml += '</div>';
+    practiceHtml += '</div>';
+    
+    practiceHtml += '</div>';
+    
+    // 关闭按钮
+    practiceHtml += '<div style="padding:16px 24px 24px;text-align:center;">';
+    practiceHtml += '<button onclick="closeMnemonicPractice()" style="padding:10px 24px;background:#f3f4f6;border:none;border-radius:8px;color:#6b7280;font-size:14px;cursor:pointer;">关闭练习</button>';
+    practiceHtml += '</div>';
+    
+    practiceHtml += '</div>';
+    
+    overlayEl.innerHTML = practiceHtml;
+    document.body.appendChild(overlayEl);
+    
+    // 保存当前单词信息供提示使用
+    window._practiceWord = word;
+    window._practiceMnemonic = mnemonic;
+    window._practiceEnhanced = enhanced;
+}
+
+function showPracticeHint(hintType) {
+    var hintArea = document.getElementById('practiceHintArea');
+    if (!hintArea) return;
+    
+    var hintContent = '';
+    if (hintType === 1 && window._practiceMnemonic) {
+        hintContent = '💡 <strong>助记:</strong> ' + window._practiceMnemonic.mnemonic;
+    } else if (hintType === 2 && window._practiceMnemonic && window._practiceMnemonic.roots) {
+        hintContent = '📚 <strong>词根:</strong> ' + window._practiceMnemonic.roots;
+    } else {
+        var pattern = autoDetectChunkingPattern(window._practiceWord);
+        if (pattern.prefix) {
+            hintContent = '📚 <strong>前缀:</strong> ' + pattern.prefix.text + ' (' + pattern.prefix.meaning + ')';
+        } else if (pattern.suffix) {
+            hintContent = '📚 <strong>后缀:</strong> ' + pattern.suffix.text + ' (' + pattern.suffix.meaning + ')';
+        } else {
+            hintContent = '💡 没有额外提示，试着回忆一下吧！';
+        }
+    }
+    
+    hintArea.innerHTML = '<div style="font-size:14px;color:#92400e;">' + hintContent + '</div>';
+    hintArea.style.display = 'block';
+}
+
+function showPracticeAnswer() {
+    document.getElementById('practiceStep1').style.display = 'none';
+    document.getElementById('practiceStep2').style.display = 'block';
+}
+
+function ratePracticeResult(word, quality) {
+    // 更新间隔强化数据
+    updateSpacedReinforcement(word, quality);
+    
+    // 更新助记效果
+    recordMnemonicEffectiveness(word, window._practiceMnemonic ? window._practiceMnemonic.type : 'unknown', quality >= 3);
+    
+    closeMnemonicPractice();
+    
+    // 显示结果反馈
+    var feedback = document.createElement('div');
+    var feedbackText = quality >= 4 ? '🎉 太棒了！' : quality >= 3 ? '👍 继续加油！' : '💪 多复习几次！';
+    feedback.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;padding:20px 32px;border-radius:16px;font-size:20px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
+    feedback.innerHTML = feedbackText;
+    document.body.appendChild(feedback);
+    setTimeout(function() { feedback.remove(); }, 1500);
+}
+
+function closeMnemonicPractice() {
+    var overlay = document.getElementById('mnemonicPracticeOverlay');
+    if (overlay) overlay.remove();
+}
+
+// V14.10: 记忆效果追踪面板
+function showMnemonicStats() {
+    var stats = calculateMnemonicStats();
+    
+    var overlayEl = document.createElement('div');
+    overlayEl.id = 'mnemonicStatsOverlay';
+    overlayEl.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.6);z-index:9999;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px);';
+    
+    var statsHtml = '<div style="background:white;border-radius:24px;width:90%;max-width:480px;max-height:85vh;overflow-y:auto;box-shadow:0 25px 80px rgba(0,0,0,0.4);">';
+    
+    // 头部
+    statsHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 50%,#3b82f6 100%);padding:24px;border-radius:24px 24px 0 0;">';
+    statsHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
+    statsHtml += '<div style="display:flex;align-items:center;gap:14px;">';
+    statsHtml += '<span style="font-size:36px;">📊</span>';
+    statsHtml += '<div><div style="color:white;font-size:20px;font-weight:700;">记忆效果统计</div>';
+    statsHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">科学追踪你的学习进展</div></div>';
+    statsHtml += '</div>';
+    statsHtml += '<button onclick="closeMnemonicStats()" style="background:rgba(255,255,255,0.2);border:none;width:40px;height:40px;border-radius:14px;color:white;font-size:22px;cursor:pointer;">×</button>';
+    statsHtml += '</div></div>';
+    
+    // 总体统计
+    statsHtml += '<div style="padding:20px;">';
+    
+    // 核心指标卡片
+    statsHtml += '<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px;">';
+    
+    statsHtml += '<div style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);padding:16px;border-radius:16px;text-align:center;">';
+    statsHtml += '<div style="font-size:28px;font-weight:700;color:#166534;">' + stats.totalWords + '</div>';
+    statsHtml += '<div style="font-size:12px;color:#15803d;font-weight:600;">已记忆单词</div>';
+    statsHtml += '</div>';
+    
+    statsHtml += '<div style="background:linear-gradient(135deg,#dbeafe,#bfdbfe);padding:16px;border-radius:16px;text-align:center;">';
+    statsHtml += '<div style="font-size:28px;font-weight:700;color:#1e40af;">' + Math.round(stats.avgEffectiveness * 100) + '%</div>';
+    statsHtml += '<div style="font-size:12px;color:#1d4ed8;font-weight:600;">平均记忆效果</div>';
+    statsHtml += '</div>';
+    
+    statsHtml += '<div style="background:linear-gradient(135deg,#fef3c7,#fde68a);padding:16px;border-radius:16px;text-align:center;">';
+    statsHtml += '<div style="font-size:28px;font-weight:700;color:#92400e;">' + stats.customMnemonics + '</div>';
+    statsHtml += '<div style="font-size:12px;color:#b45309;font-weight:600;">自定义记忆法</div>';
+    statsHtml += '</div>';
+    
+    statsHtml += '<div style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);padding:16px;border-radius:16px;text-align:center;">';
+    statsHtml += '<div style="font-size:28px;font-weight:700;color:#5b21b6;">' + stats.palacePlacements + '</div>';
+    statsHtml += '<div style="font-size:12px;color:#6d28d9;font-weight:600;">记忆宫殿位置</div>';
+    statsHtml += '</div>';
+    
+    statsHtml += '</div>';
+    
+    // 各类型效果分析
+    statsHtml += '<div style="margin-bottom:20px;">';
+    statsHtml += '<div style="font-size:14px;font-weight:700;color:#1f2937;margin-bottom:12px;">📈 各记忆法效果</div>';
+    
+    if (stats.typeStats && Object.keys(stats.typeStats).length > 0) {
+        Object.keys(stats.typeStats).forEach(function(type) {
+            var typeStat = stats.typeStats[type];
+            var typeInfo = MNEMONIC_SCIENCE.types[type] || { icon: '📝', name: type, color: '#6b7280' };
+            var effectiveness = typeStat.total > 0 ? Math.round((typeStat.success / typeStat.total) * 100) : 0;
+            var barColor = effectiveness >= 80 ? '#22c55e' : effectiveness >= 50 ? '#f59e0b' : '#ef4444';
+            
+            statsHtml += '<div style="display:flex;align-items:center;gap:12px;padding:10px;background:#f9fafb;border-radius:10px;margin-bottom:8px;">';
+            statsHtml += '<span style="font-size:20px;">' + typeInfo.icon + '</span>';
+            statsHtml += '<div style="flex:1;">';
+            statsHtml += '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">';
+            statsHtml += '<span style="font-size:13px;font-weight:600;color:' + typeInfo.color + ';">' + typeInfo.name + '</span>';
+            statsHtml += '<span style="font-size:12px;color:#6b7280;">' + typeStat.total + '次使用</span>';
+            statsHtml += '</div>';
+            statsHtml += '<div style="height:6px;background:#e5e7eb;border-radius:3px;overflow:hidden;">';
+            statsHtml += '<div style="height:100%;width:' + effectiveness + '%;background:' + barColor + ';border-radius:3px;"></div>';
+            statsHtml += '</div>';
+            statsHtml += '</div>';
+            statsHtml += '<span style="font-size:14px;font-weight:700;color:' + barColor + ';min-width:45px;text-align:right;">' + effectiveness + '%</span>';
+            statsHtml += '</div>';
+        });
+    } else {
+        statsHtml += '<div style="text-align:center;padding:20px;color:#9ca3af;">暂无数据，继续学习积累吧！</div>';
+    }
+    
+    statsHtml += '</div>';
+    
+    // 科学建议
+    statsHtml += '<div style="background:linear-gradient(135deg,#f0f9ff,#e0f2fe);padding:16px;border-radius:14px;margin-bottom:16px;">';
+    statsHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
+    statsHtml += '<span style="font-size:20px;">💡</span>';
+    statsHtml += '<div><div style="font-size:13px;font-weight:600;color:#0369a1;margin-bottom:6px;">科学建议</div>';
+    statsHtml += '<div style="font-size:12px;color:#0c4a6e;line-height:1.6;">' + generateScientificAdvice(stats) + '</div></div>';
+    statsHtml += '</div></div>';
+    
+    // 快速练习按钮
+    if (stats.overdueWords > 0) {
+        statsHtml += '<button onclick="startOverduePractice();closeMnemonicStats();" style="width:100%;padding:14px;background:linear-gradient(135deg,#f59e0b,#d97706);border:none;border-radius:12px;color:white;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:12px;box-shadow:0 4px 12px rgba(245,158,11,0.3);">⚡ ' + stats.overdueWords + '个单词需要复习</button>';
+    }
+    
+    statsHtml += '</div></div>';
+    
+    overlayEl.innerHTML = statsHtml;
+    document.body.appendChild(overlayEl);
+}
+
+function calculateMnemonicStats() {
+    var stats = {
+        totalWords: Object.keys(mnemonicEffectivenessData).filter(function(k) { return k !== '_typeStats'; }).length,
+        avgEffectiveness: 0,
+        customMnemonics: Object.keys(userCustomMnemonics).length,
+        palacePlacements: memoryPalaceData.placements ? Object.keys(memoryPalaceData.placements).length : 0,
+        emotionalAnchors: Object.keys(emotionalAnchorData).length,
+        typeStats: mnemonicEffectivenessData._typeStats || {},
+        overdueWords: 0
+    };
+    
+    // 计算平均效果
+    var totalEff = 0;
+    var effCount = 0;
+    Object.keys(mnemonicEffectivenessData).forEach(function(word) {
+        if (word !== '_typeStats' && mnemonicEffectivenessData[word].effectiveness) {
+            totalEff += mnemonicEffectivenessData[word].effectiveness;
+            effCount++;
+        }
+    });
+    stats.avgEffectiveness = effCount > 0 ? totalEff / effCount : 0;
+    
+    // 计算逾期复习单词
+    Object.keys(spacedReinforcementData).forEach(function(word) {
+        var review = calculateOptimalReviewTime(word);
+        if (review.isOverdue) stats.overdueWords++;
+    });
+    
+    return stats;
+}
+
+function generateScientificAdvice(stats) {
+    var advice = [];
+    
+    if (stats.avgEffectiveness < 0.5) {
+        advice.push('尝试使用更多视觉联想和情感锚定来增强记忆效果。');
+    }
+    if (stats.customMnemonics < 5) {
+        advice.push('创建个性化记忆法能提升20-30%的记忆效果。');
+    }
+    if (stats.palacePlacements < 3) {
+        advice.push('记忆宫殿法是世界记忆冠军常用技术，效果显著。');
+    }
+    if (stats.overdueWords > 5) {
+        advice.push('有' + stats.overdueWords + '个单词即将遗忘，建议立即复习！');
+    }
+    
+    if (advice.length === 0) {
+        advice.push('继续保持！你的学习方法很科学，记忆效果良好。');
+    }
+    
+    return advice.join(' ');
+}
+
+function startOverduePractice() {
+    var overdueWords = [];
+    Object.keys(spacedReinforcementData).forEach(function(word) {
+        var review = calculateOptimalReviewTime(word);
+        if (review.isOverdue) {
+            overdueWords.push({ word: word, urgency: review.urgency });
+        }
+    });
+    
+    // 按紧急程度排序
+    overdueWords.sort(function(a, b) { return b.urgency - a.urgency; });
+    
+    if (overdueWords.length > 0) {
+        startMnemonicPractice(overdueWords[0].word);
+    }
+}
+
+function closeMnemonicStats() {
+    var overlay = document.getElementById('mnemonicStatsOverlay');
+    if (overlay) overlay.remove();
+}
+
+// 导出V14.7-10功能
+window.startMnemonicPractice = startMnemonicPractice;
+window.showPracticeHint = showPracticeHint;
+window.showPracticeAnswer = showPracticeAnswer;
+window.ratePracticeResult = ratePracticeResult;
+window.closeMnemonicPractice = closeMnemonicPractice;
+window.showMnemonicStats = showMnemonicStats;
+window.closeMnemonicStats = closeMnemonicStats;
+window.startOverduePractice = startOverduePractice;

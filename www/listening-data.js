@@ -441,4 +441,254 @@ var speakingSentences = [
     "The tech industry faces increasing scrutiny over ethical concerns.",
     "Biotechnology advances are enabling personalized medicine.",
     "The application uses encryption to protect sensitive data."
+,
+
+    // ============ 升级V1: TOEFL IBT真题风格 ============
+    // 基于ETS官方TPO (TOEFL Practice Online) 题型设计
+    
+    // TPO风格 - Lecture: Art History
+    {id: 161, title: "TPO-Style: Renaissance Art Techniques", speaker: "Professor (Female)", difficulty: "较难", transcript: "The Renaissance masters developed a technique called chiaroscuro, which uses strong contrasts between light and dark to create the illusion of three-dimensional form. Leonardo da Vinci's use of sfumato, a ___ technique that creates soft, hazy transitions, was revolutionary for portrait painting.", blank: "blending", keysentence: "Leonardo da Vinci's use of sfumato, a blending technique that creates soft, hazy transitions, was revolutionary for portrait painting."},
+    
+    // TPO风格 - Lecture: Ecology
+    {id: 162, title: "TPO-Style: Keystone Species", speaker: "Professor (Male)", difficulty: "较难", transcript: "Keystone species are organisms that have a disproportionately large effect on their ecosystem relative to their abundance. The removal of a keystone species can trigger a cascade of changes. For example, when sea otters were hunted to near ___, kelp forests collapsed because sea urchins, their prey, multiplied and devoured the kelp.", blank: "extinction", keysentence: "When sea otters were hunted to near extinction, kelp forests collapsed because sea urchins, their prey, multiplied and devoured the kelp."},
+    
+    // TPO风格 - Lecture: Archaeology
+    {id: 163, title: "TPO-Style: Pompeii Excavations", speaker: "Professor (Female)", difficulty: "中等", transcript: "The volcanic eruption of Mount Vesuvius in 79 AD preserved Pompeii in remarkable detail. Archaeologists have uncovered not just buildings but organic materials—bread, fruit, even the bodies of victims ___ in ash. These finds provide unprecedented insights into daily Roman life.", blank: "encased", keysentence: "Archaeologists have uncovered organic materials—bread, fruit, even the bodies of victims encased in ash."},
+    
+    // TPO风格 - Lecture: Psychology
+    {id: 164, title: "TPO-Style: Memory Consolidation", speaker: "Professor (Male)", difficulty: "较难", transcript: "During sleep, the brain consolidates memories by replaying experiences and strengthening neural connections. Research shows that REM sleep is particularly important for ___ memories—skills and procedures—while slow-wave sleep is crucial for declarative memories like facts and events.", blank: "procedural", keysentence: "REM sleep is particularly important for procedural memories—skills and procedures."},
+    
+    // TPO风格 - Conversation: Academic Advisor
+    {id: 165, title: "TPO-Style: Changing Major", speaker: "Student & Advisor", difficulty: "简单", transcript: "Student: I'm thinking of switching from biology to environmental science. Advisor: That's a significant change. You'll need to take several ___ courses, including Environmental Policy and Ecosystem Dynamics. Have you considered how this affects your graduation timeline?", blank: "prerequisite", keysentence: "You'll need to take several prerequisite courses, including Environmental Policy and Ecosystem Dynamics."},
+    
+    // TPO风格 - Lecture: Astronomy
+    {id: 166, title: "TPO-Style: Exoplanet Detection", speaker: "Professor (Female)", difficulty: "较难", transcript: "The transit method detects exoplanets by measuring the dimming of starlight when a planet passes in front of its host star. Kepler spacecraft used this technique to discover thousands of planets. However, this method is biased toward finding planets with short ___ periods that orbit close to their stars.", blank: "orbital", keysentence: "This method is biased toward finding planets with short orbital periods that orbit close to their stars."},
+    
+    // TPO风格 - Lecture: Linguistics
+    {id: 167, title: "TPO-Style: Language Acquisition", speaker: "Professor (Male)", difficulty: "中等", transcript: "Noam Chomsky's theory of Universal Grammar proposes that humans are born with an innate capacity for language. Children acquire language remarkably quickly despite receiving ___ input—speech that is often fragmented and grammatically imperfect. This suggests an underlying biological blueprint.", blank: "impoverished", keysentence: "Children acquire language despite receiving impoverished input—speech that is often fragmented and grammatically imperfect."},
+    
+    // TPO风格 - Lecture: Anthropology
+    {id: 168, title: "TPO-Style: Cultural Relativism", speaker: "Professor (Female)", difficulty: "中等", transcript: "Cultural relativism holds that practices and beliefs should be understood within their cultural context rather than judged by external standards. This principle helps anthropologists avoid ___, the tendency to view other cultures through the lens of one's own cultural norms.", blank: "ethnocentrism", keysentence: "This principle helps anthropologists avoid ethnocentrism, the tendency to view other cultures through the lens of one's own cultural norms."},
+    
+    // TPO风格 - Conversation: Professor Office Hours
+    {id: 169, title: "TPO-Style: Research Paper Help", speaker: "Professor & Student", difficulty: "简单", transcript: "Professor: Your thesis is interesting, but your literature review needs more depth. You're relying too heavily on secondary sources. Student: Should I focus more on ___ research? Professor: Exactly. Go to the original studies and analyze their methodologies directly.", blank: "primary", keysentence: "Should I focus more on primary research? Exactly. Go to the original studies and analyze their methodologies directly."},
+    
+    // TPO风格 - Lecture: Chemistry
+    {id: 170, title: "TPO-Style: Organic Compounds", speaker: "Professor (Male)", difficulty: "较难", transcript: "Carbon's ability to form four covalent bonds makes it uniquely suited for creating complex molecules. Organic chemistry studies carbon-containing compounds, from simple methane to complex proteins. The ___ nature of carbon allows for an almost infinite variety of molecular structures.", blank: "versatile", keysentence: "The versatile nature of carbon allows for an almost infinite variety of molecular structures."},
+    
+    // TPO风格 - Lecture: History
+    {id: 171, title: "TPO-Style: The Silk Road", speaker: "Professor (Female)", difficulty: "中等", transcript: "The Silk Road was not a single route but a network of trade paths connecting China to the Mediterranean. Beyond silk and spices, it facilitated the exchange of ideas, religions, and technologies. Buddhism spread from India to China along these routes, fundamentally ___ Chinese culture and philosophy.", blank: "transforming", keysentence: "Buddhism spread from India to China along these routes, fundamentally transforming Chinese culture and philosophy."},
+    
+    // TPO风格 - Lecture: Physics
+    {id: 172, title: "TPO-Style: Quantum Mechanics", speaker: "Professor (Male)", difficulty: "较难", transcript: "The double-slit experiment demonstrates wave-particle duality. When electrons pass through two slits, they create an interference pattern—behavior characteristic of waves. But when we observe which slit each electron passes through, the interference pattern disappears. The act of observation seems to ___ the outcome.", blank: "determine", keysentence: "The act of observation seems to determine the outcome."},
+    
+    // TPO风格 - Conversation: Campus Services
+    {id: 173, title: "TPO-Style: Internship Office", speaker: "Student & Counselor", difficulty: "简单", transcript: "Counselor: Our internship database lists over 500 positions in various industries. Student: How do I know which ones accept international students? Counselor: Look for positions that explicitly mention visa ___ or that are with companies known to hire international candidates.", blank: "sponsorship", keysentence: "Look for positions that explicitly mention visa sponsorship."},
+    
+    // TPO风格 - Lecture: Music
+    {id: 174, title: "TPO-Style: Jazz Improvisation", speaker: "Professor (Female)", difficulty: "中等", transcript: "Jazz improvisation isn't random—it's based on deep knowledge of harmony and structure. Musicians internalize chord progressions and scales, then creatively explore within those ___ constraints. The greatest improvisers combine technical mastery with spontaneous creative expression.", blank: "harmonic", keysentence: "Musicians internalize chord progressions and scales, then creatively explore within those harmonic constraints."},
+    
+    // TPO风格 - Lecture: Economics
+    {id: 175, title: "TPO-Style: Market Failures", speaker: "Professor (Male)", difficulty: "较难", transcript: "Market failures occur when free markets fail to allocate resources efficiently. Externalities—costs or benefits that affect parties not involved in a transaction—are a classic example. Pollution is a negative externality because the polluter doesn't bear the full ___ costs of their actions.", blank: "social", keysentence: "Pollution is a negative externality because the polluter doesn't bear the full social costs of their actions."},
+    
+    // TPO风格 - Lecture: Biology
+    {id: 176, title: "TPO-Style: CRISPR Technology", speaker: "Professor (Female)", difficulty: "较难", transcript: "CRISPR-Cas9 is a molecular tool that allows scientists to edit DNA with unprecedented precision. Derived from a bacterial immune system, it uses guide RNA to target specific genetic sequences. The technology raises ___ questions about genetic modification in humans, particularly for heritable changes.", blank: "ethical", keysentence: "The technology raises ethical questions about genetic modification in humans."},
+    
+    // TPO风格 - Conversation: Writing Center
+    {id: 177, title: "TPO-Style: Essay Feedback", speaker: "Tutor & Student", difficulty: "简单", transcript: "Tutor: Your argument is clear, but your paragraphs lack clear topic sentences. Each paragraph should open with a sentence that ___ the main point. This helps readers follow your logic. Student: So I should state my point first, then provide evidence?", blank: "states", keysentence: "Each paragraph should open with a sentence that states the main point."},
+    
+    // TPO风格 - Lecture: Sociology
+    {id: 178, title: "TPO-Style: Social Networks", speaker: "Professor (Male)", difficulty: "中等", transcript: "Social network analysis studies how relationships between individuals shape behavior and outcomes. Research shows that behaviors like smoking cessation and obesity can spread through social networks. This ___ effect extends up to three degrees of separation—your friend's friend's friend can influence your health.", blank: "contagion", keysentence: "This contagion effect extends up to three degrees of separation."},
+    
+    // TPO风格 - Lecture: Environmental Science
+    {id: 179, title: "TPO-Style: Carbon Cycle", speaker: "Professor (Female)", difficulty: "中等", transcript: "The carbon cycle describes how carbon moves between the atmosphere, oceans, land, and living organisms. Photosynthesis removes carbon dioxide from the atmosphere, while respiration and decomposition release it. Human activities have ___ this balance by releasing carbon stored in fossil fuels.", blank: "disrupted", keysentence: "Human activities have disrupted this balance by releasing carbon stored in fossil fuels."},
+    
+    // TPO风格 - Lecture: Philosophy
+    {id: 180, title: "TPO-Style: Ethics of AI", speaker: "Professor (Male)", difficulty: "较难", transcript: "As artificial intelligence becomes more autonomous, we face unprecedented ethical challenges. Who is responsible when an AI system causes harm—the programmer, the company, or the user? The ___ of moral responsibility becomes unclear when decisions are made by algorithms rather than humans.", blank: "attribution", keysentence: "The attribution of moral responsibility becomes unclear when decisions are made by algorithms."}
+
+,
+
+    // ============ 升级V1: TOEFL IBT真题风格 ============
+    // 基于ETS官方TPO (TOEFL Practice Online) 题型设计
+    
+    // TPO风格 - Lecture: Art History
+    {id: 161, title: "TPO-Style: Renaissance Art Techniques", speaker: "Professor (Female)", difficulty: "较难", transcript: "The Renaissance masters developed a technique called chiaroscuro, which uses strong contrasts between light and dark to create the illusion of three-dimensional form. Leonardo da Vinci's use of sfumato, a ___ technique that creates soft, hazy transitions, was revolutionary for portrait painting.", blank: "blending", keysentence: "Leonardo da Vinci's use of sfumato, a blending technique that creates soft, hazy transitions, was revolutionary for portrait painting."},
+    
+    // TPO风格 - Lecture: Ecology
+    {id: 162, title: "TPO-Style: Keystone Species", speaker: "Professor (Male)", difficulty: "较难", transcript: "Keystone species are organisms that have a disproportionately large effect on their ecosystem relative to their abundance. The removal of a keystone species can trigger a cascade of changes. For example, when sea otters were hunted to near ___, kelp forests collapsed because sea urchins, their prey, multiplied and devoured the kelp.", blank: "extinction", keysentence: "When sea otters were hunted to near extinction, kelp forests collapsed because sea urchins, their prey, multiplied and devoured the kelp."},
+    
+    // TPO风格 - Lecture: Archaeology
+    {id: 163, title: "TPO-Style: Pompeii Excavations", speaker: "Professor (Female)", difficulty: "中等", transcript: "The volcanic eruption of Mount Vesuvius in 79 AD preserved Pompeii in remarkable detail. Archaeologists have uncovered not just buildings but organic materials—bread, fruit, even the bodies of victims ___ in ash. These finds provide unprecedented insights into daily Roman life.", blank: "encased", keysentence: "Archaeologists have uncovered organic materials—bread, fruit, even the bodies of victims encased in ash."},
+    
+    // TPO风格 - Lecture: Psychology
+    {id: 164, title: "TPO-Style: Memory Consolidation", speaker: "Professor (Male)", difficulty: "较难", transcript: "During sleep, the brain consolidates memories by replaying experiences and strengthening neural connections. Research shows that REM sleep is particularly important for ___ memories—skills and procedures—while slow-wave sleep is crucial for declarative memories like facts and events.", blank: "procedural", keysentence: "REM sleep is particularly important for procedural memories—skills and procedures."},
+    
+    // TPO风格 - Conversation: Academic Advisor
+    {id: 165, title: "TPO-Style: Changing Major", speaker: "Student & Advisor", difficulty: "简单", transcript: "Student: I'm thinking of switching from biology to environmental science. Advisor: That's a significant change. You'll need to take several ___ courses, including Environmental Policy and Ecosystem Dynamics. Have you considered how this affects your graduation timeline?", blank: "prerequisite", keysentence: "You'll need to take several prerequisite courses, including Environmental Policy and Ecosystem Dynamics."},
+    
+    // TPO风格 - Lecture: Astronomy
+    {id: 166, title: "TPO-Style: Exoplanet Detection", speaker: "Professor (Female)", difficulty: "较难", transcript: "The transit method detects exoplanets by measuring the dimming of starlight when a planet passes in front of its host star. Kepler spacecraft used this technique to discover thousands of planets. However, this method is biased toward finding planets with short ___ periods that orbit close to their stars.", blank: "orbital", keysentence: "This method is biased toward finding planets with short orbital periods that orbit close to their stars."},
+    
+    // TPO风格 - Lecture: Linguistics
+    {id: 167, title: "TPO-Style: Language Acquisition", speaker: "Professor (Male)", difficulty: "中等", transcript: "Noam Chomsky's theory of Universal Grammar proposes that humans are born with an innate capacity for language. Children acquire language remarkably quickly despite receiving ___ input—speech that is often fragmented and grammatically imperfect. This suggests an underlying biological blueprint.", blank: "impoverished", keysentence: "Children acquire language despite receiving impoverished input—speech that is often fragmented and grammatically imperfect."},
+    
+    // TPO风格 - Lecture: Anthropology
+    {id: 168, title: "TPO-Style: Cultural Relativism", speaker: "Professor (Female)", difficulty: "中等", transcript: "Cultural relativism holds that practices and beliefs should be understood within their cultural context rather than judged by external standards. This principle helps anthropologists avoid ___, the tendency to view other cultures through the lens of one's own cultural norms.", blank: "ethnocentrism", keysentence: "This principle helps anthropologists avoid ethnocentrism, the tendency to view other cultures through the lens of one's own cultural norms."},
+    
+    // TPO风格 - Conversation: Professor Office Hours
+    {id: 169, title: "TPO-Style: Research Paper Help", speaker: "Professor & Student", difficulty: "简单", transcript: "Professor: Your thesis is interesting, but your literature review needs more depth. You're relying too heavily on secondary sources. Student: Should I focus more on ___ research? Professor: Exactly. Go to the original studies and analyze their methodologies directly.", blank: "primary", keysentence: "Should I focus more on primary research? Exactly. Go to the original studies and analyze their methodologies directly."},
+    
+    // TPO风格 - Lecture: Chemistry
+    {id: 170, title: "TPO-Style: Organic Compounds", speaker: "Professor (Male)", difficulty: "较难", transcript: "Carbon's ability to form four covalent bonds makes it uniquely suited for creating complex molecules. Organic chemistry studies carbon-containing compounds, from simple methane to complex proteins. The ___ nature of carbon allows for an almost infinite variety of molecular structures.", blank: "versatile", keysentence: "The versatile nature of carbon allows for an almost infinite variety of molecular structures."},
+    
+    // TPO风格 - Lecture: History
+    {id: 171, title: "TPO-Style: The Silk Road", speaker: "Professor (Female)", difficulty: "中等", transcript: "The Silk Road was not a single route but a network of trade paths connecting China to the Mediterranean. Beyond silk and spices, it facilitated the exchange of ideas, religions, and technologies. Buddhism spread from India to China along these routes, fundamentally ___ Chinese culture and philosophy.", blank: "transforming", keysentence: "Buddhism spread from India to China along these routes, fundamentally transforming Chinese culture and philosophy."},
+    
+    // TPO风格 - Lecture: Physics
+    {id: 172, title: "TPO-Style: Quantum Mechanics", speaker: "Professor (Male)", difficulty: "较难", transcript: "The double-slit experiment demonstrates wave-particle duality. When electrons pass through two slits, they create an interference pattern—behavior characteristic of waves. But when we observe which slit each electron passes through, the interference pattern disappears. The act of observation seems to ___ the outcome.", blank: "determine", keysentence: "The act of observation seems to determine the outcome."},
+    
+    // TPO风格 - Conversation: Campus Services
+    {id: 173, title: "TPO-Style: Internship Office", speaker: "Student & Counselor", difficulty: "简单", transcript: "Counselor: Our internship database lists over 500 positions in various industries. Student: How do I know which ones accept international students? Counselor: Look for positions that explicitly mention visa ___ or that are with companies known to hire international candidates.", blank: "sponsorship", keysentence: "Look for positions that explicitly mention visa sponsorship."},
+    
+    // TPO风格 - Lecture: Music
+    {id: 174, title: "TPO-Style: Jazz Improvisation", speaker: "Professor (Female)", difficulty: "中等", transcript: "Jazz improvisation isn't random—it's based on deep knowledge of harmony and structure. Musicians internalize chord progressions and scales, then creatively explore within those ___ constraints. The greatest improvisers combine technical mastery with spontaneous creative expression.", blank: "harmonic", keysentence: "Musicians internalize chord progressions and scales, then creatively explore within those harmonic constraints."},
+    
+    // TPO风格 - Lecture: Economics
+    {id: 175, title: "TPO-Style: Market Failures", speaker: "Professor (Male)", difficulty: "较难", transcript: "Market failures occur when free markets fail to allocate resources efficiently. Externalities—costs or benefits that affect parties not involved in a transaction—are a classic example. Pollution is a negative externality because the polluter doesn't bear the full ___ costs of their actions.", blank: "social", keysentence: "Pollution is a negative externality because the polluter doesn't bear the full social costs of their actions."},
+    
+    // TPO风格 - Lecture: Biology
+    {id: 176, title: "TPO-Style: CRISPR Technology", speaker: "Professor (Female)", difficulty: "较难", transcript: "CRISPR-Cas9 is a molecular tool that allows scientists to edit DNA with unprecedented precision. Derived from a bacterial immune system, it uses guide RNA to target specific genetic sequences. The technology raises ___ questions about genetic modification in humans, particularly for heritable changes.", blank: "ethical", keysentence: "The technology raises ethical questions about genetic modification in humans."},
+    
+    // TPO风格 - Conversation: Writing Center
+    {id: 177, title: "TPO-Style: Essay Feedback", speaker: "Tutor & Student", difficulty: "简单", transcript: "Tutor: Your argument is clear, but your paragraphs lack clear topic sentences. Each paragraph should open with a sentence that ___ the main point. This helps readers follow your logic. Student: So I should state my point first, then provide evidence?", blank: "states", keysentence: "Each paragraph should open with a sentence that states the main point."},
+    
+    // TPO风格 - Lecture: Sociology
+    {id: 178, title: "TPO-Style: Social Networks", speaker: "Professor (Male)", difficulty: "中等", transcript: "Social network analysis studies how relationships between individuals shape behavior and outcomes. Research shows that behaviors like smoking cessation and obesity can spread through social networks. This ___ effect extends up to three degrees of separation—your friend's friend's friend can influence your health.", blank: "contagion", keysentence: "This contagion effect extends up to three degrees of separation."},
+    
+    // TPO风格 - Lecture: Environmental Science
+    {id: 179, title: "TPO-Style: Carbon Cycle", speaker: "Professor (Female)", difficulty: "中等", transcript: "The carbon cycle describes how carbon moves between the atmosphere, oceans, land, and living organisms. Photosynthesis removes carbon dioxide from the atmosphere, while respiration and decomposition release it. Human activities have ___ this balance by releasing carbon stored in fossil fuels.", blank: "disrupted", keysentence: "Human activities have disrupted this balance by releasing carbon stored in fossil fuels."},
+    
+    // TPO风格 - Lecture: Philosophy
+    {id: 180, title: "TPO-Style: Ethics of AI", speaker: "Professor (Male)", difficulty: "较难", transcript: "As artificial intelligence becomes more autonomous, we face unprecedented ethical challenges. Who is responsible when an AI system causes harm—the programmer, the company, or the user? The ___ of moral responsibility becomes unclear when decisions are made by algorithms rather than humans.", blank: "attribution", keysentence: "The attribution of moral responsibility becomes unclear when decisions are made by algorithms."}
+
+,
+
+    // ============ 升级V2: GRE Verbal风格听力 ============
+    
+    {id: 181, title: "GRE-Style: Epistemology", speaker: "Professor (Male)", difficulty: "较难", transcript: "Epistemology, the study of knowledge, grapples with fundamental questions: What can we know? How do we know it? Descartes' method of radical doubt—questioning everything that could possibly be false—led him to the famous ___ 'I think, therefore I am.'", blank: "cogito", keysentence: "Descartes' method of radical doubt led him to the famous cogito 'I think, therefore I am.'"},
+    
+    {id: 182, title: "GRE-Style: Literary Theory", speaker: "Professor (Female)", difficulty: "较难", transcript: "Deconstructionism challenges the stability of meaning in texts. Jacques Derrida argued that language is inherently ___, with meanings that shift and multiply. No text has a single, fixed interpretation—meaning is always deferred.", blank: "unstable", keysentence: "Jacques Derrida argued that language is inherently unstable, with meanings that shift and multiply."},
+    
+    {id: 183, title: "GRE-Style: Paleontology", speaker: "Professor (Male)", difficulty: "中等", transcript: "The Cambrian Explosion, approximately 540 million years ago, marks the rapid appearance of most major animal phyla in the fossil record. This ___ diversification remains one of paleontology's greatest puzzles—why did complex life emerge so suddenly?", blank: "dramatic", keysentence: "This dramatic diversification remains one of paleontology's greatest puzzles."},
+    
+    {id: 184, title: "GRE-Style: Constitutional Law", speaker: "Professor (Female)", difficulty: "较难", transcript: "Judicial review—the power of courts to declare laws unconstitutional—was established in Marbury v. Madison (1803). Chief Justice Marshall's decision was a masterstroke of judicial ___, asserting the Court's power while avoiding a direct confrontation with the executive branch.", blank: "strategy", keysentence: "Chief Justice Marshall's decision was a masterstroke of judicial strategy."},
+    
+    {id: 185, title: "GRE-Style: Game Theory", speaker: "Professor (Male)", difficulty: "较难", transcript: "The Prisoner's Dilemma illustrates why rational individuals might not cooperate even when it's in their mutual interest. Each player's ___ strategy is to defect, yet mutual cooperation would yield better outcomes for both.", blank: "dominant", keysentence: "Each player's dominant strategy is to defect, yet mutual cooperation would yield better outcomes for both."},
+    
+    {id: 186, title: "GRE-Style: Neurolinguistics", speaker: "Professor (Female)", difficulty: "较难", transcript: "Broca's area, located in the left frontal lobe, is crucial for speech production. Damage to this region causes Broca's aphasia—patients understand language but struggle to produce ___ speech, speaking in short, effortful phrases.", blank: "fluent", keysentence: "Patients with Broca's aphasia understand language but struggle to produce fluent speech."},
+    
+    {id: 187, title: "GRE-Style: Thermodynamics", speaker: "Professor (Male)", difficulty: "较难", transcript: "The second law of thermodynamics states that entropy in an isolated system never decreases. This principle has profound implications—it explains why time has a direction, why we remember the past but not the future. The ___ of disorder is inevitable.", blank: "increase", keysentence: "The increase of disorder is inevitable."},
+    
+    {id: 188, title: "GRE-Style: Sociology of Religion", speaker: "Professor (Female)", difficulty: "中等", transcript: "Max Weber's 'Protestant Ethic' thesis argued that Calvinist beliefs inadvertently fostered capitalism. The doctrine of predestination created anxiety about salvation, which believers sought to alleviate through worldly success—viewed as a sign of divine ___.", blank: "favor", keysentence: "Believers sought to alleviate anxiety through worldly success—viewed as a sign of divine favor."},
+    
+    {id: 189, title: "GRE-Style: Immunology", speaker: "Professor (Male)", difficulty: "较难", transcript: "Autoimmune diseases occur when the immune system mistakenly attacks the body's own tissues. The mechanism of ___ tolerance—how the immune system learns to distinguish self from non-self—is central to understanding these conditions.", blank: "self", keysentence: "The mechanism of self tolerance is central to understanding autoimmune conditions."},
+    
+    {id: 190, title: "GRE-Style: Monetary Policy", speaker: "Professor (Female)", difficulty: "较难", transcript: "Central banks use interest rates to control inflation and stimulate growth. When rates are cut to zero, conventional policy loses its effectiveness—a situation called the ___ lower bound. This forces central banks to adopt unconventional measures like quantitative easing.", blank: "zero", keysentence: "When rates are cut to zero, conventional policy loses its effectiveness—called the zero lower bound."},
+    
+    // ============ 升级V3: 真实学术场景对话 ============
+    
+    {id: 191, title: "Academic Discussion: Thesis Defense", speaker: "Committee & Candidate", difficulty: "中等", transcript: "Committee Chair: Your methodology is sound, but I'm concerned about sample size. How do you address potential ___ bias? Candidate: We used stratified random sampling and weighted the results to match population demographics.", blank: "selection", keysentence: "How do you address potential selection bias?"},
+    
+    {id: 192, title: "Academic Discussion: Peer Review", speaker: "Researchers", difficulty: "中等", transcript: "Reviewer: The statistical analysis is rigorous, but I question the theoretical framework. The connection between your hypothesis and existing literature seems ___. Author: I'll strengthen the literature review to clarify those links.", blank: "tenuous", keysentence: "The connection between your hypothesis and existing literature seems tenuous."},
+    
+    {id: 193, title: "Lab Meeting: Experimental Design", speaker: "Research Team", difficulty: "中等", transcript: "PI: We need to include a ___ group to isolate the effect of the treatment. Without it, we can't rule out confounding variables. Postdoc: Should we use a placebo or an active control?", blank: "control", keysentence: "We need to include a control group to isolate the effect of the treatment."},
+    
+    {id: 194, title: "Colloquium: Research Presentation", speaker: "Speaker & Audience", difficulty: "较难", transcript: "Audience Member: Your findings seem to contradict Smith's 2019 study. How do you ___ this discrepancy? Speaker: Smith used a different measurement protocol. We're actually measuring slightly different constructs.", blank: "reconcile", keysentence: "How do you reconcile this discrepancy?"},
+    
+    {id: 195, title: "Grant Writing Workshop", speaker: "Advisor", difficulty: "中等", transcript: "Your specific aims are too ambitious for a two-year project. Reviewers want to see ___ goals with clear milestones. Focus on what you can realistically accomplish with the requested funding.", blank: "achievable", keysentence: "Reviewers want to see achievable goals with clear milestones."},
+    
+    // ============ 升级V4: 跨学科讲座 ============
+    
+    {id: 196, title: "Interdisciplinary: Data Science Ethics", speaker: "Professor", difficulty: "较难", transcript: "Algorithmic decision-making raises serious equity concerns. When machine learning models are trained on historical data, they can perpetuate and even ___ existing biases. A model trained on biased hiring data will reproduce discriminatory patterns.", blank: "amplify", keysentence: "Machine learning models can perpetuate and even amplify existing biases."},
+    
+    {id: 197, title: "Interdisciplinary: Digital Humanities", speaker: "Professor", difficulty: "中等", transcript: "Text mining and natural language processing allow scholars to analyze literary ___ at unprecedented scales. We can now trace the evolution of themes across thousands of novels, revealing patterns invisible to traditional close reading.", blank: "corpora", keysentence: "We can now trace the evolution of themes across thousands of novels."},
+    
+    {id: 198, title: "Interdisciplinary: Cognitive Neuroscience", speaker: "Professor", difficulty: "较难", transcript: "The default mode network activates when we're not focused on external tasks—during daydreaming, self-reflection, and mind-wandering. Disruptions in this network are associated with disorders like depression and ___.", blank: "schizophrenia", keysentence: "Disruptions in this network are associated with disorders like depression and schizophrenia."},
+    
+    {id: 199, title: "Interdisciplinary: Environmental Economics", speaker: "Professor", difficulty: "中等", transcript: "Ecosystem services—benefits like clean air, water filtration, and pollination—are often excluded from economic calculations. This ___ of natural capital leads to its systematic undervaluation and overexploitation.", blank: "omission", keysentence: "This omission of natural capital leads to its systematic undervaluation and overexploitation."},
+    
+    {id: 200, title: "Interdisciplinary: Science Communication", speaker: "Professor", difficulty: "中等", transcript: "The deficit model assumes that public skepticism about science stems from lack of knowledge. Research shows this is ___ simplistic—trust in scientific institutions is influenced by values, identity, and social context, not just information.", blank: "overly", keysentence: "The deficit model is overly simplistic—trust is influenced by values, identity, and social context."},
+    
+    // ============ 升级V5: 考研英语听力风格 ============
+    
+    {id: 201, title: "考研英语风格: 学术报告", speaker: "学者", difficulty: "中等", transcript: "The relationship between economic development and environmental protection has been hotly debated. Some argue these goals are fundamentally ___, while others contend that sustainable development can reconcile both.", blank: "incompatible", keysentence: "Some argue these goals are fundamentally incompatible."},
+    
+    {id: 202, title: "考研英语风格: 社会评论", speaker: "评论员", difficulty: "中等", transcript: "Globalization has created unprecedented opportunities but also significant challenges. While it has lifted millions out of poverty, it has also contributed to growing ___ within many developed nations.", blank: "inequality", keysentence: "Globalization has contributed to growing inequality within developed nations."},
+    
+    {id: 203, title: "考研英语风格: 科技发展", speaker: "专家", difficulty: "中等", transcript: "Artificial intelligence is transforming industries from healthcare to finance. However, the technology's rapid advancement has outpaced regulatory frameworks, raising concerns about privacy, job ___, and accountability.", blank: "displacement", keysentence: "Concerns include privacy, job displacement, and accountability."},
+    
+    {id: 204, title: "考研英语风格: 教育改革", speaker: "教育专家", difficulty: "中等", transcript: "Critical thinking skills are increasingly emphasized in modern education. Rote memorization is giving way to inquiry-based learning, which encourages students to question assumptions and ___ evidence independently.", blank: "evaluate", keysentence: "Inquiry-based learning encourages students to question assumptions and evaluate evidence independently."},
+    
+    {id: 205, title: "考研英语风格: 文化交流", speaker: "学者", difficulty: "中等", transcript: "Cross-cultural communication requires more than language proficiency. Understanding cultural ___ norms—implicit rules about personal space, eye contact, and gestures—is essential for effective international collaboration.", blank: "nonverbal", keysentence: "Understanding cultural nonverbal norms is essential for effective international collaboration."}
+
+,
+
+    // ============ 升级V2: GRE Verbal风格听力 ============
+    
+    {id: 181, title: "GRE-Style: Epistemology", speaker: "Professor (Male)", difficulty: "较难", transcript: "Epistemology, the study of knowledge, grapples with fundamental questions: What can we know? How do we know it? Descartes' method of radical doubt—questioning everything that could possibly be false—led him to the famous ___ 'I think, therefore I am.'", blank: "cogito", keysentence: "Descartes' method of radical doubt led him to the famous cogito 'I think, therefore I am.'"},
+    
+    {id: 182, title: "GRE-Style: Literary Theory", speaker: "Professor (Female)", difficulty: "较难", transcript: "Deconstructionism challenges the stability of meaning in texts. Jacques Derrida argued that language is inherently ___, with meanings that shift and multiply. No text has a single, fixed interpretation—meaning is always deferred.", blank: "unstable", keysentence: "Jacques Derrida argued that language is inherently unstable, with meanings that shift and multiply."},
+    
+    {id: 183, title: "GRE-Style: Paleontology", speaker: "Professor (Male)", difficulty: "中等", transcript: "The Cambrian Explosion, approximately 540 million years ago, marks the rapid appearance of most major animal phyla in the fossil record. This ___ diversification remains one of paleontology's greatest puzzles—why did complex life emerge so suddenly?", blank: "dramatic", keysentence: "This dramatic diversification remains one of paleontology's greatest puzzles."},
+    
+    {id: 184, title: "GRE-Style: Constitutional Law", speaker: "Professor (Female)", difficulty: "较难", transcript: "Judicial review—the power of courts to declare laws unconstitutional—was established in Marbury v. Madison (1803). Chief Justice Marshall's decision was a masterstroke of judicial ___, asserting the Court's power while avoiding a direct confrontation with the executive branch.", blank: "strategy", keysentence: "Chief Justice Marshall's decision was a masterstroke of judicial strategy."},
+    
+    {id: 185, title: "GRE-Style: Game Theory", speaker: "Professor (Male)", difficulty: "较难", transcript: "The Prisoner's Dilemma illustrates why rational individuals might not cooperate even when it's in their mutual interest. Each player's ___ strategy is to defect, yet mutual cooperation would yield better outcomes for both.", blank: "dominant", keysentence: "Each player's dominant strategy is to defect, yet mutual cooperation would yield better outcomes for both."},
+    
+    {id: 186, title: "GRE-Style: Neurolinguistics", speaker: "Professor (Female)", difficulty: "较难", transcript: "Broca's area, located in the left frontal lobe, is crucial for speech production. Damage to this region causes Broca's aphasia—patients understand language but struggle to produce ___ speech, speaking in short, effortful phrases.", blank: "fluent", keysentence: "Patients with Broca's aphasia understand language but struggle to produce fluent speech."},
+    
+    {id: 187, title: "GRE-Style: Thermodynamics", speaker: "Professor (Male)", difficulty: "较难", transcript: "The second law of thermodynamics states that entropy in an isolated system never decreases. This principle has profound implications—it explains why time has a direction, why we remember the past but not the future. The ___ of disorder is inevitable.", blank: "increase", keysentence: "The increase of disorder is inevitable."},
+    
+    {id: 188, title: "GRE-Style: Sociology of Religion", speaker: "Professor (Female)", difficulty: "中等", transcript: "Max Weber's 'Protestant Ethic' thesis argued that Calvinist beliefs inadvertently fostered capitalism. The doctrine of predestination created anxiety about salvation, which believers sought to alleviate through worldly success—viewed as a sign of divine ___.", blank: "favor", keysentence: "Believers sought to alleviate anxiety through worldly success—viewed as a sign of divine favor."},
+    
+    {id: 189, title: "GRE-Style: Immunology", speaker: "Professor (Male)", difficulty: "较难", transcript: "Autoimmune diseases occur when the immune system mistakenly attacks the body's own tissues. The mechanism of ___ tolerance—how the immune system learns to distinguish self from non-self—is central to understanding these conditions.", blank: "self", keysentence: "The mechanism of self tolerance is central to understanding autoimmune conditions."},
+    
+    {id: 190, title: "GRE-Style: Monetary Policy", speaker: "Professor (Female)", difficulty: "较难", transcript: "Central banks use interest rates to control inflation and stimulate growth. When rates are cut to zero, conventional policy loses its effectiveness—a situation called the ___ lower bound. This forces central banks to adopt unconventional measures like quantitative easing.", blank: "zero", keysentence: "When rates are cut to zero, conventional policy loses its effectiveness—called the zero lower bound."},
+    
+    // ============ 升级V3: 真实学术场景对话 ============
+    
+    {id: 191, title: "Academic Discussion: Thesis Defense", speaker: "Committee & Candidate", difficulty: "中等", transcript: "Committee Chair: Your methodology is sound, but I'm concerned about sample size. How do you address potential ___ bias? Candidate: We used stratified random sampling and weighted the results to match population demographics.", blank: "selection", keysentence: "How do you address potential selection bias?"},
+    
+    {id: 192, title: "Academic Discussion: Peer Review", speaker: "Researchers", difficulty: "中等", transcript: "Reviewer: The statistical analysis is rigorous, but I question the theoretical framework. The connection between your hypothesis and existing literature seems ___. Author: I'll strengthen the literature review to clarify those links.", blank: "tenuous", keysentence: "The connection between your hypothesis and existing literature seems tenuous."},
+    
+    {id: 193, title: "Lab Meeting: Experimental Design", speaker: "Research Team", difficulty: "中等", transcript: "PI: We need to include a ___ group to isolate the effect of the treatment. Without it, we can't rule out confounding variables. Postdoc: Should we use a placebo or an active control?", blank: "control", keysentence: "We need to include a control group to isolate the effect of the treatment."},
+    
+    {id: 194, title: "Colloquium: Research Presentation", speaker: "Speaker & Audience", difficulty: "较难", transcript: "Audience Member: Your findings seem to contradict Smith's 2019 study. How do you ___ this discrepancy? Speaker: Smith used a different measurement protocol. We're actually measuring slightly different constructs.", blank: "reconcile", keysentence: "How do you reconcile this discrepancy?"},
+    
+    {id: 195, title: "Grant Writing Workshop", speaker: "Advisor", difficulty: "中等", transcript: "Your specific aims are too ambitious for a two-year project. Reviewers want to see ___ goals with clear milestones. Focus on what you can realistically accomplish with the requested funding.", blank: "achievable", keysentence: "Reviewers want to see achievable goals with clear milestones."},
+    
+    // ============ 升级V4: 跨学科讲座 ============
+    
+    {id: 196, title: "Interdisciplinary: Data Science Ethics", speaker: "Professor", difficulty: "较难", transcript: "Algorithmic decision-making raises serious equity concerns. When machine learning models are trained on historical data, they can perpetuate and even ___ existing biases. A model trained on biased hiring data will reproduce discriminatory patterns.", blank: "amplify", keysentence: "Machine learning models can perpetuate and even amplify existing biases."},
+    
+    {id: 197, title: "Interdisciplinary: Digital Humanities", speaker: "Professor", difficulty: "中等", transcript: "Text mining and natural language processing allow scholars to analyze literary ___ at unprecedented scales. We can now trace the evolution of themes across thousands of novels, revealing patterns invisible to traditional close reading.", blank: "corpora", keysentence: "We can now trace the evolution of themes across thousands of novels."},
+    
+    {id: 198, title: "Interdisciplinary: Cognitive Neuroscience", speaker: "Professor", difficulty: "较难", transcript: "The default mode network activates when we're not focused on external tasks—during daydreaming, self-reflection, and mind-wandering. Disruptions in this network are associated with disorders like depression and ___.", blank: "schizophrenia", keysentence: "Disruptions in this network are associated with disorders like depression and schizophrenia."},
+    
+    {id: 199, title: "Interdisciplinary: Environmental Economics", speaker: "Professor", difficulty: "中等", transcript: "Ecosystem services—benefits like clean air, water filtration, and pollination—are often excluded from economic calculations. This ___ of natural capital leads to its systematic undervaluation and overexploitation.", blank: "omission", keysentence: "This omission of natural capital leads to its systematic undervaluation and overexploitation."},
+    
+    {id: 200, title: "Interdisciplinary: Science Communication", speaker: "Professor", difficulty: "中等", transcript: "The deficit model assumes that public skepticism about science stems from lack of knowledge. Research shows this is ___ simplistic—trust in scientific institutions is influenced by values, identity, and social context, not just information.", blank: "overly", keysentence: "The deficit model is overly simplistic—trust is influenced by values, identity, and social context."},
+    
+    // ============ 升级V5: 考研英语听力风格 ============
+    
+    {id: 201, title: "考研英语风格: 学术报告", speaker: "学者", difficulty: "中等", transcript: "The relationship between economic development and environmental protection has been hotly debated. Some argue these goals are fundamentally ___, while others contend that sustainable development can reconcile both.", blank: "incompatible", keysentence: "Some argue these goals are fundamentally incompatible."},
+    
+    {id: 202, title: "考研英语风格: 社会评论", speaker: "评论员", difficulty: "中等", transcript: "Globalization has created unprecedented opportunities but also significant challenges. While it has lifted millions out of poverty, it has also contributed to growing ___ within many developed nations.", blank: "inequality", keysentence: "Globalization has contributed to growing inequality within developed nations."},
+    
+    {id: 203, title: "考研英语风格: 科技发展", speaker: "专家", difficulty: "中等", transcript: "Artificial intelligence is transforming industries from healthcare to finance. However, the technology's rapid advancement has outpaced regulatory frameworks, raising concerns about privacy, job ___, and accountability.", blank: "displacement", keysentence: "Concerns include privacy, job displacement, and accountability."},
+    
+    {id: 204, title: "考研英语风格: 教育改革", speaker: "教育专家", difficulty: "中等", transcript: "Critical thinking skills are increasingly emphasized in modern education. Rote memorization is giving way to inquiry-based learning, which encourages students to question assumptions and ___ evidence independently.", blank: "evaluate", keysentence: "Inquiry-based learning encourages students to question assumptions and evaluate evidence independently."},
+    
+    {id: 205, title: "考研英语风格: 文化交流", speaker: "学者", difficulty: "中等", transcript: "Cross-cultural communication requires more than language proficiency. Understanding cultural ___ norms—implicit rules about personal space, eye contact, and gestures—is essential for effective international collaboration.", blank: "nonverbal", keysentence: "Understanding cultural nonverbal norms is essential for effective international collaboration."}
+
 ];

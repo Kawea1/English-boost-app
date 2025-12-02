@@ -1847,4 +1847,315 @@ Yet agriculture wasn't purely beneficial. Early farmers were actually less healt
         ],
         vocabulary: [{word: 'Neolithic', meaning: '新石器时代的'}, {word: 'domesticate', meaning: '驯化'}, {word: 'surplus', meaning: '剩余'}, {word: 'hierarchy', meaning: '等级制度'}, {word: 'specialization', meaning: '专业化'}]
     },
+,
+
+    // ============ 升级V6-V10: 真题风格阅读 ============
+    
+    // V6: GRE长篇阅读 - 科学史
+    {
+        id: 'upgrade_v6_1',
+        category: 'GRE',
+        topic: '科学史',
+        difficulty: '高级',
+        title: 'The Controversy Over Continental Drift',
+        passage: \`Alfred Wegener's theory of continental drift, proposed in 1912, met with fierce resistance from the geological establishment. Wegener, a meteorologist rather than a geologist, argued that the continents had once formed a single landmass—Pangaea—which had subsequently broken apart and drifted to their current positions. His evidence was compelling: the jigsaw-puzzle fit of coastlines, matching fossil distributions across now-separated continents, and geological similarities between distant landmasses.
+
+Yet the theory was rejected, often with hostility. Critics focused on Wegener's inability to explain the mechanism of drift—what force could possibly move entire continents through the oceanic crust? The physicist Harold Jeffreys calculated that no known force could accomplish this feat. Without a plausible mechanism, the theory seemed to violate fundamental physics.
+
+The rejection of continental drift illustrates how scientific paradigms shape the reception of new ideas. Geologists of the early twentieth century operated within a fixist paradigm that assumed continental positions were permanent. Evidence that challenged this assumption was either dismissed or reinterpreted to fit existing frameworks.
+
+The vindication of Wegener's core insight came only in the 1960s, with the discovery of seafloor spreading and the development of plate tectonics. The ocean floors, rather than being ancient and static, were young and dynamic, continuously created at mid-ocean ridges and destroyed at subduction zones. This mechanism—which Wegener could not have anticipated—finally explained how continents could move.\`,
+        questions: [
+            {question: 'The passage suggests that Wegener\'s theory was initially rejected primarily because:', options: ['His evidence was unconvincing', 'He lacked the credentials of a geologist', 'He could not explain the mechanism of drift', 'Continental positions were known to be permanent'], answer: 'C', explanation: '第二段明确指出"Critics focused on Wegener\'s inability to explain the mechanism of drift"。'},
+            {question: 'According to the passage, the "fixist paradigm" refers to:', options: ['A theory about earthquake prediction', 'The assumption that continents do not move', 'A method of dating geological formations', 'The study of fossil distributions'], answer: 'B', explanation: '第三段说明fixist paradigm "assumed continental positions were permanent"。'},
+            {question: 'The author mentions Harold Jeffreys in order to:', options: ['Support Wegener\'s theory', 'Illustrate the scientific opposition to continental drift', 'Explain the mechanism of plate tectonics', 'Criticize the geological establishment'], answer: 'B', explanation: 'Jeffreys的计算被用来说明当时科学界对大陆漂移说的反对。'},
+            {question: 'The passage implies that the discovery of seafloor spreading:', options: ['Disproved Wegener\'s theory entirely', 'Provided the missing mechanism for continental drift', 'Was anticipated by Wegener', 'Confirmed the fixist paradigm'], answer: 'B', explanation: '最后一段说"This mechanism—which Wegener could not have anticipated—finally explained how continents could move"。'}
+        ],
+        vocabulary: [{word: 'paradigm', meaning: '范式，典范'}, {word: 'vindication', meaning: '证明正确'}, {word: 'subduction', meaning: '俯冲'}, {word: 'plausible', meaning: '似是而非的，貌似合理的'}]
+    },
+    
+    // V7: TOEFL阅读 - 生态学
+    {
+        id: 'upgrade_v7_1',
+        category: 'TOEFL',
+        topic: '生态学',
+        difficulty: '中级',
+        title: 'Invasive Species and Ecosystem Disruption',
+        passage: \`Invasive species—organisms introduced to environments where they are not native—represent one of the most significant threats to biodiversity worldwide. When species are transported beyond their natural range, they often escape the predators, parasites, and competitors that kept their populations in check. Free from these constraints, invasive species can multiply explosively and fundamentally alter the ecosystems they colonize.
+
+The ecological impacts of invasive species operate through multiple mechanisms. Some invaders directly consume native species, as when the brown tree snake, introduced to Guam after World War II, drove most of the island's native bird species to extinction. Others compete with native species for resources; the zebra mussel, brought to North America in ship ballast water, filters vast quantities of plankton from lakes, depriving native fish of food.
+
+Perhaps more insidious are invasive species that alter ecosystem processes themselves. The nitrogen-fixing shrub Myrica faya, introduced to Hawaii, fundamentally changed soil chemistry in native forests, creating conditions that favor other invasive plants over natives. Similarly, invasive grasses in the American West increase fire frequency, killing native vegetation that is not adapted to frequent burning.
+
+The economic costs of invasive species are staggering—estimated at over $120 billion annually in the United States alone. These costs include agricultural losses, damage to infrastructure, and the expense of control efforts. Yet preventing introductions remains challenging in an era of global trade and travel, when thousands of species are transported daily across natural barriers that once kept ecosystems distinct.\`,
+        questions: [
+            {question: 'According to the passage, invasive species often thrive because:', options: ['They are more adaptable than native species', 'They lack natural predators in new environments', 'They are deliberately introduced by humans', 'They evolve more rapidly than native species'], answer: 'B', explanation: '第一段指出invasive species "escape the predators, parasites, and competitors that kept their populations in check"。'},
+            {question: 'The author mentions Myrica faya to illustrate:', options: ['How invasive species consume native species', 'How invasive species compete for resources', 'How invasive species alter ecosystem processes', 'The economic costs of invasive species'], answer: 'C', explanation: '第三段讨论"invasive species that alter ecosystem processes"时用Myrica faya作为例子。'},
+            {question: 'The passage suggests that preventing invasive species introductions is difficult because:', options: ['Scientists do not understand invasive species', 'Control methods are too expensive', 'Global trade facilitates species transport', 'Native species cannot compete'], answer: 'C', explanation: '最后一段提到"in an era of global trade and travel, when thousands of species are transported daily"。'},
+            {question: 'The word "insidious" in paragraph 3 is closest in meaning to:', options: ['Obvious', 'Harmful in a gradual way', 'Temporary', 'Beneficial'], answer: 'B', explanation: 'insidious意为"阴险的，潜在有害的"，指以渐进方式造成危害。'}
+        ],
+        vocabulary: [{word: 'invasive', meaning: '入侵的'}, {word: 'biodiversity', meaning: '生物多样性'}, {word: 'insidious', meaning: '潜伏的，阴险的'}, {word: 'staggering', meaning: '令人震惊的'}]
+    },
+    
+    // V8: GRE阅读 - 认知科学
+    {
+        id: 'upgrade_v8_1',
+        category: 'GRE',
+        topic: '认知科学',
+        difficulty: '高级',
+        title: 'The Limits of Intuitive Physics',
+        passage: \`Humans possess what cognitive scientists call "intuitive physics"—an implicit understanding of how physical objects behave. Infants as young as three months show surprise when objects appear to pass through solid barriers or hover unsupported in mid-air, suggesting that basic physical expectations are present very early in development.
+
+However, research reveals that intuitive physics is far from a complete or accurate model of the physical world. People consistently err when predicting the trajectories of objects in motion. Asked to indicate where a ball will land when dropped from a moving airplane, most people point to a location directly below the release point, failing to account for the ball's horizontal momentum. Similarly, people misjudge where water will flow when poured from a tilted container.
+
+These errors are not random but systematic, reflecting consistent misconceptions about physical principles. The "impetus theory"—a medieval conception of motion that predates Newtonian mechanics—appears to persist in naive physical reasoning. People often believe that moving objects possess an internal force that gradually dissipates, rather than continuing in motion unless acted upon by external forces.
+
+The disconnect between intuitive and scientific physics has important implications. Engineering students often struggle to apply formal physics principles because their intuitions interfere. Effective physics education may require explicitly confronting and correcting intuitive misconceptions rather than simply presenting correct theories.\`,
+        questions: [
+            {question: 'The passage suggests that intuitive physics:', options: ['Develops only through formal education', 'Is present early in human development', 'Accurately predicts object behavior', 'Is unique to Western cultures'], answer: 'B', explanation: '第一段提到"Infants as young as three months show surprise"，说明直觉物理学很早就存在。'},
+            {question: 'According to the passage, the "impetus theory" is:', options: ['A modern scientific principle', 'An accurate description of motion', 'A persistent misconception about physics', 'A theory developed by cognitive scientists'], answer: 'C', explanation: '第三段说impetus theory是"medieval conception"并且"appears to persist in naive physical reasoning"。'},
+            {question: 'The author would most likely agree that effective physics education should:', options: ['Focus exclusively on mathematical formulas', 'Avoid discussing intuitive misconceptions', 'Address and correct intuitive errors', 'Begin only after age twelve'], answer: 'C', explanation: '最后一段说"Effective physics education may require explicitly confronting and correcting intuitive misconceptions"。'},
+            {question: 'The airplane-ball example serves to illustrate:', options: ['The accuracy of intuitive physics', 'A systematic error in physical reasoning', 'How formal physics education succeeds', 'The development of infant cognition'], answer: 'B', explanation: '这个例子在第二段被用来说明人们对物体运动的错误预测。'}
+        ],
+        vocabulary: [{word: 'trajectory', meaning: '轨迹'}, {word: 'momentum', meaning: '动量'}, {word: 'impetus', meaning: '动力，推动力'}, {word: 'dissipate', meaning: '消散'}]
+    },
+    
+    // V9: TOEFL阅读 - 城市规划
+    {
+        id: 'upgrade_v9_1',
+        category: 'TOEFL',
+        topic: '城市规划',
+        difficulty: '中级',
+        title: 'The Rise of Sustainable Urban Design',
+        passage: \`Urban areas now house more than half of the world's population, and cities consume approximately 75% of global energy while producing 70% of carbon emissions. As urbanization accelerates, sustainable urban design has become crucial for addressing climate change and improving quality of life.
+
+Traditional urban planning often prioritized automobile traffic, resulting in sprawling developments that increased energy consumption and social isolation. Sustainable design reverses these priorities, emphasizing walkability, public transit, and mixed-use development that integrates residential, commercial, and recreational spaces. Copenhagen, often cited as a model sustainable city, has transformed former highways into pedestrian zones and invested heavily in cycling infrastructure.
+
+Green building technologies play a central role in sustainable urban design. Buildings account for roughly 40% of urban energy consumption, and improvements in insulation, lighting, and heating systems can dramatically reduce this figure. Some cities now require new construction to meet strict efficiency standards, while others offer incentives for retrofitting existing buildings.
+
+Urban green spaces provide multiple sustainability benefits. Parks and tree-lined streets reduce the "heat island effect"—the tendency for cities to be significantly warmer than surrounding areas due to heat-absorbing concrete and asphalt. Vegetation also improves air quality, manages stormwater runoff, and enhances residents' psychological well-being. Singapore's extensive urban greening program demonstrates how dense cities can incorporate substantial natural elements.\`,
+        questions: [
+            {question: 'According to the passage, cities are significant for climate change because:', options: ['They house most wildlife', 'They produce most carbon emissions', 'They have the cleanest air', 'They use the least energy'], answer: 'B', explanation: '第一段说cities "producing 70% of carbon emissions"。'},
+            {question: 'The passage mentions Copenhagen as an example of:', options: ['A city with traffic problems', 'A model for sustainable urban design', 'A city with few green spaces', 'Traditional urban planning'], answer: 'B', explanation: '第二段说Copenhagen "often cited as a model sustainable city"。'},
+            {question: 'The "heat island effect" refers to:', options: ['Global climate change', 'Cities being warmer than surrounding areas', 'The benefits of urban parks', 'Energy-efficient buildings'], answer: 'B', explanation: '第四段定义heat island effect为"the tendency for cities to be significantly warmer than surrounding areas"。'},
+            {question: 'Which of the following is NOT mentioned as a benefit of urban green spaces?', options: ['Reducing urban temperatures', 'Improving air quality', 'Increasing property values', 'Managing stormwater'], answer: 'C', explanation: '文章提到了温度、空气质量和雨水管理，但没有提到房产价值。'}
+        ],
+        vocabulary: [{word: 'sprawling', meaning: '蔓延的'}, {word: 'walkability', meaning: '步行便利性'}, {word: 'retrofitting', meaning: '翻新改造'}, {word: 'runoff', meaning: '径流'}]
+    },
+    
+    // V10: GRE阅读 - 经济史
+    {
+        id: 'upgrade_v10_1',
+        category: 'GRE',
+        topic: '经济史',
+        difficulty: '高级',
+        title: 'The Great Divergence: Why Europe Industrialized First',
+        passage: \`Historians have long debated why the Industrial Revolution began in Britain rather than in China, India, or the Islamic world—civilizations that for centuries had been more technologically advanced than Europe. This question, often called "the Great Divergence," remains one of the most contested issues in economic history.
+
+One influential explanation emphasizes institutional factors. Douglass North and others have argued that Europe's fragmented political landscape created competition among states, encouraging innovation and protecting property rights. In contrast, China's unified empire faced less pressure to adopt new technologies or accommodate merchant interests. However, critics note that this explanation struggles to account for periods when unified empires were highly innovative.
+
+Kenneth Pomeranz offered an alternative view, emphasizing the role of geography and resources. He argued that Britain and China's most developed regions were remarkably similar in 1750—both faced resource constraints and ecological pressures. What distinguished Britain was its access to coal deposits located near waterways, enabling cheap energy for industrialization, and its colonial empire, which provided raw materials and markets without the ecological costs falling on Britain itself.
+
+More recent scholarship has complicated both narratives. Some historians emphasize cultural factors, such as the Scientific Revolution's impact on attitudes toward innovation. Others point to "useful knowledge"—the practical application of science to industrial problems. Perhaps most likely, the Great Divergence resulted from a contingent combination of factors rather than any single cause.\`,
+        questions: [
+            {question: 'The "Great Divergence" refers to:', options: ['The split between Eastern and Western cultures', 'Why industrialization occurred first in Europe', 'The decline of the British Empire', 'Differences in scientific methods'], answer: 'B', explanation: '第一段说Great Divergence是关于"why the Industrial Revolution began in Britain rather than in China, India, or the Islamic world"。'},
+            {question: 'Douglass North\'s explanation emphasizes:', options: ['Geographic resources', 'Cultural attitudes', 'Political competition among European states', 'Colonial exploitation'], answer: 'C', explanation: '第二段说North认为"Europe\'s fragmented political landscape created competition among states"。'},
+            {question: 'According to Pomeranz, Britain\'s advantage included:', options: ['Superior cultural values', 'Better political institutions', 'Access to coal and colonial resources', 'More unified government'], answer: 'C', explanation: '第三段说Britain的优势是"access to coal deposits"和"colonial empire, which provided raw materials and markets"。'},
+            {question: 'The passage suggests that the current scholarly consensus is:', options: ['North\'s institutional explanation is correct', 'Pomeranz\'s geographic explanation is correct', 'Multiple factors likely contributed', 'The question cannot be answered'], answer: 'C', explanation: '最后一段说"the Great Divergence resulted from a contingent combination of factors rather than any single cause"。'}
+        ],
+        vocabulary: [{word: 'divergence', meaning: '分歧，差异'}, {word: 'fragmented', meaning: '分裂的'}, {word: 'contingent', meaning: '偶然的，依情况而定的'}, {word: 'ecological', meaning: '生态的'}]
+    }
+
+,
+
+    // ============ 升级V6-V10: 真题风格阅读 ============
+    
+    // V6: GRE长篇阅读 - 科学史
+    {
+        id: 'upgrade_v6_1',
+        category: 'GRE',
+        topic: '科学史',
+        difficulty: '高级',
+        title: 'The Controversy Over Continental Drift',
+        passage: \`Alfred Wegener's theory of continental drift, proposed in 1912, met with fierce resistance from the geological establishment. Wegener, a meteorologist rather than a geologist, argued that the continents had once formed a single landmass—Pangaea—which had subsequently broken apart and drifted to their current positions. His evidence was compelling: the jigsaw-puzzle fit of coastlines, matching fossil distributions across now-separated continents, and geological similarities between distant landmasses.
+
+Yet the theory was rejected, often with hostility. Critics focused on Wegener's inability to explain the mechanism of drift—what force could possibly move entire continents through the oceanic crust? The physicist Harold Jeffreys calculated that no known force could accomplish this feat. Without a plausible mechanism, the theory seemed to violate fundamental physics.
+
+The rejection of continental drift illustrates how scientific paradigms shape the reception of new ideas. Geologists of the early twentieth century operated within a fixist paradigm that assumed continental positions were permanent. Evidence that challenged this assumption was either dismissed or reinterpreted to fit existing frameworks.
+
+The vindication of Wegener's core insight came only in the 1960s, with the discovery of seafloor spreading and the development of plate tectonics. The ocean floors, rather than being ancient and static, were young and dynamic, continuously created at mid-ocean ridges and destroyed at subduction zones. This mechanism—which Wegener could not have anticipated—finally explained how continents could move.\`,
+        questions: [
+            {question: 'The passage suggests that Wegener\'s theory was initially rejected primarily because:', options: ['His evidence was unconvincing', 'He lacked the credentials of a geologist', 'He could not explain the mechanism of drift', 'Continental positions were known to be permanent'], answer: 'C', explanation: '第二段明确指出"Critics focused on Wegener\'s inability to explain the mechanism of drift"。'},
+            {question: 'According to the passage, the "fixist paradigm" refers to:', options: ['A theory about earthquake prediction', 'The assumption that continents do not move', 'A method of dating geological formations', 'The study of fossil distributions'], answer: 'B', explanation: '第三段说明fixist paradigm "assumed continental positions were permanent"。'},
+            {question: 'The author mentions Harold Jeffreys in order to:', options: ['Support Wegener\'s theory', 'Illustrate the scientific opposition to continental drift', 'Explain the mechanism of plate tectonics', 'Criticize the geological establishment'], answer: 'B', explanation: 'Jeffreys的计算被用来说明当时科学界对大陆漂移说的反对。'},
+            {question: 'The passage implies that the discovery of seafloor spreading:', options: ['Disproved Wegener\'s theory entirely', 'Provided the missing mechanism for continental drift', 'Was anticipated by Wegener', 'Confirmed the fixist paradigm'], answer: 'B', explanation: '最后一段说"This mechanism—which Wegener could not have anticipated—finally explained how continents could move"。'}
+        ],
+        vocabulary: [{word: 'paradigm', meaning: '范式，典范'}, {word: 'vindication', meaning: '证明正确'}, {word: 'subduction', meaning: '俯冲'}, {word: 'plausible', meaning: '似是而非的，貌似合理的'}]
+    },
+    
+    // V7: TOEFL阅读 - 生态学
+    {
+        id: 'upgrade_v7_1',
+        category: 'TOEFL',
+        topic: '生态学',
+        difficulty: '中级',
+        title: 'Invasive Species and Ecosystem Disruption',
+        passage: \`Invasive species—organisms introduced to environments where they are not native—represent one of the most significant threats to biodiversity worldwide. When species are transported beyond their natural range, they often escape the predators, parasites, and competitors that kept their populations in check. Free from these constraints, invasive species can multiply explosively and fundamentally alter the ecosystems they colonize.
+
+The ecological impacts of invasive species operate through multiple mechanisms. Some invaders directly consume native species, as when the brown tree snake, introduced to Guam after World War II, drove most of the island's native bird species to extinction. Others compete with native species for resources; the zebra mussel, brought to North America in ship ballast water, filters vast quantities of plankton from lakes, depriving native fish of food.
+
+Perhaps more insidious are invasive species that alter ecosystem processes themselves. The nitrogen-fixing shrub Myrica faya, introduced to Hawaii, fundamentally changed soil chemistry in native forests, creating conditions that favor other invasive plants over natives. Similarly, invasive grasses in the American West increase fire frequency, killing native vegetation that is not adapted to frequent burning.
+
+The economic costs of invasive species are staggering—estimated at over $120 billion annually in the United States alone. These costs include agricultural losses, damage to infrastructure, and the expense of control efforts. Yet preventing introductions remains challenging in an era of global trade and travel, when thousands of species are transported daily across natural barriers that once kept ecosystems distinct.\`,
+        questions: [
+            {question: 'According to the passage, invasive species often thrive because:', options: ['They are more adaptable than native species', 'They lack natural predators in new environments', 'They are deliberately introduced by humans', 'They evolve more rapidly than native species'], answer: 'B', explanation: '第一段指出invasive species "escape the predators, parasites, and competitors that kept their populations in check"。'},
+            {question: 'The author mentions Myrica faya to illustrate:', options: ['How invasive species consume native species', 'How invasive species compete for resources', 'How invasive species alter ecosystem processes', 'The economic costs of invasive species'], answer: 'C', explanation: '第三段讨论"invasive species that alter ecosystem processes"时用Myrica faya作为例子。'},
+            {question: 'The passage suggests that preventing invasive species introductions is difficult because:', options: ['Scientists do not understand invasive species', 'Control methods are too expensive', 'Global trade facilitates species transport', 'Native species cannot compete'], answer: 'C', explanation: '最后一段提到"in an era of global trade and travel, when thousands of species are transported daily"。'},
+            {question: 'The word "insidious" in paragraph 3 is closest in meaning to:', options: ['Obvious', 'Harmful in a gradual way', 'Temporary', 'Beneficial'], answer: 'B', explanation: 'insidious意为"阴险的，潜在有害的"，指以渐进方式造成危害。'}
+        ],
+        vocabulary: [{word: 'invasive', meaning: '入侵的'}, {word: 'biodiversity', meaning: '生物多样性'}, {word: 'insidious', meaning: '潜伏的，阴险的'}, {word: 'staggering', meaning: '令人震惊的'}]
+    },
+    
+    // V8: GRE阅读 - 认知科学
+    {
+        id: 'upgrade_v8_1',
+        category: 'GRE',
+        topic: '认知科学',
+        difficulty: '高级',
+        title: 'The Limits of Intuitive Physics',
+        passage: \`Humans possess what cognitive scientists call "intuitive physics"—an implicit understanding of how physical objects behave. Infants as young as three months show surprise when objects appear to pass through solid barriers or hover unsupported in mid-air, suggesting that basic physical expectations are present very early in development.
+
+However, research reveals that intuitive physics is far from a complete or accurate model of the physical world. People consistently err when predicting the trajectories of objects in motion. Asked to indicate where a ball will land when dropped from a moving airplane, most people point to a location directly below the release point, failing to account for the ball's horizontal momentum. Similarly, people misjudge where water will flow when poured from a tilted container.
+
+These errors are not random but systematic, reflecting consistent misconceptions about physical principles. The "impetus theory"—a medieval conception of motion that predates Newtonian mechanics—appears to persist in naive physical reasoning. People often believe that moving objects possess an internal force that gradually dissipates, rather than continuing in motion unless acted upon by external forces.
+
+The disconnect between intuitive and scientific physics has important implications. Engineering students often struggle to apply formal physics principles because their intuitions interfere. Effective physics education may require explicitly confronting and correcting intuitive misconceptions rather than simply presenting correct theories.\`,
+        questions: [
+            {question: 'The passage suggests that intuitive physics:', options: ['Develops only through formal education', 'Is present early in human development', 'Accurately predicts object behavior', 'Is unique to Western cultures'], answer: 'B', explanation: '第一段提到"Infants as young as three months show surprise"，说明直觉物理学很早就存在。'},
+            {question: 'According to the passage, the "impetus theory" is:', options: ['A modern scientific principle', 'An accurate description of motion', 'A persistent misconception about physics', 'A theory developed by cognitive scientists'], answer: 'C', explanation: '第三段说impetus theory是"medieval conception"并且"appears to persist in naive physical reasoning"。'},
+            {question: 'The author would most likely agree that effective physics education should:', options: ['Focus exclusively on mathematical formulas', 'Avoid discussing intuitive misconceptions', 'Address and correct intuitive errors', 'Begin only after age twelve'], answer: 'C', explanation: '最后一段说"Effective physics education may require explicitly confronting and correcting intuitive misconceptions"。'},
+            {question: 'The airplane-ball example serves to illustrate:', options: ['The accuracy of intuitive physics', 'A systematic error in physical reasoning', 'How formal physics education succeeds', 'The development of infant cognition'], answer: 'B', explanation: '这个例子在第二段被用来说明人们对物体运动的错误预测。'}
+        ],
+        vocabulary: [{word: 'trajectory', meaning: '轨迹'}, {word: 'momentum', meaning: '动量'}, {word: 'impetus', meaning: '动力，推动力'}, {word: 'dissipate', meaning: '消散'}]
+    },
+    
+    // V9: TOEFL阅读 - 城市规划
+    {
+        id: 'upgrade_v9_1',
+        category: 'TOEFL',
+        topic: '城市规划',
+        difficulty: '中级',
+        title: 'The Rise of Sustainable Urban Design',
+        passage: \`Urban areas now house more than half of the world's population, and cities consume approximately 75% of global energy while producing 70% of carbon emissions. As urbanization accelerates, sustainable urban design has become crucial for addressing climate change and improving quality of life.
+
+Traditional urban planning often prioritized automobile traffic, resulting in sprawling developments that increased energy consumption and social isolation. Sustainable design reverses these priorities, emphasizing walkability, public transit, and mixed-use development that integrates residential, commercial, and recreational spaces. Copenhagen, often cited as a model sustainable city, has transformed former highways into pedestrian zones and invested heavily in cycling infrastructure.
+
+Green building technologies play a central role in sustainable urban design. Buildings account for roughly 40% of urban energy consumption, and improvements in insulation, lighting, and heating systems can dramatically reduce this figure. Some cities now require new construction to meet strict efficiency standards, while others offer incentives for retrofitting existing buildings.
+
+Urban green spaces provide multiple sustainability benefits. Parks and tree-lined streets reduce the "heat island effect"—the tendency for cities to be significantly warmer than surrounding areas due to heat-absorbing concrete and asphalt. Vegetation also improves air quality, manages stormwater runoff, and enhances residents' psychological well-being. Singapore's extensive urban greening program demonstrates how dense cities can incorporate substantial natural elements.\`,
+        questions: [
+            {question: 'According to the passage, cities are significant for climate change because:', options: ['They house most wildlife', 'They produce most carbon emissions', 'They have the cleanest air', 'They use the least energy'], answer: 'B', explanation: '第一段说cities "producing 70% of carbon emissions"。'},
+            {question: 'The passage mentions Copenhagen as an example of:', options: ['A city with traffic problems', 'A model for sustainable urban design', 'A city with few green spaces', 'Traditional urban planning'], answer: 'B', explanation: '第二段说Copenhagen "often cited as a model sustainable city"。'},
+            {question: 'The "heat island effect" refers to:', options: ['Global climate change', 'Cities being warmer than surrounding areas', 'The benefits of urban parks', 'Energy-efficient buildings'], answer: 'B', explanation: '第四段定义heat island effect为"the tendency for cities to be significantly warmer than surrounding areas"。'},
+            {question: 'Which of the following is NOT mentioned as a benefit of urban green spaces?', options: ['Reducing urban temperatures', 'Improving air quality', 'Increasing property values', 'Managing stormwater'], answer: 'C', explanation: '文章提到了温度、空气质量和雨水管理，但没有提到房产价值。'}
+        ],
+        vocabulary: [{word: 'sprawling', meaning: '蔓延的'}, {word: 'walkability', meaning: '步行便利性'}, {word: 'retrofitting', meaning: '翻新改造'}, {word: 'runoff', meaning: '径流'}]
+    },
+    
+    // V10: GRE阅读 - 经济史
+    {
+        id: 'upgrade_v10_1',
+        category: 'GRE',
+        topic: '经济史',
+        difficulty: '高级',
+        title: 'The Great Divergence: Why Europe Industrialized First',
+        passage: \`Historians have long debated why the Industrial Revolution began in Britain rather than in China, India, or the Islamic world—civilizations that for centuries had been more technologically advanced than Europe. This question, often called "the Great Divergence," remains one of the most contested issues in economic history.
+
+One influential explanation emphasizes institutional factors. Douglass North and others have argued that Europe's fragmented political landscape created competition among states, encouraging innovation and protecting property rights. In contrast, China's unified empire faced less pressure to adopt new technologies or accommodate merchant interests. However, critics note that this explanation struggles to account for periods when unified empires were highly innovative.
+
+Kenneth Pomeranz offered an alternative view, emphasizing the role of geography and resources. He argued that Britain and China's most developed regions were remarkably similar in 1750—both faced resource constraints and ecological pressures. What distinguished Britain was its access to coal deposits located near waterways, enabling cheap energy for industrialization, and its colonial empire, which provided raw materials and markets without the ecological costs falling on Britain itself.
+
+More recent scholarship has complicated both narratives. Some historians emphasize cultural factors, such as the Scientific Revolution's impact on attitudes toward innovation. Others point to "useful knowledge"—the practical application of science to industrial problems. Perhaps most likely, the Great Divergence resulted from a contingent combination of factors rather than any single cause.\`,
+        questions: [
+            {question: 'The "Great Divergence" refers to:', options: ['The split between Eastern and Western cultures', 'Why industrialization occurred first in Europe', 'The decline of the British Empire', 'Differences in scientific methods'], answer: 'B', explanation: '第一段说Great Divergence是关于"why the Industrial Revolution began in Britain rather than in China, India, or the Islamic world"。'},
+            {question: 'Douglass North\'s explanation emphasizes:', options: ['Geographic resources', 'Cultural attitudes', 'Political competition among European states', 'Colonial exploitation'], answer: 'C', explanation: '第二段说North认为"Europe\'s fragmented political landscape created competition among states"。'},
+            {question: 'According to Pomeranz, Britain\'s advantage included:', options: ['Superior cultural values', 'Better political institutions', 'Access to coal and colonial resources', 'More unified government'], answer: 'C', explanation: '第三段说Britain的优势是"access to coal deposits"和"colonial empire, which provided raw materials and markets"。'},
+            {question: 'The passage suggests that the current scholarly consensus is:', options: ['North\'s institutional explanation is correct', 'Pomeranz\'s geographic explanation is correct', 'Multiple factors likely contributed', 'The question cannot be answered'], answer: 'C', explanation: '最后一段说"the Great Divergence resulted from a contingent combination of factors rather than any single cause"。'}
+        ],
+        vocabulary: [{word: 'divergence', meaning: '分歧，差异'}, {word: 'fragmented', meaning: '分裂的'}, {word: 'contingent', meaning: '偶然的，依情况而定的'}, {word: 'ecological', meaning: '生态的'}]
+    }
+
+,
+
+    // ============ 升级V16-V18: 更多考试风格阅读 ============
+    
+    // V16: 考研英语阅读风格
+    {
+        id: 'upgrade_v16_1',
+        category: '考研',
+        topic: '社会科学',
+        difficulty: '中级',
+        title: 'The Transformation of Work in the Digital Age',
+        passage: \`The digital revolution has fundamentally transformed the nature of work. Remote work, once a rarity, became widespread during the pandemic and has remained common even as health restrictions eased. This shift has profound implications for urban geography, commuting patterns, and work-life balance.
+
+Proponents of remote work emphasize increased flexibility and eliminated commute times. Workers can live in more affordable areas while maintaining jobs in expensive urban centers. Productivity studies have yielded mixed results, with some finding increased output while others note challenges in collaboration and innovation.
+
+Critics raise concerns about the erosion of boundaries between work and personal life. When the office is always accessible, many workers find it difficult to disconnect. Mental health professionals have noted rising rates of burnout among remote workers who struggle to establish clear boundaries.
+
+The hybrid model—combining remote and in-office work—has emerged as a popular compromise. This approach attempts to preserve the benefits of remote flexibility while maintaining opportunities for in-person collaboration. However, implementing hybrid work effectively requires careful attention to equity, ensuring that remote workers are not disadvantaged in promotion and development opportunities.\`,
+        questions: [
+            {question: 'The passage suggests that productivity research on remote work:', options: ['Conclusively proves remote work increases output', 'Shows consistent decreases in productivity', 'Has produced contradictory findings', 'Has not been conducted'], answer: 'C', explanation: '第二段说"Productivity studies have yielded mixed results"。'},
+            {question: 'According to the passage, a concern about remote work is:', options: ['Increased commute times', 'Difficulty separating work and personal life', 'Lack of internet access', 'Higher housing costs'], answer: 'B', explanation: '第三段讨论了"erosion of boundaries between work and personal life"。'},
+            {question: 'The hybrid work model attempts to:', options: ['Eliminate remote work entirely', 'Force all workers to commute daily', 'Combine benefits of remote and office work', 'Reduce productivity'], answer: 'C', explanation: '第四段说hybrid model"attempts to preserve the benefits of remote flexibility while maintaining opportunities for in-person collaboration"。'},
+            {question: 'The word "rarity" in the first paragraph means:', options: ['Something common', 'Something unusual', 'Something expensive', 'Something important'], answer: 'B', explanation: 'rarity意为"稀有，罕见的事物"。'}
+        ],
+        vocabulary: [{word: 'profound', meaning: '深刻的'}, {word: 'proponent', meaning: '支持者'}, {word: 'erosion', meaning: '侵蚀'}, {word: 'equity', meaning: '公平'}]
+    },
+    
+    // V17: 六级阅读风格
+    {
+        id: 'upgrade_v17_1',
+        category: '六级',
+        topic: '科技',
+        difficulty: '中级',
+        title: 'Artificial Intelligence in Healthcare',
+        passage: \`Artificial intelligence is revolutionizing healthcare, from diagnosis to treatment planning. Machine learning algorithms can analyze medical images with accuracy matching or exceeding human experts. AI systems have demonstrated remarkable ability to detect cancers, eye diseases, and other conditions from scans that would challenge even experienced physicians.
+
+The potential benefits are substantial. AI can process vast amounts of patient data to identify patterns invisible to human analysis. This capability is particularly valuable for rare diseases, where individual physicians may have limited experience. AI-powered tools can also help address physician shortages by handling routine diagnostic tasks.
+
+However, significant challenges remain. AI systems trained on data from specific populations may perform poorly on others, raising concerns about healthcare equity. The "black box" nature of many algorithms makes their decisions difficult to explain, creating problems for informed consent and medical accountability. Patients and physicians may be uncomfortable when critical decisions are made by opaque systems.
+
+Integration into clinical practice also faces practical barriers. Healthcare providers must be trained to use AI tools effectively, and workflows must be redesigned to incorporate algorithmic recommendations. Regulatory frameworks are still evolving, creating uncertainty about liability when AI contributes to medical errors.\`,
+        questions: [
+            {question: 'According to the passage, AI in healthcare can:', options: ['Replace all physicians', 'Analyze medical images accurately', 'Only diagnose common diseases', 'Work without any data'], answer: 'B', explanation: '第一段说"Machine learning algorithms can analyze medical images with accuracy matching or exceeding human experts"。'},
+            {question: 'The phrase "black box" refers to:', options: ['Medical equipment storage', 'Algorithms whose reasoning is unclear', 'Patient privacy protections', 'Hospital administrative systems'], answer: 'B', explanation: '第三段说"black box nature"使算法决策"difficult to explain"。'},
+            {question: 'A concern about AI in healthcare is:', options: ['It works too slowly', 'It may not work equally well for all populations', 'It is too expensive to develop', 'Patients prefer AI to human doctors'], answer: 'B', explanation: '第三段提到"AI systems trained on data from specific populations may perform poorly on others, raising concerns about healthcare equity"。'},
+            {question: 'What does the passage suggest about AI regulation in healthcare?', options: ['It is fully developed', 'It is still being established', 'It prevents all AI use', 'It is unnecessary'], answer: 'B', explanation: '最后一段说"Regulatory frameworks are still evolving"。'}
+        ],
+        vocabulary: [{word: 'algorithm', meaning: '算法'}, {word: 'equity', meaning: '公平性'}, {word: 'accountability', meaning: '问责制'}, {word: 'opaque', meaning: '不透明的'}]
+    },
+    
+    // V18: 学术论文阅读风格
+    {
+        id: 'upgrade_v18_1',
+        category: 'GRE',
+        topic: '心理学',
+        difficulty: '高级',
+        title: 'The Psychology of Decision-Making Under Uncertainty',
+        passage: \`Traditional economic theory assumed that humans are rational actors who maximize expected utility when making decisions. Herbert Simon challenged this view with his concept of "bounded rationality," arguing that cognitive limitations and time constraints force people to use simplified decision strategies rather than optimal calculations.
+
+Daniel Kahneman and Amos Tversky extended this critique with their research on heuristics and biases. They demonstrated that people rely on mental shortcuts—heuristics—that usually work well but can lead to systematic errors. The availability heuristic, for instance, causes people to overestimate the probability of dramatic events that are easily recalled, like plane crashes, while underestimating more common risks.
+
+Prospect theory, developed by Kahneman and Tversky, describes how people actually make choices under uncertainty. Unlike expected utility theory, which treats gains and losses symmetrically, prospect theory recognizes that losses loom larger than equivalent gains—a phenomenon called loss aversion. This asymmetry explains many seemingly irrational behaviors, from the reluctance to sell losing investments to excessive insurance purchases.
+
+Recent research has explored the neural basis of decision-making, revealing the interplay between emotional and cognitive processes. The prefrontal cortex, associated with reasoning, often competes with limbic structures governing emotion. Understanding these neural mechanisms may eventually help design interventions that improve decision-making in domains from medicine to finance.\`,
+        questions: [
+            {question: 'Herbert Simon\'s concept of "bounded rationality" suggests that:', options: ['Humans always make optimal decisions', 'Cognitive limitations affect decision-making', 'Economic theory is always correct', 'Time has no effect on decisions'], answer: 'B', explanation: '第一段解释bounded rationality认为"cognitive limitations and time constraints force people to use simplified decision strategies"。'},
+            {question: 'According to prospect theory, people:', options: ['Treat gains and losses equally', 'Feel losses more strongly than equivalent gains', 'Always make rational choices', 'Ignore probability in decisions'], answer: 'B', explanation: '第三段说"losses loom larger than equivalent gains—a phenomenon called loss aversion"。'},
+            {question: 'The availability heuristic causes people to:', options: ['Make better investment decisions', 'Overestimate dramatic but rare events', 'Correctly assess all risks', 'Ignore emotional factors'], answer: 'B', explanation: '第二段说availability heuristic导致人们"overestimate the probability of dramatic events that are easily recalled"。'},
+            {question: 'The passage suggests that decision-making involves:', options: ['Only rational calculation', 'Only emotional responses', 'Both cognitive and emotional processes', 'Neither cognition nor emotion'], answer: 'C', explanation: '最后一段讨论了"the interplay between emotional and cognitive processes"。'}
+        ],
+        vocabulary: [{word: 'heuristic', meaning: '启发式方法'}, {word: 'asymmetry', meaning: '不对称'}, {word: 'limbic', meaning: '边缘的'}, {word: 'intervention', meaning: '干预'}]
+    }
+
 ];

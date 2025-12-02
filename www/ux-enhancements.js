@@ -2056,10 +2056,916 @@
                 StudyPet.init();
                 
                 console.log('✨ 解压互动系统 v7.1-v7.10 已加载');
+                
+                // v7.11-v7.20 延迟初始化（不影响主功能）
+                setTimeout(() => {
+                    StressReliefSystemV2.init();
+                }, 500);
             }, 1000);
         }
     };
     
+    // ==================== v7.11: 禅意沙画板 ====================
+    const ZenSandbox = {
+        canvas: null,
+        ctx: null,
+        isDrawing: false,
+        lastX: 0,
+        lastY: 0,
+        isActive: false,
+        
+        init() {
+            this.createElements();
+            this.setupEvents();
+        },
+        
+        createElements() {
+            // 沙盘切换按钮
+            const toggle = document.createElement('button');
+            toggle.className = 'zen-sandbox-toggle';
+            toggle.textContent = '🏖️';
+            toggle.title = '禅意沙画';
+            document.body.appendChild(toggle);
+            
+            // 沙盘容器
+            const sandbox = document.createElement('div');
+            sandbox.className = 'zen-sandbox';
+            sandbox.innerHTML = `
+                <canvas class="zen-sandbox-canvas"></canvas>
+                <div class="zen-sandbox-tools">
+                    <button class="sandbox-tool active" data-tool="draw">✏️</button>
+                    <button class="sandbox-tool" data-tool="rake">〰️</button>
+                    <button class="sandbox-tool" data-tool="clear">🗑️</button>
+                </div>
+            `;
+            document.body.appendChild(sandbox);
+            
+            this.toggle = toggle;
+            this.sandbox = sandbox;
+            this.canvas = sandbox.querySelector('.zen-sandbox-canvas');
+            this.ctx = this.canvas.getContext('2d');
+        },
+        
+        setupEvents() {
+            this.toggle.addEventListener('click', () => this.toggleSandbox());
+            
+            // 绘画事件
+            this.canvas.addEventListener('touchstart', (e) => this.startDraw(e), { passive: false });
+            this.canvas.addEventListener('touchmove', (e) => this.draw(e), { passive: false });
+            this.canvas.addEventListener('touchend', () => this.endDraw());
+            this.canvas.addEventListener('mousedown', (e) => this.startDrawMouse(e));
+            this.canvas.addEventListener('mousemove', (e) => this.drawMouse(e));
+            this.canvas.addEventListener('mouseup', () => this.endDraw());
+            
+            // 工具选择
+            this.sandbox.querySelectorAll('.sandbox-tool').forEach(tool => {
+                tool.addEventListener('click', (e) => {
+                    const action = e.target.dataset.tool;
+                    if (action === 'clear') {
+                        this.clear();
+                    } else {
+                        this.sandbox.querySelectorAll('.sandbox-tool').forEach(t => t.classList.remove('active'));
+                        e.target.classList.add('active');
+                    }
+                });
+            });
+        },
+        
+        toggleSandbox() {
+            this.isActive = !this.isActive;
+            this.sandbox.classList.toggle('active', this.isActive);
+            
+            if (this.isActive) {
+                this.resizeCanvas();
+                this.fillSand();
+                HapticFeedback.medium();
+            }
+        },
+        
+        resizeCanvas() {
+            this.canvas.width = this.sandbox.offsetWidth;
+            this.canvas.height = this.sandbox.offsetHeight;
+        },
+        
+        fillSand() {
+            this.ctx.fillStyle = '#e8d4b8';
+            this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            // 添加沙粒纹理
+            for (let i = 0; i < 3000; i++) {
+                const x = Math.random() * this.canvas.width;
+                const y = Math.random() * this.canvas.height;
+                this.ctx.fillStyle = `rgba(139, 119, 101, ${Math.random() * 0.3})`;
+                this.ctx.fillRect(x, y, 1, 1);
+            }
+        },
+        
+        startDraw(e) {
+            e.preventDefault();
+            this.isDrawing = true;
+            const touch = e.touches[0];
+            const rect = this.canvas.getBoundingClientRect();
+            this.lastX = touch.clientX - rect.left;
+            this.lastY = touch.clientY - rect.top;
+        },
+        
+        startDrawMouse(e) {
+            this.isDrawing = true;
+            const rect = this.canvas.getBoundingClientRect();
+            this.lastX = e.clientX - rect.left;
+            this.lastY = e.clientY - rect.top;
+        },
+        
+        draw(e) {
+            if (!this.isDrawing) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = this.canvas.getBoundingClientRect();
+            const x = touch.clientX - rect.left;
+            const y = touch.clientY - rect.top;
+            this.drawLine(x, y);
+        },
+        
+        drawMouse(e) {
+            if (!this.isDrawing) return;
+            const rect = this.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            this.drawLine(x, y);
+        },
+        
+        drawLine(x, y) {
+            this.ctx.beginPath();
+            this.ctx.moveTo(this.lastX, this.lastY);
+            this.ctx.lineTo(x, y);
+            this.ctx.strokeStyle = '#c4a87c';
+            this.ctx.lineWidth = 15;
+            this.ctx.lineCap = 'round';
+            this.ctx.shadowColor = 'rgba(0,0,0,0.2)';
+            this.ctx.shadowBlur = 5;
+            this.ctx.stroke();
+            
+            this.lastX = x;
+            this.lastY = y;
+        },
+        
+        endDraw() {
+            this.isDrawing = false;
+        },
+        
+        clear() {
+            this.fillSand();
+            HapticFeedback.light();
+        }
+    };
+    
+    // ==================== v7.12: 心情调色板 ====================
+    const MoodPalette = {
+        isActive: false,
+        currentMood: null,
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            const palette = document.createElement('div');
+            palette.className = 'mood-palette';
+            palette.innerHTML = `
+                <button class="mood-palette-toggle">🎨</button>
+                <h4 style="margin: 0 0 15px; font-size: 14px; color: var(--gray-600);">今天心情如何？</h4>
+                <div class="mood-colors">
+                    <div class="mood-color" style="background: #ff6b6b" data-mood="😊" data-name="开心"></div>
+                    <div class="mood-color" style="background: #feca57" data-mood="😎" data-name="自信"></div>
+                    <div class="mood-color" style="background: #48dbfb" data-mood="😌" data-name="平静"></div>
+                    <div class="mood-color" style="background: #1dd1a1" data-mood="🤗" data-name="温暖"></div>
+                    <div class="mood-color" style="background: #5f27cd" data-mood="🤔" data-name="思考"></div>
+                    <div class="mood-color" style="background: #ff9ff3" data-mood="💖" data-name="幸福"></div>
+                    <div class="mood-color" style="background: #54a0ff" data-mood="💪" data-name="动力"></div>
+                    <div class="mood-color" style="background: #00d2d3" data-mood="🌟" data-name="期待"></div>
+                </div>
+                <div style="margin-top: 15px;">
+                    <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 8px;">能量值</p>
+                    <input type="range" class="mood-slider" min="1" max="10" value="5">
+                </div>
+            `;
+            document.body.appendChild(palette);
+            this.element = palette;
+        },
+        
+        setupEvents() {
+            const toggle = this.element.querySelector('.mood-palette-toggle');
+            toggle.addEventListener('click', () => {
+                this.isActive = !this.isActive;
+                this.element.classList.toggle('active', this.isActive);
+            });
+            
+            this.element.querySelectorAll('.mood-color').forEach(color => {
+                color.addEventListener('click', (e) => {
+                    this.selectMood(e.target);
+                });
+            });
+        },
+        
+        selectMood(el) {
+            this.element.querySelectorAll('.mood-color').forEach(c => c.classList.remove('selected'));
+            el.classList.add('selected');
+            
+            const mood = el.dataset.mood;
+            const name = el.dataset.name;
+            this.currentMood = { mood, name };
+            
+            // 保存心情
+            this.saveMood();
+            
+            showSmartToast(`今天的心情：${mood} ${name}`, 'success', 2000);
+            HapticFeedback.light();
+        },
+        
+        saveMood() {
+            const moodLog = JSON.parse(localStorage.getItem('moodLog') || '[]');
+            moodLog.push({
+                ...this.currentMood,
+                energy: this.element.querySelector('.mood-slider').value,
+                date: new Date().toISOString()
+            });
+            localStorage.setItem('moodLog', JSON.stringify(moodLog.slice(-30))); // 保留最近30条
+        }
+    };
+    
+    // ==================== v7.13: 虚拟泡泡纸 ====================
+    const BubbleWrap = {
+        isActive: false,
+        bubbleCount: 0,
+        poppedCount: 0,
+        
+        init() {
+            this.createElements();
+            this.setupEvents();
+        },
+        
+        createElements() {
+            const toggle = document.createElement('button');
+            toggle.className = 'bubble-wrap-toggle';
+            toggle.textContent = '🫧';
+            toggle.title = '泡泡纸';
+            document.body.appendChild(toggle);
+            
+            const wrap = document.createElement('div');
+            wrap.className = 'bubble-wrap';
+            document.body.appendChild(wrap);
+            
+            this.toggle = toggle;
+            this.wrap = wrap;
+        },
+        
+        setupEvents() {
+            this.toggle.addEventListener('click', () => this.toggleWrap());
+        },
+        
+        toggleWrap() {
+            this.isActive = !this.isActive;
+            this.wrap.classList.toggle('active', this.isActive);
+            
+            if (this.isActive) {
+                this.createBubbles();
+                HapticFeedback.medium();
+            }
+        },
+        
+        createBubbles() {
+            this.wrap.innerHTML = '';
+            this.poppedCount = 0;
+            const count = Math.floor((this.wrap.offsetWidth / 48) * (this.wrap.offsetHeight / 48));
+            this.bubbleCount = count;
+            
+            for (let i = 0; i < count; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'pop-bubble';
+                bubble.addEventListener('click', () => this.popBubble(bubble));
+                bubble.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    this.popBubble(bubble);
+                }, { passive: false });
+                this.wrap.appendChild(bubble);
+            }
+        },
+        
+        popBubble(bubble) {
+            if (bubble.classList.contains('popped')) return;
+            
+            bubble.classList.add('pop-animation');
+            HapticFeedback.light();
+            
+            setTimeout(() => {
+                bubble.classList.add('popped');
+                bubble.classList.remove('pop-animation');
+                this.poppedCount++;
+                
+                // 全部戳完
+                if (this.poppedCount >= this.bubbleCount) {
+                    setTimeout(() => {
+                        showSmartToast('🎉 全部戳完了！好解压~', 'success', 2000);
+                        celebrateSuccess();
+                    }, 300);
+                }
+            }, 150);
+        }
+    };
+    
+    // ==================== v7.14: 专注番茄钟 ====================
+    const FocusTimer = {
+        isActive: false,
+        isRunning: false,
+        timeLeft: 25 * 60, // 25分钟
+        totalTime: 25 * 60,
+        interval: null,
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            const timer = document.createElement('div');
+            timer.className = 'focus-timer';
+            timer.innerHTML = `
+                <div class="timer-display">25:00</div>
+                <div class="timer-progress">
+                    <div class="timer-progress-bar" style="width: 100%"></div>
+                </div>
+                <div class="timer-controls">
+                    <button class="timer-btn primary start-btn">开始专注</button>
+                    <button class="timer-btn secondary reset-btn">重置</button>
+                </div>
+            `;
+            document.body.appendChild(timer);
+            
+            const mini = document.createElement('div');
+            mini.className = 'focus-timer-mini';
+            mini.textContent = '25:00';
+            document.body.appendChild(mini);
+            
+            this.element = timer;
+            this.mini = mini;
+        },
+        
+        setupEvents() {
+            const startBtn = this.element.querySelector('.start-btn');
+            const resetBtn = this.element.querySelector('.reset-btn');
+            
+            startBtn.addEventListener('click', () => this.toggleTimer());
+            resetBtn.addEventListener('click', () => this.reset());
+            this.mini.addEventListener('click', () => this.show());
+        },
+        
+        show() {
+            this.isActive = true;
+            this.element.classList.add('active');
+            this.mini.classList.remove('visible');
+        },
+        
+        hide() {
+            this.isActive = false;
+            this.element.classList.remove('active');
+            if (this.isRunning) {
+                this.mini.classList.add('visible');
+            }
+        },
+        
+        toggleTimer() {
+            if (this.isRunning) {
+                this.pause();
+            } else {
+                this.start();
+            }
+        },
+        
+        start() {
+            this.isRunning = true;
+            this.element.querySelector('.start-btn').textContent = '暂停';
+            
+            this.interval = setInterval(() => {
+                this.timeLeft--;
+                this.updateDisplay();
+                
+                if (this.timeLeft <= 0) {
+                    this.complete();
+                }
+            }, 1000);
+            
+            // 3秒后隐藏主界面，显示迷你计时器
+            setTimeout(() => this.hide(), 3000);
+            
+            HapticFeedback.medium();
+        },
+        
+        pause() {
+            this.isRunning = false;
+            this.element.querySelector('.start-btn').textContent = '继续';
+            clearInterval(this.interval);
+        },
+        
+        reset() {
+            this.pause();
+            this.timeLeft = this.totalTime;
+            this.updateDisplay();
+            this.element.querySelector('.start-btn').textContent = '开始专注';
+            this.mini.classList.remove('visible');
+        },
+        
+        complete() {
+            this.pause();
+            showSmartToast('🍅 专注时间结束！休息一下吧~', 'success', 3000);
+            celebrateSuccess();
+            HapticFeedback.success();
+            this.reset();
+            this.show();
+        },
+        
+        updateDisplay() {
+            const mins = Math.floor(this.timeLeft / 60);
+            const secs = this.timeLeft % 60;
+            const display = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+            
+            this.element.querySelector('.timer-display').textContent = display;
+            this.mini.textContent = display;
+            
+            const progress = (this.timeLeft / this.totalTime) * 100;
+            this.element.querySelector('.timer-progress-bar').style.width = `${progress}%`;
+        }
+    };
+    
+    // ==================== v7.15: 轻拍节奏游戏 ====================
+    const RhythmGame = {
+        isActive: false,
+        score: 0,
+        gameInterval: null,
+        
+        init() {
+            // 简化版：不自动创建，通过控制面板启动
+        },
+        
+        start() {
+            if (this.isActive) return;
+            this.isActive = true;
+            this.score = 0;
+            
+            this.createElement();
+            this.startGame();
+        },
+        
+        createElement() {
+            const game = document.createElement('div');
+            game.className = 'rhythm-game active';
+            game.innerHTML = `
+                <div class="rhythm-score">得分: 0</div>
+                <div class="rhythm-lanes">
+                    <div class="rhythm-lane" data-lane="0"><div class="rhythm-hit-zone"></div></div>
+                    <div class="rhythm-lane" data-lane="1"><div class="rhythm-hit-zone"></div></div>
+                    <div class="rhythm-lane" data-lane="2"><div class="rhythm-hit-zone"></div></div>
+                </div>
+            `;
+            document.body.appendChild(game);
+            this.element = game;
+            
+            // 点击检测
+            game.querySelectorAll('.rhythm-lane').forEach(lane => {
+                lane.addEventListener('click', () => this.hitLane(lane));
+            });
+        },
+        
+        startGame() {
+            // 每800ms生成一个音符
+            this.gameInterval = setInterval(() => {
+                if (!this.isActive) return;
+                this.spawnNote();
+            }, 800);
+            
+            // 30秒后结束
+            setTimeout(() => this.endGame(), 30000);
+        },
+        
+        spawnNote() {
+            const laneIdx = Math.floor(Math.random() * 3);
+            const lane = this.element.querySelectorAll('.rhythm-lane')[laneIdx];
+            
+            const note = document.createElement('div');
+            note.className = 'rhythm-note';
+            note.style.animationDuration = '2s';
+            lane.appendChild(note);
+            
+            note.addEventListener('animationend', () => note.remove());
+        },
+        
+        hitLane(lane) {
+            const notes = lane.querySelectorAll('.rhythm-note');
+            const hitZone = lane.querySelector('.rhythm-hit-zone');
+            const hitRect = hitZone.getBoundingClientRect();
+            
+            notes.forEach(note => {
+                const noteRect = note.getBoundingClientRect();
+                // 检测是否在击中区域
+                if (noteRect.bottom > hitRect.top && noteRect.top < hitRect.bottom) {
+                    this.score += 100;
+                    note.remove();
+                    this.updateScore();
+                    this.showFeedback('Perfect!');
+                    HapticFeedback.light();
+                }
+            });
+        },
+        
+        updateScore() {
+            this.element.querySelector('.rhythm-score').textContent = `得分: ${this.score}`;
+        },
+        
+        showFeedback(text) {
+            const feedback = document.createElement('div');
+            feedback.className = 'rhythm-feedback';
+            feedback.textContent = text;
+            this.element.appendChild(feedback);
+            setTimeout(() => feedback.remove(), 500);
+        },
+        
+        endGame() {
+            clearInterval(this.gameInterval);
+            this.isActive = false;
+            
+            showSmartToast(`🎵 游戏结束！得分: ${this.score}`, 'success', 3000);
+            
+            setTimeout(() => {
+                if (this.element) {
+                    this.element.remove();
+                    this.element = null;
+                }
+            }, 1000);
+        }
+    };
+    
+    // ==================== v7.16: 随机奖励刮刮卡 ====================
+    const ScratchCard = {
+        prizes: [
+            { emoji: '⭐', text: '获得额外5分钟休息时间！' },
+            { emoji: '🎁', text: '解锁今日隐藏名言！' },
+            { emoji: '💎', text: '获得双倍学习积分！' },
+            { emoji: '🌟', text: '你今天特别棒！' },
+            { emoji: '🍀', text: '好运降临！' },
+            { emoji: '🎉', text: '庆祝坚持学习！' }
+        ],
+        
+        init() {
+            // 随机触发（每次10%概率）
+            if (Math.random() < 0.1) {
+                setTimeout(() => this.show(), 5000);
+            }
+        },
+        
+        show() {
+            const prize = this.prizes[Math.floor(Math.random() * this.prizes.length)];
+            
+            const card = document.createElement('div');
+            card.className = 'scratch-card';
+            card.innerHTML = `
+                <button class="scratch-card-close">×</button>
+                <div class="scratch-card-content">
+                    <div class="scratch-prize">${prize.emoji}</div>
+                    <div class="scratch-text">${prize.text}</div>
+                </div>
+                <div class="scratch-cover"></div>
+            `;
+            document.body.appendChild(card);
+            
+            setTimeout(() => card.classList.add('show'), 10);
+            
+            // 刮开效果
+            const cover = card.querySelector('.scratch-cover');
+            cover.addEventListener('click', () => {
+                cover.style.opacity = '0';
+                setTimeout(() => cover.remove(), 300);
+                HapticFeedback.success();
+                celebrateSuccess();
+            });
+            
+            // 关闭
+            card.querySelector('.scratch-card-close').addEventListener('click', () => {
+                card.classList.remove('show');
+                setTimeout(() => card.remove(), 400);
+            });
+        }
+    };
+    
+    // ==================== v7.17: 幸运转盘 ====================
+    const LuckyWheel = {
+        prizes: ['🎁 双倍积分', '⭐ 鼓励之星', '💪 加油卡', '🌟 好运徽章', '🎉 庆祝时刻', '💎 钻石奖励', '🍀 幸运草', '🏆 成就达成'],
+        currentRotation: 0,
+        
+        init() {
+            // 不自动显示，通过控制面板触发
+        },
+        
+        show() {
+            const wheel = document.createElement('div');
+            wheel.className = 'lucky-wheel';
+            wheel.innerHTML = `
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel"></div>
+                    <div class="wheel-center">转一转</div>
+                </div>
+                <button class="wheel-close">×</button>
+            `;
+            document.body.appendChild(wheel);
+            
+            setTimeout(() => wheel.classList.add('show'), 10);
+            
+            const center = wheel.querySelector('.wheel-center');
+            const wheelEl = wheel.querySelector('.wheel');
+            
+            center.addEventListener('click', () => {
+                if (center.dataset.spinning) return;
+                center.dataset.spinning = 'true';
+                center.textContent = '...';
+                
+                // 随机旋转
+                const extraRotation = 1440 + Math.random() * 360; // 至少4圈
+                this.currentRotation += extraRotation;
+                wheelEl.style.transform = `rotate(${this.currentRotation}deg)`;
+                
+                // 4秒后显示结果
+                setTimeout(() => {
+                    const prizeIndex = Math.floor(Math.random() * this.prizes.length);
+                    showSmartToast(`🎰 ${this.prizes[prizeIndex]}`, 'success', 3000);
+                    HapticFeedback.success();
+                    center.textContent = '再转';
+                    delete center.dataset.spinning;
+                }, 4000);
+            });
+            
+            wheel.querySelector('.wheel-close').addEventListener('click', () => {
+                wheel.classList.remove('show');
+                setTimeout(() => wheel.remove(), 400);
+            });
+            
+            this.element = wheel;
+        }
+    };
+    
+    // ==================== v7.18: 可爱表情反应 ====================
+    const EmojiReactions = {
+        emojis: ['😊', '🎉', '💪', '🌟', '❤️'],
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            const container = document.createElement('div');
+            container.className = 'emoji-reactions';
+            
+            this.emojis.forEach(emoji => {
+                const btn = document.createElement('button');
+                btn.className = 'emoji-btn';
+                btn.textContent = emoji;
+                container.appendChild(btn);
+            });
+            
+            document.body.appendChild(container);
+            this.element = container;
+        },
+        
+        setupEvents() {
+            this.element.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    this.explode(e.target.textContent, e.target);
+                });
+            });
+        },
+        
+        explode(emoji, target) {
+            const rect = target.getBoundingClientRect();
+            
+            for (let i = 0; i < 8; i++) {
+                const explosion = document.createElement('div');
+                explosion.className = 'emoji-explosion';
+                explosion.textContent = emoji;
+                explosion.style.left = `${rect.left + rect.width / 2}px`;
+                explosion.style.top = `${rect.top + rect.height / 2}px`;
+                explosion.style.animationDelay = `${i * 0.05}s`;
+                document.body.appendChild(explosion);
+                
+                setTimeout(() => explosion.remove(), 1000);
+            }
+            
+            HapticFeedback.light();
+        }
+    };
+    
+    // ==================== v7.19: 冥想引导界面 ====================
+    const MeditationMode = {
+        isActive: false,
+        timer: null,
+        seconds: 0,
+        texts: ['放松...', '呼吸...', '专注当下...', '感受平静...', '释放压力...'],
+        
+        init() {
+            // 通过控制面板触发
+        },
+        
+        start(duration = 180) { // 默认3分钟
+            this.seconds = duration;
+            this.createElement();
+            this.isActive = true;
+            
+            setTimeout(() => {
+                this.element.classList.add('active');
+                this.startTimer();
+                this.cycleText();
+            }, 10);
+        },
+        
+        createElement() {
+            const overlay = document.createElement('div');
+            overlay.className = 'meditation-overlay';
+            overlay.innerHTML = `
+                <div class="meditation-stars"></div>
+                <div class="meditation-orb"></div>
+                <div class="meditation-text">放松...</div>
+                <div class="meditation-timer">3:00</div>
+                <button class="meditation-close">×</button>
+            `;
+            document.body.appendChild(overlay);
+            this.element = overlay;
+            
+            // 创建星星
+            const stars = overlay.querySelector('.meditation-stars');
+            for (let i = 0; i < 50; i++) {
+                const star = document.createElement('div');
+                star.className = 'meditation-star';
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                star.style.animationDelay = `${Math.random() * 2}s`;
+                stars.appendChild(star);
+            }
+            
+            // 关闭按钮
+            overlay.querySelector('.meditation-close').addEventListener('click', () => this.stop());
+        },
+        
+        startTimer() {
+            this.timer = setInterval(() => {
+                this.seconds--;
+                this.updateTimer();
+                
+                if (this.seconds <= 0) {
+                    this.complete();
+                }
+            }, 1000);
+        },
+        
+        updateTimer() {
+            const mins = Math.floor(this.seconds / 60);
+            const secs = this.seconds % 60;
+            this.element.querySelector('.meditation-timer').textContent = 
+                `${mins}:${secs.toString().padStart(2, '0')}`;
+        },
+        
+        cycleText() {
+            let idx = 0;
+            this.textInterval = setInterval(() => {
+                idx = (idx + 1) % this.texts.length;
+                this.element.querySelector('.meditation-text').textContent = this.texts[idx];
+            }, 5000);
+        },
+        
+        stop() {
+            this.isActive = false;
+            clearInterval(this.timer);
+            clearInterval(this.textInterval);
+            
+            this.element.classList.remove('active');
+            setTimeout(() => this.element.remove(), 500);
+        },
+        
+        complete() {
+            this.stop();
+            showSmartToast('🧘 冥想完成！感觉更平静了~', 'success', 3000);
+            HapticFeedback.success();
+        }
+    };
+    
+    // ==================== v7.20: 解压控制面板 ====================
+    const StressReliefPanel = {
+        isVisible: false,
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            // 面板切换按钮
+            const toggle = document.createElement('button');
+            toggle.className = 'panel-toggle';
+            toggle.innerHTML = '🎮';
+            toggle.title = '解压工具';
+            document.body.appendChild(toggle);
+            
+            // 面板
+            const panel = document.createElement('div');
+            panel.className = 'stress-relief-panel';
+            panel.innerHTML = `
+                <div class="panel-item" data-action="sandbox">
+                    <span class="panel-item-icon">🏖️</span>
+                    <span class="panel-item-label">沙画</span>
+                </div>
+                <div class="panel-item" data-action="bubble">
+                    <span class="panel-item-icon">🫧</span>
+                    <span class="panel-item-label">泡泡纸</span>
+                </div>
+                <div class="panel-item" data-action="timer">
+                    <span class="panel-item-icon">🍅</span>
+                    <span class="panel-item-label">番茄钟</span>
+                </div>
+                <div class="panel-item" data-action="wheel">
+                    <span class="panel-item-icon">🎰</span>
+                    <span class="panel-item-label">转盘</span>
+                </div>
+                <div class="panel-item" data-action="meditation">
+                    <span class="panel-item-icon">🧘</span>
+                    <span class="panel-item-label">冥想</span>
+                </div>
+                <div class="panel-item" data-action="rhythm">
+                    <span class="panel-item-icon">🎵</span>
+                    <span class="panel-item-label">节奏</span>
+                </div>
+            `;
+            document.body.appendChild(panel);
+            
+            this.toggle = toggle;
+            this.panel = panel;
+        },
+        
+        setupEvents() {
+            this.toggle.addEventListener('click', () => {
+                this.isVisible = !this.isVisible;
+                this.panel.classList.toggle('visible', this.isVisible);
+                this.toggle.classList.toggle('active', this.isVisible);
+            });
+            
+            this.panel.querySelectorAll('.panel-item').forEach(item => {
+                item.addEventListener('click', (e) => {
+                    const action = e.currentTarget.dataset.action;
+                    this.handleAction(action);
+                    // 关闭面板
+                    this.isVisible = false;
+                    this.panel.classList.remove('visible');
+                    this.toggle.classList.remove('active');
+                });
+            });
+        },
+        
+        handleAction(action) {
+            switch(action) {
+                case 'sandbox':
+                    ZenSandbox.toggleSandbox();
+                    break;
+                case 'bubble':
+                    BubbleWrap.toggleWrap();
+                    break;
+                case 'timer':
+                    FocusTimer.show();
+                    break;
+                case 'wheel':
+                    LuckyWheel.show();
+                    break;
+                case 'meditation':
+                    MeditationMode.start();
+                    break;
+                case 'rhythm':
+                    RhythmGame.start();
+                    break;
+            }
+        }
+    };
+    
+    // 解压系统 v2 初始化
+    const StressReliefSystemV2 = {
+        init() {
+            ZenSandbox.init();
+            MoodPalette.init();
+            BubbleWrap.init();
+            FocusTimer.init();
+            ScratchCard.init();
+            EmojiReactions.init();
+            StressReliefPanel.init();
+            
+            console.log('✨ 解压互动系统 v7.11-v7.20 已加载');
+        }
+    };
+
     // 页面加载后初始化解压系统
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', () => StressReliefSystem.init());
@@ -2110,6 +3016,18 @@
         AchievementShowcase,
         StudyPet,
         StressReliefSystem,
+        // v7.11-v7.20 解压互动系统 V2
+        ZenSandbox,
+        MoodPalette,
+        BubbleWrap,
+        FocusTimer,
+        RhythmGame,
+        ScratchCard,
+        LuckyWheel,
+        EmojiReactions,
+        MeditationMode,
+        StressReliefPanel,
+        StressReliefSystemV2,
         settings: window.uxSettings
     };
     
