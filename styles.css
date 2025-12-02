@@ -13122,3 +13122,340 @@ body.liquid-glass-enabled .quick-popup {
     }
 }
 
+
+/* ==========================================
+   网络稳定性增强 - V1-V5
+   Network Stability Enhancement CSS
+   ========================================== */
+
+/* V1: 网络状态指示器基础样式 */
+.network-indicator {
+    position: fixed;
+    top: env(safe-area-inset-top, 0);
+    left: 0;
+    right: 0;
+    height: 3px;
+    z-index: 10001;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(-100%);
+}
+
+.network-indicator.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.network-indicator.online {
+    background: linear-gradient(90deg, 
+        rgba(76, 217, 100, 0) 0%,
+        rgba(76, 217, 100, 0.8) 50%,
+        rgba(76, 217, 100, 0) 100%);
+    animation: networkPulseOnline 2s ease-out forwards;
+}
+
+.network-indicator.offline {
+    background: linear-gradient(90deg, 
+        rgba(255, 59, 48, 0.8) 0%,
+        rgba(255, 59, 48, 1) 50%,
+        rgba(255, 59, 48, 0.8) 100%);
+    animation: networkPulseOffline 1.5s ease-in-out infinite;
+}
+
+.network-indicator.reconnecting {
+    background: linear-gradient(90deg, 
+        rgba(255, 149, 0, 0.6) 0%,
+        rgba(255, 149, 0, 1) 50%,
+        rgba(255, 149, 0, 0.6) 100%);
+    animation: networkReconnecting 1s ease-in-out infinite;
+}
+
+@keyframes networkPulseOnline {
+    0% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-100%); }
+}
+
+@keyframes networkPulseOffline {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+@keyframes networkReconnecting {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+/* V2: 网络状态提示气泡 */
+.network-toast {
+    position: fixed;
+    top: calc(env(safe-area-inset-top, 20px) + 60px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 10002;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+}
+
+.network-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.network-toast-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.network-toast.online .network-toast-icon::before {
+    content: '✓';
+    color: #4cd964;
+    font-weight: bold;
+}
+
+.network-toast.offline .network-toast-icon::before {
+    content: '✕';
+    color: #ff3b30;
+    font-weight: bold;
+}
+
+.network-toast.reconnecting .network-toast-icon::before {
+    content: '⟳';
+    color: #ff9500;
+    animation: toastIconSpin 1s linear infinite;
+}
+
+@keyframes toastIconSpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* V3: 离线模式覆盖层 */
+.offline-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.offline-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.offline-content {
+    text-align: center;
+    color: #fff;
+    padding: 40px;
+    max-width: 320px;
+}
+
+.offline-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    animation: offlineIconFloat 3s ease-in-out infinite;
+}
+
+@keyframes offlineIconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.offline-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.offline-message {
+    font-size: 14px;
+    opacity: 0.8;
+    line-height: 1.6;
+    margin-bottom: 24px;
+}
+
+.offline-retry-btn {
+    background: linear-gradient(135deg, #007aff, #5ac8fa);
+    color: #fff;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 25px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.4);
+}
+
+.offline-retry-btn:active {
+    transform: scale(0.95);
+}
+
+.offline-retry-btn.retrying {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* V4: 连接质量指示器 */
+.connection-quality {
+    position: fixed;
+    bottom: calc(env(safe-area-inset-bottom, 0) + 80px);
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.connection-quality.show {
+    opacity: 1;
+    transform: scale(1);
+    pointer-events: auto;
+}
+
+.connection-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 18px;
+}
+
+.connection-bar {
+    width: 4px;
+    background: #e0e0e0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.connection-bar:nth-child(1) { height: 6px; }
+.connection-bar:nth-child(2) { height: 10px; }
+.connection-bar:nth-child(3) { height: 14px; }
+.connection-bar:nth-child(4) { height: 18px; }
+
+.connection-quality.excellent .connection-bar { background: #4cd964; }
+.connection-quality.good .connection-bar:nth-child(1),
+.connection-quality.good .connection-bar:nth-child(2),
+.connection-quality.good .connection-bar:nth-child(3) { background: #4cd964; }
+.connection-quality.fair .connection-bar:nth-child(1),
+.connection-quality.fair .connection-bar:nth-child(2) { background: #ff9500; }
+.connection-quality.poor .connection-bar:nth-child(1) { background: #ff3b30; }
+
+/* V5: 请求进度条 */
+.request-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    z-index: 10003;
+    background: transparent;
+    overflow: hidden;
+}
+
+.request-progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, #007aff, #5ac8fa, #007aff);
+    background-size: 200% 100%;
+    width: 0%;
+    transition: width 0.3s ease;
+    animation: progressGradient 1.5s linear infinite;
+}
+
+.request-progress.active .request-progress-bar {
+    width: 100%;
+}
+
+@keyframes progressGradient {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+/* 离线模式下的页面样式调整 */
+body.offline-mode .card,
+body.offline-mode .module-card {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+body.offline-mode .card::after,
+body.offline-mode .module-card::after {
+    content: '离线';
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(255, 59, 48, 0.9);
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+}
+
+/* 深色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .network-toast {
+        background: rgba(50, 50, 50, 0.95);
+    }
+    
+    .connection-quality {
+        background: rgba(30, 30, 30, 0.95);
+    }
+    
+    .connection-bar {
+        background: #555;
+    }
+    
+    .offline-overlay {
+        background: rgba(0, 0, 0, 0.85);
+    }
+}
+
+/* 减少动画偏好适配 */
+@media (prefers-reduced-motion: reduce) {
+    .network-indicator,
+    .network-toast,
+    .offline-overlay,
+    .connection-quality,
+    .request-progress-bar {
+        animation: none;
+        transition: opacity 0.2s ease;
+    }
+}
+

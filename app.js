@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '3.7.0';
-    const APP_VERSION_CODE = 370;
+    const APP_VERSION = '3.8.0';
+    const APP_VERSION_CODE = 380;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
@@ -3302,4 +3302,358 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // 暴露全局
 window.HeaderInteraction = HeaderInteraction;
+
+
+// ==================== 网络连接稳定性增强系统 V5 ====================
+// V1: 网络状态监控
+// V2: 智能重试机制
+// V3: 连接健康检查
+// V4: 离线队列管理
+// V5: 自动恢复机制
+
+var NetworkStability = (function() {
+    var isOnline = navigator.onLine;
+    var connectionQuality = 'unknown'; // good, moderate, poor, offline
+    var lastSuccessfulRequest = Date.now();
+    var pendingRequests = [];
+    var healthCheckInterval = null;
+    var reconnectAttempts = 0;
+    var maxReconnectAttempts = 5;
+    var listeners = [];
+    
+    // V1: 网络状态监控
+    function init() {
+        console.log('[NetworkStability] 初始化网络稳定性系统...');
+        
+        // 监听在线/离线事件
+        window.addEventListener('online', handleOnline);
+        window.addEventListener('offline', handleOffline);
+        
+        // 监听网络信息变化（如果支持）
+        if ('connection' in navigator) {
+            navigator.connection.addEventListener('change', handleConnectionChange);
+            updateConnectionQuality();
+        }
+        
+        // 启动健康检查
+        startHealthCheck();
+        
+        // 初始检测
+        detectConnectionQuality();
+    }
+    
+    // 在线事件处理
+    function handleOnline() {
+        console.log('[NetworkStability] 网络已恢复');
+        isOnline = true;
+        reconnectAttempts = 0;
+        
+        // 显示恢复提示
+        showNetworkStatus('online');
+        
+        // 尝试处理队列中的请求
+        processQueue();
+        
+        // 通知监听器
+        notifyListeners('online');
+        
+        // 触感反馈
+        if (window.UX && window.UX.HapticFeedback) {
+            window.UX.HapticFeedback.success();
+        }
+    }
+    
+    // 离线事件处理
+    function handleOffline() {
+        console.log('[NetworkStability] 网络已断开');
+        isOnline = false;
+        connectionQuality = 'offline';
+        
+        // 显示离线提示
+        showNetworkStatus('offline');
+        
+        // 通知监听器
+        notifyListeners('offline');
+    }
+    
+    // 处理连接变化
+    function handleConnectionChange() {
+        updateConnectionQuality();
+        notifyListeners('change');
+    }
+    
+    // 更新连接质量
+    function updateConnectionQuality() {
+        if (!navigator.connection) return;
+        
+        var conn = navigator.connection;
+        var effectiveType = conn.effectiveType; // 4g, 3g, 2g, slow-2g
+        var downlink = conn.downlink; // Mbps
+        var rtt = conn.rtt; // ms
+        
+        // 根据网络指标判断质量
+        if (effectiveType === '4g' && downlink > 5 && rtt < 100) {
+            connectionQuality = 'good';
+        } else if (effectiveType === '4g' || effectiveType === '3g') {
+            connectionQuality = 'moderate';
+        } else {
+            connectionQuality = 'poor';
+        }
+        
+        console.log('[NetworkStability] 连接质量:', connectionQuality, {
+            type: effectiveType,
+            downlink: downlink + 'Mbps',
+            rtt: rtt + 'ms'
+        });
+    }
+    
+    // V2: 智能重试机制
+    function smartFetch(url, options, config) {
+        config = config || {};
+        var maxRetries = config.maxRetries || 3;
+        var baseDelay = config.baseDelay || 1000;
+        var timeout = config.timeout || 15000;
+        
+        return new Promise(function(resolve, reject) {
+            var attempt = 0;
+            
+            function tryFetch() {
+                attempt++;
+                
+                // 检查是否离线
+                if (!isOnline) {
+                    // 加入队列
+                    if (config.queueIfOffline) {
+                        addToQueue({ url: url, options: options, config: config, resolve: resolve, reject: reject });
+                        return;
+                    }
+                    reject(new Error('网络离线'));
+                    return;
+                }
+                
+                var controller = new AbortController();
+                var timeoutId = setTimeout(function() {
+                    controller.abort();
+                }, timeout);
+                
+                fetch(url, Object.assign({}, options, { signal: controller.signal }))
+                    .then(function(response) {
+                        clearTimeout(timeoutId);
+                        lastSuccessfulRequest = Date.now();
+                        reconnectAttempts = 0;
+                        resolve(response);
+                    })
+                    .catch(function(error) {
+                        clearTimeout(timeoutId);
+                        
+                        if (attempt < maxRetries) {
+                            // 指数退避
+                            var delay = baseDelay * Math.pow(2, attempt - 1);
+                            // 添加抖动
+                            delay += Math.random() * 1000;
+                            
+                            console.log('[NetworkStability] 重试 ' + attempt + '/' + maxRetries + ', 延迟 ' + Math.round(delay) + 'ms');
+                            
+                            setTimeout(tryFetch, delay);
+                        } else {
+                            reject(error);
+                        }
+                    });
+            }
+            
+            tryFetch();
+        });
+    }
+    
+    // V3: 连接健康检查
+    function startHealthCheck() {
+        // 每30秒检查一次
+        healthCheckInterval = setInterval(function() {
+            if (isOnline) {
+                detectConnectionQuality();
+            }
+        }, 30000);
+    }
+    
+    // 检测连接质量
+    function detectConnectionQuality() {
+        var startTime = Date.now();
+        var testUrl = 'https://www.gstatic.com/generate_204';
+        
+        // 备用检测URL
+        var fallbackUrls = [
+            'https://connectivitycheck.gstatic.com/generate_204',
+            'https://www.google.com/generate_204'
+        ];
+        
+        fetch(testUrl, { 
+            method: 'HEAD',
+            mode: 'no-cors',
+            cache: 'no-store'
+        })
+        .then(function() {
+            var latency = Date.now() - startTime;
+            
+            if (latency < 200) {
+                connectionQuality = 'good';
+            } else if (latency < 500) {
+                connectionQuality = 'moderate';
+            } else {
+                connectionQuality = 'poor';
+            }
+            
+            console.log('[NetworkStability] 连接延迟:', latency + 'ms, 质量:', connectionQuality);
+        })
+        .catch(function() {
+            // 静默失败，不改变状态
+        });
+    }
+    
+    // V4: 离线队列管理
+    function addToQueue(request) {
+        pendingRequests.push(request);
+        console.log('[NetworkStability] 请求已加入队列，当前队列长度:', pendingRequests.length);
+        
+        // 持久化队列（可选）
+        try {
+            var queueData = pendingRequests.map(function(r) {
+                return { url: r.url, options: r.options };
+            });
+            localStorage.setItem('networkQueue', JSON.stringify(queueData));
+        } catch (e) {}
+    }
+    
+    // 处理队列
+    function processQueue() {
+        if (pendingRequests.length === 0) return;
+        
+        console.log('[NetworkStability] 处理队列中的 ' + pendingRequests.length + ' 个请求');
+        
+        var queue = pendingRequests.slice();
+        pendingRequests = [];
+        
+        queue.forEach(function(request, index) {
+            setTimeout(function() {
+                smartFetch(request.url, request.options, request.config)
+                    .then(request.resolve)
+                    .catch(request.reject);
+            }, index * 500); // 错开请求
+        });
+        
+        // 清除持久化队列
+        localStorage.removeItem('networkQueue');
+    }
+    
+    // V5: 自动恢复机制
+    function attemptReconnect() {
+        if (reconnectAttempts >= maxReconnectAttempts) {
+            console.log('[NetworkStability] 达到最大重连次数');
+            return;
+        }
+        
+        reconnectAttempts++;
+        console.log('[NetworkStability] 尝试重连 ' + reconnectAttempts + '/' + maxReconnectAttempts);
+        
+        detectConnectionQuality();
+        
+        // 检测成功后处理队列
+        setTimeout(function() {
+            if (connectionQuality !== 'offline') {
+                processQueue();
+            } else if (reconnectAttempts < maxReconnectAttempts) {
+                // 递增延迟重试
+                setTimeout(attemptReconnect, 5000 * reconnectAttempts);
+            }
+        }, 2000);
+    }
+    
+    // 显示网络状态提示
+    function showNetworkStatus(status) {
+        var messages = {
+            online: { text: '网络已恢复 ✓', type: 'success' },
+            offline: { text: '网络已断开，数据将在恢复后同步', type: 'warning' },
+            poor: { text: '网络信号较弱', type: 'info' }
+        };
+        
+        var msg = messages[status];
+        if (msg && typeof showToast === 'function') {
+            showToast(msg.text);
+        }
+        
+        // 更新UI指示器
+        updateNetworkIndicator(status);
+    }
+    
+    // 更新网络指示器
+    function updateNetworkIndicator(status) {
+        var indicator = document.getElementById('networkIndicator');
+        
+        if (!indicator) {
+            // 创建指示器
+            indicator = document.createElement('div');
+            indicator.id = 'networkIndicator';
+            indicator.className = 'network-indicator';
+            document.body.appendChild(indicator);
+        }
+        
+        indicator.className = 'network-indicator network-' + status;
+        indicator.innerHTML = status === 'offline' ? 
+            '<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l10.08 12.56c.8 1 2.32 1 3.12 0L23.64 7z" opacity="0.3"/><path fill="currentColor" d="M3.41 1.64L2 3.05 5.02 6.07c-1.89.79-3.4 1.73-4.38 2.53L10.72 21.1c.8 1 2.32 1 3.12 0l2.5-3.12 3.61 3.61 1.41-1.41L3.41 1.64z"/></svg>' :
+            '';
+        
+        // 离线时显示，在线时隐藏
+        if (status === 'online') {
+            setTimeout(function() {
+                indicator.classList.add('network-hidden');
+            }, 2000);
+        } else {
+            indicator.classList.remove('network-hidden');
+        }
+    }
+    
+    // 添加监听器
+    function addListener(callback) {
+        listeners.push(callback);
+    }
+    
+    // 通知监听器
+    function notifyListeners(event) {
+        listeners.forEach(function(listener) {
+            try {
+                listener({
+                    type: event,
+                    isOnline: isOnline,
+                    quality: connectionQuality
+                });
+            } catch (e) {}
+        });
+    }
+    
+    // 获取当前状态
+    function getStatus() {
+        return {
+            isOnline: isOnline,
+            quality: connectionQuality,
+            lastSuccess: lastSuccessfulRequest,
+            queueLength: pendingRequests.length
+        };
+    }
+    
+    return {
+        init: init,
+        smartFetch: smartFetch,
+        getStatus: getStatus,
+        addListener: addListener,
+        processQueue: processQueue,
+        detectQuality: detectConnectionQuality
+    };
+})();
+
+// 初始化
+document.addEventListener('DOMContentLoaded', function() {
+    NetworkStability.init();
+});
+
+// 暴露全局
+window.NetworkStability = NetworkStability;
 
