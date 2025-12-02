@@ -26,9 +26,10 @@
     <link rel="preload" href="ux-enhancements.js?v=20251202150000" as="script">
 </head>
 <body>
-    <!-- 登录页面 -->
+    <!-- 登录页面 V2.0 - 试用优先 + 输入优化 -->
     <div id="loginPage" class="login-page">
-        <div class="login-container">
+        <div class="login-container login-container-v2">
+            <!-- Logo区域 -->
             <div class="login-logo">
                 <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
                     <defs>
@@ -45,14 +46,55 @@
             </div>
             <h1>学术英语精进</h1>
             <p class="login-subtitle">GRE · 托福 · 学术英语</p>
-            <div class="login-form">
-                <div class="input-wrapper">
-                    <svg class="input-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            
+            <!-- ★ 试用入口（优先显示） -->
+            <div class="trial-section" id="trialSection">
+                <div class="trial-badge">🎁 30天免费体验</div>
+                <p class="trial-desc">无需付款信息，随时可取消</p>
+                <button onclick="startFreeTrial()" class="trial-btn" id="trialBtn">
+                    <span>立即开始体验</span>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
-                    <input type="text" id="activationKey" placeholder="请输入激活密钥" class="login-input">
+                </button>
+                <div class="trial-features">
+                    <span class="trial-feature">✓ 全部词汇库</span>
+                    <span class="trial-feature">✓ 听力练习</span>
+                    <span class="trial-feature">✓ AI发音</span>
                 </div>
+            </div>
+            
+            <!-- 分割线 -->
+            <div class="login-divider">
+                <span class="divider-line"></span>
+                <span class="divider-text">或使用激活码</span>
+                <span class="divider-line"></span>
+            </div>
+            
+            <!-- 激活码输入（可折叠） -->
+            <div class="login-form" id="activationForm">
+                <!-- 改进的输入框 -->
+                <div class="activation-input-wrapper">
+                    <label class="input-label-v2">激活码</label>
+                    <div class="input-group-v2">
+                        <input type="text" 
+                               id="activationKey" 
+                               placeholder="XXXX-XXXX-XXXX-XXXX" 
+                               class="login-input login-input-v2"
+                               maxlength="19"
+                               autocomplete="off"
+                               autocapitalize="characters"
+                               spellcheck="false"
+                               inputmode="text">
+                        <button type="button" class="paste-btn-v2" onclick="pasteActivationCode()" title="粘贴">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M19 2h-4.18C14.4.84 13.3 0 12 0c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 18H5V4h2v3h10V4h2v16z"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="input-hint" id="inputHint">支持直接粘贴激活码</p>
+                </div>
+                
                 <!-- 协议同意勾选 -->
                 <div class="agreement-check">
                     <label class="agreement-label">
@@ -68,7 +110,19 @@
                     </svg>
                 </button>
             </div>
-            <p class="login-hint">联系管理员获取激活密钥</p>
+            
+            <!-- 底部链接 -->
+            <div class="login-footer-links">
+                <a href="#" onclick="showGetCodeHelp();return false;" class="footer-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+                    获取激活码
+                </a>
+                <span class="link-divider">•</span>
+                <a href="#" onclick="showDeviceMigration();return false;" class="footer-link">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M6.99 11L3 15l3.99 4v-3H14v-2H6.99v-3zM21 9l-3.99-4v3H10v2h7.01v3L21 9z"/></svg>
+                    设备迁移
+                </a>
+            </div>
         </div>
         
         <!-- 激活结果弹窗 -->

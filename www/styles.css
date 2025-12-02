@@ -955,6 +955,231 @@ svg {
     animation: slideUp 0.6s ease-out;
 }
 
+/* ==================== V2.0 试用优先登录页样式 ==================== */
+.login-container-v2 {
+    padding: 40px 32px;
+    max-width: 400px;
+}
+
+/* 试用区域 */
+.trial-section {
+    margin: 24px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(168, 85, 247, 0.08) 100%);
+    border-radius: 20px;
+    border: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+.trial-badge {
+    display: inline-block;
+    padding: 6px 16px;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+    color: white;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.trial-desc {
+    color: var(--gray-500);
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.trial-btn {
+    width: 100%;
+    padding: 14px 24px;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.trial-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.45);
+}
+
+.trial-btn:active {
+    transform: translateY(0);
+}
+
+.trial-features {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.trial-feature {
+    font-size: 12px;
+    color: var(--gray-600);
+    background: rgba(255, 255, 255, 0.8);
+    padding: 4px 10px;
+    border-radius: 8px;
+}
+
+/* 分割线 */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 20px;
+}
+
+.divider-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gray-200), transparent);
+}
+
+.divider-text {
+    color: var(--gray-400);
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+/* 改进的输入框 V2 */
+.activation-input-wrapper {
+    margin-bottom: 16px;
+    text-align: left;
+}
+
+.input-label-v2 {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: 8px;
+}
+
+.input-group-v2 {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-input-v2 {
+    width: 100%;
+    padding: 14px 50px 14px 16px;
+    border: 2px solid var(--gray-200);
+    border-radius: 12px;
+    font-size: 16px;
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: all 0.3s;
+    background: var(--gray-50);
+}
+
+.login-input-v2:focus {
+    outline: none;
+    border-color: var(--primary);
+    background: white;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.login-input-v2::placeholder {
+    text-transform: none;
+    letter-spacing: normal;
+    color: var(--gray-400);
+}
+
+.paste-btn-v2 {
+    position: absolute;
+    right: 8px;
+    padding: 8px;
+    background: var(--gray-100);
+    border: none;
+    border-radius: 8px;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paste-btn-v2:hover {
+    background: var(--primary);
+    color: white;
+}
+
+.paste-btn-v2:active {
+    transform: scale(0.95);
+}
+
+.input-hint {
+    font-size: 12px;
+    color: var(--gray-400);
+    margin-top: 6px;
+    transition: all 0.2s;
+}
+
+.input-hint.success {
+    color: #10b981;
+}
+
+.input-hint.error {
+    color: #ef4444;
+}
+
+/* 底部链接 */
+.login-footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-100);
+}
+
+.login-footer-links .footer-link {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--gray-500);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.login-footer-links .footer-link:hover {
+    color: var(--primary);
+}
+
+.login-footer-links .link-divider {
+    color: var(--gray-300);
+}
+
+/* 已使用过试用的样式 */
+.trial-section.used {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.trial-section.used .trial-badge {
+    background: var(--gray-400);
+}
+
+.trial-section.used .trial-btn {
+    background: var(--gray-400);
+    box-shadow: none;
+}
+
 @keyframes slideUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }

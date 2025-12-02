@@ -356,13 +356,152 @@ function checkTrialActivation() {
     return false;
 }
 
+// ==================== V2.0 新增功能 ====================
+
+/**
+ * 开始免费试用 - 直接从登录页调用
+ */
+function startFreeTrial() {
+    console.log('🎁 开始免费试用...');
+    
+    // 检查是否已使用过试用
+    const activationState = JSON.parse(localStorage.getItem('eb_activation_state') || 'null');
+    if (activationState && activationState.trialStartDate) {
+        // 检查试用是否还有效
+        const trialDays = activationState.trialDays || 30;
+        const trialEnd = activationState.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+        if (Date.now() < trialEnd) {
+            // 试用仍有效，直接进入
+            localStorage.setItem('isLoggedIn', 'true');
+            enterApp();
+            return;
+        } else {
+            showActivationResult(false, '试用已过期', '您的30天免费试用已结束，请使用激活码激活');
+            return;
+        }
+    }
+    
+    // 记录试用开始
+    const trialState = {
+        isActivated: true,
+        trialStartDate: Date.now(),
+        trialDays: 30,
+        vipLevel: 'basic'
+    };
+    localStorage.setItem('eb_activation_state', JSON.stringify(trialState));
+    localStorage.setItem('isLoggedIn', 'true');
+    
+    // 同步到其他认证系统
+    const trialUserData = {
+        user: 'trial_user_' + Date.now().toString(36),
+        role: 'trial',
+        expires: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+        permanent: false,
+        isTrial: true,
+        trialStartDate: Date.now(),
+        trialDays: 30
+    };
+    localStorage.setItem('authUser', JSON.stringify(trialUserData));
+    
+    console.log('✅ 试用已激活，30天有效期');
+    
+    // 显示成功提示并进入应用
+    showActivationResult(true);
+}
+
+/**
+ * 从剪贴板粘贴激活码
+ */
+async function pasteActivationCode() {
+    const input = document.getElementById('activationKey');
+    const hint = document.getElementById('inputHint');
+    
+    try {
+        const text = await navigator.clipboard.readText();
+        if (text) {
+            // 格式化激活码（移除空格，添加短横线）
+            let formatted = text.trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (formatted.length === 16) {
+                // 自动添加短横线 XXXX-XXXX-XXXX-XXXX
+                formatted = formatted.match(/.{1,4}/g).join('-');
+            }
+            input.value = formatted;
+            input.focus();
+            
+            if (hint) {
+                hint.textContent = '✓ 已粘贴';
+                hint.className = 'input-hint success';
+                setTimeout(() => {
+                    hint.textContent = '支持直接粘贴激活码';
+                    hint.className = 'input-hint';
+                }, 2000);
+            }
+        }
+    } catch (e) {
+        console.warn('粘贴失败:', e);
+        if (hint) {
+            hint.textContent = '粘贴失败，请手动输入';
+            hint.className = 'input-hint error';
+            setTimeout(() => {
+                hint.textContent = '支持直接粘贴激活码';
+                hint.className = 'input-hint';
+            }, 2000);
+        }
+    }
+}
+
+/**
+ * 显示获取激活码帮助
+ */
+function showGetCodeHelp() {
+    alert('获取激活码方式：\n\n1. 联系管理员购买\n2. 参与官方活动获取\n3. 邀请好友获得奖励\n\n激活码支持 3 台设备同时使用');
+}
+
+/**
+ * 显示设备迁移帮助
+ */
+function showDeviceMigration() {
+    alert('设备迁移说明：\n\n如果您需要在新设备上使用，可以：\n\n1. 在原设备上注销账号\n2. 在新设备上重新输入激活码\n\n每个激活码最多支持 3 台设备同时使用');
+}
+
+/**
+ * 页面加载时检查试用状态
+ */
+function checkTrialSectionVisibility() {
+    const trialSection = document.getElementById('trialSection');
+    if (!trialSection) return;
+    
+    const activationState = JSON.parse(localStorage.getItem('eb_activation_state') || 'null');
+    if (activationState && activationState.trialStartDate) {
+        const trialDays = activationState.trialDays || 30;
+        const trialEnd = activationState.trialStartDate + trialDays * 24 * 60 * 60 * 1000;
+        
+        if (Date.now() >= trialEnd) {
+            // 试用已过期
+            trialSection.classList.add('used');
+            const badge = trialSection.querySelector('.trial-badge');
+            if (badge) badge.textContent = '试用已结束';
+            const btn = trialSection.querySelector('.trial-btn span');
+            if (btn) btn.textContent = '请使用激活码';
+        }
+    }
+}
+
+// 页面加载时检查
+document.addEventListener('DOMContentLoaded', checkTrialSectionVisibility);
+
 // 导出全局函数
 window.login = login;
 window.logout = logout;
 window.fullLogout = fullLogout;
 window.checkAuth = checkAuth;
 window.isDeviceActivated = isDeviceActivated;
-window.checkTrialActivation = checkTrialActivation; // V8: 导出试用检查函数
+window.checkTrialActivation = checkTrialActivation;
 window.showActivationResult = showActivationResult;
 window.closeActivationResult = closeActivationResult;
 window.enterApp = enterApp;
+window.startFreeTrial = startFreeTrial;
+window.pasteActivationCode = pasteActivationCode;
+window.showGetCodeHelp = showGetCodeHelp;
+window.showDeviceMigration = showDeviceMigration;
+
