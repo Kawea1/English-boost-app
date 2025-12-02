@@ -1,0 +1,482 @@
+{
+  "aberrant": {
+    "examples": [
+      {
+        "en": "The scientist's aberrant findings challenged the established theory.",
+        "cn": "这位科学家异常的发现挑战了已确立的理论。",
+        "source": "GRE阅读"
+      },
+      {
+        "en": "His aberrant behavior was a symptom of his underlying mental health issues.",
+        "cn": "他异常的行为是其潜在心理健康问题的症状。",
+        "source": "学术文章"
+      },
+      {
+        "en": "The aberrant cell growth was the first sign of cancer.",
+        "cn": "异常的细胞生长是癌症的第一个信号。",
+        "source": "医学文献"
+      }
+    ],
+    "collocations": [
+      "aberrant behavior",
+      "aberrant results",
+      "aberrant growth"
+    ]
+  },
+  "abstruse": {
+    "examples": [
+      {
+        "en": "The professor's abstruse lecture left many students confused.",
+        "cn": "教授深奥的讲座让许多学生感到困惑。",
+        "source": "校园场景"
+      },
+      {
+        "en": "Quantum mechanics is often considered abstruse by beginners.",
+        "cn": "量子力学常被初学者认为是深奥难懂的。",
+        "source": "科普文章"
+      },
+      {
+        "en": "His abstruse philosophical arguments were beyond most readers.",
+        "cn": "他深奥的哲学论点超出了大多数读者的理解。",
+        "source": "书评"
+      }
+    ],
+    "collocations": [
+      "abstruse concept",
+      "abstruse theory",
+      "abstruse language"
+    ]
+  },
+  "acerbic": {
+    "examples": [
+      {
+        "en": "Her acerbic wit made her a feared critic in literary circles.",
+        "cn": "她尖刻的机智使她成为文学圈令人畏惧的评论家。",
+        "source": "人物传记"
+      },
+      {
+        "en": "The acerbic tone of his email offended several colleagues.",
+        "cn": "他邮件中尖刻的语气冒犯了几位同事。",
+        "source": "职场场景"
+      },
+      {
+        "en": "Despite his acerbic manner, he was actually quite kind-hearted.",
+        "cn": "尽管他态度尖刻，但实际上他很善良。",
+        "source": "小说"
+      }
+    ],
+    "collocations": [
+      "acerbic wit",
+      "acerbic tone",
+      "acerbic criticism"
+    ]
+  },
+  "adamant": {
+    "examples": [
+      {
+        "en": "She was adamant that the project must be completed on time.",
+        "cn": "她坚决认为项目必须按时完成。",
+        "source": "商务场景"
+      },
+      {
+        "en": "Despite public pressure, the government remained adamant in its decision.",
+        "cn": "尽管有公众压力，政府对其决定仍然坚定不移。",
+        "source": "新闻报道"
+      },
+      {
+        "en": "He was adamant about not compromising his principles.",
+        "cn": "他坚决不妥协自己的原则。",
+        "source": "人物专访"
+      }
+    ],
+    "collocations": [
+      "adamant about",
+      "remain adamant",
+      "adamant refusal"
+    ]
+  },
+  "aesthetic": {
+    "examples": [
+      {
+        "en": "The building's aesthetic appeal draws tourists from around the world.",
+        "cn": "这座建筑的美学魅力吸引了来自世界各地的游客。",
+        "source": "旅游杂志"
+      },
+      {
+        "en": "Her aesthetic sensibility influenced generations of designers.",
+        "cn": "她的审美感觉影响了几代设计师。",
+        "source": "设计评论"
+      },
+      {
+        "en": "The minimalist aesthetic has become increasingly popular in modern homes.",
+        "cn": "极简主义美学在现代家居中越来越流行。",
+        "source": "家居杂志"
+      }
+    ],
+    "collocations": [
+      "aesthetic appeal",
+      "aesthetic value",
+      "aesthetic sensibility"
+    ]
+  },
+  "alacrity": {
+    "examples": [
+      {
+        "en": "She accepted the job offer with alacrity.",
+        "cn": "她欣然接受了这份工作。",
+        "source": "TOEFL听力"
+      },
+      {
+        "en": "The volunteers responded to the emergency with remarkable alacrity.",
+        "cn": "志愿者们以惊人的敏捷响应了紧急情况。",
+        "source": "新闻报道"
+      },
+      {
+        "en": "His alacrity in helping others made him popular among colleagues.",
+        "cn": "他乐于助人的积极态度使他在同事中很受欢迎。",
+        "source": "职场评价"
+      }
+    ],
+    "collocations": [
+      "with alacrity",
+      "respond with alacrity",
+      "accept with alacrity"
+    ]
+  },
+  "ameliorate": {
+    "examples": [
+      {
+        "en": "The new policy aims to ameliorate living conditions in rural areas.",
+        "cn": "新政策旨在改善农村地区的生活条件。",
+        "source": "政策报告"
+      },
+      {
+        "en": "Medication can ameliorate the symptoms but not cure the disease.",
+        "cn": "药物可以缓解症状但不能治愈疾病。",
+        "source": "医学说明"
+      },
+      {
+        "en": "Community programs have helped ameliorate poverty in the region.",
+        "cn": "社区项目帮助改善了该地区的贫困状况。",
+        "source": "社会研究"
+      }
+    ],
+    "collocations": [
+      "ameliorate conditions",
+      "ameliorate symptoms",
+      "ameliorate the situation"
+    ]
+  },
+  "anomaly": {
+    "examples": [
+      {
+        "en": "The temperature anomaly this winter surprised meteorologists.",
+        "cn": "今年冬天的温度异常让气象学家感到惊讶。",
+        "source": "气象报告"
+      },
+      {
+        "en": "Her success was an anomaly in an industry dominated by men.",
+        "cn": "在一个由男性主导的行业中，她的成功是个例外。",
+        "source": "人物专访"
+      },
+      {
+        "en": "Scientists are investigating the genetic anomaly that causes the disease.",
+        "cn": "科学家正在研究导致该疾病的基因异常。",
+        "source": "科研论文"
+      }
+    ],
+    "collocations": [
+      "statistical anomaly",
+      "detect anomaly",
+      "genetic anomaly"
+    ]
+  },
+  "antipathy": {
+    "examples": [
+      {
+        "en": "Her antipathy toward her rival was evident in every interaction.",
+        "cn": "她对竞争对手的反感在每次互动中都很明显。",
+        "source": "小说"
+      },
+      {
+        "en": "The mutual antipathy between the two nations dates back centuries.",
+        "cn": "两国之间的相互反感可以追溯到几个世纪前。",
+        "source": "历史文献"
+      },
+      {
+        "en": "He developed an antipathy to public speaking after a humiliating experience.",
+        "cn": "在一次尴尬的经历后，他对公开演讲产生了反感。",
+        "source": "心理案例"
+      }
+    ],
+    "collocations": [
+      "antipathy toward",
+      "mutual antipathy",
+      "deep antipathy"
+    ]
+  },
+  "arduous": {
+    "examples": [
+      {
+        "en": "The arduous journey through the mountains took three weeks.",
+        "cn": "穿越山脉的艰苦旅程花了三周时间。",
+        "source": "探险日记"
+      },
+      {
+        "en": "Writing a dissertation is an arduous but rewarding process.",
+        "cn": "写论文是一个艰苦但有意义的过程。",
+        "source": "学术指导"
+      },
+      {
+        "en": "The arduous training prepared athletes for the Olympic competition.",
+        "cn": "艰苦的训练使运动员为奥运会比赛做好了准备。",
+        "source": "体育报道"
+      }
+    ],
+    "collocations": [
+      "arduous task",
+      "arduous journey",
+      "arduous process"
+    ]
+  },
+  "belligerent": {
+    "examples": [
+      {
+        "en": "The belligerent nations finally agreed to peace talks.",
+        "cn": "交战各国最终同意进行和平谈判。",
+        "source": "国际新闻"
+      },
+      {
+        "en": "His belligerent attitude made it difficult to have a productive discussion.",
+        "cn": "他好斗的态度使得进行有效的讨论变得困难。",
+        "source": "职场场景"
+      },
+      {
+        "en": "The belligerent protestors clashed with police outside the building.",
+        "cn": "好斗的抗议者在大楼外与警察发生冲突。",
+        "source": "社会新闻"
+      }
+    ],
+    "collocations": [
+      "belligerent attitude",
+      "belligerent behavior",
+      "belligerent nation"
+    ]
+  },
+  "benevolent": {
+    "examples": [
+      {
+        "en": "The benevolent donor wished to remain anonymous.",
+        "cn": "这位慈善捐赠者希望保持匿名。",
+        "source": "慈善报道"
+      },
+      {
+        "en": "Her benevolent nature made her beloved by all who knew her.",
+        "cn": "她仁慈的性格使所有认识她的人都喜爱她。",
+        "source": "追悼词"
+      },
+      {
+        "en": "The company's benevolent policies attracted talented employees.",
+        "cn": "公司的善意政策吸引了有才华的员工。",
+        "source": "商业评论"
+      }
+    ],
+    "collocations": [
+      "benevolent society",
+      "benevolent dictator",
+      "benevolent gesture"
+    ]
+  },
+  "cacophony": {
+    "examples": [
+      {
+        "en": "The cacophony of car horns filled the busy intersection.",
+        "cn": "汽车喇叭的刺耳声充满了繁忙的十字路口。",
+        "source": "城市描写"
+      },
+      {
+        "en": "A cacophony of voices erupted as everyone tried to speak at once.",
+        "cn": "当每个人都试图同时说话时，一片嘈杂的声音爆发了。",
+        "source": "会议场景"
+      },
+      {
+        "en": "The orchestra tuning up created a brief cacophony before the concert.",
+        "cn": "管弦乐队调音时在音乐会前制造了短暂的不和谐声。",
+        "source": "音乐评论"
+      }
+    ],
+    "collocations": [
+      "cacophony of sounds",
+      "cacophony of voices",
+      "create cacophony"
+    ]
+  },
+  "candid": {
+    "examples": [
+      {
+        "en": "She gave a candid assessment of the project's failures.",
+        "cn": "她坦率地评估了项目的失败之处。",
+        "source": "商务报告"
+      },
+      {
+        "en": "In a candid interview, the actor discussed his struggles with fame.",
+        "cn": "在一次坦率的采访中，这位演员讨论了他与名气的斗争。",
+        "source": "娱乐访谈"
+      },
+      {
+        "en": "The candid photographs captured genuine moments of joy.",
+        "cn": "这些抓拍照片捕捉到了真实的喜悦时刻。",
+        "source": "摄影评论"
+      }
+    ],
+    "collocations": [
+      "candid opinion",
+      "candid interview",
+      "candid photograph"
+    ]
+  },
+  "capricious": {
+    "examples": [
+      {
+        "en": "The capricious weather made outdoor planning nearly impossible.",
+        "cn": "反复无常的天气使户外计划几乎不可能。",
+        "source": "天气报道"
+      },
+      {
+        "en": "Her capricious moods kept everyone guessing.",
+        "cn": "她反复无常的情绪让每个人都猜不透。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The king's capricious decisions led to widespread unrest.",
+        "cn": "国王任性的决定导致了广泛的动荡。",
+        "source": "历史小说"
+      }
+    ],
+    "collocations": [
+      "capricious nature",
+      "capricious behavior",
+      "capricious decision"
+    ]
+  },
+  "catalyst": {
+    "examples": [
+      {
+        "en": "The assassination served as a catalyst for World War I.",
+        "cn": "这次暗杀成为第一次世界大战的导火索。",
+        "source": "历史教科书"
+      },
+      {
+        "en": "Her speech was the catalyst for a national movement.",
+        "cn": "她的演讲成为全国运动的催化剂。",
+        "source": "政治评论"
+      },
+      {
+        "en": "Technology has been a catalyst for rapid economic change.",
+        "cn": "技术一直是快速经济变革的催化剂。",
+        "source": "经济分析"
+      }
+    ],
+    "collocations": [
+      "act as catalyst",
+      "catalyst for change",
+      "serve as catalyst"
+    ]
+  },
+  "circumspect": {
+    "examples": [
+      {
+        "en": "Investors should be circumspect when entering volatile markets.",
+        "cn": "投资者在进入波动市场时应该谨慎。",
+        "source": "金融建议"
+      },
+      {
+        "en": "The diplomat's circumspect approach prevented an international incident.",
+        "cn": "外交官谨慎的做法避免了一场国际事件。",
+        "source": "外交报道"
+      },
+      {
+        "en": "She was circumspect about revealing her plans to competitors.",
+        "cn": "她对向竞争对手透露自己的计划非常谨慎。",
+        "source": "商业策略"
+      }
+    ],
+    "collocations": [
+      "circumspect approach",
+      "be circumspect about",
+      "remain circumspect"
+    ]
+  },
+  "cogent": {
+    "examples": [
+      {
+        "en": "The lawyer presented a cogent argument that convinced the jury.",
+        "cn": "律师提出了令人信服的论点，说服了陪审团。",
+        "source": "法庭报道"
+      },
+      {
+        "en": "His cogent analysis of the problem impressed his supervisors.",
+        "cn": "他对问题的有力分析给主管们留下了深刻印象。",
+        "source": "职场评价"
+      },
+      {
+        "en": "The report provided cogent reasons for the policy change.",
+        "cn": "报告为政策变更提供了令人信服的理由。",
+        "source": "政策分析"
+      }
+    ],
+    "collocations": [
+      "cogent argument",
+      "cogent analysis",
+      "cogent reason"
+    ]
+  },
+  "complacent": {
+    "examples": [
+      {
+        "en": "The company became complacent after years of success.",
+        "cn": "公司在多年成功后变得自满。",
+        "source": "商业案例"
+      },
+      {
+        "en": "We cannot afford to be complacent about climate change.",
+        "cn": "我们不能对气候变化掉以轻心。",
+        "source": "环保演讲"
+      },
+      {
+        "en": "His complacent attitude ultimately led to his downfall.",
+        "cn": "他自满的态度最终导致了他的失败。",
+        "source": "人物传记"
+      }
+    ],
+    "collocations": [
+      "become complacent",
+      "complacent attitude",
+      "grow complacent"
+    ]
+  },
+  "contentious": {
+    "examples": [
+      {
+        "en": "The contentious debate lasted well into the night.",
+        "cn": "这场有争议的辩论一直持续到深夜。",
+        "source": "议会报道"
+      },
+      {
+        "en": "Immigration remains a contentious issue in many countries.",
+        "cn": "移民在许多国家仍然是一个有争议的问题。",
+        "source": "政治分析"
+      },
+      {
+        "en": "The contentious meeting ended without a resolution.",
+        "cn": "这场有争议的会议没有达成决议就结束了。",
+        "source": "公司报告"
+      }
+    ],
+    "collocations": [
+      "contentious issue",
+      "contentious debate",
+      "contentious topic"
+    ]
+  }
+}

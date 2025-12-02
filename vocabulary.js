@@ -71,6 +71,9 @@ var wordRelationsData = null;
 // V12: 智能助记词数据
 var wordMnemonicsData = null;
 
+// V13: 词汇难度分级数据
+var wordDifficultyData = null;
+
 // V11: 加载同义词/反义词数据
 function loadWordRelations() {
     if (wordRelationsData) return Promise.resolve(wordRelationsData);
@@ -113,6 +116,27 @@ function loadWordMnemonics() {
         });
 }
 
+// V13: 加载词汇难度分级数据
+function loadWordDifficulty() {
+    if (wordDifficultyData) return Promise.resolve(wordDifficultyData);
+    
+    return fetch('word_difficulty.json')
+        .then(function(response) {
+            if (!response.ok) throw new Error('Failed to load word difficulty');
+            return response.json();
+        })
+        .then(function(data) {
+            wordDifficultyData = data;
+            console.log('[V13] 词汇难度分级数据加载成功，共', Object.keys(data).length, '个');
+            return data;
+        })
+        .catch(function(err) {
+            console.warn('[V13] 加载词汇难度分级数据失败:', err);
+            wordDifficultyData = {};
+            return {};
+        });
+}
+
 // V11: 获取单词的同义词/反义词
 function getWordRelations(word) {
     if (!wordRelationsData) return null;
@@ -125,6 +149,13 @@ function getWordMnemonic(word) {
     if (!wordMnemonicsData) return null;
     var lowerWord = word.toLowerCase();
     return wordMnemonicsData[lowerWord] || null;
+}
+
+// V13: 获取单词难度等级
+function getWordDifficulty(word) {
+    if (!wordDifficultyData) return null;
+    var lowerWord = word.toLowerCase();
+    return wordDifficultyData[lowerWord] || null;
 }
 
 try {
@@ -145,6 +176,8 @@ function initVocabulary() {
     loadWordRelations();
     // V12: 加载智能助记词数据
     loadWordMnemonics();
+    // V13: 加载词汇难度分级数据
+    loadWordDifficulty();
     // 显示设置面板
     showVocabSettings();
     // 初始化本次学习的单词
@@ -836,6 +869,9 @@ function showCurrentWord() {
     document.getElementById('wordMain').textContent = wordData.word;
     document.getElementById('wordPhonetic').textContent = wordData.phonetic || '';
     
+    // V13: 显示难度等级标签
+    showDifficultyBadge(wordData.word);
+    
     // 隐藏释义区域
     document.getElementById('wordMeaning').classList.add('hidden');
     document.getElementById('rateButtons').classList.add('hidden');
@@ -851,6 +887,55 @@ function showCurrentWord() {
     
     // 自动朗读新单词
     speakWord();
+}
+
+// V13: 显示难度等级标签
+function showDifficultyBadge(word) {
+    var difficulty = getWordDifficulty(word);
+    
+    // 查找或创建难度标签容器
+    var badge = document.getElementById('difficultyBadge');
+    var phoneticEl = document.getElementById('wordPhonetic');
+    
+    if (!badge && phoneticEl) {
+        badge = document.createElement('span');
+        badge.id = 'difficultyBadge';
+        badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:10px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
+        phoneticEl.parentNode.insertBefore(badge, phoneticEl.nextSibling);
+    }
+    
+    if (badge) {
+        if (difficulty) {
+            // 根据难度等级设置不同颜色
+            var levelStyles = {
+                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '🌱', label: '基础' },
+                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '📘', label: '中等' },
+                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '📙', label: '中高级' },
+                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '📕', label: '高级' },
+                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '🎓', label: '专业' }
+            };
+            var style = levelStyles[difficulty.level] || levelStyles[3];
+            badge.style.background = style.bg;
+            badge.style.color = style.color;
+            badge.style.border = '1px solid ' + style.border;
+            badge.style.display = 'inline-flex';
+            
+            // 构建标签内容
+            var sourceTags = '';
+            if (difficulty.sources && difficulty.sources.length > 0) {
+                difficulty.sources.slice(0, 2).forEach(function(src) {
+                    var srcStyle = src === 'GRE' ? 'background:#fee2e2;color:#991b1b;' : 
+                                   src === 'TOEFL' ? 'background:#e0e7ff;color:#3730a3;' : 
+                                   'background:#f3f4f6;color:#374151;';
+                    sourceTags += '<span style="' + srcStyle + 'padding:1px 5px;border-radius:4px;font-size:9px;margin-left:4px;">' + src + '</span>';
+                });
+            }
+            
+            badge.innerHTML = '<span>' + style.icon + '</span><span>' + style.label + '</span>' + sourceTags;
+        } else {
+            badge.style.display = 'none';
+        }
+    }
 }
 
 // 更新右上角学习次数徽章

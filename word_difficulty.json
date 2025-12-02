@@ -1,0 +1,8365 @@
+{
+  "abandon": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "ability": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "abroad": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "absence": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "absolute": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "absorb": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "abstract": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "academic": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "accept": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "access": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "accident": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "accompany": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "accomplish": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "account": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "accurate": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "achieve": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "acquire": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "action": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "active": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "actual": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "adapt": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "add": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "address": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "adequate": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "adjust": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "administration": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "admit": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "adult": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "advance": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "advantage": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "advice": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "affect": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "afford": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "afraid": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "agency": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "agent": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "agree": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "agriculture": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "ahead": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "aid": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "aim": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "aircraft": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "alarm": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "album": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "alert": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 85,
+      "GRE": 30
+    }
+  },
+  "aesthetic": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "affable": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "alacrity": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "alleviate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "amalgamate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "ambiguous": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "ameliorate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "amenable": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "analogous": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "anomaly": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "apathy": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "appease": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "arbitrary": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "archaic": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "arduous": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "articulate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "assiduous": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "astute": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "audacious": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "austere": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "banal": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "belligerent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "benevolent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "bolster": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "burgeon": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "cacophony": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "candid": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "capricious": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "castigate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "catalyst": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "caustic": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "chicanery": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "circumspect": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "clandestine": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "coalesce": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "cogent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "commensurate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "compelling": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "complacent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "comprehensive": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "concise": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "conducive": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "congenial": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "conscientious": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "consensus": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "contemplate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 70,
+      "GRE": 50
+    }
+  },
+  "aberrant": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "abstruse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "acerbic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "acumen": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "adamant": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "admonish": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "anachronistic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "antipathy": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "avarice": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "contentious": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "copious": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "credulous": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "cursory": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "cynical": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "deference": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "deleterious": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "delineate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "demur": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "denigrate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "denounce": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "derivative": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "desiccate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "desultory": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "didactic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "diffidence": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dilatory": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dilettante": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "disabuse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "discern": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "discordant": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "disparage": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "disparate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dispassionate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dissemble": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "disseminate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dissolution": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dissonance": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dogmatic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "dubious": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 35,
+      "GRE": 75
+    }
+  },
+  "ebullient": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "edify": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "effervescent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "efficacy": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "effrontery": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "egregious": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "elaborate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "elicit": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "eloquent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "emancipate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "embellish": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "empirical": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "emulate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "enervate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "engender": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "enmity": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "enumerate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "ephemeral": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "equitable": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "erratic": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "erudite": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "eschew": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "esoteric": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "espouse": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "euphemism": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exacerbate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exacting": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exculpate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exemplary": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exigent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "exonerate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "expedient": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "explicit": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "extant": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "extemporaneous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "extol": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "extraneous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "facilitate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fallacious": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fatuous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fecund": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fervid": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "florid": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "forestall": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fortuitous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "fractious": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "frugal": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "furtive": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "futile": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "garrulous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "germane": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "glib": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "grandiloquent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "gratuitous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "gregarious": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "guile": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "hackneyed": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "hamper": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "hapless": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "harangue": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 15,
+      "GRE": 85
+    }
+  },
+  "haughty": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "hedonistic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "heretic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "heterogeneous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "hierarchy": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "hubris": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "hyperbole": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "iconoclast": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "immutable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "impartial": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "impeccable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "impede": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "imperative": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "impetuous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "implicit": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "inadvertent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "incisive": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "incongruous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "incontrovertible": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "incredulous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "indigenous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "indolent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "ineffable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "ingenious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "ingenuous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "inherent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "innocuous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "insidious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "insipid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "intrepid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "intricate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "inundate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "invective": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "irascible": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "judicious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "laconic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "languish": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "laud": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "lethargic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "licentious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "loquacious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "lucid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "magnanimous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "malevolent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "malleable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "meticulous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "mitigate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "mollify": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "mundane": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "nefarious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "neophyte": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "obdurate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "obfuscate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "obsequious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "obsolete": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "obstinate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "onerous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "opaque": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "ostentatious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "palatable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "palliate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "panacea": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "paradigm": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "paragon": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "parochial": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "parsimony": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "partisan": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "paucity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "pedantic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "penchant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "pernicious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "perspicacious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "pervasive": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "petulant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "phenomenon": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "phlegmatic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "placate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "platitude": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "plethora": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "polemical": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "pragmatic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "precipitate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "precursor": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "predilection": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "prescient": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "presumptuous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "pretentious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "prevalent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "probity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "proclivity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "prodigal": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "profound": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "proliferate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "propensity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "propitiate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "prosaic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "proscribe": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "protean": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "provincial": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "prudent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "querulous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "quiescent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "quotidian": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "rancor": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "raucous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "recalcitrant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "recondite": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "redundant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "refute": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "relegate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "relentless": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "relinquish": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "reprehensible": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "repudiate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "rescind": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "reticent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "reverent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "rhetoric": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "rudimentary": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sacrosanct": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sagacious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "salubrious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sanguine": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sardonic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "scrupulous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "secular": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sedulous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sententious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "skeptical": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "soporific": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "specious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sporadic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "spurious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "stolid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "strident": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "stringent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "subservient": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "substantiate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "subtle": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "succinct": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "superficial": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "superfluous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "supine": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "supplant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "sycophant": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tacit": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "taciturn": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tangential": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tantamount": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tenacious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tenet": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tenuous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "tirade": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "torpid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "transient": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "trepidation": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "truculent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "ubiquitous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "unequivocal": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "untenable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vacillate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vapid": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vehement": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "venal": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "venerate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "veracious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "verbose": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vestige": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vex": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "viable": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vicarious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vindicate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "virtuoso": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vitriolic": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "vociferous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "volatile": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "zealous": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 5,
+      "GRE": 90
+    }
+  },
+  "allow": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "almost": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "alone": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "along": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "already": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "also": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "alternative": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "although": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "always": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "amazing": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "amount": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "analysis": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "ancient": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "anger": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "angle": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "animal": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "announce": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "annual": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "another": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "answer": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "anxiety": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "apart": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "apparent": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "appear": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "application": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "apply": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "approach": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "appropriate": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "approve": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "area": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "argue": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "arise": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "arrange": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "arrival": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "article": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "aspect": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "assess": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "assign": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "assist": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "associate": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "assume": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "atmosphere": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attach": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attack": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attempt": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attend": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attitude": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "attract": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "audience": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "author": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "authority": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "available": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "average": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "avoid": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "award": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "aware": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "background": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "balance": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "base": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "basic": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "basis": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "bear": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "beat": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "beauty": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "become": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "before": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "begin": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "behavior": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "behind": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "belief": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "believe": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "belong": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "below": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "benefit": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "beside": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "besides": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "beyond": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "birth": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "blame": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "block": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "blood": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "board": {
+    "level": 1,
+    "levelName": "基础",
+    "sources": [
+      "TOEFL",
+      "Common"
+    ],
+    "frequency": "high",
+    "testFreq": {
+      "TOEFL": 80,
+      "GRE": 25
+    }
+  },
+  "contemptuous": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "contend": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "contrite": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "convoluted": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "corrode": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "corroborate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "counterfeit": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "covert": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "cultivate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "cumulative": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "debase": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "debilitate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "decadent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "decipher": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "decorum": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "dedicate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "defame": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "defer": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "definitive": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deflect": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "delegate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deliberate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "delude": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deluge": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "demonstrate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "depict": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deplete": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deplore": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "depose": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "depreciate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deride": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "descend": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "designate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "detach": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "detect": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deter": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deteriorate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "determine": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "detract": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "devastate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "deviate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "devise": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "devoid": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "devote": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "diagnose": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "dictate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "differentiate": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "diffuse": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "diligent": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "diminish": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "diplomatic": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "disclaim": {
+    "level": 2,
+    "levelName": "中等",
+    "sources": [
+      "TOEFL",
+      "GRE"
+    ],
+    "frequency": "medium-high",
+    "testFreq": {
+      "TOEFL": 65,
+      "GRE": 55
+    }
+  },
+  "discriminate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "disdain": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dismantle": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dismiss": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dispel": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "disperse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dispute": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "disrupt": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dissipate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dissolve": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "distort": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "distribute": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "diverse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "divert": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "document": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "domain": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dominate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dormant": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "drought": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "durable": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "dynamic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "eccentric": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "eclipse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "eclectic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "economical": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "edifice": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "edition": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "efficient": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "elastic": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "eligible": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "eliminate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "elite": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "elucidate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "elude": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "elusive": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "emanate": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "embed": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "embody": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "embrace": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "emerge": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "emit": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "emphasize": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "enable": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "enact": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "encounter": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "encourage": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "endorse": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "endow": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "endure": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "enforce": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "engage": {
+    "level": 3,
+    "levelName": "中高级",
+    "sources": [
+      "GRE",
+      "TOEFL"
+    ],
+    "frequency": "medium",
+    "testFreq": {
+      "TOEFL": 40,
+      "GRE": 70
+    }
+  },
+  "enhance": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "enigma": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "enlighten": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "enormous": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "enterprise": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "entice": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "entrepreneur": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "envision": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "epidemic": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "equilibrium": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "equip": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "equivalent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "erode": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "erupt": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "escalate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "essence": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "essential": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "establish": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "esteem": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "eternal": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "ethical": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "evacuate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "evaluate": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "eventual": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "evident": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "evoke": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "evolve": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exalt": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exceed": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "excel": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exception": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "excessive": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exclude": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exclusive": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "execute": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exempt": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exhaust": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exhibit": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exile": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "expand": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "exploit": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "explore": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "expose": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "expound": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extend": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extensive": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extent": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "external": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extinct": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extract": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extraordinary": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extravagant": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "extreme": {
+    "level": 4,
+    "levelName": "高级",
+    "sources": [
+      "GRE"
+    ],
+    "frequency": "medium-low",
+    "testFreq": {
+      "TOEFL": 20,
+      "GRE": 80
+    }
+  },
+  "abash": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abdicate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "aberration": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abeyance": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abject": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abjure": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abnegate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abolish": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abominate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "aboriginal": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abridge": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abrogate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abscond": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "absolve": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abstinence": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "abstemious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accede": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accentuate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accessible": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accession": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "acclimatize": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accommodate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accomplice": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accost": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "accrue": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "acerbity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "acquit": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "acrimonious": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "actuate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "acute": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "addendum": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adhere": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adjacent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adjudicate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adroit": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adulation": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adulterate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "advent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adversary": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "adverse": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "advocacy": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affectation": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affiliate": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affinity": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affirm": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "afflict": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affluent": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "affront": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  },
+  "aftermath": {
+    "level": 5,
+    "levelName": "专业",
+    "sources": [
+      "GRE",
+      "Academic"
+    ],
+    "frequency": "low",
+    "testFreq": {
+      "TOEFL": 8,
+      "GRE": 88
+    }
+  }
+}

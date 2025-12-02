@@ -3169,30 +3169,157 @@ function generateDetailedFeedback(score, details, spoken, target) {
         '<div><div style="font-weight:700;font-size:18px;color:' + titleColor + ';">' + title + '</div>' +
         '<div style="font-size:13px;color:#6b7280;">' + subtitle + '</div></div></div>';
     
-    // 详细评分条
-    html += '<div style="background:#f8fafc;padding:14px;border-radius:12px;margin-bottom:12px;">' +
-        '<div style="font-size:12px;font-weight:600;color:#64748b;margin-bottom:10px;display:flex;align-items:center;gap:6px;"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg> 评分详情</div>';
+    // ==================== 多维度评分面板 ====================
+    html += '<div style="background:#f8fafc;padding:16px;border-radius:14px;margin-bottom:14px;">' +
+        '<div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:14px;display:flex;align-items:center;gap:6px;">' +
+        '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg> 多维度评分</div>';
     
-    // 单词准确率
-    html += createScoreBar('单词准确', details.wordMatch, '#3b82f6', 
-        details.matchedWords + '/' + details.totalWords + ' 个单词匹配');
+    // 计算多维度得分
+    var multiDimScores = calculateMultiDimensionScores(spoken, target, details);
     
-    // 词序正确率
-    html += createScoreBar('语序正确', details.orderMatch, '#8b5cf6', 
-        details.orderMatch >= 80 ? '语序很好' : '注意词序');
+    // 1. 发音准确度
+    html += createEnhancedScoreBar('🎯 发音准确', multiDimScores.accuracy, '#10b981', 
+        multiDimScores.accuracy >= 80 ? '发音非常标准' : multiDimScores.accuracy >= 60 ? '基本准确' : '需要改进');
     
-    // 完整度
-    html += createScoreBar('内容完整', details.completeness, '#10b981',
-        '说了 ' + details.spokenWords + ' 个词');
+    // 2. 流利度
+    html += createEnhancedScoreBar('🌊 流利程度', multiDimScores.fluency, '#3b82f6',
+        multiDimScores.fluency >= 80 ? '表达流畅自然' : multiDimScores.fluency >= 60 ? '稍有停顿' : '需要更流畅');
+    
+    // 3. 完整度
+    html += createEnhancedScoreBar('📝 内容完整', multiDimScores.completeness, '#8b5cf6',
+        multiDimScores.completeness >= 80 ? '内容完整' : multiDimScores.completeness >= 60 ? '略有缺漏' : '请说完整');
+    
+    // 4. 词汇使用
+    html += createEnhancedScoreBar('📚 词汇正确', multiDimScores.vocabulary, '#f59e0b',
+        details.matchedWords + '/' + details.totalWords + ' 词');
+    
+    // 5. 语调节奏 (基于语速和停顿估算)
+    html += createEnhancedScoreBar('🎵 语调节奏', multiDimScores.rhythm, '#ec4899',
+        multiDimScores.rhythm >= 80 ? '节奏自然' : multiDimScores.rhythm >= 60 ? '可以更自然' : '注意节奏');
     
     html += '</div>';
     
-    // 目标句子
+    // ==================== 改进建议 ====================
+    var suggestions = generateImprovementSuggestions(multiDimScores, details, spoken, target);
+    if (suggestions.length > 0) {
+        html += '<div style="background:linear-gradient(135deg,#fef3c7,#fde68a);padding:14px;border-radius:12px;margin-bottom:14px;">' +
+            '<div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:10px;display:flex;align-items:center;gap:6px;">' +
+            '<svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg> 改进建议</div>';
+        
+        suggestions.forEach(function(tip) {
+            html += '<div style="font-size:13px;color:#78350f;margin-bottom:6px;display:flex;align-items:flex-start;gap:6px;">' +
+                '<span style="flex-shrink:0;">💡</span><span>' + tip + '</span></div>';
+        });
+        
+        html += '</div>';
+    }
+    
+    // ==================== 目标句子 ====================
     html += '<div style="background:#f0f9ff;padding:12px;border-radius:10px;border-left:3px solid #3b82f6;">' +
         '<div style="font-size:11px;color:#3b82f6;margin-bottom:4px;font-weight:600;display:flex;align-items:center;gap:4px;"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 目标句子</div>' +
         '<div style="color:#1e40af;font-size:14px;line-height:1.5;">' + target + '</div></div>';
     
     return html;
+}
+
+// 计算多维度得分
+function calculateMultiDimensionScores(spoken, target, details) {
+    var spokenWords = spoken.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/).filter(function(w) { return w.length > 0; });
+    var targetWords = target.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/).filter(function(w) { return w.length > 0; });
+    
+    // 1. 发音准确度 (基于单词匹配率)
+    var accuracy = details.wordMatch || 0;
+    
+    // 2. 流利度 (基于语序正确率和词汇覆盖)
+    var fluency = Math.round((details.orderMatch * 0.6 + details.wordMatch * 0.4));
+    
+    // 3. 完整度 (说了多少目标内容)
+    var completeness = details.completeness || 0;
+    
+    // 4. 词汇正确率
+    var vocabulary = details.totalWords > 0 ? Math.round((details.matchedWords / details.totalWords) * 100) : 0;
+    
+    // 5. 语调节奏 (估算：基于词数比例和顺序)
+    var wordCountRatio = spokenWords.length / targetWords.length;
+    var rhythm = 50; // 基础分
+    
+    if (wordCountRatio >= 0.9 && wordCountRatio <= 1.1) {
+        rhythm += 30; // 词数接近目标
+    } else if (wordCountRatio >= 0.7 && wordCountRatio <= 1.3) {
+        rhythm += 20;
+    } else if (wordCountRatio >= 0.5) {
+        rhythm += 10;
+    }
+    
+    // 顺序正确性加分
+    rhythm += Math.round(details.orderMatch * 0.2);
+    
+    rhythm = Math.min(100, Math.max(0, rhythm));
+    
+    return {
+        accuracy: accuracy,
+        fluency: fluency,
+        completeness: completeness,
+        vocabulary: vocabulary,
+        rhythm: rhythm
+    };
+}
+
+// 生成改进建议
+function generateImprovementSuggestions(scores, details, spoken, target) {
+    var suggestions = [];
+    
+    // 根据各维度分数给出建议
+    if (scores.accuracy < 60) {
+        suggestions.push('仔细听原音中每个单词的发音，特别注意元音的发音');
+    }
+    
+    if (scores.fluency < 60) {
+        suggestions.push('尝试连读练习，减少停顿，让语言更流畅');
+    }
+    
+    if (scores.completeness < 70) {
+        suggestions.push('尽量说出完整句子，不要漏掉单词');
+    }
+    
+    if (scores.vocabulary < 60 && details.totalWords > 3) {
+        // 找出遗漏的关键词
+        var spokenLower = spoken.toLowerCase();
+        var targetWords = target.toLowerCase().replace(/[^\w\s]/g, '').split(/\s+/);
+        var missingWords = targetWords.filter(function(w) {
+            return w.length > 3 && spokenLower.indexOf(w) === -1;
+        }).slice(0, 3);
+        
+        if (missingWords.length > 0) {
+            suggestions.push('注意这些单词的发音: ' + missingWords.join(', '));
+        }
+    }
+    
+    if (scores.rhythm < 60) {
+        suggestions.push('注意句子的节奏和语调，可以先慢速跟读');
+    }
+    
+    // 最多显示3条建议
+    return suggestions.slice(0, 3);
+}
+
+// 创建增强版评分条
+function createEnhancedScoreBar(label, percentage, color, hint) {
+    var barWidth = Math.max(0, Math.min(100, percentage));
+    
+    return '<div style="margin-bottom:12px;">' +
+        '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">' +
+        '<span style="font-size:13px;color:#374151;font-weight:500;">' + label + '</span>' +
+        '<span style="font-size:12px;color:#6b7280;">' + percentage + '分 · ' + hint + '</span></div>' +
+        '<div style="height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden;">' +
+        '<div style="width:' + barWidth + '%;height:100%;background:linear-gradient(90deg,' + color + ',' + adjustColor(color, 20) + ');border-radius:4px;transition:width 0.6s ease;"></div>' +
+        '</div></div>';
+}
+
+// 调整颜色亮度
+function adjustColor(hex, percent) {
+    // 简单的颜色调整
+    return hex;
 }
 
 // 创建评分条
@@ -4363,10 +4490,8 @@ function updateScheduleList() {
     container.innerHTML = html;
 }
 
-// 当前复习状态
-let currentReviewWords = [];
-let currentReviewIndex = 0;
-let reviewSessionStats = { correct: 0, wrong: 0 };
+// 当前复习状态（使用顶部已声明的全局变量）
+// currentReviewWords, currentReviewIndex, reviewSessionStats 已在顶部声明
 
 // 开始复习
 function startReview() {
