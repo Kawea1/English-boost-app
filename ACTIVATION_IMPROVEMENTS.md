@@ -298,8 +298,9 @@ ActivationSystem.config = {
     trustScoreThreshold: 30,          // 低于此分需额外验证
     maxSpeedKmh: 500,                 // 异常移动阈值
     
+    
     // v3.0 VIP/试用
-    trialDays: 7,
+    trialDays: 30,                    // v5.0改为30天
     maxFailedAttempts: 5,
     lockoutDuration: 900000,          // 15分钟
     
@@ -318,17 +319,158 @@ ActivationSystem.config = {
 
 ---
 
+## 版本 5.0 - 10.0 试用UI全面升级
+
+根据用户需求「把激活页面添加一个试用，30天试用，整个页面包括点击试用后的页面UI都要好好设置一下」，我们进行了10个版本的UI迭代改进。
+
+### v5.0 - 试用优先设计
+- **设计理念**: 将免费试用作为首选入口，而非激活码
+- **主要变化**:
+  - 试用期从7天延长至**30天**
+  - 激活对话框布局重构，试用区域放大并置于显眼位置
+  - 激活码输入默认折叠，点击展开
+
+### v5.1 - 毛玻璃与流体渐变
+- **视觉效果**:
+  - 背景采用毛玻璃效果 `backdrop-filter: blur(20px)`
+  - 流体渐变动画背景 `gradient-animation`
+  - 星空粒子效果
+
+```css
+.activation-dialog {
+    background: linear-gradient(180deg, 
+        rgba(255, 255, 255, 0.95) 0%, 
+        rgba(248, 250, 252, 0.92) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+}
+```
+
+### v5.2 - 3D卡片效果
+- **立体视觉**:
+  - 全息光效边框 `holographic-border`
+  - CSS 3D变换创造深度感
+  - 悬浮时的动态阴影
+
+### v5.3 - 试用倒计时圆环
+- **交互设计**:
+  - SVG圆环动画展示30天试用期
+  - 渐变色彩的倒计时进度条
+  - 数字实时更新动画
+
+```html
+<svg viewBox="0 0 100 100">
+    <circle class="countdown-progress" cx="50" cy="50" r="45" 
+            stroke-dasharray="283" stroke-dashoffset="0"/>
+</svg>
+```
+
+### v5.4 - 展开式试用区域
+- **布局优化**:
+  - 可折叠的试用英雄区域
+  - 平滑的CSS过渡动画
+  - 清晰的视觉层级
+
+### v5.5 - 试用特权列表
+- **功能展示**:
+  - 图标+文字的特权卡片
+  - 4大核心功能：离线学习、AI辅助、无限功能、云端同步
+  - 悬浮时的微动效
+
+```html
+<div class="feature-card">
+    <div class="feature-icon">📱</div>
+    <div class="feature-name">离线学习</div>
+</div>
+```
+
+### v5.6 - 试用成功动画
+- **成功页面**:
+  - 烟花爆炸粒子效果
+  - 礼盒开启动画
+  - 彩色纸屑飘落
+
+```javascript
+// 烟花效果
+const createFirework = () => {
+    for (let i = 0; i < 20; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'fw-particle';
+        // 360度放射
+        const angle = (i / 20) * Math.PI * 2;
+        particle.style.setProperty('--x', `${Math.cos(angle) * velocity}px`);
+        particle.style.setProperty('--y', `${Math.sin(angle) * velocity}px`);
+    }
+};
+```
+
+### v5.7 - 30天日历可视化
+- **直观展示**:
+  - 成功文字分行渐入动画
+  - 功能解锁逐项展示
+  - 每项带有✅勾选动画
+
+### v5.8 - 试用进度追踪
+- **进度系统**:
+  - 倒计时圆环实时显示剩余天数
+  - 自动进入进度条
+  - 4秒后自动关闭弹窗进入应用
+
+### v5.9 - 深色/浅色主题适配
+- **主题支持**:
+  - 完整的 `prefers-color-scheme: dark` 媒体查询
+  - 所有元素的深色模式变体
+  - 平滑的主题切换
+
+```css
+@media (prefers-color-scheme: dark) {
+    .activation-dialog {
+        background: linear-gradient(180deg, 
+            rgba(30, 41, 59, 0.98) 0%, 
+            rgba(15, 23, 42, 0.95) 100%);
+    }
+}
+```
+
+### v5.10 - 无障碍优化
+- **可访问性**:
+  - 合适的颜色对比度
+  - 触觉反馈支持
+  - 完整的焦点状态
+
+---
+
+## UI改进总览
+
+| 版本 | 焦点 | 主要特性 |
+|------|------|----------|
+| v5.0 | 布局 | 试用优先，激活码折叠 |
+| v5.1 | 视觉 | 毛玻璃、渐变、粒子 |
+| v5.2 | 深度 | 3D卡片、全息边框 |
+| v5.3 | 动画 | 倒计时圆环SVG |
+| v5.4 | 交互 | 展开/折叠动画 |
+| v5.5 | 内容 | 特权卡片展示 |
+| v5.6 | 庆祝 | 烟花、礼盒、纸屑 |
+| v5.7 | 反馈 | 逐项解锁动画 |
+| v5.8 | 进度 | 自动进入倒计时 |
+| v5.9 | 主题 | 深色模式完整支持 |
+| v5.10 | 无障碍 | A11y优化 |
+
+---
+
 ## 总结
 
-通过3个版本的迭代，激活系统从简单的设备数限制，发展为多层次的智能防护体系：
+通过系列版本的迭代，激活系统从简单的设备数限制，发展为多层次的智能防护体系：
 
 | 版本 | 核心能力 | 防分享效果 |
 |------|----------|------------|
 | v2.0 | 信任评分+地理检测 | 检测异常使用行为 |
 | v3.0 | VIP体系+试用 | 引导正规付费 |
 | v4.0 | 家庭共享+迁移 | 提供合规多设备方案 |
+| v5.0-10 | UI全面升级 | 30天试用，优质体验 |
 
 **设计理念**: 
 - 让正常用户体验顺畅
 - 让分享行为有成本
 - 让合规使用更方便
+- **让试用体验成为转化利器**
+

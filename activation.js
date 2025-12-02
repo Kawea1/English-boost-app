@@ -4247,7 +4247,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ActivationSystem.init().then(isActivated => {
         if (!isActivated) {
             // 未激活，显示激活对话框
-            // ActivationUI.showActivationDialog();
+            ActivationUI.showActivationDialog();
         }
     });
 });

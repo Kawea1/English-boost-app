@@ -406,19 +406,58 @@
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         显示释义
                     </button>
-                    <div class="rate-buttons hidden" id="rateButtons">
-                        <button class="rate-btn hard" onclick="rateWord('hard')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                            困难
-                        </button>
-                        <button class="rate-btn medium" onclick="rateWord('medium')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="8" y1="15" x2="16" y2="15"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                            一般
-                        </button>
-                        <button class="rate-btn easy" onclick="rateWord('easy')">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
-                            简单
-                        </button>
+                    <!-- V1: Anki风格4按钮设计 - 重学/困难/良好/简单 -->
+                    <div class="rate-buttons-v2 hidden" id="rateButtons">
+                        <div class="rate-btn-group">
+                            <button class="rate-btn-v2 again" onclick="rateWord('again')">
+                                <div class="rate-icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                                        <path d="M3 3v5h5"/>
+                                    </svg>
+                                </div>
+                                <span class="rate-label">重学</span>
+                                <span class="rate-interval" id="againInterval">&lt;1分钟</span>
+                            </button>
+                            <button class="rate-btn-v2 hard" onclick="rateWord('hard')">
+                                <div class="rate-icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                    </svg>
+                                </div>
+                                <span class="rate-label">困难</span>
+                                <span class="rate-interval" id="hardInterval">1天</span>
+                            </button>
+                            <button class="rate-btn-v2 good" onclick="rateWord('good')">
+                                <div class="rate-icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <circle cx="12" cy="12" r="10"/>
+                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
+                                    </svg>
+                                </div>
+                                <span class="rate-label">良好</span>
+                                <span class="rate-interval" id="goodInterval">3天</span>
+                            </button>
+                            <button class="rate-btn-v2 easy" onclick="rateWord('easy')">
+                                <div class="rate-icon">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                        <polyline points="22 4 12 14.01 9 11.01"/>
+                                    </svg>
+                                </div>
+                                <span class="rate-label">简单</span>
+                                <span class="rate-interval" id="easyInterval">7天</span>
+                            </button>
+                        </div>
+                        <div class="rate-hint" id="rateHint">
+                            <span class="hint-icon">💡</span>
+                            <span class="hint-text">选择您对这个单词的掌握程度</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1920,6 +1959,7 @@
         </div>
     </div>
 
+    <script src="activation.js?v=20251202"></script>
     <script src="auth.js?v=20251201180000"></script>
     <script src="subscription.js?v=20251201180000"></script>
     <script src="vocabulary.js?v=20251201180000"></script>

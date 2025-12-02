@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '3.6.0';
-    const APP_VERSION_CODE = 360;
+    const APP_VERSION = '3.7.0';
+    const APP_VERSION_CODE = 370;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
@@ -2632,3 +2632,674 @@ window.highlightCurrentAvatar = highlightCurrentAvatar;
 window.initAvatar = initAvatar;
 window.initSettingsBottomBar = initSettingsBottomBar;
 window.cleanupSettingsBottomBar = cleanupSettingsBottomBar;
+// ==================== 首页导航栏互动系统 V10 ====================
+// V1: 头像点击动画和表情反馈
+// V2: 连续天数徽章庆祝动画
+// V3: 时间显示互动（双击切换格式）
+// V4: 问候语点击切换
+// V5: 天体点击互动（太阳/月亮表情）
+// V6: 长按显示详细统计
+// V7: 摇一摇彩蛋
+// V8: 手势滑动效果
+// V9: 语音播报问候
+// V10: 智能助手气泡
+
+var HeaderInteraction = (function() {
+    var isInitialized = false;
+    var touchStartY = 0;
+    var lastTapTime = 0;
+    var tapCount = 0;
+    
+    // 初始化所有互动
+    function init() {
+        if (isInitialized) return;
+        isInitialized = true;
+        
+        console.log('[HeaderInteraction] 初始化首页互动系统...');
+        
+        // 延迟初始化，确保DOM已加载
+        setTimeout(function() {
+            initAvatarInteraction();      // V1
+            initStreakInteraction();       // V2
+            initTimeInteraction();         // V3
+            initGreetingInteraction();     // V4
+            initCelestialInteraction();    // V5
+            initLongPressStats();          // V6
+            initShakeEasterEgg();          // V7
+            initSwipeEffects();            // V8
+            initAssistantBubble();         // V10
+        }, 500);
+    }
+    
+    // V1: 头像互动
+    function initAvatarInteraction() {
+        var avatarRing = document.getElementById('sceneIconRing');
+        if (!avatarRing) return;
+        
+        // 添加点击波纹效果
+        avatarRing.addEventListener('click', function(e) {
+            createRipple(e, avatarRing);
+            
+            // 随机表情反馈
+            var reactions = ['😊', '🎉', '✨', '💪', '🌟', '👋', '🥳', '😎'];
+            var reaction = reactions[Math.floor(Math.random() * reactions.length)];
+            showFloatingEmoji(avatarRing, reaction);
+            
+            // 触感反馈
+            if (window.UX && window.UX.HapticFeedback) {
+                window.UX.HapticFeedback.light();
+            }
+        });
+        
+        // 双击切换头像模式
+        avatarRing.addEventListener('dblclick', function() {
+            showAvatarModeSelector();
+        });
+    }
+    
+    // V2: 连续天数徽章互动
+    function initStreakInteraction() {
+        var streakBadge = document.getElementById('streakBadge');
+        if (!streakBadge) return;
+        
+        streakBadge.addEventListener('click', function(e) {
+            var streak = parseInt(document.getElementById('streakCount')?.textContent || '0');
+            
+            // 根据连续天数显示不同的庆祝效果
+            if (streak >= 7) {
+                celebrateStreak(streak);
+            } else {
+                showStreakEncouragement(streak);
+            }
+            
+            // 触感反馈
+            if (window.UX && window.UX.HapticFeedback) {
+                window.UX.HapticFeedback.medium();
+            }
+        });
+        
+        // 长按显示连续学习详情
+        var pressTimer = null;
+        streakBadge.addEventListener('touchstart', function() {
+            pressTimer = setTimeout(function() {
+                showStreakDetails();
+            }, 600);
+        });
+        
+        streakBadge.addEventListener('touchend', function() {
+            clearTimeout(pressTimer);
+        });
+    }
+    
+    // V3: 时间显示互动
+    function initTimeInteraction() {
+        var timeDisplay = document.getElementById('timeDisplay');
+        if (!timeDisplay) return;
+        
+        var is24HourFormat = localStorage.getItem('time24Hour') !== 'false';
+        var showSeconds = localStorage.getItem('timeShowSeconds') === 'true';
+        
+        // 双击切换12/24小时制
+        timeDisplay.addEventListener('dblclick', function() {
+            is24HourFormat = !is24HourFormat;
+            localStorage.setItem('time24Hour', is24HourFormat.toString());
+            updateTimeFormat();
+            showToast(is24HourFormat ? '已切换到24小时制' : '已切换到12小时制');
+            
+            if (window.UX && window.UX.HapticFeedback) {
+                window.UX.HapticFeedback.light();
+            }
+        });
+        
+        // 三击显示/隐藏秒数
+        var clickCount = 0;
+        var clickTimer = null;
+        
+        timeDisplay.addEventListener('click', function() {
+            clickCount++;
+            
+            if (clickTimer) clearTimeout(clickTimer);
+            
+            clickTimer = setTimeout(function() {
+                if (clickCount >= 3) {
+                    showSeconds = !showSeconds;
+                    localStorage.setItem('timeShowSeconds', showSeconds.toString());
+                    showToast(showSeconds ? '已显示秒数' : '已隐藏秒数');
+                }
+                clickCount = 0;
+            }, 400);
+        });
+    }
+    
+    // V4: 问候语互动
+    function initGreetingInteraction() {
+        var greetingText = document.getElementById('greetingText');
+        if (!greetingText) return;
+        
+        greetingText.style.cursor = 'pointer';
+        
+        greetingText.addEventListener('click', function() {
+            // 添加点击动画
+            greetingText.classList.add('greeting-bounce');
+            setTimeout(function() {
+                greetingText.classList.remove('greeting-bounce');
+            }, 600);
+            
+            // 切换到新的问候语
+            refreshGreeting();
+            
+            if (window.UX && window.UX.HapticFeedback) {
+                window.UX.HapticFeedback.light();
+            }
+        });
+    }
+    
+    // V5: 天体互动（太阳/月亮）
+    function initCelestialInteraction() {
+        var celestialBody = document.getElementById('celestialBody');
+        if (!celestialBody) return;
+        
+        celestialBody.style.cursor = 'pointer';
+        celestialBody.style.zIndex = '10';
+        
+        celestialBody.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            var header = document.getElementById('homeHeader');
+            var timePeriod = header?.getAttribute('data-time-period') || 'morning';
+            var isSun = !['evening', 'night'].includes(timePeriod);
+            
+            // 太阳/月亮的表情反应
+            if (isSun) {
+                showCelestialReaction('sun');
+                createSunburstEffect(celestialBody);
+            } else {
+                showCelestialReaction('moon');
+                createMoonlightEffect(celestialBody);
+            }
+            
+            if (window.UX && window.UX.HapticFeedback) {
+                window.UX.HapticFeedback.medium();
+            }
+        });
+    }
+    
+    // V6: 长按显示详细统计
+    function initLongPressStats() {
+        var headerContent = document.querySelector('.header-content');
+        if (!headerContent) return;
+        
+        var pressTimer = null;
+        var isLongPress = false;
+        
+        headerContent.addEventListener('touchstart', function(e) {
+            isLongPress = false;
+            pressTimer = setTimeout(function() {
+                isLongPress = true;
+                showQuickStats();
+            }, 800);
+        });
+        
+        headerContent.addEventListener('touchend', function() {
+            clearTimeout(pressTimer);
+        });
+        
+        headerContent.addEventListener('touchmove', function() {
+            clearTimeout(pressTimer);
+        });
+    }
+    
+    // V7: 摇一摇彩蛋
+    function initShakeEasterEgg() {
+        if (typeof DeviceMotionEvent === 'undefined') return;
+        
+        var shakeThreshold = 15;
+        var lastShake = 0;
+        var shakeCount = 0;
+        
+        // 请求设备运动权限 (iOS 13+)
+        if (typeof DeviceMotionEvent.requestPermission === 'function') {
+            // 需要用户手势触发
+            document.body.addEventListener('click', function requestMotion() {
+                DeviceMotionEvent.requestPermission()
+                    .then(function(response) {
+                        if (response === 'granted') {
+                            enableShakeDetection();
+                        }
+                    })
+                    .catch(console.error);
+                document.body.removeEventListener('click', requestMotion);
+            }, { once: true });
+        } else {
+            enableShakeDetection();
+        }
+        
+        function enableShakeDetection() {
+            window.addEventListener('devicemotion', function(e) {
+                var acc = e.accelerationIncludingGravity;
+                if (!acc) return;
+                
+                var total = Math.abs(acc.x) + Math.abs(acc.y) + Math.abs(acc.z);
+                var now = Date.now();
+                
+                if (total > shakeThreshold && now - lastShake > 500) {
+                    lastShake = now;
+                    shakeCount++;
+                    
+                    if (shakeCount >= 3) {
+                        triggerShakeEasterEgg();
+                        shakeCount = 0;
+                    }
+                    
+                    // 3秒后重置计数
+                    setTimeout(function() {
+                        shakeCount = Math.max(0, shakeCount - 1);
+                    }, 3000);
+                }
+            });
+        }
+    }
+    
+    // V8: 手势滑动效果
+    function initSwipeEffects() {
+        var header = document.getElementById('homeHeader');
+        if (!header) return;
+        
+        var startY = 0;
+        var startX = 0;
+        
+        header.addEventListener('touchstart', function(e) {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+        });
+        
+        header.addEventListener('touchmove', function(e) {
+            var deltaY = e.touches[0].clientY - startY;
+            var deltaX = e.touches[0].clientX - startX;
+            
+            // 下拉刷新效果
+            if (deltaY > 50 && Math.abs(deltaX) < 30) {
+                header.style.transform = 'translateY(' + Math.min(deltaY * 0.3, 30) + 'px)';
+            }
+        });
+        
+        header.addEventListener('touchend', function(e) {
+            var deltaY = e.changedTouches[0].clientY - startY;
+            
+            // 下拉刷新触发
+            if (deltaY > 80) {
+                refreshGreeting();
+                showToast('✨ 已刷新');
+            }
+            
+            header.style.transform = '';
+            header.style.transition = 'transform 0.3s ease';
+            setTimeout(function() {
+                header.style.transition = '';
+            }, 300);
+        });
+    }
+    
+    // V10: 智能助手气泡
+    function initAssistantBubble() {
+        // 检查是否应该显示助手提示
+        var lastTip = localStorage.getItem('lastAssistantTip');
+        var now = Date.now();
+        
+        // 每6小时最多显示一次
+        if (lastTip && now - parseInt(lastTip) < 6 * 60 * 60 * 1000) {
+            return;
+        }
+        
+        // 延迟显示
+        setTimeout(function() {
+            var tip = getSmartTip();
+            if (tip) {
+                showAssistantBubble(tip);
+                localStorage.setItem('lastAssistantTip', now.toString());
+            }
+        }, 3000);
+    }
+    
+    // ==================== 辅助函数 ====================
+    
+    // 创建点击波纹
+    function createRipple(e, element) {
+        var ripple = document.createElement('div');
+        ripple.className = 'interaction-ripple';
+        
+        var rect = element.getBoundingClientRect();
+        var size = Math.max(rect.width, rect.height);
+        
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
+        
+        element.style.position = 'relative';
+        element.style.overflow = 'hidden';
+        element.appendChild(ripple);
+        
+        setTimeout(function() {
+            ripple.remove();
+        }, 600);
+    }
+    
+    // 显示浮动表情
+    function showFloatingEmoji(element, emoji) {
+        var float = document.createElement('div');
+        float.className = 'floating-emoji';
+        float.textContent = emoji;
+        
+        var rect = element.getBoundingClientRect();
+        float.style.left = (rect.left + rect.width / 2) + 'px';
+        float.style.top = rect.top + 'px';
+        
+        document.body.appendChild(float);
+        
+        setTimeout(function() {
+            float.remove();
+        }, 1000);
+    }
+    
+    // 头像模式选择器
+    function showAvatarModeSelector() {
+        var modes = [
+            { icon: '🌤️', name: '天气图标', mode: 'weather' },
+            { icon: '😊', name: '表情头像', mode: 'emoji' },
+            { icon: '📷', name: '自定义图片', mode: 'custom' }
+        ];
+        
+        var html = '<div class="avatar-mode-selector">' +
+            '<h3>选择头像模式</h3>' +
+            '<div class="mode-options">';
+        
+        modes.forEach(function(m) {
+            html += '<div class="mode-option" onclick="setAvatarMode(\'' + m.mode + '\')">' +
+                '<span class="mode-icon">' + m.icon + '</span>' +
+                '<span class="mode-name">' + m.name + '</span>' +
+            '</div>';
+        });
+        
+        html += '</div></div>';
+        
+        showInteractionModal(html);
+    }
+    
+    // 连续天数庆祝
+    function celebrateStreak(streak) {
+        var messages = {
+            7: '🔥 一周连续！太棒了！',
+            14: '⭐ 两周连续！坚持就是胜利！',
+            30: '🏆 一个月了！你是学习达人！',
+            60: '💎 两个月！简直是学神！',
+            100: '👑 百日传奇！无人能敌！'
+        };
+        
+        var message = '🔥 连续 ' + streak + ' 天！继续保持！';
+        
+        for (var days in messages) {
+            if (streak >= parseInt(days)) {
+                message = messages[days];
+            }
+        }
+        
+        // 显示庆祝效果
+        showCelebration(message, streak);
+        
+        // 撒花效果
+        if (streak >= 7 && window.UX && window.UX.MicroInteractions) {
+            window.UX.MicroInteractions.confetti();
+        }
+    }
+    
+    // 连续天数鼓励
+    function showStreakEncouragement(streak) {
+        var messages = [
+            '刚开始，加油！每一天都是新的开始 💪',
+            '继续坚持，连续7天有惊喜！ ⭐',
+            '你在进步！再坚持几天！ 🌱',
+            '学习的路上，你不孤单 🤝',
+            '今天也要好好学习哦 📚'
+        ];
+        
+        var message = messages[Math.min(streak, messages.length - 1)];
+        showToast(message);
+    }
+    
+    // 显示连续学习详情
+    function showStreakDetails() {
+        var streak = calculateStreak();
+        var totalDays = Object.keys(JSON.parse(localStorage.getItem('studyDays') || '{}')).length;
+        var totalWords = Object.keys(JSON.parse(localStorage.getItem('learnedWords') || '{}')).length;
+        
+        var html = '<div class="streak-details-modal">' +
+            '<h3>📊 学习统计</h3>' +
+            '<div class="stat-grid">' +
+                '<div class="stat-item">' +
+                    '<span class="stat-value">' + streak + '</span>' +
+                    '<span class="stat-label">连续天数</span>' +
+                '</div>' +
+                '<div class="stat-item">' +
+                    '<span class="stat-value">' + totalDays + '</span>' +
+                    '<span class="stat-label">学习天数</span>' +
+                '</div>' +
+                '<div class="stat-item">' +
+                    '<span class="stat-value">' + totalWords + '</span>' +
+                    '<span class="stat-label">已学单词</span>' +
+                '</div>' +
+            '</div>' +
+        '</div>';
+        
+        showInteractionModal(html);
+    }
+    
+    // 刷新问候语
+    function refreshGreeting() {
+        if (typeof updateGreeting === 'function') {
+            updateGreeting();
+        }
+    }
+    
+    // 显示天体反应
+    function showCelestialReaction(type) {
+        var reactions = {
+            sun: ['☀️ 阳光明媚！', '🌞 今天天气真好！', '✨ 充满能量！', '🌻 向阳而生！'],
+            moon: ['🌙 夜深了~', '✨ 星光闪闪', '🌟 晚安好梦', '💫 宁静的夜晚']
+        };
+        
+        var msgs = reactions[type] || reactions.sun;
+        var msg = msgs[Math.floor(Math.random() * msgs.length)];
+        showToast(msg);
+    }
+    
+    // 太阳光芒效果
+    function createSunburstEffect(element) {
+        var burst = document.createElement('div');
+        burst.className = 'sunburst-effect';
+        element.appendChild(burst);
+        
+        setTimeout(function() {
+            burst.remove();
+        }, 800);
+    }
+    
+    // 月光效果
+    function createMoonlightEffect(element) {
+        var glow = document.createElement('div');
+        glow.className = 'moonlight-effect';
+        element.appendChild(glow);
+        
+        setTimeout(function() {
+            glow.remove();
+        }, 800);
+    }
+    
+    // 显示快速统计
+    function showQuickStats() {
+        var streak = calculateStreak();
+        var todayWords = getTodayLearnedWords();
+        
+        var html = '<div class="quick-stats-popup">' +
+            '<div class="qs-item">🔥 连续 <strong>' + streak + '</strong> 天</div>' +
+            '<div class="qs-item">📚 今日 <strong>' + todayWords + '</strong> 词</div>' +
+            '<div class="qs-tip">继续加油！</div>' +
+        '</div>';
+        
+        showQuickPopup(html);
+        
+        if (window.UX && window.UX.HapticFeedback) {
+            window.UX.HapticFeedback.heavy();
+        }
+    }
+    
+    // 摇一摇彩蛋
+    function triggerShakeEasterEgg() {
+        var eggs = [
+            { text: '🎉 发现隐藏彩蛋！', effect: 'confetti' },
+            { text: '🌈 彩虹出现了！', effect: 'rainbow' },
+            { text: '⭐ 今天会有好运！', effect: 'stars' },
+            { text: '🎁 获得神秘奖励！', effect: 'gift' },
+            { text: '🚀 学习火箭启动！', effect: 'rocket' }
+        ];
+        
+        var egg = eggs[Math.floor(Math.random() * eggs.length)];
+        showToast(egg.text);
+        
+        if (egg.effect === 'confetti' && window.UX && window.UX.MicroInteractions) {
+            window.UX.MicroInteractions.confetti();
+        }
+        
+        if (window.UX && window.UX.HapticFeedback) {
+            window.UX.HapticFeedback.heavy();
+        }
+    }
+    
+    // 获取智能提示
+    function getSmartTip() {
+        var hour = new Date().getHours();
+        var streak = calculateStreak();
+        var todayWords = getTodayLearnedWords();
+        
+        var tips = [];
+        
+        // 基于时间的提示
+        if (hour >= 6 && hour < 9) {
+            tips.push('🌅 早起学习效率高！背几个单词吧');
+        }
+        if (hour >= 12 && hour < 14) {
+            tips.push('🍱 午休时间，复习一下今天的单词？');
+        }
+        if (hour >= 21 && hour < 23) {
+            tips.push('🌙 睡前复习记忆更牢固哦');
+        }
+        if (hour >= 23 || hour < 5) {
+            tips.push('💤 太晚了，早点休息明天继续');
+        }
+        
+        // 基于学习状态的提示
+        if (todayWords === 0) {
+            tips.push('📚 今天还没学习，来背几个单词吧！');
+        }
+        if (streak === 0) {
+            tips.push('🔥 开始你的连续学习之旅吧！');
+        }
+        if (streak >= 7 && streak < 30) {
+            tips.push('⭐ 已经连续 ' + streak + ' 天了，太棒了！');
+        }
+        
+        return tips.length > 0 ? tips[Math.floor(Math.random() * tips.length)] : null;
+    }
+    
+    // 显示助手气泡
+    function showAssistantBubble(tip) {
+        var bubble = document.createElement('div');
+        bubble.className = 'assistant-bubble';
+        bubble.innerHTML = '<div class="bubble-content">' + tip + '</div>' +
+            '<button class="bubble-close" onclick="this.parentElement.remove()">×</button>';
+        
+        var header = document.getElementById('homeHeader');
+        if (header) {
+            header.appendChild(bubble);
+            
+            // 5秒后自动消失
+            setTimeout(function() {
+                if (bubble.parentElement) {
+                    bubble.classList.add('bubble-fadeout');
+                    setTimeout(function() {
+                        bubble.remove();
+                    }, 300);
+                }
+            }, 5000);
+        }
+    }
+    
+    // 显示互动模态框
+    function showInteractionModal(html) {
+        var overlay = document.createElement('div');
+        overlay.className = 'interaction-modal-overlay';
+        overlay.innerHTML = '<div class="interaction-modal">' + html + '</div>';
+        
+        overlay.addEventListener('click', function(e) {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+        
+        document.body.appendChild(overlay);
+    }
+    
+    // 显示快速弹出
+    function showQuickPopup(html) {
+        var popup = document.createElement('div');
+        popup.className = 'quick-popup';
+        popup.innerHTML = html;
+        
+        document.body.appendChild(popup);
+        
+        setTimeout(function() {
+            popup.classList.add('popup-fadeout');
+            setTimeout(function() {
+                popup.remove();
+            }, 300);
+        }, 2000);
+    }
+    
+    // 显示庆祝效果
+    function showCelebration(message, streak) {
+        var celebration = document.createElement('div');
+        celebration.className = 'streak-celebration';
+        celebration.innerHTML = '<div class="celebration-content">' +
+            '<div class="celebration-number">' + streak + '</div>' +
+            '<div class="celebration-text">' + message + '</div>' +
+        '</div>';
+        
+        document.body.appendChild(celebration);
+        
+        setTimeout(function() {
+            celebration.classList.add('celebration-fadeout');
+            setTimeout(function() {
+                celebration.remove();
+            }, 500);
+        }, 2500);
+    }
+    
+    // 更新时间格式
+    function updateTimeFormat() {
+        if (typeof updateTimeDisplay === 'function') {
+            updateTimeDisplay();
+        }
+    }
+    
+    return {
+        init: init
+    };
+})();
+
+// 页面加载后初始化
+document.addEventListener('DOMContentLoaded', function() {
+    HeaderInteraction.init();
+});
+
+// 暴露全局
+window.HeaderInteraction = HeaderInteraction;
+
