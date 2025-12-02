@@ -1397,6 +1397,676 @@
     }
     
     // 暴露 API
+    // ==================== v7.1: 可拖拽漂浮装饰物 ====================
+    const FloatingDecor = {
+        emojis: ['🌸', '⭐', '🌙', '☁️', '🍀', '🦋', '🌈', '💫'],
+        decorElements: [],
+        
+        init() {
+            this.createDecors();
+            this.setupDrag();
+        },
+        
+        createDecors(count = 5) {
+            const container = document.querySelector('.header-scene') || document.querySelector('.home-header');
+            if (!container) return;
+            
+            for (let i = 0; i < count; i++) {
+                const decor = document.createElement('div');
+                decor.className = 'floating-decor float-emoji';
+                decor.textContent = this.emojis[Math.floor(Math.random() * this.emojis.length)];
+                decor.style.left = `${Math.random() * 80 + 10}%`;
+                decor.style.top = `${Math.random() * 60 + 20}%`;
+                container.appendChild(decor);
+                this.decorElements.push(decor);
+            }
+        },
+        
+        setupDrag() {
+            this.decorElements.forEach(el => {
+                let isDragging = false;
+                let startX, startY, initialX, initialY;
+                
+                el.addEventListener('touchstart', (e) => {
+                    isDragging = true;
+                    el.classList.add('dragging');
+                    const touch = e.touches[0];
+                    startX = touch.clientX;
+                    startY = touch.clientY;
+                    const rect = el.getBoundingClientRect();
+                    initialX = rect.left;
+                    initialY = rect.top;
+                }, { passive: true });
+                
+                el.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    const touch = e.touches[0];
+                    const dx = touch.clientX - startX;
+                    const dy = touch.clientY - startY;
+                    el.style.position = 'fixed';
+                    el.style.left = `${initialX + dx}px`;
+                    el.style.top = `${initialY + dy}px`;
+                }, { passive: true });
+                
+                el.addEventListener('touchend', () => {
+                    isDragging = false;
+                    el.classList.remove('dragging');
+                }, { passive: true });
+            });
+        }
+    };
+    
+    // ==================== v7.2: 点击产生泡泡/爱心效果 ====================
+    const ClickEffects = {
+        container: null,
+        effects: ['bubble', 'heart', 'star'],
+        currentEffect: 'heart',
+        
+        init() {
+            this.createContainer();
+            this.setupClickListener();
+        },
+        
+        createContainer() {
+            if (this.container) return;
+            this.container = document.createElement('div');
+            this.container.className = 'click-effect-container';
+            document.body.appendChild(this.container);
+        },
+        
+        setupClickListener() {
+            document.addEventListener('click', (e) => {
+                // 不在按钮或链接上触发
+                if (e.target.closest('button, a, .nav-item, input, .stress-ball')) return;
+                
+                const x = e.clientX;
+                const y = e.clientY;
+                
+                // 随机效果
+                const effectType = this.effects[Math.floor(Math.random() * this.effects.length)];
+                this.createEffect(x, y, effectType);
+            });
+        },
+        
+        createEffect(x, y, type = 'heart') {
+            const count = type === 'bubble' ? 5 : 3;
+            
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const effect = document.createElement('div');
+                    effect.className = `${type}-effect`;
+                    
+                    if (type === 'heart') {
+                        effect.textContent = ['❤️', '💕', '💖', '💗'][Math.floor(Math.random() * 4)];
+                    } else if (type === 'star') {
+                        effect.textContent = ['⭐', '✨', '🌟', '💫'][Math.floor(Math.random() * 4)];
+                    } else {
+                        const size = Math.random() * 20 + 10;
+                        effect.style.width = `${size}px`;
+                        effect.style.height = `${size}px`;
+                    }
+                    
+                    const offsetX = (Math.random() - 0.5) * 50;
+                    const offsetY = (Math.random() - 0.5) * 20;
+                    effect.style.left = `${x + offsetX}px`;
+                    effect.style.top = `${y + offsetY}px`;
+                    
+                    this.container.appendChild(effect);
+                    
+                    setTimeout(() => effect.remove(), 1500);
+                }, i * 100);
+            }
+        }
+    };
+    
+    // ==================== v7.3: 呼吸引导圆圈 ====================
+    const BreathingGuide = {
+        element: null,
+        isActive: false,
+        breatheInterval: null,
+        phases: ['吸气...', '屏住...', '呼气...', '屏住...'],
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            this.element = document.createElement('div');
+            this.element.className = 'breathing-guide';
+            this.element.innerHTML = `
+                <div class="breathing-circle"></div>
+                <span class="breathing-text">点击开始</span>
+            `;
+            document.body.appendChild(this.element);
+        },
+        
+        setupEvents() {
+            this.element.addEventListener('click', () => {
+                this.toggle();
+            });
+        },
+        
+        toggle() {
+            this.isActive = !this.isActive;
+            this.element.classList.toggle('active', this.isActive);
+            
+            if (this.isActive) {
+                this.startBreathing();
+                HapticFeedback.medium();
+            } else {
+                this.stopBreathing();
+            }
+        },
+        
+        startBreathing() {
+            const textEl = this.element.querySelector('.breathing-text');
+            let phase = 0;
+            
+            textEl.textContent = this.phases[0];
+            
+            this.breatheInterval = setInterval(() => {
+                phase = (phase + 1) % 4;
+                textEl.textContent = this.phases[phase];
+            }, 2000);
+        },
+        
+        stopBreathing() {
+            if (this.breatheInterval) {
+                clearInterval(this.breatheInterval);
+                this.breatheInterval = null;
+            }
+            const textEl = this.element.querySelector('.breathing-text');
+            textEl.textContent = '点击开始';
+        }
+    };
+    
+    // ==================== v7.4: 触摸涟漪池 ====================
+    const RipplePool = {
+        init() {
+            const headerScene = document.querySelector('.header-scene');
+            if (!headerScene) return;
+            
+            const pool = document.createElement('div');
+            pool.className = 'ripple-pool';
+            headerScene.appendChild(pool);
+            
+            pool.addEventListener('touchstart', (e) => {
+                const touch = e.touches[0];
+                const rect = pool.getBoundingClientRect();
+                const x = touch.clientX - rect.left;
+                const y = touch.clientY - rect.top;
+                this.createRipple(pool, x, y);
+            }, { passive: true });
+            
+            pool.addEventListener('click', (e) => {
+                const rect = pool.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                this.createRipple(pool, x, y);
+            });
+        },
+        
+        createRipple(container, x, y) {
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple-wave';
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            container.appendChild(ripple);
+            
+            HapticFeedback.light();
+            
+            setTimeout(() => ripple.remove(), 2000);
+        }
+    };
+    
+    // ==================== v7.5: 可揉捏的压力球 ====================
+    const StressBall = {
+        element: null,
+        squeezeCount: 0,
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+            this.loadCount();
+        },
+        
+        createElement() {
+            this.element = document.createElement('div');
+            this.element.className = 'stress-ball';
+            this.element.innerHTML = '<span class="stress-ball-counter">今日: 0次</span>';
+            document.body.appendChild(this.element);
+        },
+        
+        setupEvents() {
+            this.element.addEventListener('mousedown', () => this.squeeze());
+            this.element.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                this.squeeze();
+            });
+            
+            this.element.addEventListener('mouseup', () => this.release());
+            this.element.addEventListener('touchend', () => this.release());
+        },
+        
+        squeeze() {
+            this.squeezeCount++;
+            this.updateCounter();
+            this.saveCount();
+            HapticFeedback.medium();
+            
+            // 每10次有特殊效果
+            if (this.squeezeCount % 10 === 0) {
+                celebrateSuccess();
+                showSmartToast(`已揉捏 ${this.squeezeCount} 次！压力释放中~ 🎉`, 'success', 2000);
+            }
+        },
+        
+        release() {
+            this.element.classList.add('squeezed');
+            setTimeout(() => {
+                this.element.classList.remove('squeezed');
+            }, 300);
+        },
+        
+        updateCounter() {
+            const counter = this.element.querySelector('.stress-ball-counter');
+            if (counter) {
+                counter.textContent = `今日: ${this.squeezeCount}次`;
+            }
+        },
+        
+        loadCount() {
+            const today = new Date().toDateString();
+            const saved = localStorage.getItem('stressBallData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.date === today) {
+                    this.squeezeCount = data.count;
+                    this.updateCounter();
+                }
+            }
+        },
+        
+        saveCount() {
+            localStorage.setItem('stressBallData', JSON.stringify({
+                date: new Date().toDateString(),
+                count: this.squeezeCount
+            }));
+        }
+    };
+    
+    // ==================== v7.6: 动态天气粒子效果 ====================
+    const WeatherParticles = {
+        container: null,
+        currentWeather: 'sunny',
+        
+        init() {
+            const headerScene = document.querySelector('.header-scene');
+            if (!headerScene) return;
+            
+            this.container = document.createElement('div');
+            this.container.className = 'weather-particles';
+            headerScene.appendChild(this.container);
+            
+            // 根据时间设置天气
+            this.setWeatherByTime();
+        },
+        
+        setWeatherByTime() {
+            const hour = new Date().getHours();
+            
+            if (hour >= 6 && hour < 18) {
+                // 白天 - 随机阳光或萤火虫
+                this.createSunRays();
+            } else {
+                // 晚上 - 萤火虫
+                this.createFireflies();
+            }
+        },
+        
+        createRain(count = 30) {
+            for (let i = 0; i < count; i++) {
+                const drop = document.createElement('div');
+                drop.className = 'rain-drop';
+                drop.style.left = `${Math.random() * 100}%`;
+                drop.style.animationDuration = `${Math.random() * 0.5 + 0.5}s`;
+                drop.style.animationDelay = `${Math.random() * 2}s`;
+                this.container.appendChild(drop);
+            }
+        },
+        
+        createSnow(count = 20) {
+            for (let i = 0; i < count; i++) {
+                const flake = document.createElement('div');
+                flake.className = 'snowflake';
+                flake.textContent = '❄';
+                flake.style.left = `${Math.random() * 100}%`;
+                flake.style.fontSize = `${Math.random() * 8 + 8}px`;
+                flake.style.animationDuration = `${Math.random() * 3 + 3}s`;
+                flake.style.animationDelay = `${Math.random() * 3}s`;
+                this.container.appendChild(flake);
+            }
+        },
+        
+        createSunRays(count = 8) {
+            for (let i = 0; i < count; i++) {
+                const ray = document.createElement('div');
+                ray.className = 'sun-ray';
+                ray.style.left = `${i * 15 + Math.random() * 10}%`;
+                ray.style.transform = `rotate(${Math.random() * 30 - 15}deg)`;
+                ray.style.animationDelay = `${Math.random() * 2}s`;
+                ray.style.opacity = '0.3';
+                this.container.appendChild(ray);
+            }
+        },
+        
+        createFireflies(count = 8) {
+            for (let i = 0; i < count; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = `${Math.random() * 80 + 10}%`;
+                firefly.style.top = `${Math.random() * 60 + 20}%`;
+                firefly.style.animationDelay = `${Math.random() * 5}s`;
+                firefly.style.animationDuration = `${Math.random() * 4 + 6}s`;
+                this.container.appendChild(firefly);
+            }
+        }
+    };
+    
+    // ==================== v7.7: 互动式音乐波形 ====================
+    const MusicVisualizer = {
+        element: null,
+        isPlaying: false,
+        audio: null,
+        tracks: [
+            { name: '轻松钢琴', url: 'data:audio/wav;base64,UklGRigAAABXQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==' }
+        ],
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+        },
+        
+        createElement() {
+            this.element = document.createElement('div');
+            this.element.className = 'music-visualizer';
+            this.element.innerHTML = `
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+                <div class="music-bar"></div>
+            `;
+            this.element.title = '点击播放/暂停白噪音';
+            document.body.appendChild(this.element);
+        },
+        
+        setupEvents() {
+            this.element.addEventListener('click', () => {
+                this.toggle();
+            });
+        },
+        
+        toggle() {
+            this.isPlaying = !this.isPlaying;
+            this.element.classList.toggle('playing', this.isPlaying);
+            
+            if (this.isPlaying) {
+                // 实际应用中这里可以播放真实音频
+                showSmartToast('🎵 白噪音播放中...', 'info', 1500);
+                HapticFeedback.light();
+            } else {
+                showSmartToast('🔇 已暂停', 'info', 1000);
+            }
+        }
+    };
+    
+    // ==================== v7.8: 励志弹幕流 ====================
+    const Danmaku = {
+        container: null,
+        messages: [
+            '加油！你可以的！💪',
+            '每天进步一点点 ✨',
+            '坚持就是胜利 🏆',
+            '今天也要元气满满！🌟',
+            '学习使我快乐 📚',
+            'You can do it! 💖',
+            '相信自己！🌈',
+            '努力终会有回报 🎯',
+            '保持热爱，奔赴山海 🌊',
+            '未来可期！🚀'
+        ],
+        isEnabled: true,
+        interval: null,
+        
+        init() {
+            this.createContainer();
+            this.start();
+        },
+        
+        createContainer() {
+            this.container = document.createElement('div');
+            this.container.className = 'danmaku-container';
+            document.body.appendChild(this.container);
+        },
+        
+        start() {
+            // 初始发送几条
+            setTimeout(() => this.send(), 1000);
+            setTimeout(() => this.send(), 3000);
+            
+            // 定期发送
+            this.interval = setInterval(() => {
+                if (this.isEnabled && Math.random() > 0.5) {
+                    this.send();
+                }
+            }, 8000);
+        },
+        
+        send(customMsg) {
+            const msg = customMsg || this.messages[Math.floor(Math.random() * this.messages.length)];
+            const item = document.createElement('div');
+            item.className = 'danmaku-item';
+            item.textContent = msg;
+            
+            // 随机位置和速度
+            const top = Math.random() * 30 + 10; // 10%-40% 从顶部
+            const duration = Math.random() * 5 + 8; // 8-13秒
+            
+            item.style.top = `${top}%`;
+            item.style.animationDuration = `${duration}s`;
+            
+            // 随机彩虹效果
+            if (Math.random() > 0.8) {
+                item.classList.add('rainbow');
+            }
+            
+            this.container.appendChild(item);
+            
+            // 动画结束后移除
+            setTimeout(() => item.remove(), duration * 1000);
+        },
+        
+        toggle(enabled) {
+            this.isEnabled = enabled;
+        }
+    };
+    
+    // ==================== v7.9: 成就徽章展示 ====================
+    const AchievementShowcase = {
+        element: null,
+        
+        init() {
+            this.createElement();
+        },
+        
+        createElement() {
+            this.element = document.createElement('div');
+            this.element.className = 'achievement-showcase';
+            this.element.innerHTML = `
+                <div class="achievement-confetti"></div>
+                <div class="achievement-header">
+                    <div class="achievement-badge-large">🏆</div>
+                    <h3 class="achievement-title">成就达成！</h3>
+                    <p class="achievement-desc">恭喜解锁新成就</p>
+                </div>
+                <button class="btn btn-primary" style="width:100%" onclick="this.parentElement.classList.remove('show')">太棒了！</button>
+            `;
+            document.body.appendChild(this.element);
+        },
+        
+        show(badge, title, desc) {
+            const badgeEl = this.element.querySelector('.achievement-badge-large');
+            const titleEl = this.element.querySelector('.achievement-title');
+            const descEl = this.element.querySelector('.achievement-desc');
+            
+            badgeEl.textContent = badge;
+            titleEl.textContent = title;
+            descEl.textContent = desc;
+            
+            this.element.classList.add('show');
+            this.createConfetti();
+            
+            HapticFeedback.success();
+        },
+        
+        createConfetti() {
+            const confettiContainer = this.element.querySelector('.achievement-confetti');
+            confettiContainer.innerHTML = '';
+            
+            const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#1dd1a1', '#5f27cd'];
+            
+            for (let i = 0; i < 50; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = `${Math.random() * 100}%`;
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = `${Math.random() * 0.5}s`;
+                piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confettiContainer.appendChild(piece);
+            }
+        }
+    };
+    
+    // ==================== v7.10: 宠物陪伴系统 ====================
+    const StudyPet = {
+        element: null,
+        mood: 'happy', // happy, sleeping, normal
+        speechTexts: [
+            '加油哦！💪',
+            '你真棒！🌟',
+            '休息一下吧~',
+            '我相信你！',
+            '继续努力！✨',
+            '今天也很棒！',
+            '一起学习吧！📚'
+        ],
+        
+        init() {
+            this.createElement();
+            this.setupEvents();
+            this.startBehavior();
+        },
+        
+        createElement() {
+            this.element = document.createElement('div');
+            this.element.className = 'study-pet';
+            this.element.innerHTML = `
+                <div class="pet-speech">点我互动~</div>
+                <div class="pet-body">
+                    <div class="pet-eyes">
+                        <div class="pet-eye"></div>
+                        <div class="pet-eye"></div>
+                    </div>
+                    <div class="pet-mouth"></div>
+                    <div class="pet-blush left"></div>
+                    <div class="pet-blush right"></div>
+                </div>
+            `;
+            document.body.appendChild(this.element);
+        },
+        
+        setupEvents() {
+            this.element.addEventListener('click', () => {
+                this.interact();
+            });
+        },
+        
+        interact() {
+            this.setMood('happy');
+            this.speak();
+            HapticFeedback.light();
+            
+            setTimeout(() => {
+                this.setMood('normal');
+            }, 2000);
+        },
+        
+        speak(text) {
+            const speech = this.element.querySelector('.pet-speech');
+            const msg = text || this.speechTexts[Math.floor(Math.random() * this.speechTexts.length)];
+            speech.textContent = msg;
+            this.element.classList.add('talking');
+            
+            setTimeout(() => {
+                this.element.classList.remove('talking');
+            }, 3000);
+        },
+        
+        setMood(mood) {
+            this.element.classList.remove('happy', 'sleeping', 'normal');
+            this.element.classList.add(mood);
+            this.mood = mood;
+        },
+        
+        startBehavior() {
+            // 随机行为
+            setInterval(() => {
+                const hour = new Date().getHours();
+                
+                // 晚上睡觉
+                if (hour >= 23 || hour < 6) {
+                    this.setMood('sleeping');
+                    return;
+                }
+                
+                // 随机说话
+                if (Math.random() > 0.9) {
+                    this.speak();
+                }
+            }, 30000);
+        }
+    };
+    
+    // 解压系统初始化
+    const StressReliefSystem = {
+        init() {
+            // 延迟初始化以确保DOM准备好
+            setTimeout(() => {
+                FloatingDecor.init();
+                ClickEffects.init();
+                BreathingGuide.init();
+                RipplePool.init();
+                StressBall.init();
+                WeatherParticles.init();
+                MusicVisualizer.init();
+                Danmaku.init();
+                AchievementShowcase.init();
+                StudyPet.init();
+                
+                console.log('✨ 解压互动系统 v7.1-v7.10 已加载');
+            }, 1000);
+        }
+    };
+    
+    // 页面加载后初始化解压系统
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => StressReliefSystem.init());
+    } else {
+        StressReliefSystem.init();
+    }
+
     window.UX = {
         HapticFeedback,
         createRipple,
@@ -1428,6 +2098,18 @@
         RippleEffect,
         EmptyState,
         BottomNavEnhancer,
+        // v7.1-v7.10 解压互动系统
+        FloatingDecor,
+        ClickEffects,
+        BreathingGuide,
+        RipplePool,
+        StressBall,
+        WeatherParticles,
+        MusicVisualizer,
+        Danmaku,
+        AchievementShowcase,
+        StudyPet,
+        StressReliefSystem,
         settings: window.uxSettings
     };
     

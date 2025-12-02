@@ -478,5 +478,1253 @@
       "contentious debate",
       "contentious topic"
     ]
+  },
+  "deleterious": {
+    "examples": [
+      {
+        "en": "Smoking has deleterious effects on lung health.",
+        "cn": "吸烟对肺部健康有害。",
+        "source": "医学研究"
+      },
+      {
+        "en": "The deleterious impact of pollution on ecosystems is well documented.",
+        "cn": "污染对生态系统的有害影响有详细记录。",
+        "source": "环境报告"
+      },
+      {
+        "en": "Stress can have deleterious consequences for mental health.",
+        "cn": "压力可能对心理健康产生有害后果。",
+        "source": "心理学文献"
+      }
+    ],
+    "collocations": [
+      "deleterious effects",
+      "deleterious impact",
+      "deleterious consequences"
+    ]
+  },
+  "didactic": {
+    "examples": [
+      {
+        "en": "The novel's didactic tone put off many readers.",
+        "cn": "这部小说的说教语气让许多读者反感。",
+        "source": "文学评论"
+      },
+      {
+        "en": "Her didactic approach to parenting was sometimes too strict.",
+        "cn": "她说教式的育儿方法有时过于严格。",
+        "source": "育儿文章"
+      },
+      {
+        "en": "The film has a didactic purpose, teaching viewers about history.",
+        "cn": "这部电影有教育目的，向观众讲授历史。",
+        "source": "影评"
+      }
+    ],
+    "collocations": [
+      "didactic purpose",
+      "didactic approach",
+      "didactic tone"
+    ]
+  },
+  "disparate": {
+    "examples": [
+      {
+        "en": "The study compared disparate groups from different backgrounds.",
+        "cn": "这项研究比较了来自不同背景的迥异群体。",
+        "source": "社会研究"
+      },
+      {
+        "en": "She managed to unite disparate factions within the party.",
+        "cn": "她设法团结了党内的不同派系。",
+        "source": "政治报道"
+      },
+      {
+        "en": "The disparate results led researchers to question their methods.",
+        "cn": "不同的结果使研究人员质疑他们的方法。",
+        "source": "科研论文"
+      }
+    ],
+    "collocations": [
+      "disparate groups",
+      "disparate views",
+      "disparate elements"
+    ]
+  },
+  "dogmatic": {
+    "examples": [
+      {
+        "en": "His dogmatic insistence on his views alienated colleagues.",
+        "cn": "他对自己观点的武断坚持疏远了同事们。",
+        "source": "职场案例"
+      },
+      {
+        "en": "The professor avoided dogmatic teaching in favor of open discussion.",
+        "cn": "这位教授避免武断的教学，倾向于开放讨论。",
+        "source": "教育评论"
+      },
+      {
+        "en": "Dogmatic adherence to tradition can hinder progress.",
+        "cn": "对传统的教条式坚持可能阻碍进步。",
+        "source": "社会评论"
+      }
+    ],
+    "collocations": [
+      "dogmatic approach",
+      "dogmatic belief",
+      "dogmatic assertion"
+    ]
+  },
+  "ebullient": {
+    "examples": [
+      {
+        "en": "Her ebullient personality made her the life of every party.",
+        "cn": "她热情洋溢的个性使她成为每个派对的焦点。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The team was ebullient after their unexpected victory.",
+        "cn": "在意外获胜后，团队热情高涨。",
+        "source": "体育报道"
+      },
+      {
+        "en": "His ebullient optimism was infectious among employees.",
+        "cn": "他充满活力的乐观态度在员工中具有感染力。",
+        "source": "领导力研究"
+      }
+    ],
+    "collocations": [
+      "ebullient spirit",
+      "ebullient personality",
+      "ebullient enthusiasm"
+    ]
+  },
+  "efficacy": {
+    "examples": [
+      {
+        "en": "Clinical trials are testing the efficacy of the new drug.",
+        "cn": "临床试验正在测试新药的功效。",
+        "source": "医学报告"
+      },
+      {
+        "en": "The efficacy of the policy has been called into question.",
+        "cn": "该政策的有效性受到质疑。",
+        "source": "政策分析"
+      },
+      {
+        "en": "Researchers are studying the efficacy of online learning.",
+        "cn": "研究人员正在研究在线学习的有效性。",
+        "source": "教育研究"
+      }
+    ],
+    "collocations": [
+      "therapeutic efficacy",
+      "prove efficacy",
+      "question efficacy"
+    ]
+  },
+  "ephemeral": {
+    "examples": [
+      {
+        "en": "Fame in the entertainment industry is often ephemeral.",
+        "cn": "娱乐业的名气往往是短暂的。",
+        "source": "娱乐评论"
+      },
+      {
+        "en": "The ephemeral beauty of cherry blossoms attracts millions of visitors.",
+        "cn": "樱花短暂的美丽吸引了数百万游客。",
+        "source": "旅游杂志"
+      },
+      {
+        "en": "Social media trends are increasingly ephemeral.",
+        "cn": "社交媒体趋势越来越短暂。",
+        "source": "媒体分析"
+      }
+    ],
+    "collocations": [
+      "ephemeral nature",
+      "ephemeral beauty",
+      "ephemeral moment"
+    ]
+  },
+  "erudite": {
+    "examples": [
+      {
+        "en": "The erudite professor could discuss any topic with authority.",
+        "cn": "这位博学的教授可以权威地讨论任何话题。",
+        "source": "学术描写"
+      },
+      {
+        "en": "Her erudite commentary enriched the documentary.",
+        "cn": "她博学的评论丰富了这部纪录片。",
+        "source": "影评"
+      },
+      {
+        "en": "The book reflects the author's erudite understanding of history.",
+        "cn": "这本书反映了作者对历史的博学理解。",
+        "source": "书评"
+      }
+    ],
+    "collocations": [
+      "erudite scholar",
+      "erudite commentary",
+      "erudite discussion"
+    ]
+  },
+  "esoteric": {
+    "examples": [
+      {
+        "en": "The lecture covered esoteric topics in quantum physics.",
+        "cn": "讲座涵盖了量子物理学中深奥的话题。",
+        "source": "学术会议"
+      },
+      {
+        "en": "His esoteric knowledge of ancient languages impressed scholars.",
+        "cn": "他对古代语言的深奥知识给学者们留下了深刻印象。",
+        "source": "学术评价"
+      },
+      {
+        "en": "The esoteric rituals were known only to initiates.",
+        "cn": "这些深奥的仪式只有入门者才知道。",
+        "source": "宗教研究"
+      }
+    ],
+    "collocations": [
+      "esoteric knowledge",
+      "esoteric subject",
+      "esoteric theory"
+    ]
+  },
+  "exacerbate": {
+    "examples": [
+      {
+        "en": "The drought exacerbated the existing food shortage.",
+        "cn": "干旱加剧了现有的食物短缺。",
+        "source": "灾难报道"
+      },
+      {
+        "en": "His comments only exacerbated tensions between the two groups.",
+        "cn": "他的评论只是加剧了两个团体之间的紧张关系。",
+        "source": "社会分析"
+      },
+      {
+        "en": "Poor diet can exacerbate symptoms of the disease.",
+        "cn": "不良饮食可能加重疾病症状。",
+        "source": "健康指南"
+      }
+    ],
+    "collocations": [
+      "exacerbate the problem",
+      "exacerbate tensions",
+      "exacerbate symptoms"
+    ]
+  },
+  "fastidious": {
+    "examples": [
+      {
+        "en": "She was fastidious about the cleanliness of her kitchen.",
+        "cn": "她对厨房的清洁非常讲究。",
+        "source": "生活描写"
+      },
+      {
+        "en": "The editor's fastidious attention to detail improved the manuscript.",
+        "cn": "编辑对细节一丝不苟的关注改进了手稿。",
+        "source": "出版业"
+      },
+      {
+        "en": "His fastidious nature made him an excellent quality controller.",
+        "cn": "他一丝不苟的性格使他成为优秀的质量控制员。",
+        "source": "职业描写"
+      }
+    ],
+    "collocations": [
+      "fastidious attention",
+      "fastidious about",
+      "fastidious nature"
+    ]
+  },
+  "garrulous": {
+    "examples": [
+      {
+        "en": "The garrulous neighbor would talk for hours if given the chance.",
+        "cn": "如果有机会，这位饶舌的邻居会聊上几个小时。",
+        "source": "人物描写"
+      },
+      {
+        "en": "After a few drinks, he became increasingly garrulous.",
+        "cn": "喝了几杯后，他变得越来越健谈。",
+        "source": "社交场景"
+      },
+      {
+        "en": "Her garrulous nature made silence uncomfortable for her.",
+        "cn": "她健谈的性格使她无法忍受沉默。",
+        "source": "性格分析"
+      }
+    ],
+    "collocations": [
+      "garrulous nature",
+      "garrulous person",
+      "become garrulous"
+    ]
+  },
+  "hackneyed": {
+    "examples": [
+      {
+        "en": "The movie relied on hackneyed plot devices.",
+        "cn": "这部电影依赖于陈腐的情节手法。",
+        "source": "影评"
+      },
+      {
+        "en": "Avoid using hackneyed phrases in academic writing.",
+        "cn": "在学术写作中避免使用陈词滥调。",
+        "source": "写作指南"
+      },
+      {
+        "en": "The speech was filled with hackneyed expressions.",
+        "cn": "演讲充满了老套的表达。",
+        "source": "演讲评论"
+      }
+    ],
+    "collocations": [
+      "hackneyed phrase",
+      "hackneyed expression",
+      "hackneyed plot"
+    ]
+  },
+  "iconoclast": {
+    "examples": [
+      {
+        "en": "The artist was an iconoclast who challenged traditional forms.",
+        "cn": "这位艺术家是一位打破传统形式的反传统者。",
+        "source": "艺术评论"
+      },
+      {
+        "en": "As an iconoclast in the industry, she introduced revolutionary changes.",
+        "cn": "作为行业中的反传统者，她引入了革命性的变化。",
+        "source": "商业传记"
+      },
+      {
+        "en": "The iconoclast politician refused to follow party lines.",
+        "cn": "这位反传统的政治家拒绝遵循党派路线。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "true iconoclast",
+      "iconoclast figure",
+      "cultural iconoclast"
+    ]
+  },
+  "impetuous": {
+    "examples": [
+      {
+        "en": "His impetuous decision to quit his job surprised everyone.",
+        "cn": "他冲动辞职的决定让每个人都感到惊讶。",
+        "source": "职场案例"
+      },
+      {
+        "en": "The impetuous young man rushed into battle without thinking.",
+        "cn": "这个冲动的年轻人不假思索就冲进了战场。",
+        "source": "历史小说"
+      },
+      {
+        "en": "Her impetuous nature often led to regrettable actions.",
+        "cn": "她冲动的性格经常导致令人遗憾的行为。",
+        "source": "性格分析"
+      }
+    ],
+    "collocations": [
+      "impetuous decision",
+      "impetuous behavior",
+      "impetuous nature"
+    ]
+  },
+  "intransigent": {
+    "examples": [
+      {
+        "en": "The intransigent negotiator refused all compromises.",
+        "cn": "这位不妥协的谈判者拒绝所有妥协。",
+        "source": "商务谈判"
+      },
+      {
+        "en": "His intransigent stance made the agreement impossible.",
+        "cn": "他不妥协的立场使协议无法达成。",
+        "source": "外交报道"
+      },
+      {
+        "en": "The intransigent opposition blocked every proposal.",
+        "cn": "不妥协的反对派阻止了每一项提案。",
+        "source": "政治分析"
+      }
+    ],
+    "collocations": [
+      "intransigent position",
+      "intransigent attitude",
+      "remain intransigent"
+    ]
+  },
+  "laconic": {
+    "examples": [
+      {
+        "en": "His laconic reply left much to the imagination.",
+        "cn": "他简洁的回答留下了很多想象空间。",
+        "source": "对话描写"
+      },
+      {
+        "en": "The laconic text message said simply: 'Done.'",
+        "cn": "那条简洁的短信只写着：'完成了。'",
+        "source": "现代生活"
+      },
+      {
+        "en": "She was known for her laconic but insightful comments.",
+        "cn": "她以简洁但有见地的评论而闻名。",
+        "source": "人物介绍"
+      }
+    ],
+    "collocations": [
+      "laconic reply",
+      "laconic style",
+      "laconic response"
+    ]
+  },
+  "lethargic": {
+    "examples": [
+      {
+        "en": "The hot weather made everyone feel lethargic.",
+        "cn": "炎热的天气让每个人都感到昏昏欲睡。",
+        "source": "日常描写"
+      },
+      {
+        "en": "The lethargic economy showed little signs of recovery.",
+        "cn": "萎靡不振的经济几乎没有复苏迹象。",
+        "source": "经济分析"
+      },
+      {
+        "en": "After the heavy meal, I felt lethargic and wanted to sleep.",
+        "cn": "吃完大餐后，我感到无精打采想睡觉。",
+        "source": "生活场景"
+      }
+    ],
+    "collocations": [
+      "feel lethargic",
+      "lethargic economy",
+      "lethargic state"
+    ]
+  },
+  "magnanimous": {
+    "examples": [
+      {
+        "en": "The magnanimous winner praised his opponent's efforts.",
+        "cn": "宽宏大量的获胜者赞扬了对手的努力。",
+        "source": "体育报道"
+      },
+      {
+        "en": "Her magnanimous gesture of forgiveness surprised everyone.",
+        "cn": "她宽宏大量的宽恕姿态让每个人都感到惊讶。",
+        "source": "人际关系"
+      },
+      {
+        "en": "The magnanimous donation helped rebuild the community.",
+        "cn": "这笔慷慨的捐款帮助重建了社区。",
+        "source": "慈善报道"
+      }
+    ],
+    "collocations": [
+      "magnanimous gesture",
+      "magnanimous spirit",
+      "magnanimous offer"
+    ]
+  },
+  "meticulous": {
+    "examples": [
+      {
+        "en": "The detective's meticulous investigation uncovered new evidence.",
+        "cn": "侦探一丝不苟的调查发现了新证据。",
+        "source": "侦探小说"
+      },
+      {
+        "en": "She was meticulous in her preparation for the presentation.",
+        "cn": "她为演示做了一丝不苟的准备。",
+        "source": "职场场景"
+      },
+      {
+        "en": "The meticulous craftsman spent months on each piece.",
+        "cn": "这位一丝不苟的工匠在每件作品上花费数月。",
+        "source": "工艺介绍"
+      }
+    ],
+    "collocations": [
+      "meticulous attention",
+      "meticulous planning",
+      "meticulous work"
+    ]
+  },
+  "mitigate": {
+    "examples": [
+      {
+        "en": "The company took steps to mitigate the environmental impact.",
+        "cn": "公司采取措施减轻环境影响。",
+        "source": "企业报告"
+      },
+      {
+        "en": "Insurance helps mitigate financial risks.",
+        "cn": "保险有助于减轻财务风险。",
+        "source": "金融指南"
+      },
+      {
+        "en": "Proper planning can mitigate the effects of disasters.",
+        "cn": "适当的规划可以减轻灾害的影响。",
+        "source": "防灾手册"
+      }
+    ],
+    "collocations": [
+      "mitigate risk",
+      "mitigate effects",
+      "mitigate impact"
+    ]
+  },
+  "moribund": {
+    "examples": [
+      {
+        "en": "The moribund industry was in desperate need of innovation.",
+        "cn": "这个垂死的行业迫切需要创新。",
+        "source": "商业分析"
+      },
+      {
+        "en": "Efforts to revive the moribund economy have failed.",
+        "cn": "恢复濒临崩溃经济的努力失败了。",
+        "source": "经济报道"
+      },
+      {
+        "en": "The moribund patient was given only days to live.",
+        "cn": "这位垂死的病人只剩几天可活。",
+        "source": "医疗场景"
+      }
+    ],
+    "collocations": [
+      "moribund economy",
+      "moribund industry",
+      "moribund state"
+    ]
+  },
+  "nebulous": {
+    "examples": [
+      {
+        "en": "The plan remained nebulous with no clear details.",
+        "cn": "这个计划仍然模糊不清，没有明确的细节。",
+        "source": "项目管理"
+      },
+      {
+        "en": "His nebulous explanations failed to convince the audience.",
+        "cn": "他含糊不清的解释未能说服观众。",
+        "source": "演讲评论"
+      },
+      {
+        "en": "The nebulous concept of justice varies across cultures.",
+        "cn": "正义这个模糊的概念因文化而异。",
+        "source": "哲学讨论"
+      }
+    ],
+    "collocations": [
+      "nebulous concept",
+      "nebulous idea",
+      "nebulous plan"
+    ]
+  },
+  "nefarious": {
+    "examples": [
+      {
+        "en": "The nefarious scheme was exposed by investigators.",
+        "cn": "邪恶的阴谋被调查人员揭露。",
+        "source": "新闻报道"
+      },
+      {
+        "en": "His nefarious intentions were hidden behind a charming smile.",
+        "cn": "他邪恶的意图隐藏在迷人的微笑背后。",
+        "source": "小说描写"
+      },
+      {
+        "en": "The company was accused of nefarious business practices.",
+        "cn": "该公司被指控有不正当的商业行为。",
+        "source": "商业报道"
+      }
+    ],
+    "collocations": [
+      "nefarious activities",
+      "nefarious scheme",
+      "nefarious purposes"
+    ]
+  },
+  "obsequious": {
+    "examples": [
+      {
+        "en": "The obsequious assistant agreed with everything the boss said.",
+        "cn": "那个谄媚的助手同意老板说的一切。",
+        "source": "职场描写"
+      },
+      {
+        "en": "His obsequious behavior made his colleagues uncomfortable.",
+        "cn": "他卑躬屈膝的行为让同事们感到不舒服。",
+        "source": "职场分析"
+      },
+      {
+        "en": "The obsequious waiter hovered around the wealthy guests.",
+        "cn": "那个谄媚的服务员围着富有的客人转。",
+        "source": "场景描写"
+      }
+    ],
+    "collocations": [
+      "obsequious manner",
+      "obsequious behavior",
+      "obsequious tone"
+    ]
+  },
+  "obviate": {
+    "examples": [
+      {
+        "en": "This new system will obviate the need for manual checks.",
+        "cn": "这个新系统将消除手动检查的需要。",
+        "source": "技术文档"
+      },
+      {
+        "en": "Early intervention can obviate many health problems.",
+        "cn": "早期干预可以避免许多健康问题。",
+        "source": "医疗指南"
+      },
+      {
+        "en": "The agreement obviates potential future disputes.",
+        "cn": "该协议避免了潜在的未来争端。",
+        "source": "法律文件"
+      }
+    ],
+    "collocations": [
+      "obviate the need",
+      "obviate problems",
+      "obviate difficulties"
+    ]
+  },
+  "ossify": {
+    "examples": [
+      {
+        "en": "The organization had ossified into rigid bureaucracy.",
+        "cn": "这个组织已僵化成刻板的官僚机构。",
+        "source": "组织分析"
+      },
+      {
+        "en": "Traditional views can ossify and resist change.",
+        "cn": "传统观念可能僵化并抵制改变。",
+        "source": "社会评论"
+      },
+      {
+        "en": "The cartilage gradually ossifies into bone.",
+        "cn": "软骨逐渐骨化成骨头。",
+        "source": "医学教材"
+      }
+    ],
+    "collocations": [
+      "ossify into",
+      "gradually ossify",
+      "ossified structure"
+    ]
+  },
+  "ostentatious": {
+    "examples": [
+      {
+        "en": "The ostentatious display of wealth attracted criticism.",
+        "cn": "炫耀财富的行为招致批评。",
+        "source": "社会评论"
+      },
+      {
+        "en": "She wore ostentatious jewelry to the simple gathering.",
+        "cn": "她在简单的聚会上佩戴炫耀的珠宝。",
+        "source": "场景描写"
+      },
+      {
+        "en": "His ostentatious lifestyle was funded by questionable means.",
+        "cn": "他炫耀的生活方式靠可疑的手段资助。",
+        "source": "调查报道"
+      }
+    ],
+    "collocations": [
+      "ostentatious display",
+      "ostentatious wealth",
+      "ostentatious lifestyle"
+    ]
+  },
+  "panacea": {
+    "examples": [
+      {
+        "en": "Education is often seen as a panacea for social problems.",
+        "cn": "教育常被视为解决社会问题的万能药。",
+        "source": "教育讨论"
+      },
+      {
+        "en": "There is no panacea for the complex issue of poverty.",
+        "cn": "对于贫困这个复杂问题，没有万能药。",
+        "source": "社会分析"
+      },
+      {
+        "en": "Technology is not the panacea some believe it to be.",
+        "cn": "技术并非某些人认为的万能药。",
+        "source": "科技评论"
+      }
+    ],
+    "collocations": [
+      "not a panacea",
+      "seen as panacea",
+      "universal panacea"
+    ]
+  },
+  "parochial": {
+    "examples": [
+      {
+        "en": "His parochial views limited his understanding of global issues.",
+        "cn": "他狭隘的观点限制了他对全球问题的理解。",
+        "source": "国际关系"
+      },
+      {
+        "en": "The parochial focus on local interests hurt the national agenda.",
+        "cn": "对地方利益的狭隘关注损害了国家议程。",
+        "source": "政治分析"
+      },
+      {
+        "en": "She criticized the parochial nature of the community.",
+        "cn": "她批评了这个社区的狭隘性质。",
+        "source": "社会评论"
+      }
+    ],
+    "collocations": [
+      "parochial interests",
+      "parochial views",
+      "parochial mindset"
+    ]
+  },
+  "pedantic": {
+    "examples": [
+      {
+        "en": "His pedantic corrections annoyed his classmates.",
+        "cn": "他学究式的纠正惹恼了同学们。",
+        "source": "校园场景"
+      },
+      {
+        "en": "The pedantic professor focused too much on minor details.",
+        "cn": "这位迂腐的教授过于关注细枝末节。",
+        "source": "学术描写"
+      },
+      {
+        "en": "Avoid being pedantic when explaining complex topics.",
+        "cn": "在解释复杂话题时避免过于学究。",
+        "source": "教学指南"
+      }
+    ],
+    "collocations": [
+      "pedantic approach",
+      "pedantic style",
+      "overly pedantic"
+    ]
+  },
+  "perfunctory": {
+    "examples": [
+      {
+        "en": "He gave a perfunctory nod and continued working.",
+        "cn": "他敷衍地点了点头，继续工作。",
+        "source": "日常描写"
+      },
+      {
+        "en": "The perfunctory inspection missed critical safety issues.",
+        "cn": "敷衍的检查遗漏了关键的安全问题。",
+        "source": "安全报告"
+      },
+      {
+        "en": "Her perfunctory greeting showed she was preoccupied.",
+        "cn": "她敷衍的问候表明她心不在焉。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "perfunctory manner",
+      "perfunctory inspection",
+      "perfunctory response"
+    ]
+  },
+  "perspicacious": {
+    "examples": [
+      {
+        "en": "The perspicacious analyst predicted the market crash.",
+        "cn": "这位敏锐的分析师预测了市场崩盘。",
+        "source": "金融报道"
+      },
+      {
+        "en": "Her perspicacious observation solved the mystery.",
+        "cn": "她敏锐的观察解开了谜团。",
+        "source": "侦探小说"
+      },
+      {
+        "en": "A perspicacious reader will notice the subtle hints.",
+        "cn": "敏锐的读者会注意到微妙的暗示。",
+        "source": "文学评论"
+      }
+    ],
+    "collocations": [
+      "perspicacious observer",
+      "perspicacious judgment",
+      "perspicacious insight"
+    ]
+  },
+  "phlegmatic": {
+    "examples": [
+      {
+        "en": "His phlegmatic demeanor kept him calm in crises.",
+        "cn": "他冷静的举止使他在危机中保持镇定。",
+        "source": "人物描写"
+      },
+      {
+        "en": "The phlegmatic response to the news surprised everyone.",
+        "cn": "对新闻冷淡的反应让每个人都感到惊讶。",
+        "source": "新闻评论"
+      },
+      {
+        "en": "She remained phlegmatic despite the provocations.",
+        "cn": "尽管受到挑衅，她仍然保持冷静。",
+        "source": "冲突描写"
+      }
+    ],
+    "collocations": [
+      "phlegmatic temperament",
+      "phlegmatic response",
+      "remain phlegmatic"
+    ]
+  },
+  "pragmatic": {
+    "examples": [
+      {
+        "en": "The pragmatic approach focused on achievable goals.",
+        "cn": "务实的方法专注于可实现的目标。",
+        "source": "管理学"
+      },
+      {
+        "en": "She took a pragmatic view of the situation.",
+        "cn": "她对这种情况持务实的看法。",
+        "source": "问题分析"
+      },
+      {
+        "en": "Pragmatic solutions are needed for complex problems.",
+        "cn": "复杂问题需要务实的解决方案。",
+        "source": "政策讨论"
+      }
+    ],
+    "collocations": [
+      "pragmatic approach",
+      "pragmatic solution",
+      "pragmatic view"
+    ]
+  },
+  "precarious": {
+    "examples": [
+      {
+        "en": "The company's financial situation is precarious.",
+        "cn": "公司的财务状况岌岌可危。",
+        "source": "财务报告"
+      },
+      {
+        "en": "They lived in precarious conditions without basic amenities.",
+        "cn": "他们在没有基本设施的不稳定条件下生活。",
+        "source": "社会调查"
+      },
+      {
+        "en": "The precarious ladder made climbing dangerous.",
+        "cn": "不稳定的梯子使攀爬变得危险。",
+        "source": "安全警告"
+      }
+    ],
+    "collocations": [
+      "precarious situation",
+      "precarious position",
+      "precarious balance"
+    ]
+  },
+  "prescient": {
+    "examples": [
+      {
+        "en": "Her prescient warnings about the economy proved accurate.",
+        "cn": "她对经济的先见之明被证明是准确的。",
+        "source": "经济回顾"
+      },
+      {
+        "en": "The prescient author predicted many technological advances.",
+        "cn": "这位有先见之明的作者预测了许多技术进步。",
+        "source": "科幻评论"
+      },
+      {
+        "en": "His prescient investment strategy yielded great returns.",
+        "cn": "他有先见之明的投资策略产生了丰厚回报。",
+        "source": "投资分析"
+      }
+    ],
+    "collocations": [
+      "prescient warning",
+      "prescient analysis",
+      "prove prescient"
+    ]
+  },
+  "pristine": {
+    "examples": [
+      {
+        "en": "The pristine beaches attracted tourists from around the world.",
+        "cn": "原始的海滩吸引了来自世界各地的游客。",
+        "source": "旅游杂志"
+      },
+      {
+        "en": "The vintage car was in pristine condition.",
+        "cn": "这辆老爷车保持着完好如新的状态。",
+        "source": "汽车收藏"
+      },
+      {
+        "en": "The pristine wilderness must be protected.",
+        "cn": "原始的荒野必须得到保护。",
+        "source": "环保宣言"
+      }
+    ],
+    "collocations": [
+      "pristine condition",
+      "pristine environment",
+      "pristine beauty"
+    ]
+  },
+  "proliferate": {
+    "examples": [
+      {
+        "en": "Social media platforms have proliferated in recent years.",
+        "cn": "近年来社交媒体平台激增。",
+        "source": "科技报道"
+      },
+      {
+        "en": "Cancer cells proliferate rapidly without treatment.",
+        "cn": "没有治疗，癌细胞会迅速扩散。",
+        "source": "医学教材"
+      },
+      {
+        "en": "Fake news has proliferated across the internet.",
+        "cn": "假新闻在互联网上泛滥。",
+        "source": "媒体分析"
+      }
+    ],
+    "collocations": [
+      "proliferate rapidly",
+      "proliferate across",
+      "begin to proliferate"
+    ]
+  },
+  "propensity": {
+    "examples": [
+      {
+        "en": "He has a propensity for making impulsive decisions.",
+        "cn": "他有做冲动决定的倾向。",
+        "source": "性格分析"
+      },
+      {
+        "en": "The study examined the propensity for risk-taking.",
+        "cn": "这项研究考察了冒险倾向。",
+        "source": "心理学研究"
+      },
+      {
+        "en": "Her propensity to procrastinate affected her grades.",
+        "cn": "她拖延的倾向影响了她的成绩。",
+        "source": "学业案例"
+      }
+    ],
+    "collocations": [
+      "propensity for",
+      "natural propensity",
+      "show propensity"
+    ]
+  },
+  "quiescent": {
+    "examples": [
+      {
+        "en": "The volcano has been quiescent for decades.",
+        "cn": "这座火山已经沉寂了几十年。",
+        "source": "地质学"
+      },
+      {
+        "en": "The disease may remain quiescent for years.",
+        "cn": "这种疾病可能潜伏多年。",
+        "source": "医学报告"
+      },
+      {
+        "en": "The market entered a quiescent phase after the boom.",
+        "cn": "在繁荣之后，市场进入了平静阶段。",
+        "source": "市场分析"
+      }
+    ],
+    "collocations": [
+      "remain quiescent",
+      "quiescent state",
+      "quiescent period"
+    ]
+  },
+  "recalcitrant": {
+    "examples": [
+      {
+        "en": "The recalcitrant student refused to follow classroom rules.",
+        "cn": "这个不服管的学生拒绝遵守课堂规则。",
+        "source": "教育案例"
+      },
+      {
+        "en": "Recalcitrant bacteria are resistant to standard antibiotics.",
+        "cn": "顽固的细菌对标准抗生素有抵抗力。",
+        "source": "医学研究"
+      },
+      {
+        "en": "The recalcitrant employee was eventually terminated.",
+        "cn": "这名不服从管理的员工最终被解雇。",
+        "source": "人力资源"
+      }
+    ],
+    "collocations": [
+      "recalcitrant behavior",
+      "recalcitrant attitude",
+      "remain recalcitrant"
+    ]
+  },
+  "reticent": {
+    "examples": [
+      {
+        "en": "She was reticent about discussing her personal life.",
+        "cn": "她不愿意谈论自己的私生活。",
+        "source": "人物采访"
+      },
+      {
+        "en": "The witness was reticent when questioned by police.",
+        "cn": "证人在接受警方询问时沉默寡言。",
+        "source": "法律案例"
+      },
+      {
+        "en": "His reticent nature made him hard to get to know.",
+        "cn": "他沉默寡言的性格使人难以了解他。",
+        "source": "人物描写"
+      }
+    ],
+    "collocations": [
+      "reticent about",
+      "remain reticent",
+      "reticent to speak"
+    ]
+  },
+  "sagacious": {
+    "examples": [
+      {
+        "en": "The sagacious leader anticipated the economic downturn.",
+        "cn": "这位睿智的领导者预见到了经济衰退。",
+        "source": "领导力研究"
+      },
+      {
+        "en": "Her sagacious advice saved the company millions.",
+        "cn": "她睿智的建议为公司节省了数百万。",
+        "source": "商业案例"
+      },
+      {
+        "en": "The sagacious investor avoided the market bubble.",
+        "cn": "这位精明的投资者避开了市场泡沫。",
+        "source": "投资故事"
+      }
+    ],
+    "collocations": [
+      "sagacious decision",
+      "sagacious advice",
+      "sagacious leader"
+    ]
+  },
+  "sanguine": {
+    "examples": [
+      {
+        "en": "He remained sanguine about the project's success.",
+        "cn": "他对项目的成功保持乐观。",
+        "source": "项目管理"
+      },
+      {
+        "en": "Investors are less sanguine about future growth.",
+        "cn": "投资者对未来增长不那么乐观。",
+        "source": "市场分析"
+      },
+      {
+        "en": "Her sanguine outlook helped the team through difficulties.",
+        "cn": "她乐观的态度帮助团队度过了困难。",
+        "source": "团队建设"
+      }
+    ],
+    "collocations": [
+      "remain sanguine",
+      "sanguine about",
+      "sanguine outlook"
+    ]
+  },
+  "salubrious": {
+    "examples": [
+      {
+        "en": "The salubrious mountain air improved his health.",
+        "cn": "有益健康的山间空气改善了他的健康。",
+        "source": "健康杂志"
+      },
+      {
+        "en": "They moved to a more salubrious neighborhood.",
+        "cn": "他们搬到了一个更健康的社区。",
+        "source": "房产描述"
+      },
+      {
+        "en": "The spa offers a salubrious environment for recovery.",
+        "cn": "水疗中心提供有利于康复的环境。",
+        "source": "健康旅游"
+      }
+    ],
+    "collocations": [
+      "salubrious climate",
+      "salubrious environment",
+      "salubrious effects"
+    ]
+  },
+  "scrupulous": {
+    "examples": [
+      {
+        "en": "The scrupulous accountant found every discrepancy.",
+        "cn": "这位一丝不苟的会计发现了每一个差异。",
+        "source": "财务审计"
+      },
+      {
+        "en": "She was scrupulous about following ethical guidelines.",
+        "cn": "她严格遵守道德准则。",
+        "source": "职业道德"
+      },
+      {
+        "en": "His scrupulous attention to detail was legendary.",
+        "cn": "他对细节的一丝不苟是传奇的。",
+        "source": "人物传记"
+      }
+    ],
+    "collocations": [
+      "scrupulous attention",
+      "scrupulous honesty",
+      "scrupulous about"
+    ]
+  },
+  "solicitous": {
+    "examples": [
+      {
+        "en": "The solicitous nurse attended to every patient's needs.",
+        "cn": "这位关怀备至的护士照顾每位病人的需求。",
+        "source": "医疗描写"
+      },
+      {
+        "en": "He was solicitous about his elderly mother's comfort.",
+        "cn": "他非常关心年迈母亲的舒适度。",
+        "source": "家庭描写"
+      },
+      {
+        "en": "The hotel staff were solicitous and accommodating.",
+        "cn": "酒店员工殷勤周到。",
+        "source": "酒店评论"
+      }
+    ],
+    "collocations": [
+      "solicitous care",
+      "solicitous about",
+      "solicitous attention"
+    ]
+  },
+  "soporific": {
+    "examples": [
+      {
+        "en": "The soporific lecture put half the class to sleep.",
+        "cn": "催眠般的讲座让半个班的人睡着了。",
+        "source": "课堂描写"
+      },
+      {
+        "en": "The medication has a soporific effect.",
+        "cn": "这种药物有催眠作用。",
+        "source": "医药说明"
+      },
+      {
+        "en": "The soporific heat of the afternoon made work difficult.",
+        "cn": "下午催眠般的热度使工作变得困难。",
+        "source": "环境描写"
+      }
+    ],
+    "collocations": [
+      "soporific effect",
+      "soporific influence",
+      "soporific quality"
+    ]
+  },
+  "specious": {
+    "examples": [
+      {
+        "en": "The specious argument sounded convincing but was flawed.",
+        "cn": "这个似是而非的论点听起来有说服力，但有缺陷。",
+        "source": "逻辑分析"
+      },
+      {
+        "en": "Don't be fooled by his specious reasoning.",
+        "cn": "不要被他似是而非的推理所欺骗。",
+        "source": "辩论评论"
+      },
+      {
+        "en": "The specious claims were quickly debunked.",
+        "cn": "这些似是而非的说法很快被揭穿。",
+        "source": "事实核查"
+      }
+    ],
+    "collocations": [
+      "specious argument",
+      "specious reasoning",
+      "specious claim"
+    ]
+  },
+  "sporadic": {
+    "examples": [
+      {
+        "en": "Sporadic fighting continued despite the ceasefire.",
+        "cn": "尽管停火，零星的战斗仍在继续。",
+        "source": "战争报道"
+      },
+      {
+        "en": "She made sporadic attempts to exercise.",
+        "cn": "她断断续续地尝试锻炼。",
+        "source": "生活描写"
+      },
+      {
+        "en": "Sporadic rain showers are expected throughout the week.",
+        "cn": "预计整周将有零星阵雨。",
+        "source": "天气预报"
+      }
+    ],
+    "collocations": [
+      "sporadic violence",
+      "sporadic outbreaks",
+      "sporadic attempts"
+    ]
+  },
+  "stringent": {
+    "examples": [
+      {
+        "en": "The company implemented stringent safety protocols.",
+        "cn": "公司实施了严格的安全规程。",
+        "source": "企业管理"
+      },
+      {
+        "en": "Stringent regulations govern the pharmaceutical industry.",
+        "cn": "严格的法规管理制药行业。",
+        "source": "法规文件"
+      },
+      {
+        "en": "The stringent requirements eliminated many applicants.",
+        "cn": "严格的要求淘汰了许多申请人。",
+        "source": "招聘描述"
+      }
+    ],
+    "collocations": [
+      "stringent measures",
+      "stringent requirements",
+      "stringent standards"
+    ]
   }
 }

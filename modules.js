@@ -2142,45 +2142,190 @@ function analyzeWordPronunciation(original, recognized) {
         var found = recognizedWords.indexOf(word);
         var score = 0;
         var status = 'missing';
+        var matchedWord = null;
         
+        // V1: 单词评分基础 - 精确匹配检测
         if (found !== -1) {
             score = 100;
             status = 'correct';
+            matchedWord = recognizedWords[found];
         } else {
             // 检查相似词
             var bestMatch = 0;
+            var bestMatchWord = null;
             recognizedWords.forEach(function(recWord) {
-                var similarity = calculateSimilarity(word, recWord);
+                var similarity = calculateWordSimilarity(word, recWord);
                 if (similarity > bestMatch) {
                     bestMatch = similarity;
+                    bestMatchWord = recWord;
                 }
             });
             
-            if (bestMatch > 0.7) {
+            if (bestMatch >= 0.85) {
                 score = Math.round(bestMatch * 100);
-                status = 'partial';
-            } else if (bestMatch > 0.4) {
+                status = 'excellent';  // 接近完美
+                matchedWord = bestMatchWord;
+            } else if (bestMatch >= 0.7) {
                 score = Math.round(bestMatch * 100);
-                status = 'poor';
+                status = 'good';  // 良好
+                matchedWord = bestMatchWord;
+            } else if (bestMatch >= 0.5) {
+                score = Math.round(bestMatch * 100);
+                status = 'partial';  // 部分正确
+                matchedWord = bestMatchWord;
+            } else if (bestMatch >= 0.3) {
+                score = Math.round(bestMatch * 100);
+                status = 'poor';  // 需要改进
+                matchedWord = bestMatchWord;
             }
+            // 低于0.3视为missing
         }
+        
+        // V2: 多维单词评估
+        var dimensions = calculateWordDimensions(word, matchedWord, index, originalWords.length);
         
         results.push({
             word: word,
             score: score,
-            status: status
+            status: status,
+            matchedWord: matchedWord,
+            dimensions: dimensions,
+            position: index + 1,
+            difficulty: getWordDifficulty(word)
         });
         
         totalScore += score;
         scoredWords++;
     });
     
+    // 计算各维度平均分
+    var avgDimensions = {
+        pronunciation: 0,
+        stress: 0,
+        clarity: 0
+    };
+    
+    if (results.length > 0) {
+        results.forEach(function(r) {
+            avgDimensions.pronunciation += r.dimensions.pronunciation;
+            avgDimensions.stress += r.dimensions.stress;
+            avgDimensions.clarity += r.dimensions.clarity;
+        });
+        avgDimensions.pronunciation = Math.round(avgDimensions.pronunciation / results.length);
+        avgDimensions.stress = Math.round(avgDimensions.stress / results.length);
+        avgDimensions.clarity = Math.round(avgDimensions.clarity / results.length);
+    }
+    
     return {
         words: results,
         totalScore: scoredWords > 0 ? Math.round(totalScore / scoredWords) : 0,
-        correctCount: results.filter(function(r) { return r.status === 'correct'; }).length,
-        totalWords: results.length
+        correctCount: results.filter(function(r) { return r.status === 'correct' || r.status === 'excellent'; }).length,
+        totalWords: results.length,
+        avgDimensions: avgDimensions
     };
+}
+
+// V2: 计算单词各维度得分
+function calculateWordDimensions(targetWord, spokenWord, position, totalWords) {
+    var dimensions = {
+        pronunciation: 0,  // 发音准确度
+        stress: 0,         // 重音正确性
+        clarity: 0         // 清晰度
+    };
+    
+    if (!spokenWord) {
+        return dimensions;
+    }
+    
+    // 发音准确度 - 基于相似度
+    var similarity = calculateWordSimilarity(targetWord, spokenWord);
+    dimensions.pronunciation = Math.round(similarity * 100);
+    
+    // 重音估算 - 基于元音位置匹配
+    var targetVowels = (targetWord.match(/[aeiou]/gi) || []).length;
+    var spokenVowels = (spokenWord.match(/[aeiou]/gi) || []).length;
+    if (targetVowels > 0) {
+        var vowelMatch = 1 - Math.abs(targetVowels - spokenVowels) / targetVowels;
+        dimensions.stress = Math.round(Math.max(0, vowelMatch) * 100);
+    } else {
+        dimensions.stress = dimensions.pronunciation;
+    }
+    
+    // 清晰度 - 基于长度比例和首尾字母匹配
+    var lengthRatio = Math.min(targetWord.length, spokenWord.length) / Math.max(targetWord.length, spokenWord.length);
+    var startMatch = targetWord[0] === spokenWord[0] ? 1 : 0;
+    var endMatch = targetWord[targetWord.length - 1] === spokenWord[spokenWord.length - 1] ? 1 : 0;
+    dimensions.clarity = Math.round((lengthRatio * 0.5 + startMatch * 0.25 + endMatch * 0.25) * 100);
+    
+    return dimensions;
+}
+
+// 获取单词难度等级
+function getWordDifficulty(word) {
+    var length = word.length;
+    var consonantClusters = (word.match(/[bcdfghjklmnpqrstvwxyz]{3,}/gi) || []).length;
+    var silentLetters = /ght|kn|wr|mb|mn/.test(word);
+    
+    var difficultyScore = 0;
+    difficultyScore += length > 8 ? 2 : (length > 5 ? 1 : 0);
+    difficultyScore += consonantClusters * 2;
+    difficultyScore += silentLetters ? 1 : 0;
+    
+    if (difficultyScore >= 4) return 'hard';
+    if (difficultyScore >= 2) return 'medium';
+    return 'easy';
+}
+
+// V4: 获取单词发音建议
+function getWordPronunciationTip(wordItem) {
+    var word = wordItem.word;
+    var dims = wordItem.dimensions;
+    var tips = [];
+    
+    // 根据维度薄弱点给建议
+    if (dims.pronunciation < 60) {
+        // 检查常见发音难点
+        if (/th/.test(word)) {
+            tips.push('注意 "th" 发音，舌尖要触齿');
+        } else if (/tion|sion/.test(word)) {
+            tips.push('"-tion/-sion" 读作 /ʃən/');
+        } else if (/ough/.test(word)) {
+            tips.push('"-ough" 有多种发音，需记忆');
+        } else if (/silent/.test(word) || /ght/.test(word)) {
+            tips.push('注意静音字母');
+        } else {
+            tips.push('建议听原音后模仿');
+        }
+    }
+    
+    if (dims.stress < 60 && word.length > 5) {
+        tips.push('注意重音位置');
+    }
+    
+    if (dims.clarity < 60) {
+        tips.push('放慢语速，咬字清晰');
+    }
+    
+    // 根据单词特征给具体建议
+    if (wordItem.matchedWord && wordItem.matchedWord !== word) {
+        tips.push('你说的是 "' + wordItem.matchedWord + '"');
+    }
+    
+    return tips.length > 0 ? tips[0] : '';
+}
+
+// 计算单词相似度（字符级别）
+function calculateWordSimilarity(str1, str2) {
+    if (!str1 || !str2) return 0;
+    if (str1 === str2) return 1;
+    
+    var longer = str1.length > str2.length ? str1 : str2;
+    var shorter = str1.length > str2.length ? str2 : str1;
+    
+    if (longer.length === 0) return 1.0;
+    
+    var distance = levenshteinDistance(longer, shorter);
+    return (longer.length - distance) / longer.length;
 }
 
 // 计算字符串相似度
@@ -3006,37 +3151,99 @@ function showSpeakingResult(transcript) {
         recognizedEl.innerHTML = highlightMatches(transcript, targetText);
     }
     
-    // 显示单词级别评估
+    // 显示单词级别评估 - V3: 可视化评分
     if (wordLevelEl && wordScoresGrid) {
         wordLevelEl.classList.remove("hidden");
         
         var gridHtml = '';
-        wordAnalysis.words.forEach(function(item) {
+        wordAnalysis.words.forEach(function(item, index) {
             var icon = '✓';
             var statusClass = 'correct';
+            var scoreColor = '#10b981';
             
-            if (item.status === 'partial') {
+            if (item.status === 'excellent') {
+                icon = '★';
+                statusClass = 'excellent';
+                scoreColor = '#10b981';
+            } else if (item.status === 'good') {
+                icon = '◉';
+                statusClass = 'good';
+                scoreColor = '#3b82f6';
+            } else if (item.status === 'partial') {
                 icon = '○';
                 statusClass = 'partial';
+                scoreColor = '#f59e0b';
             } else if (item.status === 'poor') {
                 icon = '△';
                 statusClass = 'poor';
+                scoreColor = '#ef4444';
             } else if (item.status === 'missing') {
                 icon = '✗';
                 statusClass = 'missing';
+                scoreColor = '#6b7280';
             }
             
-            gridHtml += '<span class="word-score-item ' + statusClass + '">';
-            gridHtml += '<span class="word-score-icon">' + icon + '</span>';
-            gridHtml += '<span class="word-score-text">' + item.word + '</span>';
-            gridHtml += '</span>';
+            // V3: 单词卡片带评分
+            gridHtml += '<div class="word-score-card ' + statusClass + '" style="animation-delay: ' + (index * 0.05) + 's" data-word="' + item.word + '">';
+            
+            // 单词和分数
+            gridHtml += '<div class="word-card-header">';
+            gridHtml += '<span class="word-card-icon">' + icon + '</span>';
+            gridHtml += '<span class="word-card-text">' + item.word + '</span>';
+            gridHtml += '<span class="word-card-score" style="color: ' + scoreColor + '">' + item.score + '</span>';
+            gridHtml += '</div>';
+            
+            // V3: 迷你进度条
+            gridHtml += '<div class="word-card-progress">';
+            gridHtml += '<div class="word-progress-bar" style="width: ' + item.score + '%; background: ' + scoreColor + '"></div>';
+            gridHtml += '</div>';
+            
+            // V4: 维度详情（展开显示）
+            if (item.dimensions) {
+                gridHtml += '<div class="word-dimensions">';
+                gridHtml += '<div class="dim-item"><span class="dim-label">发音</span><span class="dim-value">' + item.dimensions.pronunciation + '</span></div>';
+                gridHtml += '<div class="dim-item"><span class="dim-label">重音</span><span class="dim-value">' + item.dimensions.stress + '</span></div>';
+                gridHtml += '<div class="dim-item"><span class="dim-label">清晰</span><span class="dim-value">' + item.dimensions.clarity + '</span></div>';
+                gridHtml += '</div>';
+            }
+            
+            // V4: 发音建议
+            if (item.status !== 'correct' && item.status !== 'excellent') {
+                var tip = getWordPronunciationTip(item);
+                if (tip) {
+                    gridHtml += '<div class="word-tip">' + tip + '</div>';
+                }
+            }
+            
+            // 难度标签
+            if (item.difficulty === 'hard') {
+                gridHtml += '<span class="word-difficulty hard">难</span>';
+            } else if (item.difficulty === 'medium') {
+                gridHtml += '<span class="word-difficulty medium">中</span>';
+            }
+            
+            gridHtml += '</div>';
         });
         
         wordScoresGrid.innerHTML = gridHtml;
         
+        // 更新汇总信息
         if (wordScoreSummary) {
-            wordScoreSummary.textContent = wordAnalysis.correctCount + '/' + wordAnalysis.totalWords + ' 正确';
+            var correctCount = wordAnalysis.correctCount;
+            var total = wordAnalysis.totalWords;
+            var percentage = total > 0 ? Math.round(correctCount / total * 100) : 0;
+            wordScoreSummary.innerHTML = '<span class="summary-count">' + correctCount + '/' + total + '</span> 正确 <span class="summary-percent">(' + percentage + '%)</span>';
         }
+        
+        // V5: 添加点击展开交互
+        setTimeout(function() {
+            var cards = wordScoresGrid.querySelectorAll('.word-score-card');
+            cards.forEach(function(card) {
+                card.addEventListener('click', function() {
+                    this.classList.toggle('expanded');
+                });
+            });
+        }, 100);
     }
     
     // 分数动画
