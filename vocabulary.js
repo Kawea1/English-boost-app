@@ -1862,16 +1862,115 @@ function changeWordsPerSession(value) {
 }
 
 function updateVocabProgress() {
-    var progress = document.getElementById('vocabProgress');
-    if (progress) {
-        // 显示队列进度和单词完成数
-        var completedCount = 0;
-        sessionWords.forEach(function(w) {
-            if (sessionWordProgress[w.word] && sessionWordProgress[w.word].completed) {
-                completedCount++;
-            }
+    // V10: 更新进度环
+    var progressRingFill = document.getElementById('progressRingFill');
+    var progressText = document.getElementById('vocabProgressText');
+    var oldProgress = document.getElementById('vocabProgress');
+    
+    var completedCount = 0;
+    sessionWords.forEach(function(w) {
+        if (sessionWordProgress[w.word] && sessionWordProgress[w.word].completed) {
+            completedCount++;
+        }
+    });
+    
+    // 计算进度百分比
+    var total = sessionWords.length || 1;
+    var progress = completedCount / total;
+    var circumference = 2 * Math.PI * 20; // r=20
+    var offset = circumference * (1 - progress);
+    
+    // 更新进度环
+    if (progressRingFill) {
+        progressRingFill.style.strokeDashoffset = offset;
+    }
+    
+    // 更新数字
+    if (progressText) {
+        progressText.textContent = completedCount;
+    }
+    
+    // 兼容旧版进度显示
+    if (oldProgress) {
+        oldProgress.textContent = (currentQueueIndex + 1) + '/' + learningQueue.length + ' (已掌握: ' + completedCount + '/' + sessionWords.length + ')';
+    }
+    
+    // V8: 更新统计面板
+    updateVocabStats();
+}
+
+// V8: 更新学习统计
+function updateVocabStats() {
+    var stats = loadDailyStats();
+    
+    var statTodayNew = document.getElementById('statTodayNew');
+    var statTodayReview = document.getElementById('statTodayReview');
+    var statMastered = document.getElementById('statMastered');
+    var statStreak = document.getElementById('statStreak');
+    
+    if (statTodayNew) statTodayNew.textContent = stats.newToday || 0;
+    if (statTodayReview) statTodayReview.textContent = stats.reviewToday || 0;
+    if (statMastered) statMastered.textContent = stats.mastered || 0;
+    if (statStreak) statStreak.textContent = stats.streak || 0;
+}
+
+// V8: 加载今日统计数据
+function loadDailyStats() {
+    try {
+        var today = new Date().toDateString();
+        var statsKey = 'vocabStats_' + today;
+        var stats = JSON.parse(localStorage.getItem(statsKey) || '{}');
+        
+        // 获取总掌握数
+        var wordProgress = JSON.parse(localStorage.getItem('wordProgress') || '{}');
+        var masteredCount = 0;
+        Object.keys(wordProgress).forEach(function(word) {
+            if (wordProgress[word].level >= 4) masteredCount++;
         });
-        progress.textContent = (currentQueueIndex + 1) + '/' + learningQueue.length + ' (已掌握: ' + completedCount + '/' + sessionWords.length + ')';
+        stats.mastered = masteredCount;
+        
+        // 计算连续学习天数
+        stats.streak = calculateStreak();
+        
+        return stats;
+    } catch (e) {
+        return { newToday: 0, reviewToday: 0, mastered: 0, streak: 0 };
+    }
+}
+
+// 计算学习连续天数
+function calculateStreak() {
+    try {
+        var streak = 0;
+        var date = new Date();
+        
+        for (var i = 0; i < 365; i++) {
+            var dateStr = date.toDateString();
+            var statsKey = 'vocabStats_' + dateStr;
+            var dayStats = JSON.parse(localStorage.getItem(statsKey) || '{}');
+            
+            if ((dayStats.newToday || 0) + (dayStats.reviewToday || 0) > 0) {
+                streak++;
+                date.setDate(date.getDate() - 1);
+            } else if (i === 0) {
+                // 今天还没学习，继续检查昨天
+                date.setDate(date.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+        return streak;
+    } catch (e) {
+        return 0;
+    }
+}
+
+// V8: 切换统计面板显示
+function toggleVocabStats() {
+    var panel = document.getElementById('vocabStatsPanel');
+    if (panel) {
+        panel.classList.toggle('hidden');
+        updateVocabStats();
     }
 }
 
@@ -1922,8 +2021,28 @@ function showCurrentWord() {
     // V6: 显示学习模式提示
     showLearningModeIndicator(learningModeState.mode);
     
-    document.getElementById('wordMain').textContent = wordData.word;
-    document.getElementById('wordPhonetic').textContent = wordData.phonetic || '';
+    // V10: 适配新版HTML结构
+    var wordMain = document.getElementById('wordMain');
+    var wordPhonetic = document.getElementById('wordPhonetic');
+    var wordMeaning = document.getElementById('wordMeaning');
+    var rateButtons = document.getElementById('rateButtons');
+    var showMeaningBtn = document.getElementById('showMeaningBtn');
+    var swipeHint = document.getElementById('swipeHint');
+    
+    if (wordMain) {
+        // V10: 添加单词切换动画
+        wordMain.classList.add('exiting');
+        setTimeout(function() {
+            wordMain.textContent = wordData.word;
+            wordMain.classList.remove('exiting');
+            wordMain.classList.add('entering');
+            setTimeout(function() {
+                wordMain.classList.remove('entering');
+            }, 350);
+        }, 250);
+    }
+    
+    if (wordPhonetic) wordPhonetic.textContent = wordData.phonetic || '';
     
     // V1: 显示掌握度徽章
     showMasteryBadge(wordData.word);
@@ -1935,9 +2054,10 @@ function showCurrentWord() {
     showExamTagsBadge(wordData.word);
     
     // 隐藏释义区域
-    document.getElementById('wordMeaning').classList.add('hidden');
-    document.getElementById('rateButtons').classList.add('hidden');
-    document.getElementById('showMeaningBtn').classList.remove('hidden');
+    if (wordMeaning) wordMeaning.classList.add('hidden');
+    if (rateButtons) rateButtons.classList.add('hidden');
+    if (showMeaningBtn) showMeaningBtn.classList.remove('hidden');
+    if (swipeHint) swipeHint.style.display = '';
     
     updateVocabProgress();
     
@@ -2527,9 +2647,16 @@ function showMeaning() {
     document.getElementById('meaningEn').innerHTML = '';
     document.getElementById('wordExample').innerHTML = '';
     
-    document.getElementById('wordMeaning').classList.remove('hidden');
-    document.getElementById('showMeaningBtn').classList.add('hidden');
-    document.getElementById('rateButtons').classList.remove('hidden');
+    // V10: 适配新版HTML结构
+    var wordMeaning = document.getElementById('wordMeaning');
+    var showMeaningBtn = document.getElementById('showMeaningBtn');
+    var rateButtons = document.getElementById('rateButtons');
+    var swipeHint = document.getElementById('swipeHint');
+    
+    if (wordMeaning) wordMeaning.classList.remove('hidden');
+    if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
+    if (rateButtons) rateButtons.classList.remove('hidden');
+    if (swipeHint) swipeHint.style.display = 'none';
     
     // V3: 更新复习间隔显示
     updateIntervalDisplay();
@@ -4254,3 +4381,81 @@ window.closeMnemonicPractice = closeMnemonicPractice;
 window.showMnemonicStats = showMnemonicStats;
 window.closeMnemonicStats = closeMnemonicStats;
 window.startOverduePractice = startOverduePractice;
+
+// ==================== V9: 键盘快捷键支持 ====================
+document.addEventListener('keydown', function(e) {
+    // 只在词汇模块可见时响应
+    var vocabModal = document.getElementById('vocabularyModal');
+    if (!vocabModal || !vocabModal.classList.contains('active')) return;
+    
+    // 忽略输入框中的键盘事件
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+    var key = e.key.toLowerCase();
+    var rateButtons = document.getElementById('rateButtons');
+    var isRatingVisible = rateButtons && !rateButtons.classList.contains('hidden');
+    
+    switch(key) {
+        case ' ': // 空格键
+        case 'enter':
+            e.preventDefault();
+            if (isRatingVisible) {
+                // 评分可见时，空格进入下一个（相当于良好）
+                rateWord('good');
+            } else {
+                // 评分不可见时，显示释义
+                showMeaning();
+            }
+            break;
+            
+        case '1':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('again');
+            }
+            break;
+            
+        case '2':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('hard');
+            }
+            break;
+            
+        case '3':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('good');
+            }
+            break;
+            
+        case '4':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('easy');
+            }
+            break;
+            
+        case 's':
+            e.preventDefault();
+            speakWord();
+            break;
+            
+        case 'escape':
+            closeModule();
+            break;
+            
+        case '?':
+        case 'h':
+            // 切换键盘提示显示
+            var hints = document.getElementById('keyboardHints');
+            if (hints) {
+                hints.classList.toggle('hidden');
+            }
+            break;
+    }
+});
+
+// V8: 导出统计功能
+window.toggleVocabStats = toggleVocabStats;
+window.updateVocabStats = updateVocabStats;

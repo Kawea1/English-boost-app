@@ -1929,6 +1929,582 @@ svg {
 .back-btn:hover { background: rgba(255,255,255,0.25); }
 .modal-header h2 { flex: 1; font-size: 20px; font-weight: 700; }
 
+/* ==================== 核心词汇 V10 - 沉浸式背单词体验 ==================== */
+/* V1: 极简头部设计 */
+.vocab-header-v10 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.vocab-back-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.vocab-back-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+}
+
+/* V4: 智能进度环 */
+.vocab-progress-ring {
+    position: relative;
+    width: 48px;
+    height: 48px;
+}
+
+.progress-ring-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg);
+}
+
+.progress-ring-bg {
+    stroke: rgba(255, 255, 255, 0.2);
+}
+
+.progress-ring-fill {
+    stroke: white;
+    stroke-linecap: round;
+    stroke-dasharray: 125.6;
+    stroke-dashoffset: 125.6;
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+.progress-ring-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    font-weight: 700;
+    color: white;
+}
+
+.vocab-stats-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.vocab-stats-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+}
+
+/* V8: 学习统计面板 */
+.vocab-stats-panel {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 16px 20px;
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: 800;
+    color: #667eea;
+    margin-bottom: 4px;
+}
+
+.stat-desc {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* V2+V3: 沉浸式内容区 */
+.vocab-immersive-content {
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+    padding: 0;
+    background: linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%);
+}
+
+/* V5: 快速工具栏 */
+.vocab-toolbar {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    padding: 20px;
+    padding-bottom: 10px;
+}
+
+.tool-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: white;
+    border-radius: 14px;
+    color: #64748b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+    color: #667eea;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.tool-btn:active {
+    transform: scale(0.95);
+}
+
+.tool-btn.active {
+    color: #667eea;
+    background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+}
+
+/* V2: 极简单词展示 */
+.word-display-v10 {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px 20px;
+}
+
+.word-focus-area {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 24px 40px;
+    text-align: center;
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.04),
+        0 1px 3px rgba(0, 0, 0, 0.06);
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.word-focus-area::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.word-focus-area:hover::before {
+    opacity: 1;
+}
+
+.word-focus-area:active {
+    transform: scale(0.99);
+}
+
+/* 单词主体 - 超大字号 */
+.word-text-v10 {
+    font-size: 52px;
+    font-weight: 800;
+    color: #1e293b;
+    letter-spacing: -1px;
+    margin-bottom: 12px;
+    line-height: 1.1;
+    transition: all 0.3s ease;
+    user-select: none;
+}
+
+.word-phonetic-v10 {
+    font-size: 18px;
+    color: #94a3b8;
+    font-family: 'Lucida Sans Unicode', serif;
+    margin-bottom: 16px;
+}
+
+/* V6: 滑动提示 */
+.swipe-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+    border-radius: 20px;
+    font-size: 13px;
+    color: #0284c7;
+    animation: gentlePulse 2s ease-in-out infinite;
+}
+
+@keyframes gentlePulse {
+    0%, 100% { opacity: 0.9; }
+    50% { opacity: 1; }
+}
+
+/* V3: 释义区域 */
+.word-meaning-v10 {
+    margin-top: 16px;
+    animation: fadeInUp 0.4s ease;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.meaning-section {
+    background: white;
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.meaning-primary {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 10px;
+    line-height: 1.4;
+}
+
+.meaning-secondary {
+    font-size: 15px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.example-section {
+    background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+    border-radius: 16px;
+    padding: 16px 20px;
+    border-left: 4px solid #eab308;
+}
+
+.example-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #ca8a04;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+}
+
+.example-text {
+    font-size: 15px;
+    color: #713f12;
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* V7: 操作区域 */
+.vocab-actions-v10 {
+    padding: 20px;
+    padding-bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    background: white;
+    border-radius: 24px 24px 0 0;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.05);
+}
+
+/* 显示释义按钮 - V10重设计 */
+.show-meaning-btn-v10 {
+    width: 100%;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    border-radius: 16px;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.35);
+}
+
+.show-meaning-btn-v10:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.45);
+}
+
+.show-meaning-btn-v10:active {
+    transform: scale(0.98);
+}
+
+.show-meaning-btn-v10 .btn-shortcut {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* V7: 极简评分系统 */
+.rate-system-v10 {
+    margin-top: 16px;
+    animation: fadeInUp 0.3s ease;
+}
+
+.rate-track {
+    display: flex;
+    gap: 10px;
+}
+
+.rate-option {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 14px 8px;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.rate-option .rate-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.rate-option .rate-text {
+    font-size: 12px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.rate-option kbd {
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 600;
+    opacity: 0.5;
+    font-family: inherit;
+}
+
+/* 不认识 - 红色 */
+.rate-option.again {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    color: #dc2626;
+}
+.rate-option.again .rate-dot {
+    background: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+}
+.rate-option.again kbd { background: rgba(220, 38, 38, 0.1); }
+.rate-option.again:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(220, 38, 38, 0.2);
+}
+.rate-option.again:active { transform: scale(0.95); }
+
+/* 模糊 - 橙色 */
+.rate-option.hard {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    color: #ea580c;
+}
+.rate-option.hard .rate-dot {
+    background: linear-gradient(135deg, #fdba74 0%, #fb923c 100%);
+}
+.rate-option.hard kbd { background: rgba(234, 88, 12, 0.1); }
+.rate-option.hard:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(234, 88, 12, 0.2);
+}
+.rate-option.hard:active { transform: scale(0.95); }
+
+/* 认识 - 绿色 */
+.rate-option.good {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    color: #16a34a;
+}
+.rate-option.good .rate-dot {
+    background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+}
+.rate-option.good kbd { background: rgba(22, 163, 74, 0.1); }
+.rate-option.good:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(22, 163, 74, 0.2);
+}
+.rate-option.good:active { transform: scale(0.95); }
+
+/* 简单 - 蓝色 */
+.rate-option.easy {
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    color: #2563eb;
+}
+.rate-option.easy .rate-dot {
+    background: linear-gradient(135deg, #93c5fd 0%, #60a5fa 100%);
+}
+.rate-option.easy kbd { background: rgba(37, 99, 235, 0.1); }
+.rate-option.easy:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+}
+.rate-option.easy:active { transform: scale(0.95); }
+
+/* V9: 键盘快捷键提示 */
+.keyboard-hints {
+    position: fixed;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    background: rgba(30, 41, 59, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 10px 20px;
+    border-radius: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+.keyboard-hints .hint-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.keyboard-hints kbd {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    font-family: inherit;
+    color: white;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* V10: 单词切换动画 */
+@keyframes wordEnter {
+    0% { opacity: 0; transform: translateX(20px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes wordExit {
+    0% { opacity: 1; transform: translateX(0); }
+    100% { opacity: 0; transform: translateX(-20px); }
+}
+
+.word-text-v10.entering {
+    animation: wordEnter 0.35s ease forwards;
+}
+
+.word-text-v10.exiting {
+    animation: wordExit 0.25s ease forwards;
+}
+
+/* V10: 评分反馈动画 */
+@keyframes rateSuccess {
+    0% { transform: scale(0.9); opacity: 0; }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.rate-option.selected {
+    animation: rateSuccess 0.3s ease;
+}
+
+/* 暗色模式适配 */
+@media (prefers-color-scheme: dark) {
+    .vocab-immersive-content {
+        background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    }
+    
+    .word-focus-area,
+    .meaning-section,
+    .vocab-actions-v10 {
+        background: #1e293b;
+    }
+    
+    .word-text-v10,
+    .meaning-primary {
+        color: #f1f5f9;
+    }
+    
+    .stat-card {
+        background: #334155;
+    }
+    
+    .tool-btn {
+        background: #334155;
+        color: #94a3b8;
+    }
+}
+
+/* 移动端优化 */
+@media (max-width: 400px) {
+    .word-text-v10 {
+        font-size: 40px;
+    }
+    
+    .meaning-primary {
+        font-size: 20px;
+    }
+    
+    .rate-option .rate-text {
+        font-size: 11px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ==================== 保留旧版样式兼容 ==================== */
 /* ==================== 词汇卡片 - 高级翻转动画 v1 ==================== */
 .word-card {
     background: white;

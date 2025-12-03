@@ -441,96 +441,130 @@
             </div>
         </main>
 
-        <!-- 词汇模块 -->
+        <!-- 词汇模块 V10 - 沉浸式背单词体验 -->
         <div class="modal" id="vocabularyModal">
-            <div class="modal-header modal-header-vocab">
-                <button class="back-btn" onclick="closeModule()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+            <!-- V1: 极简头部 - 只保留必要信息 -->
+            <div class="vocab-header-v10">
+                <button class="vocab-back-btn" onclick="closeModule()">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
-                <div class="modal-title-group">
-                    <div class="modal-icon-badge vocab">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    </div>
-                    <h2>核心词汇</h2>
+                <!-- V4: 智能进度环 -->
+                <div class="vocab-progress-ring" id="vocabProgressRing">
+                    <svg class="progress-ring-svg" viewBox="0 0 48 48">
+                        <circle class="progress-ring-bg" cx="24" cy="24" r="20" fill="none" stroke-width="3"/>
+                        <circle class="progress-ring-fill" cx="24" cy="24" r="20" fill="none" stroke-width="3" id="progressRingFill"/>
+                    </svg>
+                    <span class="progress-ring-text" id="vocabProgressText">1</span>
                 </div>
-                <div class="vocab-progress-badge" id="vocabProgress">1/50</div>
+                <!-- V8: 快速统计入口 -->
+                <button class="vocab-stats-btn" onclick="toggleVocabStats()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+                </button>
             </div>
-            <div class="vocab-module-content">
-                <div class="word-card" id="wordCard" onclick="speakWord()">
-                    <div class="word-card-inner">
-                        <div class="word-speaker-hint">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                            点击播放发音
-                        </div>
-                        <div class="word-main" id="wordMain">Loading...</div>
-                        <div class="word-phonetic" id="wordPhonetic">/ˈləʊdɪŋ/</div>
+            
+            <!-- V8: 学习统计面板（隐藏） -->
+            <div class="vocab-stats-panel hidden" id="vocabStatsPanel">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number" id="statTodayNew">0</div>
+                        <div class="stat-desc">今日新学</div>
                     </div>
-                    <div class="word-meaning hidden" id="wordMeaning">
-                        <div id="dictContainer"></div>
-                        <div class="meaning-cn" id="meaningCn"></div>
-                        <div class="meaning-en" id="meaningEn"></div>
-                        <div class="word-example" id="wordExample"></div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statTodayReview">0</div>
+                        <div class="stat-desc">今日复习</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statMastered">0</div>
+                        <div class="stat-desc">已掌握</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="statStreak">0</div>
+                        <div class="stat-desc">连续天数</div>
                     </div>
                 </div>
-                <div class="word-actions">
-                    <button class="show-btn" id="showMeaningBtn" onclick="showMeaning()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        显示释义
+            </div>
+            
+            <!-- V2+V3: 沉浸式单词卡片区域 -->
+            <div class="vocab-immersive-content">
+                <!-- V5: 快速记忆工具栏 -->
+                <div class="vocab-toolbar" id="vocabToolbar">
+                    <button class="tool-btn" onclick="toggleWordmark()" title="收藏">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                     </button>
-                    <!-- V1: Anki风格4按钮设计 - 重学/困难/良好/简单 -->
-                    <div class="rate-buttons-v2 hidden" id="rateButtons">
-                        <div class="rate-btn-group">
-                            <button class="rate-btn-v2 again" onclick="rateWord('again')">
-                                <div class="rate-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
-                                        <path d="M3 3v5h5"/>
-                                    </svg>
-                                </div>
-                                <span class="rate-label">重学</span>
-                                <span class="rate-interval" id="againInterval">&lt;1分钟</span>
-                            </button>
-                            <button class="rate-btn-v2 hard" onclick="rateWord('hard')">
-                                <div class="rate-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M16 16s-1.5-2-4-2-4 2-4 2"/>
-                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                    </svg>
-                                </div>
-                                <span class="rate-label">困难</span>
-                                <span class="rate-interval" id="hardInterval">1天</span>
-                            </button>
-                            <button class="rate-btn-v2 good" onclick="rateWord('good')">
-                                <div class="rate-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <circle cx="12" cy="12" r="10"/>
-                                        <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
-                                        <line x1="9" y1="9" x2="9.01" y2="9"/>
-                                        <line x1="15" y1="9" x2="15.01" y2="9"/>
-                                    </svg>
-                                </div>
-                                <span class="rate-label">良好</span>
-                                <span class="rate-interval" id="goodInterval">3天</span>
-                            </button>
-                            <button class="rate-btn-v2 easy" onclick="rateWord('easy')">
-                                <div class="rate-icon">
-                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                                        <polyline points="22 4 12 14.01 9 11.01"/>
-                                    </svg>
-                                </div>
-                                <span class="rate-label">简单</span>
-                                <span class="rate-interval" id="easyInterval">7天</span>
-                            </button>
+                    <button class="tool-btn" onclick="speakWord()" title="发音">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                    </button>
+                    <button class="tool-btn" onclick="showWordRoot()" title="词根">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                    </button>
+                </div>
+                
+                <!-- V2: 极简单词展示 - 聚焦核心 -->
+                <div class="word-display-v10" id="wordCard">
+                    <div class="word-focus-area" onclick="speakWord()">
+                        <!-- 单词主体 - 超大字号突出显示 -->
+                        <div class="word-text-v10" id="wordMain">aberrant</div>
+                        <div class="word-phonetic-v10" id="wordPhonetic">/əˈberənt/</div>
+                        <!-- V6: 滑动提示 -->
+                        <div class="swipe-hint" id="swipeHint">
+                            <span>👆 点击显示释义</span>
                         </div>
-                        <div class="rate-hint" id="rateHint">
-                            <span class="hint-icon">💡</span>
-                            <span class="hint-text">选择您对这个单词的掌握程度</span>
+                    </div>
+                    
+                    <!-- V3: 释义区域 - 点击展开 -->
+                    <div class="word-meaning-v10 hidden" id="wordMeaning">
+                        <div class="meaning-section">
+                            <div id="dictContainer"></div>
+                            <div class="meaning-primary" id="meaningCn">偏离常规的；异常的</div>
+                            <div class="meaning-secondary" id="meaningEn">departing from an accepted standard</div>
+                        </div>
+                        <div class="example-section" id="wordExample">
+                            <div class="example-label">例句</div>
+                            <div class="example-text">His aberrant behavior raised concerns.</div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- V7: 重新设计的评分按钮 -->
+                <div class="vocab-actions-v10">
+                    <button class="show-meaning-btn-v10" id="showMeaningBtn" onclick="showMeaning()">
+                        <span class="btn-text">显示释义</span>
+                        <span class="btn-shortcut">空格</span>
+                    </button>
+                    
+                    <!-- V7: 极简评分 - 只有图标和颜色 -->
+                    <div class="rate-system-v10 hidden" id="rateButtons">
+                        <div class="rate-track">
+                            <button class="rate-option again" onclick="rateWord('again')" data-key="1">
+                                <div class="rate-dot"></div>
+                                <span class="rate-text">不认识</span>
+                                <kbd>1</kbd>
+                            </button>
+                            <button class="rate-option hard" onclick="rateWord('hard')" data-key="2">
+                                <div class="rate-dot"></div>
+                                <span class="rate-text">模糊</span>
+                                <kbd>2</kbd>
+                            </button>
+                            <button class="rate-option good" onclick="rateWord('good')" data-key="3">
+                                <div class="rate-dot"></div>
+                                <span class="rate-text">认识</span>
+                                <kbd>3</kbd>
+                            </button>
+                            <button class="rate-option easy" onclick="rateWord('easy')" data-key="4">
+                                <div class="rate-dot"></div>
+                                <span class="rate-text">简单</span>
+                                <kbd>4</kbd>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- V9: 键盘快捷键提示 -->
+            <div class="keyboard-hints hidden" id="keyboardHints">
+                <div class="hint-item"><kbd>Space</kbd> 显示/下一个</div>
+                <div class="hint-item"><kbd>1-4</kbd> 评分</div>
+                <div class="hint-item"><kbd>S</kbd> 发音</div>
             </div>
         </div>
 
