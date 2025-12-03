@@ -2017,7 +2017,7 @@ function showCurrentWord() {
     }, 300);
 }
 
-// v4.9.1: 首次使用说明（仅首次安装时显示）
+// v4.9.2: 修复首次引导按钮 - 添加initVocabulary调用
 function showFirstTimeGuide() {
     var hasShownGuide = localStorage.getItem('vocabGuideShown');
     if (hasShownGuide) return;
@@ -2027,10 +2027,19 @@ function showFirstTimeGuide() {
     
     var guide = document.createElement('div');
     guide.style.cssText = 'background:#fff;border-radius:24px;padding:32px 24px;max-width:340px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3);animation:scaleIn 0.4s ease;';
-    guide.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">📖</div><h3 style="font-size:22px;font-weight:700;color:#1f2937;margin:0 0 12px;">学习规则说明</h3><div style="text-align:left;background:#f9fafb;padding:16px;border-radius:12px;margin:20px 0;"><div style="margin-bottom:12px;"><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#10b981;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✓</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">连续认识3次即完成学习</div></div><div><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#ef4444;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✗</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"不认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">重新开始学习该单词</div></div></div><div style="background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:20px;"><div style="color:#92400e;font-size:13px;line-height:1.5;">💡 提示：卡片右侧有 <strong>⋮</strong> 按钮<br/>点击可展开查看详细释义和例句</div></div><button onclick="this.closest(\'div[style*=\\\"position:fixed\\\"]\').remove();localStorage.setItem(\'vocabGuideShown\',\'true\');" style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#a855f7);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;">开始学习</button></div>';
+    guide.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">📖</div><h3 style="font-size:22px;font-weight:700;color:#1f2937;margin:0 0 12px;">学习规则说明</h3><div style="text-align:left;background:#f9fafb;padding:16px;border-radius:12px;margin:20px 0;"><div style="margin-bottom:12px;"><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#10b981;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✓</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">连续认识3次即完成学习</div></div><div><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#ef4444;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✗</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"不认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">重新开始学习该单词</div></div></div><div style="background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:20px;"><div style="color:#92400e;font-size:13px;line-height:1.5;">💡 提示：卡片右侧有 <strong>⋮</strong> 按钮<br/>点击可展开查看详细释义和例句</div></div><button id="guideStartBtn" style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#a855f7);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;">开始学习</button></div>';
     
     overlay.appendChild(guide);
     document.body.appendChild(overlay);
+    
+    // 绑定按钮事件
+    document.getElementById('guideStartBtn').onclick = function() {
+        overlay.remove();
+        localStorage.setItem('vocabGuideShown', 'true');
+        // 开始学习
+        initSessionWords();
+        showCurrentWord();
+    };
 }
 
 // v4.9.1: 添加卡片展开/收起按钮

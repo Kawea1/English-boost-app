@@ -981,67 +981,35 @@
         }
     };
     
-    // ========== v6.5: 数字动画系统 ==========
+    // ========== v6.5: 数字动画系统 - v4.9.2: 禁用动画 ==========
     const NumberAnimation = {
-        // 数字递增动画
-        countUp(element, target, duration = 1000) {
-            const start = parseInt(element.textContent) || 0;
-            const startTime = performance.now();
-            const diff = target - start;
-            
-            const animate = (currentTime) => {
-                const elapsed = currentTime - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                
-                // 缓动函数
-                const easeOutQuart = 1 - Math.pow(1 - progress, 4);
-                const current = Math.floor(start + diff * easeOutQuart);
-                
-                element.textContent = current;
-                element.classList.add('updating');
-                
-                if (progress < 1) {
-                    requestAnimationFrame(animate);
-                } else {
-                    element.classList.remove('updating');
-                    element.classList.add('count-up');
-                }
-            };
-            
-            requestAnimationFrame(animate);
+        // 数字直接更新（无动画）
+        countUp(element, target, duration = 0) {
+            element.textContent = target;
         },
         
-        // 百分比动画
-        animatePercentage(element, target, duration = 800) {
-            this.countUp(element, target, duration);
-            element.classList.add('percentage-bounce');
-            setTimeout(() => element.classList.remove('percentage-bounce'), 500);
+        // 百分比直接更新（无动画）
+        animatePercentage(element, target, duration = 0) {
+            element.textContent = target;
         },
         
-        // 连击数字效果
+        // 无连击效果
         comboEffect(element) {
-            element.classList.add('combo-number');
-            setTimeout(() => element.classList.remove('combo-number'), 500);
+            // 禁用
         },
         
-        // 进度条动画
+        // 进度条直接更新
         animateProgress(progressBar, target) {
-            progressBar.classList.add('progress-fill-animated');
             progressBar.style.width = `${target}%`;
         },
         
-        // 环形进度动画
+        // 环形进度直接更新
         animateRingProgress(circle, target, total = 100) {
             const circumference = 2 * Math.PI * parseFloat(circle.getAttribute('r'));
             const offset = circumference - (target / total) * circumference;
             
             circle.style.strokeDasharray = circumference;
-            circle.style.strokeDashoffset = circumference;
-            
-            requestAnimationFrame(() => {
-                circle.classList.add('ring-progress');
-                circle.style.strokeDashoffset = offset;
-            });
+            circle.style.strokeDashoffset = offset;
         }
     };
     

@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '4.9.1';
-    const APP_VERSION_CODE = 491;
+    const APP_VERSION = '4.9.2';
+    const APP_VERSION_CODE = 492;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';

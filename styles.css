@@ -25823,12 +25823,25 @@ body.theme-dark .para-score-badge.score-error {
 
 /* ==================== V11 专业简洁UI样式 ==================== */
 
-/* 首页核心模块网格 - 紧凑双列布局 */
+/* 首页核心模块网格 - 紧凑双列布局 + v4.9.2: 三行布局 */
 .core-modules-v11 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 12px;
     margin-bottom: 20px;
+}
+
+/* v4.9.2: 复习卡片样式 */
+.core-card-v11.review .card-icon-v11 {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+}
+
+.core-card-v11.review .card-icon-v11 svg {
+    stroke: white;
+}
+
+.core-card-v11.review:hover {
+    box-shadow: 0 4px 12px rgba(251, 191, 36, 0.2);
 }
 
 /* V11 核心卡片 - 简洁专业设计 */
@@ -26078,7 +26091,7 @@ body.theme-dark .para-score-badge.score-error {
     box-shadow: 0 8px 24px rgba(236, 72, 153, 0.15);
 }
 
-/* 辅助模块区域 */
+/* 辅助模块区域 - v4.9.2: 仅资源卡片 */
 .aux-modules-v11 {
     display: flex;
     gap: 10px;
@@ -26089,13 +26102,19 @@ body.theme-dark .para-score-badge.score-error {
     flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 10px;
-    padding: 12px 14px;
+    padding: 14px;
     background: var(--gray-50);
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
     border: 1px solid transparent;
+}
+
+/* v4.9.2: 资源卡片全宽 */
+.aux-card-v11.resources-wide {
+    width: 100%;
 }
 
 .aux-card-v11:hover {
