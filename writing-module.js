@@ -214,7 +214,9 @@
             if (topics.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon">📝</div>
+                        <div class="empty-icon" style="width: 48px; height: 48px; background: var(--gray-100); border-radius: 12px; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--gray-400)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                        </div>
                         <p>暂无${typeName}写作题目</p>
                         <p class="text-muted">题目正在准备中...</p>
                     </div>
@@ -245,7 +247,7 @@
             const history = this.writingHistory.find(h => h.topicId === topicId);
             if (history) {
                 return `<div class="topic-progress completed">
-                    <span class="progress-icon">✓</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="margin-right: 4px;"><path d="M20 6L9 17l-5-5"/></svg>
                     <span>已完成 - 得分: ${history.score || '--'}</span>
                 </div>`;
             }
@@ -363,7 +365,7 @@
                 materialHtml = `
                     <div class="writing-material">
                         <div class="professor-question">
-                            <div class="professor-avatar">👨‍🏫</div>
+                            <div class="professor-avatar">P</div>
                             <div class="professor-content">
                                 <div class="professor-name">${topic.professorQuestion.name}</div>
                                 <p>${topic.professorQuestion.context}</p>
@@ -398,54 +400,130 @@
             }
             
             writingArea.innerHTML = `
-                <div class="writing-header">
-                    <button class="back-btn" onclick="WritingModule.exitWriting()">
-                        <span class="back-icon">←</span> 返回
+                <div class="writing-header-v11">
+                    <button class="writing-back-v11" onclick="WritingModule.exitWriting()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M19 12H5M12 19l-7-7 7-7"/>
+                        </svg>
                     </button>
-                    <div class="writing-timer" id="writing-timer">
-                        <span class="timer-icon">⏱</span>
-                        <span class="timer-value">${this.formatTime(topic.timeLimit)}</span>
+                    <h1 class="writing-title-v11">写作练习</h1>
+                </div>
+                
+                <div class="writing-practice-v11">
+                    <!-- 题目卡片 -->
+                    <div class="topic-card-v11">
+                        <div class="topic-header-v11">
+                            <span class="topic-type-v11">${this.getTypeLabel(topic.type)}</span>
+                            <div class="topic-time-v11" id="writing-timer">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <path d="M12 6v6l4 2"/>
+                                </svg>
+                                <span>${this.formatTime(topic.timeLimit)}</span>
+                            </div>
+                        </div>
+                        <h3 class="topic-title-v11">${topic.title}</h3>
+                        <p class="topic-desc-v11">${topic.prompt}</p>
                     </div>
-                    <div class="word-count" id="word-count">
-                        <span>0</span>/${topic.wordCount.min}-${topic.wordCount.max}词
+                    
+                    ${materialHtml}
+                    
+                    <!-- 资源按钮 -->
+                    <div class="resource-panels-v11">
+                        <button class="resource-btn-v11" onclick="WritingModule.toggleResource('vocab')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
+                            <span>推荐词汇</span>
+                        </button>
+                        <button class="resource-btn-v11" onclick="WritingModule.toggleResource('template')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+                            </svg>
+                            <span>句型模板</span>
+                        </button>
+                        <button class="resource-btn-v11" onclick="WritingModule.toggleResource('sample')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 16v-4M12 8h.01"/>
+                            </svg>
+                            <span>范文参考</span>
+                        </button>
                     </div>
-                </div>
-                
-                <div class="writing-title">
-                    <span class="type-badge">${this.getTypeLabel(topic.type)}</span>
-                    <h2>${topic.title}</h2>
-                </div>
-                
-                ${materialHtml}
-                
-                <div class="writing-prompt">
-                    <h4>写作要求:</h4>
-                    <p>${topic.prompt}</p>
-                </div>
-                
-                <div class="writing-editor">
-                    <textarea 
-                        id="writing-textarea" 
-                        placeholder="在此输入你的作文..."
-                        oninput="WritingModule.updateWordCount()"
-                    ></textarea>
-                </div>
-                
-                <div class="writing-tools">
-                    <button class="tool-btn" onclick="WritingModule.showVocabulary()">
-                        <span>📚</span> 推荐词汇
-                    </button>
-                    <button class="tool-btn" onclick="WritingModule.showTemplates()">
-                        <span>📝</span> 句型模板
-                    </button>
-                    <button class="tool-btn" onclick="WritingModule.showSample()">
-                        <span>💡</span> 范文参考
-                    </button>
-                </div>
-                
-                <div class="writing-actions">
-                    <button class="btn-secondary" onclick="WritingModule.saveDraft()">保存草稿</button>
-                    <button class="btn-primary" onclick="WritingModule.submitWriting()">提交作文</button>
+                    
+                    <!-- 词汇面板 -->
+                    <div class="resource-panel-v11" id="panel-vocab">
+                        <div class="panel-header-v11">
+                            <h4>推荐词汇</h4>
+                            <button class="panel-close-v11" onclick="WritingModule.closeResource('vocab')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="vocab-list-v11" id="vocab-content"></div>
+                    </div>
+                    
+                    <!-- 模板面板 -->
+                    <div class="resource-panel-v11" id="panel-template">
+                        <div class="panel-header-v11">
+                            <h4>句型模板</h4>
+                            <button class="panel-close-v11" onclick="WritingModule.closeResource('template')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="template-list-v11" id="template-content"></div>
+                    </div>
+                    
+                    <!-- 范文面板 -->
+                    <div class="resource-panel-v11" id="panel-sample">
+                        <div class="panel-header-v11">
+                            <h4>范文参考</h4>
+                            <button class="panel-close-v11" onclick="WritingModule.closeResource('sample')">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M18 6L6 18M6 6l12 12"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="sample-content-v11" id="sample-content"></div>
+                    </div>
+                    
+                    <!-- 写作输入区 -->
+                    <div class="writing-input-v11">
+                        <div class="input-header-v11">
+                            <h4>你的作文</h4>
+                            <div class="word-counter-v11" id="word-count">
+                                <span class="count">0</span> / ${topic.wordCount.min}-${topic.wordCount.max} 词
+                            </div>
+                        </div>
+                        <textarea 
+                            class="writing-textarea-v11"
+                            id="writing-textarea" 
+                            placeholder="在此输入你的作文..."
+                            oninput="WritingModule.updateWordCount()"
+                        ></textarea>
+                    </div>
+                    
+                    <!-- 操作按钮 -->
+                    <div class="action-buttons-v11">
+                        <button class="btn-save-v11" onclick="WritingModule.saveDraft()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                                <path d="M17 21v-8H7v8M7 3v5h8"/>
+                            </svg>
+                            保存草稿
+                        </button>
+                        <button class="btn-submit-v11" onclick="WritingModule.submitWriting()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/>
+                            </svg>
+                            提交作文
+                        </button>
+                    </div>
                 </div>
             `;
             
@@ -479,7 +557,10 @@
                 
                 const timerEl = document.getElementById('writing-timer');
                 if (timerEl) {
-                    timerEl.querySelector('.timer-value').textContent = this.formatTime(this.timeRemaining);
+                    const timerSpan = timerEl.querySelector('span:last-child');
+                    if (timerSpan) {
+                        timerSpan.textContent = this.formatTime(this.timeRemaining);
+                    }
                     
                     if (this.timeRemaining <= 300) { // 最后5分钟
                         timerEl.classList.add('warning');
@@ -505,7 +586,7 @@
         // 时间到
         timeUp() {
             clearInterval(this.timer);
-            alert('⏰ 时间到！请提交你的作文。');
+            alert('时间到！请提交你的作文。');
             this.submitWriting();
         },
         
@@ -519,7 +600,7 @@
             
             const countEl = document.getElementById('word-count');
             if (countEl) {
-                countEl.querySelector('span').textContent = wordCount;
+                countEl.querySelector('.count').textContent = wordCount;
                 
                 const minWords = this.currentTopic.wordCount.min;
                 const maxWords = this.currentTopic.wordCount.max;
@@ -535,62 +616,149 @@
             }
         },
         
-        // 显示推荐词汇
-        showVocabulary() {
+        // 切换资源面板
+        toggleResource(type) {
+            const panel = document.getElementById(`panel-${type}`);
+            const btn = document.querySelector(`.resource-btn-v11[onclick*="${type}"]`);
+            
+            // 关闭其他面板
+            document.querySelectorAll('.resource-panel-v11').forEach(p => {
+                if (p.id !== `panel-${type}`) {
+                    p.classList.remove('show');
+                }
+            });
+            document.querySelectorAll('.resource-btn-v11').forEach(b => {
+                if (b !== btn) {
+                    b.classList.remove('active');
+                }
+            });
+            
+            // 切换当前面板
+            if (panel.classList.contains('show')) {
+                panel.classList.remove('show');
+                btn.classList.remove('active');
+            } else {
+                panel.classList.add('show');
+                btn.classList.add('active');
+                
+                // 加载内容
+                if (type === 'vocab') {
+                    this.loadVocabulary();
+                } else if (type === 'template') {
+                    this.loadTemplates();
+                } else if (type === 'sample') {
+                    this.loadSample();
+                }
+            }
+        },
+        
+        // 关闭资源面板
+        closeResource(type) {
+            const panel = document.getElementById(`panel-${type}`);
+            const btn = document.querySelector(`.resource-btn-v11[onclick*="${type}"]`);
+            if (panel) panel.classList.remove('show');
+            if (btn) btn.classList.remove('active');
+        },
+        
+        // 加载词汇到面板
+        loadVocabulary() {
+            const container = document.getElementById('vocab-content');
+            if (!container) return;
+            
             if (!this.currentTopic || !this.currentTopic.vocabulary) {
-                alert('暂无推荐词汇');
+                container.innerHTML = '<p style="color: var(--gray-500); font-size: 13px;">暂无推荐词汇</p>';
                 return;
             }
             
-            const modal = this.createModal('推荐词汇', `
-                <div class="vocabulary-list">
-                    ${this.currentTopic.vocabulary.map(word => `
-                        <div class="vocab-item" onclick="WritingModule.insertWord('${word}')">
-                            <span class="vocab-word">${word}</span>
+            container.innerHTML = this.currentTopic.vocabulary.map(word => `
+                <div class="vocab-item-v11" onclick="WritingModule.insertWord('${word}')">
+                    <span class="vocab-word-v11">${word}</span>
+                    <span class="vocab-meaning-v11">点击插入</span>
+                </div>
+            `).join('');
+        },
+        
+        // 加载模板到面板
+        loadTemplates() {
+            const container = document.getElementById('template-content');
+            if (!container) return;
+            
+            const templates = window.WRITING_TEMPLATES || {};
+            
+            container.innerHTML = `
+                <div class="template-category-v11">
+                    <h5>开头段模板</h5>
+                    ${(templates.introductions?.opinion || []).slice(0, 3).map(t => `
+                        <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
+                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
                         </div>
                     `).join('')}
                 </div>
-                <p class="vocab-hint">点击词汇可插入到作文中</p>
-            `);
-            document.body.appendChild(modal);
-        },
-        
-        // 显示句型模板
-        showTemplates() {
-            const templates = window.WRITING_TEMPLATES || {};
-            
-            const modal = this.createModal('句型模板', `
-                <div class="template-sections">
-                    <div class="template-section">
-                        <h4>开头段</h4>
-                        ${(templates.introductions?.opinion || []).slice(0, 3).map(t => `
-                            <div class="template-item" onclick="WritingModule.insertTemplate('${t.replace(/'/g, "\\'")}')">
-                                ${t}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="template-section">
-                        <h4>过渡词</h4>
-                        <div class="transition-words">
-                            ${Object.entries(templates.transitions || {}).map(([type, words]) => `
-                                <div class="transition-group">
-                                    <span class="group-label">${this.getTransitionLabel(type)}:</span>
-                                    ${words.slice(0, 3).map(w => `<span class="transition-word" onclick="WritingModule.insertWord('${w}, ')">${w}</span>`).join('')}
-                                </div>
-                            `).join('')}
+                <div class="template-category-v11">
+                    <h5>论证段模板</h5>
+                    ${(templates.bodyParagraphs?.reason_example || []).slice(0, 3).map(t => `
+                        <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
+                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
                         </div>
-                    </div>
-                    <div class="template-section">
-                        <h4>结尾段</h4>
-                        ${(templates.conclusions?.opinion || []).slice(0, 2).map(t => `
-                            <div class="template-item" onclick="WritingModule.insertTemplate('${t.replace(/'/g, "\\'")}')">
-                                ${t}
-                            </div>
-                        `).join('')}
+                    `).join('')}
+                </div>
+                <div class="template-category-v11">
+                    <h5>过渡词</h5>
+                    <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+                        ${Object.entries(templates.transitions || {}).flatMap(([_, words]) => 
+                            words.slice(0, 2).map(w => `
+                                <span style="padding: 6px 12px; background: var(--gray-100); border-radius: 16px; font-size: 12px; cursor: pointer;" onclick="WritingModule.insertWord('${w}, ')">${w}</span>
+                            `)
+                        ).join('')}
                     </div>
                 </div>
-            `);
-            document.body.appendChild(modal);
+                <div class="template-category-v11">
+                    <h5>结尾段模板</h5>
+                    ${(templates.conclusions?.opinion || []).slice(0, 2).map(t => `
+                        <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
+                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        },
+        
+        // 加载范文到面板
+        loadSample() {
+            const container = document.getElementById('sample-content');
+            if (!container) return;
+            
+            if (!this.currentTopic || !this.currentTopic.sampleResponse) {
+                container.innerHTML = '<p style="color: var(--gray-500); font-size: 13px;">暂无范文参考</p>';
+                return;
+            }
+            
+            container.innerHTML = `
+                <div style="padding: 12px; background: var(--warning-light); border-radius: 10px; margin-bottom: 16px; font-size: 13px; color: #b45309;">
+                    建议先完成写作再查看范文
+                </div>
+                <div style="line-height: 1.8; color: var(--gray-700);">
+                    ${this.currentTopic.sampleResponse.split('\n\n').map(p => `<p style="margin-bottom: 14px;">${p}</p>`).join('')}
+                </div>
+                ${this.currentTopic.keyPoints ? `
+                    <div style="margin-top: 16px; padding: 14px; background: var(--gray-50); border-radius: 10px;">
+                        <h5 style="font-size: 14px; margin-bottom: 10px; color: var(--gray-800);">关键要点</h5>
+                        <ul style="padding-left: 18px; font-size: 13px; color: var(--gray-600);">
+                            ${this.currentTopic.keyPoints.map(p => `<li style="margin-bottom: 4px;">${p}</li>`).join('')}
+                        </ul>
+                    </div>
+                ` : ''}
+            `;
+        },
+        
+        // 显示推荐词汇 (保留原函数兼容性)
+        showVocabulary() {
+            this.toggleResource('vocab');
+        },
+        
+        // 显示句型模板 (保留原函数兼容性)
+        showTemplates() {
+            this.toggleResource('template');
         },
         
         // 获取过渡词类型标签
@@ -605,30 +773,9 @@
             return labels[type] || type;
         },
         
-        // 显示范文
+        // 显示范文 (保留原函数兼容性)
         showSample() {
-            if (!this.currentTopic || !this.currentTopic.sampleResponse) {
-                alert('暂无范文参考');
-                return;
-            }
-            
-            const modal = this.createModal('范文参考', `
-                <div class="sample-response">
-                    <div class="sample-warning">
-                        ⚠️ 建议先完成写作再查看范文
-                    </div>
-                    <div class="sample-text">${this.currentTopic.sampleResponse}</div>
-                    ${this.currentTopic.keyPoints ? `
-                        <div class="key-points">
-                            <h4>关键要点:</h4>
-                            <ul>
-                                ${this.currentTopic.keyPoints.map(p => `<li>${p}</li>`).join('')}
-                            </ul>
-                        </div>
-                    ` : ''}
-                </div>
-            `);
-            document.body.appendChild(modal);
+            this.toggleResource('sample');
         },
         
         // 创建模态框
@@ -692,7 +839,7 @@
             
             localStorage.setItem(`writing_draft_${this.currentTopic.id}`, JSON.stringify(draft));
             
-            this.showToast('草稿已保存 ✓');
+            this.showToast('草稿已保存');
         },
         
         // 提交作文
@@ -801,35 +948,59 @@
             const timeUsedMins = Math.floor(record.timeUsed / 60);
             const timeUsedSecs = record.timeUsed % 60;
             
-            // 生成 AI 分析内容
+            // 生成 AI 分析内容 (V11 版本)
             let aiAnalysisHTML = '';
             if (record.aiAnalysis) {
                 const ai = record.aiAnalysis;
                 
                 // 维度分数
+                const getDimClass = (score, max) => {
+                    const pct = score / max * 100;
+                    if (pct >= 80) return 'excellent';
+                    if (pct >= 60) return 'good';
+                    if (pct >= 40) return 'fair';
+                    return 'poor';
+                };
+                
                 const dimensionHTML = `
-                    <div class="ai-dimensions">
-                        <h4>📊 各维度评分</h4>
-                        <div class="dimension-grid">
-                            <div class="dimension-item">
-                                <div class="dim-label">结构组织</div>
-                                <div class="dim-score">${ai.dimensions.structure.score}/${ai.dimensions.structure.maxScore}</div>
-                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.structure.score / ai.dimensions.structure.maxScore * 100}%"></div></div>
+                    <div class="dimensions-v11">
+                        <h4>各维度评分</h4>
+                        <div class="dimension-grid-v11">
+                            <div class="dimension-item-v11">
+                                <div class="dimension-header-v11">
+                                    <span class="dimension-name-v11">结构组织</span>
+                                    <span class="dimension-score-v11">${ai.dimensions.structure.score}/${ai.dimensions.structure.maxScore}</span>
+                                </div>
+                                <div class="dimension-bar-v11">
+                                    <div class="dimension-fill-v11 ${getDimClass(ai.dimensions.structure.score, ai.dimensions.structure.maxScore)}" style="width: ${ai.dimensions.structure.score / ai.dimensions.structure.maxScore * 100}%"></div>
+                                </div>
                             </div>
-                            <div class="dimension-item">
-                                <div class="dim-label">论证分析</div>
-                                <div class="dim-score">${ai.dimensions.argumentation.score}/${ai.dimensions.argumentation.maxScore}</div>
-                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.argumentation.score / ai.dimensions.argumentation.maxScore * 100}%"></div></div>
+                            <div class="dimension-item-v11">
+                                <div class="dimension-header-v11">
+                                    <span class="dimension-name-v11">论证分析</span>
+                                    <span class="dimension-score-v11">${ai.dimensions.argumentation.score}/${ai.dimensions.argumentation.maxScore}</span>
+                                </div>
+                                <div class="dimension-bar-v11">
+                                    <div class="dimension-fill-v11 ${getDimClass(ai.dimensions.argumentation.score, ai.dimensions.argumentation.maxScore)}" style="width: ${ai.dimensions.argumentation.score / ai.dimensions.argumentation.maxScore * 100}%"></div>
+                                </div>
                             </div>
-                            <div class="dimension-item">
-                                <div class="dim-label">语言表达</div>
-                                <div class="dim-score">${ai.dimensions.language.score}/${ai.dimensions.language.maxScore}</div>
-                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.language.score / ai.dimensions.language.maxScore * 100}%"></div></div>
+                            <div class="dimension-item-v11">
+                                <div class="dimension-header-v11">
+                                    <span class="dimension-name-v11">语言表达</span>
+                                    <span class="dimension-score-v11">${ai.dimensions.language.score}/${ai.dimensions.language.maxScore}</span>
+                                </div>
+                                <div class="dimension-bar-v11">
+                                    <div class="dimension-fill-v11 ${getDimClass(ai.dimensions.language.score, ai.dimensions.language.maxScore)}" style="width: ${ai.dimensions.language.score / ai.dimensions.language.maxScore * 100}%"></div>
+                                </div>
                             </div>
-                            <div class="dimension-item">
-                                <div class="dim-label">学术规范</div>
-                                <div class="dim-score">${ai.dimensions.academic.score}/${ai.dimensions.academic.maxScore}</div>
-                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.academic.score / ai.dimensions.academic.maxScore * 100}%"></div></div>
+                            <div class="dimension-item-v11">
+                                <div class="dimension-header-v11">
+                                    <span class="dimension-name-v11">学术规范</span>
+                                    <span class="dimension-score-v11">${ai.dimensions.academic.score}/${ai.dimensions.academic.maxScore}</span>
+                                </div>
+                                <div class="dimension-bar-v11">
+                                    <div class="dimension-fill-v11 ${getDimClass(ai.dimensions.academic.score, ai.dimensions.academic.maxScore)}" style="width: ${ai.dimensions.academic.score / ai.dimensions.academic.maxScore * 100}%"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -839,39 +1010,26 @@
                 let paragraphHTML = '';
                 if (ai.paragraphAnalysis && ai.paragraphAnalysis.length > 0) {
                     paragraphHTML = `
-                        <div class="ai-paragraphs">
-                            <h4>📝 段落分析</h4>
+                        <div class="paragraphs-v11">
+                            <h4>段落分析</h4>
                             ${ai.paragraphAnalysis.map((para, idx) => {
                                 const posLabel = para.position === 'introduction' ? '引言段' : 
-                                                para.position === 'conclusion' ? '结论段' : `主体段${idx}`;
-                                const scoreClass = para.score >= 80 ? 'score-good' : para.score >= 60 ? 'score-warning' : 'score-error';
-                                
-                                let issuesList = '';
-                                if (para.issues.length > 0) {
-                                    issuesList = para.issues.map(issue => `
-                                        <div class="para-issue">
-                                            <span class="issue-badge">⚠️</span>
-                                            <span class="issue-msg">${issue.message}</span>
-                                            ${issue.instances ? `<span class="issue-example">${issue.instances.slice(0, 2).join(', ')}</span>` : ''}
-                                            ${issue.suggestion ? `<div class="issue-tip">💡 ${issue.suggestion}</div>` : ''}
-                                        </div>
-                                    `).join('');
-                                }
-                                
-                                let strengthsList = '';
-                                if (para.strengths.length > 0) {
-                                    strengthsList = para.strengths.map(s => `<span class="strength-tag">✓ ${s}</span>`).join('');
-                                }
+                                                para.position === 'conclusion' ? '结论段' : `主体段 ${idx}`;
+                                const scoreClass = para.score >= 80 ? 'good' : para.score >= 60 ? 'fair' : 'poor';
                                 
                                 return `
-                                    <div class="para-analysis ${scoreClass}">
-                                        <div class="para-header">
-                                            <span class="para-name">${posLabel}</span>
-                                            <span class="para-score-badge ${scoreClass}">${para.score}分</span>
-                                            <span class="para-words">${para.wordCount}词</span>
+                                    <div class="paragraph-item-v11">
+                                        <div class="para-header-v11">
+                                            <span class="para-label-v11">${posLabel}</span>
+                                            <span class="para-score-v11 ${scoreClass}">${para.score}分</span>
                                         </div>
-                                        ${strengthsList ? `<div class="para-strengths">${strengthsList}</div>` : ''}
-                                        ${issuesList ? `<div class="para-issues">${issuesList}</div>` : ''}
+                                        <div class="para-content-v11">${para.content.substring(0, 100)}...</div>
+                                        ${para.issues.length > 0 ? `
+                                            <div class="para-feedback-v11">
+                                                <strong>需要改进：</strong>${para.issues[0].message}
+                                                ${para.issues[0].suggestion ? ` - ${para.issues[0].suggestion}` : ''}
+                                            </div>
+                                        ` : ''}
                                     </div>
                                 `;
                             }).join('')}
@@ -879,114 +1037,92 @@
                     `;
                 }
                 
-                // 最需要改进的段落
-                let weakestHTML = '';
-                if (ai.weakestParagraph) {
-                    weakestHTML = `
-                        <div class="ai-priority">
-                            <h4>🎯 优先改进</h4>
-                            <div class="priority-card">
-                                <div class="priority-header">
-                                    <span class="priority-icon">📍</span>
-                                    <span class="priority-title">第${ai.weakestParagraph.index}段需要重点修改</span>
-                                    <span class="priority-score">${ai.weakestParagraph.score}分</span>
+                // 改进建议
+                let suggestionsHTML = '';
+                if (ai.weaknesses && ai.weaknesses.length > 0) {
+                    suggestionsHTML = `
+                        <div class="suggestions-v11">
+                            <h4>改进建议</h4>
+                            ${ai.weaknesses.slice(0, 3).map(w => `
+                                <div class="suggestion-item-v11">
+                                    <div class="suggestion-icon-v11">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M12 8v4M12 16h.01"/>
+                                        </svg>
+                                    </div>
+                                    <div class="suggestion-text-v11">
+                                        <div class="suggestion-desc-v11">${w}</div>
+                                    </div>
                                 </div>
-                                <div class="priority-issues">
-                                    ${ai.weakestParagraph.mainIssues.map(i => `<div class="priority-issue">• ${i.message}</div>`).join('')}
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                
-                // 优缺点总结
-                let summaryHTML = '';
-                if (ai.strengths.length > 0 || ai.weaknesses.length > 0) {
-                    summaryHTML = `
-                        <div class="ai-summary">
-                            <div class="summary-col">
-                                <h5>✅ 优点</h5>
-                                <ul>${ai.strengths.slice(0, 4).map(s => `<li>${s}</li>`).join('') || '<li>继续努力!</li>'}</ul>
-                            </div>
-                            <div class="summary-col">
-                                <h5>⚠️ 待改进</h5>
-                                <ul>${ai.weaknesses.slice(0, 4).map(w => `<li>${w}</li>`).join('') || '<li>表现不错!</li>'}</ul>
-                            </div>
+                            `).join('')}
                         </div>
                     `;
                 }
                 
                 aiAnalysisHTML = `
-                    <div class="ai-analysis-section">
-                        <div class="ai-analysis-header">
-                            <span class="ai-icon">🤖</span>
-                            <span class="ai-title">AI 智能评分分析</span>
-                        </div>
-                        ${dimensionHTML}
-                        ${weakestHTML}
-                        ${paragraphHTML}
-                        ${summaryHTML}
-                    </div>
+                    ${dimensionHTML}
+                    ${paragraphHTML}
+                    ${suggestionsHTML}
                 `;
             }
             
             writingArea.innerHTML = `
-                <div class="writing-result">
-                    <div class="result-header">
-                        <div class="result-icon">🎉</div>
-                        <h2>作文已提交</h2>
+                <div class="ai-result-v11">
+                    <!-- 总分卡片 -->
+                    <div class="score-card-v11">
+                        <div class="score-title-v11">综合评分</div>
+                        <div class="score-value-v11">${record.score}</div>
+                        <div class="score-max-v11">满分 100</div>
+                        <div class="score-level-v11">${record.aiAnalysis ? record.aiAnalysis.grade : this.getGrade(record.score)}</div>
                     </div>
                     
-                    <div class="result-score">
-                        <div class="score-circle">
-                            <span class="score-value">${record.score}</span>
-                            <span class="score-label">分</span>
+                    <!-- 统计信息 -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px;">
+                        <div style="background: white; border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--gray-100);">
+                            <div style="font-size: 20px; font-weight: 700; color: var(--gray-800);">${record.wordCount}</div>
+                            <div style="font-size: 12px; color: var(--gray-500);">词数</div>
                         </div>
-                        <div class="score-grade">${record.aiAnalysis ? record.aiAnalysis.grade : this.getGrade(record.score)}</div>
-                    </div>
-                    
-                    <div class="result-stats">
-                        <div class="stat-item">
-                            <span class="stat-icon">📝</span>
-                            <span class="stat-value">${record.wordCount}</span>
-                            <span class="stat-label">词数</span>
+                        <div style="background: white; border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--gray-100);">
+                            <div style="font-size: 20px; font-weight: 700; color: var(--gray-800);">${timeUsedMins}:${timeUsedSecs.toString().padStart(2, '0')}</div>
+                            <div style="font-size: 12px; color: var(--gray-500);">用时</div>
                         </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">⏱</span>
-                            <span class="stat-value">${timeUsedMins}:${timeUsedSecs.toString().padStart(2, '0')}</span>
-                            <span class="stat-label">用时</span>
-                        </div>
-                        <div class="stat-item">
-                            <span class="stat-icon">📊</span>
-                            <span class="stat-value">${record.aiAnalysis ? record.aiAnalysis.paragraphCount : '-'}</span>
-                            <span class="stat-label">段落</span>
+                        <div style="background: white; border-radius: 12px; padding: 14px; text-align: center; border: 1px solid var(--gray-100);">
+                            <div style="font-size: 20px; font-weight: 700; color: var(--gray-800);">${record.aiAnalysis ? record.aiAnalysis.paragraphCount : '-'}</div>
+                            <div style="font-size: 12px; color: var(--gray-500);">段落</div>
                         </div>
                     </div>
                     
                     ${aiAnalysisHTML || `
-                        <div class="result-feedback">
-                            <h4>评分反馈</h4>
-                            <ul>
+                        <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--gray-100);">
+                            <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 12px;">评分反馈</h4>
+                            <ul style="padding-left: 18px; margin: 0; font-size: 13px; color: var(--gray-600);">
                                 ${this.getFeedback(record)}
                             </ul>
                         </div>
                     `}
                     
-                    <div class="result-content">
-                        <h4>你的作文</h4>
-                        <div class="content-text">${record.content.replace(/\n/g, '<br>')}</div>
+                    <!-- 你的作文 -->
+                    <div style="background: white; border-radius: 16px; padding: 20px; margin-bottom: 16px; border: 1px solid var(--gray-100);">
+                        <h4 style="font-size: 15px; font-weight: 600; margin: 0 0 12px;">你的作文</h4>
+                        <div style="font-size: 14px; color: var(--gray-700); line-height: 1.8;">${record.content.replace(/\n/g, '<br>')}</div>
                     </div>
                     
-                    ${this.currentTopic.sampleResponse ? `
-                        <div class="result-sample">
-                            <h4>范文参考</h4>
-                            <div class="sample-text">${this.currentTopic.sampleResponse}</div>
-                        </div>
-                    ` : ''}
-                    
-                    <div class="result-actions">
-                        <button class="btn-secondary" onclick="WritingModule.exitWriting()">返回列表</button>
-                        <button class="btn-primary" onclick="WritingModule.startWriting('${record.topicId}', '${this.currentType}')">重新练习</button>
+                    <!-- 操作按钮 -->
+                    <div class="action-buttons-v11">
+                        <button class="btn-save-v11" onclick="WritingModule.exitWriting()">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M19 12H5M12 19l-7-7 7-7"/>
+                            </svg>
+                            返回列表
+                        </button>
+                        <button class="btn-submit-v11" onclick="WritingModule.startWriting('${record.topicId}', '${this.currentType}')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 4v6h6M23 20v-6h-6"/>
+                                <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/>
+                            </svg>
+                            重新练习
+                        </button>
                     </div>
                 </div>
             `;
@@ -1008,19 +1144,19 @@
             
             // 字数反馈
             if (record.wordCount >= topic.wordCount.min && record.wordCount <= topic.wordCount.max) {
-                feedback.push('<li class="good">✓ 字数符合要求</li>');
+                feedback.push('<li style="color: #15803d;">字数符合要求</li>');
             } else if (record.wordCount < topic.wordCount.min) {
-                feedback.push(`<li class="warning">⚠ 字数偏少，建议至少${topic.wordCount.min}词</li>`);
+                feedback.push(`<li style="color: #b45309;">字数偏少，建议至少${topic.wordCount.min}词</li>`);
             } else {
-                feedback.push(`<li class="warning">⚠ 字数过多，建议控制在${topic.wordCount.max}词以内</li>`);
+                feedback.push(`<li style="color: #b45309;">字数过多，建议控制在${topic.wordCount.max}词以内</li>`);
             }
             
             // 段落反馈
             const paragraphs = record.content.split(/\n\n+/).filter(p => p.trim());
             if (paragraphs.length >= 3) {
-                feedback.push('<li class="good">✓ 段落结构清晰</li>');
+                feedback.push('<li style="color: #15803d;">段落结构清晰</li>');
             } else {
-                feedback.push('<li class="warning">⚠ 建议分3-4个段落</li>');
+                feedback.push('<li style="color: #b45309;">建议分3-4个段落</li>');
             }
             
             // 词汇反馈
@@ -1029,9 +1165,9 @@
                     record.content.toLowerCase().includes(v.toLowerCase())
                 );
                 if (usedVocab.length >= 3) {
-                    feedback.push(`<li class="good">✓ 使用了${usedVocab.length}个推荐词汇</li>`);
+                    feedback.push(`<li style="color: #15803d;">使用了${usedVocab.length}个推荐词汇</li>`);
                 } else {
-                    feedback.push('<li class="info">💡 尝试使用更多高级词汇</li>');
+                    feedback.push('<li style="color: var(--primary);">尝试使用更多高级词汇</li>');
                 }
             }
             
@@ -1126,7 +1262,7 @@
             };
         }
         
-        console.log('✅ V1.5: 写作模块初始化完成');
+        console.log('[Writing Module] V1.6: 写作模块初始化完成');
     }
     
     // 页面加载后初始化

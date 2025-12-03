@@ -58,15 +58,21 @@
                 <!-- V2: 核心价值展示 -->
                 <div class="value-showcase">
                     <div class="value-item">
-                        <div class="value-icon">📚</div>
+                        <div class="value-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                        </div>
                         <div class="value-text">10000+词汇</div>
                     </div>
                     <div class="value-item">
-                        <div class="value-icon">🎧</div>
+                        <div class="value-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+                        </div>
                         <div class="value-text">精听训练</div>
                     </div>
                     <div class="value-item">
-                        <div class="value-icon">🎯</div>
+                        <div class="value-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        </div>
                         <div class="value-text">AI评测</div>
                     </div>
                 </div>
@@ -74,7 +80,9 @@
                 <!-- V3: 主按钮 - 立即体验 -->
                 <button onclick="startFreeTrial()" class="main-cta-v10" id="trialBtn">
                     <div class="cta-content">
-                        <span class="cta-icon">🚀</span>
+                        <span class="cta-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                        </span>
                         <div class="cta-text">
                             <span class="cta-title">立即免费体验</span>
                             <span class="cta-subtitle">30天全功能 · 无需付费</span>
@@ -87,9 +95,18 @@
                 
                 <!-- V4: 信任标志 -->
                 <div class="trust-badges">
-                    <span class="trust-item">✓ 无需注册</span>
-                    <span class="trust-item">✓ 无需付款</span>
-                    <span class="trust-item">✓ 随时取消</span>
+                    <span class="trust-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                        无需注册
+                    </span>
+                    <span class="trust-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                        无需付款
+                    </span>
+                    <span class="trust-item">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg>
+                        随时取消
+                    </span>
                 </div>
             </div>
             
@@ -348,129 +365,100 @@
 
             <!-- V10 首页模块卡片 - 第一性原理设计 -->
             <div class="modules-section-v10">
-                <!-- V1: 极简标题 -->
+                <!-- V11: 极简标题 - 无emoji -->
                 <div class="section-header-v10">
                     <h2>开始学习</h2>
-                    <span class="section-hint">每天15分钟，稳步提升</span>
                 </div>
                 
-                <!-- V2: 四大核心功能 - 大卡片突出显示 -->
-                <div class="core-modules-v10">
-                    <!-- 词汇 - 最重要 -->
-                    <div class="core-card-v10 vocab" onclick="openModule('vocabulary')">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <span class="icon-emoji">📚</span>
-                            </div>
-                            <div class="card-info">
-                                <h3>核心词汇</h3>
-                                <p>10000+ GRE/托福高频词</p>
-                            </div>
-                            <div class="card-badge">
-                                <span class="badge-text">核心</span>
-                            </div>
+                <!-- V11: 五大核心功能 - 紧凑网格布局 -->
+                <div class="core-modules-v11">
+                    <!-- 词汇 -->
+                    <div class="core-card-v11 vocab" onclick="openModule('vocabulary')">
+                        <div class="card-icon-v11">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+                            </svg>
                         </div>
-                        <div class="card-stats">
-                            <div class="stat-item">
-                                <span class="stat-num" id="vocabLearned">0</span>
-                                <span class="stat-label">已学</span>
-                            </div>
-                            <div class="stat-divider"></div>
-                            <div class="stat-item">
-                                <span class="stat-num" id="vocabToReview">0</span>
-                                <span class="stat-label">待复习</span>
-                            </div>
+                        <div class="card-info-v11">
+                            <h3>核心词汇</h3>
+                            <span class="card-stat-v11"><span id="vocabLearned2">0</span> 已学</span>
                         </div>
-                        <div class="card-action">
-                            <span>继续学习</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                    </div>
+                    
+                    <!-- 写作 - 核心模块 -->
+                    <div class="core-card-v11 writing featured" onclick="openModule('writing')">
+                        <div class="card-icon-v11">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                            </svg>
                         </div>
+                        <div class="card-info-v11">
+                            <h3>学术写作</h3>
+                            <span class="card-stat-v11">AI评分</span>
+                        </div>
+                        <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                     </div>
                     
                     <!-- 阅读 -->
-                    <div class="core-card-v10 reading" onclick="openModule('reading')">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <span class="icon-emoji">📖</span>
-                            </div>
-                            <div class="card-info">
-                                <h3>阅读精讲</h3>
-                                <p>100篇学术文章</p>
-                            </div>
+                    <div class="core-card-v11 reading" onclick="openModule('reading')">
+                        <div class="card-icon-v11">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                            </svg>
                         </div>
-                        <div class="card-progress">
-                            <div class="progress-bar-mini">
-                                <div class="progress-fill" id="readingProgress" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text" id="readingProgressText">0/100</span>
+                        <div class="card-info-v11">
+                            <h3>阅读精讲</h3>
+                            <span class="card-stat-v11" id="readingProgressText2">0/100</span>
                         </div>
-                        <div class="card-action">
-                            <span>开始阅读</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </div>
+                        <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                     </div>
                     
                     <!-- 听力 -->
-                    <div class="core-card-v10 listening" onclick="openModule('listening')">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <span class="icon-emoji">🎧</span>
-                            </div>
-                            <div class="card-info">
-                                <h3>精听训练</h3>
-                                <p>50篇学术音频</p>
-                            </div>
+                    <div class="core-card-v11 listening" onclick="openModule('listening')">
+                        <div class="card-icon-v11">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+                            </svg>
                         </div>
-                        <div class="card-progress">
-                            <div class="progress-bar-mini">
-                                <div class="progress-fill" id="listeningProgress" style="width: 0%"></div>
-                            </div>
-                            <span class="progress-text" id="listeningProgressText">0/50</span>
+                        <div class="card-info-v11">
+                            <h3>精听训练</h3>
+                            <span class="card-stat-v11" id="listeningProgressText2">0/50</span>
                         </div>
-                        <div class="card-action">
-                            <span>开始精听</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </div>
+                        <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                     </div>
                     
                     <!-- 口语 -->
-                    <div class="core-card-v10 speaking" onclick="openModule('speaking')">
-                        <div class="card-glow"></div>
-                        <div class="card-content">
-                            <div class="card-icon">
-                                <span class="icon-emoji">🎤</span>
-                            </div>
-                            <div class="card-info">
-                                <h3>口语跟读</h3>
-                                <p>AI语音评测</p>
-                            </div>
+                    <div class="core-card-v11 speaking" onclick="openModule('speaking')">
+                        <div class="card-icon-v11">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                                <line x1="12" y1="19" x2="12" y2="23"/>
+                                <line x1="8" y1="23" x2="16" y2="23"/>
+                            </svg>
                         </div>
-                        <div class="card-feature">
-                            <span class="feature-tag">🤖 AI打分</span>
+                        <div class="card-info-v11">
+                            <h3>口语跟读</h3>
+                            <span class="card-stat-v11">AI评测</span>
                         </div>
-                        <div class="card-action">
-                            <span>开始练习</span>
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                        </div>
+                        <svg class="card-arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
                     </div>
                 </div>
                 
-                <!-- V3: 辅助功能 - 小卡片一行排列 -->
-                <div class="aux-modules-v10">
-                    <div class="aux-card" onclick="openModule('writing')">
-                        <span class="aux-icon">✍️</span>
-                        <span class="aux-name">写作</span>
+                <!-- V11: 辅助功能 - 小型横向排列 -->
+                <div class="aux-modules-v11">
+                    <div class="aux-card-v11" onclick="openModule('review')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        <span>复习</span>
                     </div>
-                    <div class="aux-card" onclick="openModule('review')">
-                        <span class="aux-icon">🔄</span>
-                        <span class="aux-name">复习</span>
-                    </div>
-                    <div class="aux-card" onclick="openModule('resources')">
-                        <span class="aux-icon">📎</span>
-                        <span class="aux-name">资源</span>
+                    <div class="aux-card-v11" onclick="openModule('resources')">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                        <span>资源</span>
                     </div>
                 </div>
             </div>
@@ -1323,77 +1311,33 @@
 
             <!-- 写作模块 V10 -->
             <div class="module-page hidden" id="writing-module">
-                <div class="writing-header-v10">
-                    <button class="writing-back-v10" onclick="closeModule()">
+                <!-- V11: 极简头部 -->
+                <div class="writing-header-v11">
+                    <button class="back-btn-v11" onclick="closeModule()">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
                     </button>
-                    <div class="writing-title-v10">
-                        <span class="writing-emoji">✍️</span>
-                        <div class="writing-title-text">
-                            <h2>写作练习</h2>
-                            <p>学术英语 · GRE · TOEFL</p>
-                        </div>
-                    </div>
+                    <h2 class="writing-title-v11">学术写作</h2>
+                    <div class="writing-header-space"></div>
                 </div>
                 
-                <div id="writing-main" class="writing-main-v10">
-                    <!-- 考试类型选择 - 横向滚动卡片 -->
-                    <div class="writing-exams-v10">
-                        <div class="section-label-v10">选择写作类型</div>
-                        <div class="exam-scroll-v10">
-                            <div class="exam-card-v10 toefl" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">
-                                <div class="exam-glow-v10"></div>
-                                <span class="exam-emoji-v10">🎯</span>
-                                <span class="exam-name-v10">TOEFL</span>
-                                <span class="exam-tasks-v10">综合 + 讨论</span>
-                            </div>
-                            <div class="exam-card-v10 gre" data-type="gre" onclick="WritingModule.selectExamType('gre')">
-                                <div class="exam-glow-v10"></div>
-                                <span class="exam-emoji-v10">📊</span>
-                                <span class="exam-name-v10">GRE</span>
-                                <span class="exam-tasks-v10">Issue + Argument</span>
-                            </div>
-                            <div class="exam-card-v10 ielts" data-type="ielts" onclick="WritingModule.selectExamType('ielts')">
-                                <div class="exam-glow-v10"></div>
-                                <span class="exam-emoji-v10">🌍</span>
-                                <span class="exam-name-v10">雅思</span>
-                                <span class="exam-tasks-v10">Task1 + Task2</span>
-                            </div>
-                            <div class="exam-card-v10 kaoyan" data-type="kaoyan" onclick="WritingModule.selectExamType('kaoyan')">
-                                <div class="exam-glow-v10"></div>
-                                <span class="exam-emoji-v10">📚</span>
-                                <span class="exam-name-v10">考研</span>
-                                <span class="exam-tasks-v10">应用文 + 图画</span>
-                            </div>
-                            <div class="exam-card-v10 academic" data-type="academic" onclick="WritingModule.selectExamType('academic')">
-                                <div class="exam-glow-v10"></div>
-                                <span class="exam-emoji-v10">🎓</span>
-                                <span class="exam-name-v10">学术英语</span>
-                                <span class="exam-tasks-v10">论文 + 摘要</span>
-                            </div>
-                        </div>
+                <div id="writing-main" class="writing-main-v11">
+                    <!-- V11: 写作类型选择 - 简洁标签式 -->
+                    <div class="writing-types-v11">
+                        <button class="type-tab-v11 active" data-type="academic" onclick="WritingModule.selectExamType('academic')">学术英语</button>
+                        <button class="type-tab-v11" data-type="gre" onclick="WritingModule.selectExamType('gre')">GRE</button>
+                        <button class="type-tab-v11" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">TOEFL</button>
+                        <button class="type-tab-v11" data-type="ielts" onclick="WritingModule.selectExamType('ielts')">IELTS</button>
                     </div>
                     
-                    <!-- AI功能亮点 - 简化版 -->
-                    <div class="writing-features-v10" style="display: none;"></div>
-                    
-                    <!-- 题目列表 -->
-                    <div class="writing-topics-v10">
-                        <div class="section-label-v10">练习题目</div>
-                        <div id="writing-topic-list" class="topic-list-v10">
-                            <div class="empty-state-v10">
-                                <div class="empty-icon-v10">👆</div>
-                                <p>选择上方考试类型开始练习</p>
+                    <!-- V11: 题目列表 - 简洁卡片 -->
+                    <div class="writing-topics-v11">
+                        <div id="writing-topic-list" class="topic-list-v11">
+                            <div class="empty-state-v11">
+                                <p>选择上方类型开始练习</p>
                             </div>
                         </div>
-                    </div>
-                    
-                    <!-- 历史记录 - 已隐藏，简化界面 -->
-                    <div class="writing-history-v10" style="display: none;">
-                        <div class="section-label-v10">写作历史</div>
-                        <div id="writing-history-list" class="history-list-v10"></div>
                     </div>
                 </div>
                 
@@ -1411,7 +1355,9 @@
                         </svg>
                     </button>
                     <div class="settings-title-v10">
-                        <span class="settings-emoji-v10">⚙️</span>
+                        <span class="settings-emoji-v10">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                        </span>
                         <h2>设置</h2>
                     </div>
                 </div>
@@ -1420,19 +1366,27 @@
                     <!-- V10 标签导航 -->
                     <div class="settings-tabs-v10">
                         <button class="settings-tab-v10 active" data-tab="general" onclick="switchSettingsTab('general')">
-                            <span class="tab-emoji-v10">🎨</span>
+                            <span class="tab-emoji-v10">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="12" r="3"/></svg>
+                            </span>
                             <span class="tab-name-v10">常规</span>
                         </button>
                         <button class="settings-tab-v10" data-tab="audio" onclick="switchSettingsTab('audio')">
-                            <span class="tab-emoji-v10">🔊</span>
+                            <span class="tab-emoji-v10">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            </span>
                             <span class="tab-name-v10">音频</span>
                         </button>
                         <button class="settings-tab-v10" data-tab="data" onclick="switchSettingsTab('data')">
-                            <span class="tab-emoji-v10">💾</span>
+                            <span class="tab-emoji-v10">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            </span>
                             <span class="tab-name-v10">数据</span>
                         </button>
                         <button class="settings-tab-v10" data-tab="about" onclick="switchSettingsTab('about')">
-                            <span class="tab-emoji-v10">ℹ️</span>
+                            <span class="tab-emoji-v10">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                            </span>
                             <span class="tab-name-v10">关于</span>
                         </button>
                     </div>
@@ -1442,7 +1396,9 @@
                         <!-- 主题设置卡片 V10 -->
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">🎨</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="12" r="3"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>界面主题</h4>
                                     <p>选择您喜欢的视觉风格</p>
@@ -1485,7 +1441,9 @@
                         <!-- 学习偏好设置 V10 -->
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">📚</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>学习偏好</h4>
                                     <p>自定义您的学习体验</p>
@@ -1494,7 +1452,9 @@
                             <div class="settings-list-v10">
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">🔊</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">自动播放发音</span>
                                             <span class="setting-desc-v10">查看单词时自动播放</span>
@@ -1507,7 +1467,9 @@
                                 </div>
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">📝</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">显示例句</span>
                                             <span class="setting-desc-v10">单词卡片中显示例句</span>
@@ -1520,7 +1482,9 @@
                                 </div>
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">🔔</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">复习提醒</span>
                                             <span class="setting-desc-v10">到达复习时间时通知</span>
@@ -1537,7 +1501,9 @@
                         <!-- 视觉效果设置 V10 -->
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">✨</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>视觉效果</h4>
                                     <p>个性化界面体验</p>
@@ -1546,7 +1512,9 @@
                             <div class="settings-list-v10">
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">💧</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">液态玻璃效果</span>
                                             <span class="setting-desc-v10">iOS风格毛玻璃视觉</span>
@@ -1559,7 +1527,9 @@
                                 </div>
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">💖</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">点击特效</span>
                                             <span class="setting-desc-v10">点击屏幕产生爱心效果</span>
@@ -1572,7 +1542,9 @@
                                 </div>
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">🌤️</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">天气粒子</span>
                                             <span class="setting-desc-v10">顶部显示阳光动画</span>
@@ -1589,7 +1561,9 @@
                         <!-- 全盘复习模式 V10 -->
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">🔄</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>全盘复习模式</h4>
                                     <p>围绕今日词汇全方位练习</p>
@@ -1639,7 +1613,9 @@
                     <div class="settings-panel" id="settingsPanel-audio">
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">🎙️</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>语音引擎</h4>
                                     <p>配置TTS发音设置</p>
@@ -1648,7 +1624,9 @@
                             <div class="settings-list-v10">
                                 <div class="setting-row-v10">
                                     <div class="setting-info-v10">
-                                        <span class="setting-icon-v10">☁️</span>
+                                        <span class="setting-icon-v10">
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                                        </span>
                                         <div>
                                             <span class="setting-name-v10">云端高质量TTS</span>
                                             <span class="setting-desc-v10">使用云端API获得更好音质</span>
@@ -1663,26 +1641,31 @@
                             
                             <div class="tts-config-v10" id="cloudTTSSettings">
                                 <div class="input-group-v10">
-                                    <label>🔗 API接口地址</label>
+                                    <label>API接口地址</label>
                                     <input type="text" id="cloudTTSUrl" placeholder="https://api.example.com/tts">
                                 </div>
                                 <div class="input-group-v10">
-                                    <label>🔑 API密钥</label>
+                                    <label>API密钥</label>
                                     <div class="input-with-action-v10">
                                         <input type="password" id="cloudTTSKey" placeholder="输入您的API密钥">
-                                        <button class="input-action-v10" onclick="togglePasswordVisibility('cloudTTSKey')" type="button">👁️</button>
+                                        <button class="input-action-v10" onclick="togglePasswordVisibility('cloudTTSKey')" type="button">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
                             
                             <button class="action-btn-v10 primary" onclick="previewTTS()">
-                                <span>▶️</span> 试听发音效果
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                试听发音效果
                             </button>
                         </div>
 
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">⏱️</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>播放速度</h4>
                                     <p>调整音频播放速度</p>
@@ -1690,9 +1673,9 @@
                             </div>
                             <div class="speed-slider-v10">
                                 <div class="slider-labels-v10">
-                                    <span>🐢 慢速</span>
+                                    <span>慢速</span>
                                     <span class="speed-value-v10" id="speedValue">1.0x</span>
-                                    <span>🐇 快速</span>
+                                    <span>快速</span>
                                 </div>
                                 <input type="range" id="playbackSpeed" min="0.5" max="2" step="0.1" value="1" class="slider-input-v10" oninput="updateSpeedValue(this.value)">
                             </div>
@@ -1703,7 +1686,9 @@
                     <div class="settings-panel" id="settingsPanel-data">
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">📦</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>数据备份</h4>
                                     <p>导出或导入您的学习数据</p>
@@ -1711,11 +1696,15 @@
                             </div>
                             <div class="data-actions-v10">
                                 <button class="data-btn-v10 export" onclick="exportAllData()">
-                                    <span class="data-btn-icon-v10">📤</span>
+                                    <span class="data-btn-icon-v10">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                    </span>
                                     <span>导出数据</span>
                                 </button>
                                 <button class="data-btn-v10 import" onclick="importDataTrigger()">
-                                    <span class="data-btn-icon-v10">📥</span>
+                                    <span class="data-btn-icon-v10">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                    </span>
                                     <span>导入数据</span>
                                 </button>
                                 <input type="file" id="importDataFile" accept=".json" style="display:none" onchange="importData(event)">
@@ -1724,7 +1713,9 @@
 
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">💽</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>存储空间</h4>
                                     <p>管理本地存储数据</p>
@@ -1740,7 +1731,9 @@
 
                         <div class="settings-card-v10 danger">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">⚠️</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>危险操作</h4>
                                     <p>请谨慎操作，数据无法恢复</p>
@@ -1748,15 +1741,21 @@
                             </div>
                             <div class="data-actions-v10 danger">
                                 <button class="data-btn-v10 danger" onclick="confirmClearCache()">
-                                    <span class="data-btn-icon-v10">🗑️</span>
+                                    <span class="data-btn-icon-v10">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                                    </span>
                                     <span>清除缓存</span>
                                 </button>
                                 <button class="data-btn-v10 warning" onclick="confirmResetSelective()">
-                                    <span class="data-btn-icon-v10">⚙️</span>
+                                    <span class="data-btn-icon-v10">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+                                    </span>
                                     <span>选择清除</span>
                                 </button>
                                 <button class="data-btn-v10 danger-full" onclick="confirmResetAll()">
-                                    <span class="data-btn-icon-v10">❌</span>
+                                    <span class="data-btn-icon-v10">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                                    </span>
                                     <span>重置全部</span>
                                 </button>
                             </div>
@@ -1782,7 +1781,9 @@
                         <!-- 关于应用 -->
                         <div class="settings-card-v10 about">
                             <div class="about-header-v10">
-                                <div class="about-logo-v10">📖</div>
+                                <div class="about-logo-v10">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/><path d="M8 7h8M8 11h8M8 15h4"/></svg>
+                                </div>
                                 <h3>学术英语精进</h3>
                                 <span class="about-version-v10">版本 1.0.0</span>
                             </div>
@@ -1790,17 +1791,19 @@
                                 专为研究生和学术英语学习者设计，集成精听训练、口语练习、学术阅读和高阶词汇学习，采用艾宾浩斯遗忘曲线高效记忆。
                             </p>
                             <div class="about-features-v10">
-                                <span class="feature-tag-v10">🎧 精听训练</span>
-                                <span class="feature-tag-v10">🎤 口语练习</span>
-                                <span class="feature-tag-v10">📖 阅读理解</span>
-                                <span class="feature-tag-v10">📚 词汇学习</span>
+                                <span class="feature-tag-v10">精听训练</span>
+                                <span class="feature-tag-v10">口语练习</span>
+                                <span class="feature-tag-v10">阅读理解</span>
+                                <span class="feature-tag-v10">词汇学习</span>
                             </div>
                         </div>
 
                         <!-- 相关链接 -->
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">🔗</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>相关链接</h4>
                                     <p>获取帮助和更新</p>
@@ -1808,17 +1811,23 @@
                             </div>
                             <div class="links-list-v10">
                                 <a href="#" class="link-item-v10" onclick="showHelp()">
-                                    <span class="link-icon-v10">❓</span>
+                                    <span class="link-icon-v10">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                                    </span>
                                     <span class="link-text-v10">使用指南</span>
                                     <span class="link-arrow-v10">›</span>
                                 </a>
                                 <a href="#" class="link-item-v10" onclick="checkForUpdates()">
-                                    <span class="link-icon-v10">🔄</span>
+                                    <span class="link-icon-v10">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+                                    </span>
                                     <span class="link-text-v10">检查更新</span>
                                     <span class="link-arrow-v10">›</span>
                                 </a>
                                 <a href="#" class="link-item-v10" onclick="showFeedback()">
-                                    <span class="link-icon-v10">💬</span>
+                                    <span class="link-icon-v10">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                                    </span>
                                     <span class="link-text-v10">反馈建议</span>
                                     <span class="link-arrow-v10">›</span>
                                 </a>
