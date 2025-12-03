@@ -205,9 +205,9 @@
                     topics = window.KAOYAN_TOPICS || [];
                     typeName = '考研';
                     break;
-                case 'cet6':
-                    topics = window.CET6_TOPICS || [];
-                    typeName = '六级';
+                case 'academic':
+                    topics = window.ACADEMIC_WRITING_TOPICS || [];
+                    typeName = '学术英语';
                     break;
             }
             
@@ -267,8 +267,9 @@
                 'kaoyan_application': '应用文',
                 'kaoyan_picture': '图画作文',
                 'kaoyan_chart': '图表作文',
-                'cet6_essay': '议论文',
-                'cet6_picture': '图画题'
+                'academic_paper': '学术论文',
+                'academic_abstract': '研究摘要',
+                'academic_review': '文献综述'
             };
             return labels[type] || type;
         },
@@ -328,7 +329,7 @@
                 'gre': [...(window.GRE_ISSUE_TOPICS || []), ...(window.GRE_ARGUMENT_TOPICS || [])],
                 'ielts': [...(window.IELTS_TASK1_TOPICS || []), ...(window.IELTS_TASK2_TOPICS || [])],
                 'kaoyan': window.KAOYAN_TOPICS || [],
-                'cet6': window.CET6_TOPICS || []
+                'academic': window.ACADEMIC_WRITING_TOPICS || []
             };
             
             const topics = allTopics[examType] || [];

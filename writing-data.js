@@ -6,7 +6,7 @@
  * - GRE: Issue分析 + Argument分析
  * - 雅思: Task1图表 + Task2议论文
  * - 考研: 应用文 + 图画/图表作文
- * - 六级: 议论文/图画题
+ * - 学术英语: 论文写作 + 摘要 + 文献综述
  * 
  * V1-V5: 基础结构与TOEFL综合写作
  */
@@ -35,9 +35,10 @@ const WRITING_TYPES = {
   KAOYAN_PICTURE: 'kaoyan_picture',           // 图画作文 (英语一)
   KAOYAN_CHART: 'kaoyan_chart',               // 图表作文 (英语二)
   
-  // 六级题型
-  CET6_ESSAY: 'cet6_essay',                   // 议论文
-  CET6_PICTURE: 'cet6_picture'                // 图画题
+  // 学术英语题型
+  ACADEMIC_PAPER: 'academic_paper',           // 学术论文写作
+  ACADEMIC_ABSTRACT: 'academic_abstract',     // 摘要写作
+  ACADEMIC_REVIEW: 'academic_review'          // 文献综述
 };
 
 // 话题分类
@@ -604,7 +605,7 @@ const writingData = {
     ielts_task1: [],     // V21-V25 添加
     ielts_task2: [],     // V21-V25 添加
     kaoyan: [],          // V26-V30 添加
-    cet6: []             // V26-V30 添加
+    academic: []         // V26-V30 添加（学术英语写作）
   },
   
   // 统计信息
@@ -1800,77 +1801,192 @@ To address this issue, individuals should consciously set boundaries for device 
 ];
 
 // 六级英语作文
-const CET6_TOPICS = [
-  // V29: 六级议论文
+const ACADEMIC_WRITING_TOPICS = [
+  // 学术论文写作 - 研究摘要
   {
-    id: 'cet6_essay_001',
-    type: WRITING_TYPES.CET6_ESSAY,
-    topic: TOPIC_CATEGORIES.EDUCATION,
-    difficulty: DIFFICULTY_LEVELS.BASIC,
-    timeLimit: 1800, // 30分钟
-    wordCount: { min: 150, max: 200 },
+    id: 'academic_001',
+    type: WRITING_TYPES.ACADEMIC_ABSTRACT,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 200, max: 300 },
     
-    title: "在线学习的利弊",
+    title: "研究摘要写作 - 气候变化研究",
     
-    prompt: "Directions: For this part, you are allowed 30 minutes to write an essay on the pros and cons of online learning. You should write at least 150 words but no more than 200 words.",
+    prompt: "Write an abstract for a research paper that investigates the impact of urban green spaces on local temperature regulation. Your abstract should include: background, research objective, methodology, key findings, and conclusions.",
     
     outline: {
-      introduction: "Background and thesis",
-      body1: "Advantages of online learning",
-      body2: "Disadvantages and challenges",
-      conclusion: "Balanced view and personal opinion"
+      background: "Context and importance of the research",
+      objective: "Clear statement of research aims",
+      methodology: "Brief description of methods used",
+      results: "Key findings and data",
+      conclusion: "Implications and significance"
     },
     
-    sampleResponse: `Online learning has become increasingly prevalent, especially since the pandemic accelerated the adoption of digital education. While this mode of learning offers significant advantages, it also presents notable challenges.
+    sampleResponse: `This study investigates the thermal regulation effects of urban green spaces in metropolitan areas experiencing rapid urbanization. As cities worldwide face increasing heat island effects, understanding the cooling potential of vegetated areas has become crucial for sustainable urban planning.
 
-The benefits of online learning are considerable. First, it provides unprecedented flexibility, allowing students to learn at their own pace and schedule. Second, it dramatically expands access to education, enabling students in remote areas to take courses from prestigious institutions. Third, online platforms often offer diverse resources including videos, interactive exercises, and discussion forums that can enhance the learning experience.
+Our research employed remote sensing analysis and ground-based temperature monitoring across 15 major metropolitan areas over a three-year period (2020-2023). We analyzed the correlation between green space coverage, vegetation density, and ambient temperature variations using multivariate regression models.
 
-However, online learning is not without drawbacks. The lack of face-to-face interaction can lead to feelings of isolation and reduced motivation. Students may struggle with self-discipline when studying independently at home. Additionally, technical issues and unequal access to reliable internet connections can create barriers for some learners.
+Results indicate that areas with more than 30% green space coverage exhibited average temperature reductions of 2.3°C during summer months compared to equivalent areas with minimal vegetation. Furthermore, the cooling effect extended up to 400 meters beyond green space boundaries, suggesting significant spillover benefits for adjacent urban zones. Tree canopy cover proved more effective than grass surfaces, with an additional 0.8°C reduction per 10% increase in canopy density.
 
-In conclusion, online learning represents a valuable complement to traditional education rather than a complete replacement. The ideal approach likely combines the flexibility of online resources with the irreplaceable benefits of in-person instruction and human connection.`,
+These findings demonstrate that strategic green space integration can serve as a cost-effective climate adaptation strategy. Urban planners should prioritize increasing vegetated areas, particularly tree cover, to mitigate heat island effects and enhance urban livability. Future research should explore optimal spatial configurations for maximizing cooling benefits.`,
     
-    vocabulary: ["prevalent", "unprecedented", "prestigious", "interactive", "drawbacks", "complement"]
+    vocabulary: ["thermal regulation", "urbanization", "remote sensing", "multivariate regression", "spillover benefits", "climate adaptation"]
   },
   
-  // V30: 六级图画题
+  // 学术论文写作 - 文献综述
   {
-    id: 'cet6_pic_001',
-    type: WRITING_TYPES.CET6_PICTURE,
-    topic: TOPIC_CATEGORIES.SOCIETY,
-    difficulty: DIFFICULTY_LEVELS.BASIC,
-    timeLimit: 1800,
-    wordCount: { min: 150, max: 200 },
+    id: 'academic_002',
+    type: WRITING_TYPES.ACADEMIC_REVIEW,
+    topic: TOPIC_CATEGORIES.TECHNOLOGY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 3000, // 50分钟
+    wordCount: { min: 400, max: 600 },
     
-    title: "坚持与成功",
+    title: "文献综述 - 人工智能在医疗诊断中的应用",
     
-    pictureDescription: "An illustration showing two miners digging for diamonds. One has given up just inches away from reaching the diamonds, while the other continues digging and is about to succeed.",
+    prompt: "Write a literature review section examining recent advances in AI-assisted medical diagnosis. Synthesize findings from multiple perspectives, identify research gaps, and suggest future research directions.",
     
-    prompt: "Directions: For this part, you are allowed 30 minutes to write an essay based on the picture below. You should describe the picture and explain what message it conveys, then give your comments.",
+    outline: {
+      introduction: "Scope and significance of the review",
+      thematic_analysis: "Major themes and findings in the literature",
+      critical_evaluation: "Strengths and limitations of existing research",
+      gaps: "Identified research gaps",
+      future_directions: "Recommendations for future research"
+    },
     
-    sampleResponse: `The illustration presents a striking contrast between two miners seeking diamonds. While both have dug deep tunnels, one has abandoned his effort just inches from success, whereas the other perseveres and is moments away from reaching his goal.
+    sampleResponse: `The application of artificial intelligence in medical diagnosis has garnered substantial scholarly attention over the past decade, with researchers exploring diverse implementations ranging from image recognition to predictive analytics.
 
-This image powerfully illustrates the crucial role of persistence in achieving success. The quitter represents those who surrender when challenges seem insurmountable, unaware that breakthrough may be imminent. The persistent miner embodies those who maintain determination despite difficulties, ultimately reaping the rewards of their perseverance.
+Early research in this domain focused primarily on radiology applications. Smith et al. (2018) demonstrated that convolutional neural networks could achieve 94% accuracy in detecting pulmonary nodules, surpassing average radiologist performance. Subsequent studies by Chen and colleagues (2019) extended these findings to dermatological applications, showing that deep learning models could identify melanoma with sensitivity comparable to board-certified dermatologists. These foundational studies established the viability of AI as a diagnostic support tool.
 
-In real life, we frequently encounter similar situations. Students may give up on difficult subjects just before mastering them; entrepreneurs may abandon promising ventures during temporary setbacks. The difference between success and failure often lies not in ability or resources, but in the willingness to continue when progress seems invisible.
+A parallel stream of research has examined AI applications in pathology. Thompson (2020) conducted a comprehensive review of 47 studies utilizing machine learning for histopathological analysis, finding mean accuracy improvements of 12% when AI was used as a second reader. However, Johnson et al. (2021) cautioned that many studies suffered from methodological limitations, including small sample sizes and lack of external validation, raising questions about generalizability.
 
-This picture teaches us an invaluable lesson: success often comes to those who persist beyond the point where others quit. When facing obstacles, we should remember that the darkest hour is just before dawn. By maintaining patience and determination, we greatly increase our chances of achieving our goals.`,
+More recent literature has shifted toward exploring hybrid human-AI diagnostic models. The landmark CLARITY study (Wilson, 2022) demonstrated that radiologist-AI collaboration outperformed either alone, achieving 97.3% accuracy in breast cancer detection. This collaborative paradigm has gained traction, with researchers increasingly emphasizing AI as augmentation rather than replacement.
+
+Despite these advances, significant gaps persist in the literature. First, most studies focus on Western populations, raising concerns about algorithmic bias when applied to diverse demographic groups. Second, longitudinal studies examining real-world implementation challenges remain scarce. Third, the ethical implications of AI-assisted diagnosis, particularly regarding liability and patient consent, are underexplored.
+
+Future research should prioritize diverse, multi-center trials with rigorous external validation protocols. Additionally, implementation science approaches are needed to understand factors affecting successful integration into clinical workflows. Addressing these gaps will be essential for translating promising research findings into meaningful clinical impact.`,
     
-    vocabulary: ["striking contrast", "persevere", "insurmountable", "imminent", "reaping", "invaluable"],
+    vocabulary: ["convolutional neural networks", "histopathological analysis", "external validation", "algorithmic bias", "implementation science", "clinical workflows"]
+  },
+  
+  // 学术论文写作 - 研究论文引言
+  {
+    id: 'academic_003',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.EDUCATION,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400,
+    wordCount: { min: 300, max: 450 },
     
-    structure: {
-      paragraph1: "Description of the picture",
-      paragraph2: "Symbolic meaning explained",
-      paragraph3: "Real-life applications",
-      paragraph4: "Personal comments and conclusion"
-    }
+    title: "研究论文引言 - 在线学习效果研究",
+    
+    prompt: "Write an introduction section for a research paper investigating the effectiveness of online learning compared to traditional classroom instruction. Include background, problem statement, research questions, and significance of the study.",
+    
+    outline: {
+      hook: "Engaging opening statement",
+      background: "Context and existing knowledge",
+      problem_statement: "Gap in knowledge or practical problem",
+      purpose: "Research objectives and questions",
+      significance: "Why this research matters"
+    },
+    
+    sampleResponse: `The global pandemic of 2020-2021 precipitated an unprecedented shift in educational delivery, compelling institutions worldwide to transition rapidly from traditional classroom instruction to online learning platforms. While this transformation addressed immediate public health concerns, it simultaneously raised fundamental questions about the relative effectiveness of digital versus face-to-face educational modalities—questions that remain inadequately answered in the scholarly literature.
+
+Prior research on online learning has produced mixed findings. Meta-analyses conducted by Means et al. (2013) suggested that blended learning approaches could produce superior learning outcomes compared to purely face-to-face instruction. However, these studies predominantly examined voluntary online learners who may possess higher self-regulation capabilities, limiting the generalizability of findings to broader student populations. More recent investigations during the pandemic period have revealed significant challenges, including decreased student engagement, increased achievement gaps among disadvantaged populations, and concerns about academic integrity.
+
+The rapid, involuntary nature of recent online learning transitions provides a unique opportunity to examine effectiveness under naturalistic conditions, free from the self-selection biases that have plagued earlier research. Understanding these dynamics is crucial as educational institutions consider hybrid models for the post-pandemic era.
+
+This study addresses the following research questions: (1) How do learning outcomes differ between students in online versus traditional classroom sections of the same courses? (2) What student characteristics moderate the effectiveness of online learning? (3) How do student engagement patterns differ across modalities?
+
+The significance of this research extends beyond academic interest. As institutions invest substantially in educational technology infrastructure, evidence-based insights are essential for informed decision-making. Furthermore, understanding which students benefit most—and least—from online instruction can inform targeted support interventions. Finally, this research contributes to theoretical understanding of how learning environment characteristics interact with individual differences to shape educational outcomes.`,
+    
+    vocabulary: ["modalities", "meta-analyses", "self-regulation", "generalizability", "naturalistic conditions", "self-selection biases"]
+  },
+  
+  // 学术论文写作 - 方法论部分
+  {
+    id: 'academic_004',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.PSYCHOLOGY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400,
+    wordCount: { min: 300, max: 450 },
+    
+    title: "研究方法论 - 心理学实验设计",
+    
+    prompt: "Write a methodology section for a psychology research paper examining the effects of mindfulness meditation on academic stress and performance among university students. Include participants, materials, procedure, and data analysis plan.",
+    
+    outline: {
+      participants: "Sample description and recruitment",
+      materials: "Instruments and measures used",
+      procedure: "Step-by-step experimental process",
+      analysis: "Statistical methods and approach"
+    },
+    
+    sampleResponse: `Participants
+
+A total of 180 undergraduate students (mean age = 20.3 years, SD = 1.8; 58% female) were recruited from a large public university through the psychology department participant pool. Eligibility criteria included: (a) enrollment as a full-time student, (b) no prior formal meditation training, and (c) absence of diagnosed anxiety or mood disorders requiring medication. Participants received course credit for participation. Sample size was determined a priori using G*Power software, with parameters set to detect a medium effect size (d = 0.5) at α = .05 with 80% statistical power.
+
+Materials
+
+Academic stress was measured using the Academic Stress Scale (ASS; Lin & Chen, 2019), a 24-item instrument with established reliability (α = .89) and construct validity. Performance was assessed through cumulative GPA and scores on a standardized problem-solving task adapted from the Graduate Record Examination. The Mindful Attention Awareness Scale (MAAS; Brown & Ryan, 2003) served as a manipulation check. All questionnaires were administered electronically via Qualtrics.
+
+Procedure
+
+Following informed consent, participants completed baseline assessments during the first week of the semester. They were then randomly assigned to either the mindfulness intervention group (n = 90) or an active control group (n = 90) using a computer-generated randomization sequence with block sizes of six to ensure balanced allocation.
+
+The intervention group participated in an 8-week mindfulness-based stress reduction program, comprising weekly 90-minute group sessions and daily 20-minute guided meditation practices delivered via a mobile application. The control group attended weekly 90-minute study skills workshops with equivalent time commitment. Both conditions were led by trained facilitators blind to research hypotheses.
+
+Post-intervention assessments were administered during week 9, with follow-up measures collected at week 16 to assess sustained effects.
+
+Data Analysis
+
+Primary analyses employed 2 (condition) × 3 (time) mixed-design ANOVAs with Greenhouse-Geisser corrections for sphericity violations. Effect sizes were calculated using partial eta squared. Moderation analyses examined whether baseline stress levels influenced treatment response using PROCESS macro (Hayes, 2018). All analyses were conducted in SPSS version 28, with significance set at p < .05.`,
+    
+    vocabulary: ["eligibility criteria", "a priori", "manipulation check", "randomization sequence", "Greenhouse-Geisser corrections", "partial eta squared"]
+  },
+  
+  // 学术讨论写作
+  {
+    id: 'academic_005',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.ENVIRONMENT,
+    difficulty: DIFFICULTY_LEVELS.INTERMEDIATE,
+    timeLimit: 2100, // 35分钟
+    wordCount: { min: 250, max: 350 },
+    
+    title: "学术讨论 - 可持续发展与经济增长",
+    
+    prompt: "Write a discussion section analyzing whether sustainable development and economic growth can be compatible. Present multiple perspectives, evaluate evidence, and develop your own reasoned position.",
+    
+    outline: {
+      overview: "Frame the debate",
+      perspective1: "Economic growth priority argument",
+      perspective2: "Environmental limits argument",
+      synthesis: "Your integrated analysis",
+      implications: "Practical considerations"
+    },
+    
+    sampleResponse: `The relationship between sustainable development and economic growth has emerged as one of the most contested issues in contemporary policy discourse. While traditional economic paradigms have often positioned these goals as inherently conflicting, recent theoretical and empirical developments suggest a more nuanced reality.
+
+Proponents of the "growth imperative" perspective argue that economic expansion is essential for generating the resources necessary to address environmental challenges. They point to the Environmental Kuznets Curve hypothesis, which posits that environmental degradation initially increases with economic development but eventually decreases as societies become wealthy enough to afford cleaner technologies and stricter regulations. Empirical support for this view comes from developed nations that have achieved both high living standards and declining emissions intensity.
+
+Conversely, ecological economists challenge the assumption that growth can be indefinitely "decoupled" from environmental impact. Citing thermodynamic constraints and the rebound effect—whereby efficiency gains are offset by increased consumption—they argue that absolute decoupling remains elusive at the global scale. Jackson's (2009) influential analysis demonstrated that achieving carbon neutrality through technological progress alone would require implausible rates of efficiency improvement.
+
+Synthesizing these perspectives, the evidence suggests that compatibility depends critically on the type and measurement of growth pursued. GDP-focused growth that ignores ecological boundaries is demonstrably unsustainable. However, qualitative development emphasizing well-being, equity, and resource efficiency may be compatible with—indeed, may require—intact ecological systems. The emerging concept of "green growth" attempts to operationalize this distinction.
+
+For policy-makers, this analysis implies that the growth-sustainability trade-off is not inevitable but must be actively managed through strategic investments in clean technology, appropriate pricing of environmental externalities, and reformed measures of economic success that account for natural capital depreciation.`,
+    
+    vocabulary: ["Environmental Kuznets Curve", "emissions intensity", "decoupled", "rebound effect", "carbon neutrality", "natural capital depreciation"]
   }
 ];
 
 // 更新写作数据统计
 writingData.topics.kaoyan = KAOYAN_TOPICS;
-writingData.topics.cet6 = CET6_TOPICS;
+writingData.topics.academic = ACADEMIC_WRITING_TOPICS;
 writingData.stats.byType.kaoyan = KAOYAN_TOPICS.length;
-writingData.stats.byType.cet6 = CET6_TOPICS.length;
+writingData.stats.byType.academic = ACADEMIC_WRITING_TOPICS.length;
 
 // 更新总计
 writingData.stats.totalTopics = 
@@ -1881,11 +1997,11 @@ writingData.stats.totalTopics =
   IELTS_TASK1_TOPICS.length +
   IELTS_TASK2_TOPICS.length +
   KAOYAN_TOPICS.length +
-  CET6_TOPICS.length;
+  ACADEMIC_WRITING_TOPICS.length;
 
-console.log('✅ V26-V30 考研&六级写作题目添加完成');
+console.log('✅ V26-V30 考研&学术写作题目添加完成');
 console.log(`📚 考研作文: ${KAOYAN_TOPICS.length} 道`);
-console.log(`📋 六级作文: ${CET6_TOPICS.length} 道`);
+console.log(`📖 学术写作: ${ACADEMIC_WRITING_TOPICS.length} 道`);
 console.log('');
 console.log('====== 写作模块数据汇总 ======');
 console.log(`📊 总题目数: ${writingData.stats.totalTopics} 道`);
@@ -1897,7 +2013,7 @@ console.log(`  - GRE Argument: ${GRE_ARGUMENT_TOPICS.length}`);
 console.log(`  - IELTS Task 1: ${IELTS_TASK1_TOPICS.length}`);
 console.log(`  - IELTS Task 2: ${IELTS_TASK2_TOPICS.length}`);
 console.log(`  - 考研作文: ${KAOYAN_TOPICS.length}`);
-console.log(`  - 六级作文: ${CET6_TOPICS.length}`);
+console.log(`  - 学术写作: ${ACADEMIC_WRITING_TOPICS.length}`);
 
 // 额外的辅助函数
 
@@ -1912,8 +2028,8 @@ function getTopicsByExam(examType) {
       return [...IELTS_TASK1_TOPICS, ...IELTS_TASK2_TOPICS];
     case 'kaoyan':
       return KAOYAN_TOPICS;
-    case 'cet6':
-      return CET6_TOPICS;
+    case 'academic':
+      return ACADEMIC_WRITING_TOPICS;
     default:
       return [];
   }
@@ -1929,7 +2045,7 @@ function getTopicsByCategory(category) {
     ...IELTS_TASK1_TOPICS,
     ...IELTS_TASK2_TOPICS,
     ...KAOYAN_TOPICS,
-    ...CET6_TOPICS
+    ...ACADEMIC_WRITING_TOPICS
   ];
   return allTopics.filter(t => t.topic === category);
 }
@@ -1944,7 +2060,7 @@ function getTopicsByDifficulty(difficulty) {
     ...IELTS_TASK1_TOPICS,
     ...IELTS_TASK2_TOPICS,
     ...KAOYAN_TOPICS,
-    ...CET6_TOPICS
+    ...ACADEMIC_WRITING_TOPICS
   ];
   return allTopics.filter(t => t.difficulty === difficulty);
 }
@@ -1959,7 +2075,7 @@ function getRandomTopic(filters = {}) {
     ...IELTS_TASK1_TOPICS,
     ...IELTS_TASK2_TOPICS,
     ...KAOYAN_TOPICS,
-    ...CET6_TOPICS
+    ...ACADEMIC_WRITING_TOPICS
   ];
   
   if (filters.type) {
@@ -2235,63 +2351,75 @@ In my view, the vitality of any culture depends on this chain of transmission re
   vocabulary: ["cultural transmission", "generational relay", "heritage", "preservation", "intergenerational"]
 });
 
-// V34: 更多六级作文题目
-CET6_TOPICS.push({
-  id: 'cet6_essay_002',
-  type: WRITING_TYPES.CET6_ESSAY,
+// V34: 更多学术写作题目 - 研究结论部分
+ACADEMIC_WRITING_TOPICS.push({
+  id: 'academic_006',
+  type: WRITING_TYPES.ACADEMIC_PAPER,
   topic: TOPIC_CATEGORIES.TECHNOLOGY,
-  difficulty: DIFFICULTY_LEVELS.BASIC,
-  timeLimit: 1800,
-  wordCount: { min: 150, max: 200 },
+  difficulty: DIFFICULTY_LEVELS.ADVANCED,
+  timeLimit: 2400,
+  wordCount: { min: 300, max: 450 },
   
-  title: "人工智能对就业的影响",
+  title: "研究结论与未来展望",
   
-  prompt: "Directions: For this part, you are allowed 30 minutes to write an essay on the impact of artificial intelligence on employment. You should write at least 150 words but no more than 200 words.",
+  prompt: "Write a conclusion section for a research paper that investigated the effectiveness of different teaching methods in STEM education. Summarize key findings, discuss limitations, and suggest directions for future research.",
   
   outline: {
-    introduction: "AI's growing presence in the workforce",
-    body1: "Jobs at risk of automation",
-    body2: "New opportunities created by AI",
-    conclusion: "Balanced perspective and adaptation strategies"
+    summary: "Restate main findings",
+    implications: "Theoretical and practical significance",
+    limitations: "Study constraints",
+    future: "Research directions"
   },
   
-  sampleResponse: `Artificial intelligence is rapidly transforming the employment landscape, sparking both concern and optimism about the future of work. This technological revolution presents complex challenges that require thoughtful consideration.
+  sampleResponse: `This study investigated the comparative effectiveness of inquiry-based, lecture-based, and blended teaching approaches in undergraduate STEM education across a diverse sample of 1,247 students at three research universities. Our findings offer several contributions to the ongoing pedagogical discourse.
 
-Undeniably, AI poses significant threats to certain occupations. Routine tasks in manufacturing, data entry, and customer service are increasingly automated. Traditional middle-skill jobs that once provided stable incomes are particularly vulnerable. Workers in these sectors face genuine uncertainty about their future employability.
+The results provide robust evidence that inquiry-based methods significantly outperform traditional lecture formats in promoting conceptual understanding and problem-solving skills, with effect sizes of d = 0.68 and d = 0.72 respectively. These findings align with constructivist learning theory and extend previous research by demonstrating that benefits persist across demographic subgroups, including traditionally underrepresented populations in STEM fields. Notably, the blended approach combining structured inquiry with targeted direct instruction yielded the strongest outcomes, suggesting that pedagogical eclecticism may be optimal.
 
-However, AI simultaneously creates new opportunities. The technology industry itself demands specialists in machine learning, data science, and AI ethics. Furthermore, AI enhances human capabilities in fields like healthcare and education, enabling professionals to work more effectively rather than replacing them entirely. New categories of jobs—AI trainers, algorithm auditors, human-machine interaction designers—are emerging.
+The practical implications are substantial. Institutions seeking to improve STEM retention rates should consider systematic integration of inquiry-based activities into existing curricula. However, our findings also highlight the importance of adequate instructor training and reduced class sizes to implement these methods effectively—considerations that carry significant resource implications.
 
-The key to navigating this transition lies in adaptation. Educational systems must emphasize skills that complement rather than compete with AI: creativity, emotional intelligence, and complex problem-solving. Governments should invest in retraining programs for displaced workers.
+Several limitations warrant acknowledgment. First, the study's duration of one academic year may not capture long-term retention effects or transfer of learning to subsequent courses. Second, despite random assignment at the section level, selection effects may persist at the course enrollment level. Third, our outcome measures, while validated, may not fully capture the affective dimensions of learning, such as scientific identity formation or intrinsic motivation.
 
-In conclusion, while AI will undoubtedly eliminate certain jobs, it will also create new ones. The workers who thrive will be those who continuously develop skills that machines cannot easily replicate.`,
+Future research should address these gaps through longitudinal designs tracking students throughout their academic careers and into professional practice. Investigation of implementation variables—what makes inquiry-based instruction succeed in some contexts but not others—represents a particularly promising direction. Additionally, research examining how artificial intelligence tools might enhance or complement inquiry-based learning in STEM contexts could inform evolving pedagogical practices.
+
+In conclusion, this research strengthens the evidence base for active learning approaches while highlighting the complexity of educational intervention effects. Moving forward, educational research and practice must continue to evolve together, with findings informing implementation and implementation experiences refining theoretical understanding.`,
   
-  vocabulary: ["employment landscape", "automation", "vulnerable", "emerging", "complement", "displaced workers"]
+  vocabulary: ["pedagogical discourse", "effect sizes", "constructivist learning theory", "pedagogical eclecticism", "longitudinal designs", "implementation variables"]
 });
 
-// V34: 更多六级图画题
-CET6_TOPICS.push({
-  id: 'cet6_pic_002',
-  type: WRITING_TYPES.CET6_PICTURE,
-  topic: TOPIC_CATEGORIES.ENVIRONMENT,
-  difficulty: DIFFICULTY_LEVELS.BASIC,
-  timeLimit: 1800,
-  wordCount: { min: 150, max: 200 },
+// V34: 学术论文写作 - 批判性分析
+ACADEMIC_WRITING_TOPICS.push({
+  id: 'academic_007',
+  type: WRITING_TYPES.ACADEMIC_REVIEW,
+  topic: TOPIC_CATEGORIES.SOCIETY,
+  difficulty: DIFFICULTY_LEVELS.ADVANCED,
+  timeLimit: 2400,
+  wordCount: { min: 350, max: 500 },
   
-  title: "环境保护意识",
+  title: "批判性文献评述 - 社交媒体与民主",
   
-  pictureDescription: "An illustration showing a person standing at a crossroads. One path leads to a green, thriving forest; the other leads to a polluted, barren wasteland. The person holds a bag of trash, deciding which way to go.",
+  prompt: "Write a critical analysis examining competing scholarly perspectives on social media's impact on democratic participation. Evaluate the evidence supporting different viewpoints and identify methodological strengths and weaknesses.",
   
-  prompt: "Directions: For this part, you are allowed 30 minutes to write an essay based on the picture below. You should describe the picture and explain what message it conveys, then give your comments.",
+  outline: {
+    introduction: "Frame the scholarly debate",
+    perspective_positive: "Democratization thesis",
+    perspective_negative: "Polarization and misinformation concerns",
+    critique: "Methodological evaluation",
+    synthesis: "Integrated assessment"
+  },
   
-  sampleResponse: `The thought-provoking illustration depicts a person standing at a crossroads, facing a critical choice. One path leads toward a lush, green forest representing environmental health, while the other descends into a polluted wasteland of destruction. The person, holding a bag of trash, must decide which direction to take.
+  sampleResponse: `The relationship between social media platforms and democratic processes has generated vigorous scholarly debate, with researchers offering sharply divergent assessments. This analysis examines the competing perspectives and evaluates the evidentiary basis for each position.
 
-This image powerfully symbolizes the environmental choices we face individually and collectively. The bag of trash represents our daily consumption and waste—small decisions that cumulatively determine our planet's future. The contrasting paths illustrate that our choices have consequences: responsible behavior leads to sustainability, while negligence leads to degradation.
+The "democratization thesis" posits that social media platforms expand political participation by lowering barriers to civic engagement. Proponents cite evidence of increased voter registration through online campaigns, the mobilization capacity demonstrated during the Arab Spring movements, and data showing that marginalized groups can amplify voices previously excluded from mainstream discourse. Bennett and Segerberg's (2013) influential "connective action" framework suggests that digital networks enable new forms of political organizing that complement—or even surpass—traditional institutional channels.
 
-The cartoon's message is clear: environmental protection is not someone else's responsibility but ours. Every individual stands at this metaphorical crossroads multiple times daily—when deciding whether to recycle, reduce plastic use, or choose sustainable products. The collective impact of billions of such decisions shapes our environmental destiny.
+Conversely, a substantial body of research raises concerns about polarization, misinformation, and the erosion of deliberative norms. Sunstein's (2017) "echo chamber" hypothesis suggests that algorithmic curation creates homogeneous information environments that reinforce pre-existing beliefs and inhibit exposure to opposing viewpoints. Empirical studies by Vosoughi et al. (2018) demonstrate that false information spreads more rapidly than accurate content on social platforms, raising questions about informed democratic deliberation.
 
-In my opinion, this image should inspire action rather than paralysis. While individual efforts alone cannot solve global environmental challenges, they contribute to cultural change and demonstrate demand for sustainable alternatives. We must choose the green path repeatedly and encourage others to do the same. Our planet's future depends on the accumulated choices of everyone at this crossroads.`,
+Methodological evaluation reveals significant limitations in both literatures. Studies supporting the democratization thesis often rely on case studies of successful mobilizations, potentially neglecting failed movements and introducing selection bias. Correlation between social media use and civic participation may reflect reverse causation—engaged citizens may simply adopt new communication tools without those tools being causally efficacious.
+
+The polarization literature faces its own challenges. Definitions of "echo chambers" vary substantially across studies, and recent large-scale analyses by Guess et al. (2021) suggest that exposure diversity on social media actually exceeds offline networks for many users. Additionally, laboratory studies of misinformation effects may overestimate real-world impact given the artificial attention protocols employed.
+
+Synthesizing these perspectives, a more nuanced picture emerges. Social media's democratic effects appear highly contingent on platform design, regulatory environment, media literacy levels, and pre-existing institutional contexts. Rather than asking whether social media is "good" or "bad" for democracy, scholars should investigate the conditions under which different outcomes obtain. Future research employing natural experiments and platform-level data access could significantly advance our understanding of these conditional relationships.`,
   
-  vocabulary: ["crossroads", "lush", "cumulatively", "sustainability", "degradation", "metaphorical"]
+  vocabulary: ["democratization thesis", "connective action", "algorithmic curation", "deliberative norms", "reverse causation", "conditional relationships"]
 });
 
 // V35: 更多 TOEFL 综合写作
@@ -2401,7 +2529,7 @@ writingData.stats.totalTopics =
   IELTS_TASK1_TOPICS.length +
   IELTS_TASK2_TOPICS.length +
   KAOYAN_TOPICS.length +
-  CET6_TOPICS.length;
+  ACADEMIC_WRITING_TOPICS.length;
 
 writingData.stats.byType.toefl_integrated = TOEFL_INTEGRATED_TOPICS.length;
 writingData.stats.byType.toefl_discussion = TOEFL_DISCUSSION_TOPICS.length;
@@ -2410,7 +2538,7 @@ writingData.stats.byType.gre_argument = GRE_ARGUMENT_TOPICS.length;
 writingData.stats.byType.ielts_task1 = IELTS_TASK1_TOPICS.length;
 writingData.stats.byType.ielts_task2 = IELTS_TASK2_TOPICS.length;
 writingData.stats.byType.kaoyan = KAOYAN_TOPICS.length;
-writingData.stats.byType.cet6 = CET6_TOPICS.length;
+writingData.stats.byType.academic = ACADEMIC_WRITING_TOPICS.length;
 
 console.log('✅ V31-V35 写作题目扩展完成');
 console.log(`📊 新增题目统计:`);
@@ -2419,7 +2547,7 @@ console.log(`  - GRE Argument: +1 (共${GRE_ARGUMENT_TOPICS.length}道)`);
 console.log(`  - IELTS Task 1: +1 (共${IELTS_TASK1_TOPICS.length}道)`);
 console.log(`  - IELTS Task 2: +1 (共${IELTS_TASK2_TOPICS.length}道)`);
 console.log(`  - 考研作文: +2 (共${KAOYAN_TOPICS.length}道)`);
-console.log(`  - 六级作文: +2 (共${CET6_TOPICS.length}道)`);
+console.log(`  - 学术写作: +2 (共${ACADEMIC_WRITING_TOPICS.length}道)`);
 console.log(`  - TOEFL综合写作: +1 (共${TOEFL_INTEGRATED_TOPICS.length}道)`);
 console.log(`  - TOEFL学术讨论: +1 (共${TOEFL_DISCUSSION_TOPICS.length}道)`);
 console.log(`📚 总计: ${writingData.stats.totalTopics} 道写作题目`);
@@ -2443,7 +2571,7 @@ if (typeof module !== 'undefined' && module.exports) {
     IELTS_TASK1_TOPICS,
     IELTS_TASK2_TOPICS,
     KAOYAN_TOPICS,
-    CET6_TOPICS,
+    ACADEMIC_WRITING_TOPICS,
     getTopicsByExam,
     getTopicsByCategory,
     getTopicsByDifficulty,
@@ -5693,6 +5821,16 @@ if (typeof window !== 'undefined') {
   
   // 创建全局默认实例
   window.WritingAssistant = createWritingAssistant();
+  
+  // 导出写作题目到全局（供 writing-module.js 使用）
+  window.TOEFL_INTEGRATED_TOPICS = TOEFL_INTEGRATED_TOPICS;
+  window.TOEFL_DISCUSSION_TOPICS = TOEFL_DISCUSSION_TOPICS;
+  window.GRE_ISSUE_TOPICS = GRE_ISSUE_TOPICS;
+  window.GRE_ARGUMENT_TOPICS = GRE_ARGUMENT_TOPICS;
+  window.IELTS_TASK1_TOPICS = IELTS_TASK1_TOPICS;
+  window.IELTS_TASK2_TOPICS = IELTS_TASK2_TOPICS;
+  window.KAOYAN_TOPICS = KAOYAN_TOPICS;
+  window.ACADEMIC_WRITING_TOPICS = ACADEMIC_WRITING_TOPICS;
 }
 
 console.log('✅ V45 综合写作助手集成加载完成');
