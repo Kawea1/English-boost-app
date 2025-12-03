@@ -1999,8 +1999,10 @@ function showCurrentWord() {
     // 更新学习进度指示器
     updateLearningProgressIndicator();
     
-    // 自动朗读新单词
-    speakWord();
+    // V4.8.12: 修复发音问题 - 在动画完成后朗读新单词
+    setTimeout(function() {
+        speakText(wordData.word);
+    }, 300);
 }
 
 // V1: 显示掌握度徽章
@@ -3134,6 +3136,17 @@ function prevWord() {
 }
 
 // 预加载语音列表
+// V4.8.12: TTS语音模式配置
+var ttsVoiceConfig = {
+    mode: localStorage.getItem('ttsVoiceMode') || 'system-default',
+    voices: {
+        'us-female': { lang: 'en-US', gender: 'female', names: ['Samantha', 'Victoria', 'Joanna', 'Salli'] },
+        'us-male': { lang: 'en-US', gender: 'male', names: ['Alex', 'Matthew', 'Joey'] },
+        'uk-female': { lang: 'en-GB', gender: 'female', names: ['Kate', 'Serena', 'Amy', 'Emma'] },
+        'uk-male': { lang: 'en-GB', gender: 'male', names: ['Daniel', 'Arthur', 'Brian'] }
+    }
+};
+
 var cachedVoices = [];
 var preferredVoice = null;
 
@@ -3239,6 +3252,50 @@ function setVoiceAndSpeak(utterance, voices) {
     speechSynthesis.speak(utterance);
 }
 
+// V4.8.12: 切换TTS语音模式
+function changeTTSVoice(mode) {
+    ttsVoiceConfig.mode = mode;
+    localStorage.setItem('ttsVoiceMode', mode);
+    
+    // 重新选择语音
+    if (mode === 'system-default') {
+        preferredVoice = selectBestUSVoice(cachedVoices);
+    } else {
+        var config = ttsVoiceConfig.voices[mode];
+        if (config) {
+            preferredVoice = selectVoiceByConfig(cachedVoices, config);
+        }
+    }
+    
+    showToast('已切换语音模式');
+    console.log('语音模式:', mode, '使用:', preferredVoice ? preferredVoice.name : '默认');
+}
+
+// V4.8.12: 根据配置选择语音
+function selectVoiceByConfig(voices, config) {
+    if (!voices || voices.length === 0) return null;
+    
+    // 先尝试按名称匹配
+    for (var i = 0; i < config.names.length; i++) {
+        var voice = voices.find(function(v) {
+            return v.name.includes(config.names[i]) && v.lang.startsWith(config.lang);
+        });
+        if (voice) return voice;
+    }
+    
+    // 如果没找到，按语言和性别匹配
+    var filtered = voices.filter(function(v) {
+        return v.lang.startsWith(config.lang);
+    });
+    
+    if (filtered.length > 0) {
+        // 优先选择第一个匹配的
+        return filtered[0];
+    }
+    
+    return null;
+}
+
 window.initVocabulary = initVocabulary;
 window.showMeaning = showMeaning;
 window.rateWord = rateWord;
@@ -3248,6 +3305,7 @@ window.prevWord = prevWord;
 window.changeWordsPerSession = changeWordsPerSession;
 window.changeLearningTimes = changeLearningTimes;
 window.initSessionWords = initSessionWords;
+window.changeTTSVoice = changeTTSVoice;
 window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
 window.updateLearningProgressIndicator = updateLearningProgressIndicator;

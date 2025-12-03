@@ -1802,7 +1802,7 @@ function showGlobalReviewModeSelector() {
     
     var html = '<div class="review-mode-selector-overlay" onclick="hideGlobalReviewModeSelector()">';
     html += '<div class="review-mode-selector" onclick="event.stopPropagation()">';
-    html += '<h3>🎯 选择复习模式</h3>';
+    html += '<h3>选择复习模式</h3>';
     html += '<p class="review-summary-text">共有 <strong>' + allWords.length + '</strong> 个已学单词</p>';
     
     // 复习模式选项
@@ -2174,7 +2174,7 @@ function updateParagraphInfoEnhanced(paragraphData) {
     var infoEl = document.getElementById('sentenceInfo');
     if (!infoEl) return;
     
-    var modeLabel = comprehensiveReviewMode ? '📝 复习段落' : '📖 段落模式';
+    var modeLabel = comprehensiveReviewMode ? '复习段落' : '段落模式';
     var modeColor = comprehensiveReviewMode ? '#6366f1' : '#8b5cf6';
     
     var html = '<span style="background:' + modeColor + '20;color:' + modeColor + ';padding:3px 8px;border-radius:12px;font-size:12px;">' + modeLabel + '</span>';
@@ -2184,7 +2184,7 @@ function updateParagraphInfoEnhanced(paragraphData) {
     }
     
     if (paragraphData.words && paragraphData.words.length > 0) {
-        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + paragraphData.words.length + ' 核心词</span>';
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' + paragraphData.words.length + ' 核心词</span>';
     }
     
     infoEl.innerHTML = html;
@@ -2225,8 +2225,8 @@ function highlightWordsInText(text, words) {
 function updateSentenceInfoReview(word, meaning, chinese) {
     var infoEl = document.getElementById('sentenceInfo');
     if (infoEl) {
-        var html = '<span style="background:#6366f120;color:#6366f1;padding:3px 8px;border-radius:12px;font-size:12px;">📝 复习模式</span>';
-        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + word + '</span>';
+        var html = '<span style="background:#6366f120;color:#6366f1;padding:3px 8px;border-radius:12px;font-size:12px;">复习模式</span>';
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' + word + '</span>';
         if (chinese) {
             html += '<span style="background:#f59e0b20;color:#f59e0b;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:6px;">' + chinese + '</span>';
         }

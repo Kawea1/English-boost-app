@@ -26810,3 +26810,44 @@ body.theme-dark .para-content-v11 {
     }
 }
 
+
+/* V4.8.12: TTS语音选择器样式 */
+.tts-voice-selector-v10 {
+    margin: 16px 0;
+}
+
+.tts-voice-selector-v10 label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 8px;
+}
+
+.select-v10 {
+    width: 100%;
+    padding: 12px 16px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    font-size: 14px;
+    color: var(--gray-900);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.select-v10:hover {
+    border-color: #6366f1;
+}
+
+.select-v10:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+body.theme-dark .select-v10 {
+    background: var(--gray-800);
+    border-color: var(--gray-700);
+    color: var(--gray-100);
+}
