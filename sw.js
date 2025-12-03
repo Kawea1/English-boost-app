@@ -1,7 +1,7 @@
 // Service Worker for English Boost App
 // ==================== 版本控制 ====================
 // 每次更新时修改版本号 - 格式: english-boost-v主版本.次版本.修订号.时间戳
-const CACHE_VERSION = 'v4.3.0-activation-v10';
+const CACHE_VERSION = 'v4.4.0-homepage-v10';
 const BUILD_TIME = '20251202-1800';
 const CACHE_NAME = `english-boost-v${CACHE_VERSION}-${BUILD_TIME}`;
 

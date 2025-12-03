@@ -346,112 +346,131 @@
                 </div>
             </div>
 
-            <!-- 快捷学习入口 -->
-            <div class="quick-start-section">
-                <div class="section-header">
-                    <h3 class="section-title">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                        </svg>
-                        开始学习
-                    </h3>
+            <!-- V10 首页模块卡片 - 第一性原理设计 -->
+            <div class="modules-section-v10">
+                <!-- V1: 极简标题 -->
+                <div class="section-header-v10">
+                    <h2>开始学习</h2>
+                    <span class="section-hint">每天15分钟，稳步提升</span>
                 </div>
-                <div class="module-grid">
-                    <div class="module-card" onclick="openModule('vocabulary')">
-                        <div class="module-icon-wrapper vocab-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                <line x1="8" y1="7" x2="16" y2="7"/>
-                                <line x1="8" y1="11" x2="14" y2="11"/>
-                            </svg>
+                
+                <!-- V2: 四大核心功能 - 大卡片突出显示 -->
+                <div class="core-modules-v10">
+                    <!-- 词汇 - 最重要 -->
+                    <div class="core-card-v10 vocab" onclick="openModule('vocabulary')">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <span class="icon-emoji">📚</span>
+                            </div>
+                            <div class="card-info">
+                                <h3>核心词汇</h3>
+                                <p>10000+ GRE/托福高频词</p>
+                            </div>
+                            <div class="card-badge">
+                                <span class="badge-text">核心</span>
+                            </div>
                         </div>
-                        <h3>核心词汇</h3>
-                        <p>10000+ 学术词汇精选</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-stats">
+                            <div class="stat-item">
+                                <span class="stat-num" id="vocabLearned">0</span>
+                                <span class="stat-label">已学</span>
+                            </div>
+                            <div class="stat-divider"></div>
+                            <div class="stat-item">
+                                <span class="stat-num" id="vocabToReview">0</span>
+                                <span class="stat-label">待复习</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="module-card" onclick="openModule('listening')">
-                        <div class="module-icon-wrapper listen-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-                                <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-                            </svg>
-                        </div>
-                        <h3>精听训练</h3>
-                        <p>50篇学术精听材料</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-                        </div>
-                    </div>
-                    <div class="module-card" onclick="openModule('speaking')">
-                        <div class="module-icon-wrapper speak-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                                <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                <line x1="12" y1="19" x2="12" y2="23"/>
-                                <line x1="8" y1="23" x2="16" y2="23"/>
-                            </svg>
-                        </div>
-                        <h3>口语跟读</h3>
-                        <p>AI 语音评测</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-action">
+                            <span>继续学习</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </div>
                     </div>
-                    <div class="module-card" onclick="openModule('reading')">
-                        <div class="module-icon-wrapper read-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                            </svg>
+                    
+                    <!-- 阅读 -->
+                    <div class="core-card-v10 reading" onclick="openModule('reading')">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <span class="icon-emoji">📖</span>
+                            </div>
+                            <div class="card-info">
+                                <h3>阅读精讲</h3>
+                                <p>100篇学术文章</p>
+                            </div>
                         </div>
-                        <h3>阅读精讲</h3>
-                        <p>100篇学术精选</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-progress">
+                            <div class="progress-bar-mini">
+                                <div class="progress-fill" id="readingProgress" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text" id="readingProgressText">0/100</span>
                         </div>
-                    </div>
-                    <div class="module-card" onclick="openModule('review')">
-                        <div class="module-icon-wrapper review-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
-                            </svg>
-                        </div>
-                        <h3>复习巩固</h3>
-                        <p>艾宾浩斯记忆法</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-action">
+                            <span>开始阅读</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </div>
                     </div>
-                    <div class="module-card" onclick="openModule('writing')">
-                        <div class="module-icon-wrapper write-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
-                                <path d="M15 5l4 4"/>
-                            </svg>
+                    
+                    <!-- 听力 -->
+                    <div class="core-card-v10 listening" onclick="openModule('listening')">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <span class="icon-emoji">🎧</span>
+                            </div>
+                            <div class="card-info">
+                                <h3>精听训练</h3>
+                                <p>50篇学术音频</p>
+                            </div>
                         </div>
-                        <h3>写作练习</h3>
-                        <p>托福/GRE/雅思真题</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-progress">
+                            <div class="progress-bar-mini">
+                                <div class="progress-fill" id="listeningProgress" style="width: 0%"></div>
+                            </div>
+                            <span class="progress-text" id="listeningProgressText">0/50</span>
+                        </div>
+                        <div class="card-action">
+                            <span>开始精听</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                         </div>
                     </div>
-                    <div class="module-card" onclick="openModule('resources')">
-                        <div class="module-icon-wrapper resource-icon">
-                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-                                <polyline points="15 3 21 3 21 9"/>
-                                <line x1="10" y1="14" x2="21" y2="3"/>
-                            </svg>
+                    
+                    <!-- 口语 -->
+                    <div class="core-card-v10 speaking" onclick="openModule('speaking')">
+                        <div class="card-glow"></div>
+                        <div class="card-content">
+                            <div class="card-icon">
+                                <span class="icon-emoji">🎤</span>
+                            </div>
+                            <div class="card-info">
+                                <h3>口语跟读</h3>
+                                <p>AI语音评测</p>
+                            </div>
                         </div>
-                        <h3>学习资源</h3>
-                        <p>真题库 + 备考网站</p>
-                        <div class="module-arrow">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                        <div class="card-feature">
+                            <span class="feature-tag">🤖 AI打分</span>
                         </div>
+                        <div class="card-action">
+                            <span>开始练习</span>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- V3: 辅助功能 - 小卡片一行排列 -->
+                <div class="aux-modules-v10">
+                    <div class="aux-card" onclick="openModule('writing')">
+                        <span class="aux-icon">✍️</span>
+                        <span class="aux-name">写作</span>
+                    </div>
+                    <div class="aux-card" onclick="openModule('review')">
+                        <span class="aux-icon">🔄</span>
+                        <span class="aux-name">复习</span>
+                    </div>
+                    <div class="aux-card" onclick="openModule('resources')">
+                        <span class="aux-icon">📎</span>
+                        <span class="aux-name">资源</span>
                     </div>
                 </div>
             </div>
