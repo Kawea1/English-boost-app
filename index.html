@@ -77,18 +77,19 @@
                     </div>
                 </div>
                 
-                <!-- V3: 主按钮 - 立即体验 -->
-                <button onclick="startFreeTrial()" class="main-cta-v10" id="trialBtn">
+                <!-- V3: 主按钮 - 立即体验 (增强版) -->
+                <button onclick="startFreeTrial()" class="main-cta-v10 enhanced" id="trialBtn">
+                    <div class="cta-glow"></div>
                     <div class="cta-content">
-                        <span class="cta-icon">
+                        <span class="cta-icon pulse">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                         </span>
                         <div class="cta-text">
                             <span class="cta-title">立即免费体验</span>
-                            <span class="cta-subtitle">30天全功能 · 无需付费</span>
+                            <span class="cta-subtitle highlight">⚡ 30天全功能 · 无需付费</span>
                         </div>
                     </div>
-                    <div class="cta-arrow">
+                    <div class="cta-arrow bounce">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </div>
                 </button>
@@ -1151,102 +1152,36 @@
                         </div>
                     </div>
 
-                    <!-- 分类统计卡片 -->
+                    <!-- 学习趋势折线图 -->
                     <div class="stats-section-title">
                         <span class="section-icon premium-gradient stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 6l-9.5 9.5-5-5L1 18"/><path d="M17 6h6v6"/></svg></span>
-                        <span>分项统计</span>
+                        <span>学习趋势</span>
                     </div>
                     
-                    <div class="stats-cards-grid">
-                        <div class="stat-card-new vocabulary">
-                            <div class="stat-card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                </svg>
+                    <div class="stats-chart-container">
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-dot vocabulary"></span>
+                                <span>单词</span>
                             </div>
-                            <div class="stat-card-content">
-                                <span class="stat-card-value" id="stat_words">0</span>
-                                <span class="stat-card-label">已学单词</span>
+                            <div class="legend-item">
+                                <span class="legend-dot listening"></span>
+                                <span>听力</span>
                             </div>
-                            <div class="stat-card-trend up">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
+                            <div class="legend-item">
+                                <span class="legend-dot speaking"></span>
+                                <span>口语</span>
                             </div>
-                        </div>
-                        
-                        <div class="stat-card-new listening">
-                            <div class="stat-card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
-                                    <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
-                                </svg>
-                            </div>
-                            <div class="stat-card-content">
-                                <span class="stat-card-value" id="stat_listen">0</span>
-                                <span class="stat-card-label">听力练习</span>
-                            </div>
-                            <div class="stat-card-trend up">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
+                            <div class="legend-item">
+                                <span class="legend-dot reading"></span>
+                                <span>阅读</span>
                             </div>
                         </div>
-                        
-                        <div class="stat-card-new speaking">
-                            <div class="stat-card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                                    <line x1="12" y1="19" x2="12" y2="23"/>
-                                    <line x1="8" y1="23" x2="16" y2="23"/>
-                                </svg>
-                            </div>
-                            <div class="stat-card-content">
-                                <span class="stat-card-value" id="stat_speaking">0</span>
-                                <span class="stat-card-label">口语跟读</span>
-                            </div>
-                            <div class="stat-card-trend up">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-card-new reading">
-                            <div class="stat-card-icon">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-                                </svg>
-                            </div>
-                            <div class="stat-card-content">
-                                <span class="stat-card-value" id="stat_reading">0</span>
-                                <span class="stat-card-label">阅读完成</span>
-                            </div>
-                            <div class="stat-card-trend up">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                    <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
-                                    <polyline points="17 6 23 6 23 12"/>
-                                </svg>
-                            </div>
-                        </div>
+                        <canvas id="learningChart" width="400" height="250"></canvas>
                     </div>
 
                     <!-- 操作按钮 -->
                     <div class="stats-actions">
-                        <button class="stats-action-btn export" onclick="exportStats()">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                                <polyline points="17 8 12 3 7 8"/>
-                                <line x1="12" y1="3" x2="12" y2="15"/>
-                            </svg>
-                            <span>导出数据</span>
-                        </button>
                         <button class="stats-action-btn reset" onclick="confirmResetStats()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <polyline points="1 4 1 10 7 10"/>
@@ -1642,12 +1577,6 @@
                                 </div>
                             </div>
                             <div class="data-actions-v10">
-                                <button class="data-btn-v10 export" onclick="exportAllData()">
-                                    <span class="data-btn-icon-v10">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                                    </span>
-                                    <span>导出数据</span>
-                                </button>
                                 <button class="data-btn-v10 import" onclick="importDataTrigger()">
                                     <span class="data-btn-icon-v10">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>

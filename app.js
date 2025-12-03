@@ -1110,17 +1110,6 @@ function showStats() {
     var reading = parseInt(localStorage.getItem('stat_reading') || '0');
     var words = parseInt(localStorage.getItem('learnedCount') || '0');
     
-    // 更新分项统计
-    const listenEl = document.getElementById('stat_listen');
-    const speakingEl = document.getElementById('stat_speaking');
-    const readingEl = document.getElementById('stat_reading');
-    const wordsEl = document.getElementById('stat_words');
-    
-    if (listenEl) listenEl.textContent = listens;
-    if (speakingEl) speakingEl.textContent = speaking;
-    if (readingEl) readingEl.textContent = reading;
-    if (wordsEl) wordsEl.textContent = words;
-    
     // 总览统计
     var totalDays = parseInt(localStorage.getItem('total_learning_days') || '0');
     // learningStreak 可能是 JSON 对象，需要正确解析
@@ -1142,12 +1131,160 @@ function showStats() {
     if (streakDaysEl) streakDaysEl.textContent = streakDays;
     if (totalMinsEl) totalMinsEl.textContent = totalMins;
     
-    // 复习统计
-    var mastered = parseInt(localStorage.getItem('masteredCount') || '0');
-    var reviewing = words - mastered;
-    var pending = parseInt(localStorage.getItem('pendingReview') || '0');
+    // 绘制学习趋势折线图
+    drawLearningChart();
     
-    const masteredEl = document.getElementById('stat_mastered');
+    modal.classList.add('active');
+    
+    // 隐藏底部导航栏
+    var bottomNav = document.getElementById('bottomNav');
+    if (bottomNav) bottomNav.classList.add('hidden');
+}
+
+// 绘制学习趋势折线图
+function drawLearningChart() {
+    const canvas = document.getElementById('learningChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // 清空画布
+    ctx.clearRect(0, 0, width, height);
+    
+    // 获取历史数据（最近7天）
+    const historyData = getLearningHistory(7);
+    
+    // 配置
+    const padding = { top: 30, right: 20, bottom: 40, left: 45 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+    
+    // 找出最大值用于Y轴缩放
+    const maxValue = Math.max(
+        ...historyData.map(d => Math.max(d.words, d.listening, d.speaking, d.reading)),
+        10
+    );
+    const yScale = chartHeight / maxValue;
+    const xStep = chartWidth / (historyData.length - 1);
+    
+    // 绘制网格线
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border-color') || '#e5e7eb';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 5; i++) {
+        const y = padding.top + (chartHeight / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+    }
+    
+    // 绘制Y轴标签
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#6b7280';
+    ctx.font = '11px -apple-system, system-ui, sans-serif';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 5; i++) {
+        const value = Math.round((maxValue / 5) * (5 - i));
+        const y = padding.top + (chartHeight / 5) * i;
+        ctx.fillText(value.toString(), padding.left - 8, y + 4);
+    }
+    
+    // 绘制X轴标签（日期）
+    ctx.textAlign = 'center';
+    historyData.forEach((data, index) => {
+        const x = padding.left + xStep * index;
+        ctx.fillText(data.label, x, height - 10);
+    });
+    
+    // 绘制折线
+    const datasets = [
+        { key: 'words', color: '#6366f1', label: '单词' },
+        { key: 'listening', color: '#3b82f6', label: '听力' },
+        { key: 'speaking', color: '#ec4899', label: '口语' },
+        { key: 'reading', color: '#10b981', label: '阅读' }
+    ];
+    
+    datasets.forEach(dataset => {
+        ctx.strokeStyle = dataset.color;
+        ctx.fillStyle = dataset.color;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        // 绘制线条
+        ctx.beginPath();
+        historyData.forEach((data, index) => {
+            const x = padding.left + xStep * index;
+            const y = padding.top + chartHeight - (data[dataset.key] * yScale);
+            
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.stroke();
+        
+        // 绘制数据点
+        historyData.forEach((data, index) => {
+            const x = padding.left + xStep * index;
+            const y = padding.top + chartHeight - (data[dataset.key] * yScale);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 白色边框
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.strokeStyle = dataset.color;
+        });
+    });
+}
+
+// 获取学习历史数据
+function getLearningHistory(days) {
+    const history = [];
+    const today = new Date();
+    
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateKey = date.toISOString().split('T')[0];
+        
+        // 从localStorage获取每日数据
+        const dailyStats = JSON.parse(localStorage.getItem(`daily_stats_${dateKey}`) || '{}');
+        
+        history.push({
+            date: dateKey,
+            label: i === 0 ? '今天' : (i === 1 ? '昨天' : `${date.getMonth() + 1}/${date.getDate()}`),
+            words: dailyStats.words || 0,
+            listening: dailyStats.listening || 0,
+            speaking: dailyStats.speaking || 0,
+            reading: dailyStats.reading || 0
+        });
+    }
+    
+    return history;
+}
+
+// 记录每日统计数据
+function recordDailyStats(type, increment = 1) {
+    const today = new Date().toISOString().split('T')[0];
+    const key = `daily_stats_${today}`;
+    const dailyStats = JSON.parse(localStorage.getItem(key) || '{}');
+    
+    if (!dailyStats[type]) {
+        dailyStats[type] = 0;
+    }
+    dailyStats[type] += increment;
+    
+    localStorage.setItem(key, JSON.stringify(dailyStats));
+}
+
+function showSettings() {
     const reviewingEl = document.getElementById('stat_reviewing');
     const pendingEl = document.getElementById('stat_pending');
     const progressFill = document.getElementById('reviewProgressFill');

@@ -360,6 +360,11 @@ function togglePlayEnhanced() {
             // 更新统计
             const count = parseInt(localStorage.getItem('stat_listen') || '0');
             localStorage.setItem('stat_listen', (count + 1).toString());
+            
+            // 记录今日统计数据
+            if (typeof recordDailyStats === 'function') {
+                recordDailyStats('listening', 1);
+            }
         }
     } else {
         alert('您的浏览器不支持语音合成');

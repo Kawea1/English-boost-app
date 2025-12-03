@@ -1262,6 +1262,11 @@
             
             navItems.forEach(item => {
                 item.addEventListener('click', (e) => {
+                    // 移除其他active状态
+                    navItems.forEach(i => i.classList.remove('active'));
+                    // 添加当前active状态
+                    item.classList.add('active');
+                    
                     // 添加切换动画
                     item.classList.add('switching');
                     setTimeout(() => item.classList.remove('switching'), 400);
@@ -1269,10 +1274,13 @@
                     // 触觉反馈
                     HapticFeedback.light();
                     
-                    // 更新指示器
-                    setTimeout(() => this.updateIndicator(), 50);
+                    // 立即更新指示器位置
+                    this.updateIndicator();
                 });
             });
+            
+            // 页面加载时初始化指示器位置
+            setTimeout(() => this.updateIndicator(), 100);
         },
         
         // 更新指示器位置
@@ -1287,6 +1295,7 @@
             const centerX = rect.left - navRect.left + rect.width / 2 - 20;
             
             indicator.style.transform = `translateX(${centerX}px)`;
+            indicator.style.opacity = '1';
         },
         
         // 显示徽章

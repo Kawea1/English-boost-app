@@ -2722,6 +2722,11 @@ function rateWord(rating) {
             localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
             localStorage.setItem('learnedCount', learnedWords.length.toString());
             
+            // 记录今日统计数据
+            if (typeof recordDailyStats === 'function') {
+                recordDailyStats('words', 1);
+            }
+            
             // 更新今日目标进度
             if (typeof updateDailyProgress === 'function') {
                 updateDailyProgress('vocabulary', 1);

@@ -1501,7 +1501,7 @@ var reviewValidator = {
             completionPercentage: progress.progress,
             accuracy: progress.accuracy,
             message: progress.isComplete 
-                ? '✅ 所有单词已复习完成' 
+                ? '所有单词已复习完成' 
                 : '⏳ 还有 ' + unreviewed + ' 个单词未复习'
         };
     },
@@ -1887,7 +1887,7 @@ function selectReviewMode(mode) {
         'all': '全部单词'
     };
     
-    showToast('✅ 开始复习 ' + modeNames[mode] + '，共 ' + sessionInfo.totalWords + ' 个单词');
+    showToast('开始复习 ' + modeNames[mode] + '，共 ' + sessionInfo.totalWords + ' 个单词');
     
     // 启用全局复习模式
     comprehensiveReviewMode = true;
@@ -3395,6 +3395,9 @@ function showSpeakingResult(transcript) {
     var count = parseInt(localStorage.getItem('stat_speaking') || '0');
     localStorage.setItem('stat_speaking', (count + 1).toString());
     
+    // 记录今日统计数据
+    recordDailyStats('speaking', 1);
+    
     // 保存最佳成绩
     saveBestScore(currentSpeakingIndex, score);
     
@@ -3510,7 +3513,7 @@ function generateDetailedFeedback(score, details, spoken, target) {
         multiDimScores.fluency >= 80 ? '表达流畅自然' : multiDimScores.fluency >= 60 ? '稍有停顿' : '需要更流畅');
     
     // 3. 完整度
-    html += createEnhancedScoreBar('📝 内容完整', multiDimScores.completeness, '#8b5cf6',
+    html += createEnhancedScoreBar('内容完整', multiDimScores.completeness, '#8b5cf6',
         multiDimScores.completeness >= 80 ? '内容完整' : multiDimScores.completeness >= 60 ? '略有缺漏' : '请说完整');
     
     // 4. 词汇使用
@@ -3953,7 +3956,7 @@ function highlightReviewWordsInPassage() {
         var badge = document.createElement('span');
         badge.className = 'review-mode-badge';
         badge.style.marginLeft = '10px';
-        badge.innerHTML = '📝 复习模式';
+        badge.innerHTML = '复习模式';
         titleEl.appendChild(badge);
     }
 }
@@ -4208,6 +4211,15 @@ function checkReadingAnswers() {
     if (readingScores.length > 50) readingScores.shift(); // 只保留最近50次
     localStorage.setItem("readingScores", JSON.stringify(readingScores));
     updateReadingStats();
+    
+    // 记录今日阅读统计
+    if (typeof recordDailyStats === 'function') {
+        recordDailyStats('reading', 1);
+    }
+    
+    // 更新本地阅读计数
+    const readingCount = parseInt(localStorage.getItem('stat_reading') || '0');
+    localStorage.setItem('stat_reading', (readingCount + 1).toString());
     
     // 分数评价
     var grade = "";
@@ -4909,7 +4921,7 @@ function showReviewModeSelector() {
                 </div>
                 
                 <div class="mode-card deep" onclick="selectReviewMode('deep')">
-                    <div class="mode-icon">📝</div>
+                    <div class="mode-icon">R</div>
                     <div class="mode-name">深度复习</div>
                     <div class="mode-desc">看释义 → 拼写单词 → 验证正确性</div>
                     <div class="mode-time">预计 ${Math.ceil(wordCount * 0.5)} 分钟</div>
@@ -5165,7 +5177,7 @@ function showDeepReviewInterface() {
                 <div class="review-progress-fill" style="width: ${(current / total) * 100}%"></div>
             </div>
             <div class="review-progress-text">
-                <span>📝 深度复习</span>
+                <span>深度复习</span>
                 <span class="review-progress-count">${current} / ${total}</span>
             </div>
         </div>
@@ -5685,7 +5697,7 @@ function showReviewComplete() {
     // 生成模式标签
     const modeLabels = {
         'quick': '⚡ 快速复习',
-        'deep': '📝 深度复习',
+        'deep': '深度复习',
         'listen': '🎧 听力复习'
     };
     const modeLabel = modeLabels[currentReviewMode] || '复习';
