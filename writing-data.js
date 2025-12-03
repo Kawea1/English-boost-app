@@ -2496,6 +2496,407 @@ Third, experimental or quasi-experimental studies exploiting platform policy var
 Finally, research integrating quantitative labor market analysis with qualitative investigation of worker experiences could provide richer understanding of how platform work is lived, moving beyond aggregate patterns to illuminate heterogeneous experiences and their determinants.`,
     
     vocabulary: ["gig economy", "exclusion restrictions", "difference-in-differences", "selection on unobservables", "external validity", "algorithmic management"]
+  },
+  
+  // ==================== 新增多样题型学术写作 V31 ====================
+  
+  // 研究提案写作 (Research Proposal)
+  {
+    id: 'academic_019',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 3000, // 50分钟
+    wordCount: { min: 500, max: 700 },
+    
+    title: "研究提案 - 量子计算与药物发现",
+    taskType: "Research Proposal",
+    
+    prompt: "Write a research proposal for a project investigating the application of quantum computing algorithms in accelerating drug discovery for neurodegenerative diseases. Include background, objectives, methodology, expected outcomes, and timeline.",
+    
+    outline: {
+      background: "Research context and significance",
+      objectives: "Specific aims and hypotheses",
+      methodology: "Proposed methods and approach",
+      outcomes: "Expected results and impact",
+      timeline: "Project schedule and milestones"
+    },
+    
+    sampleResponse: `Title: Quantum-Enhanced Molecular Simulation for Accelerated Neurodegenerative Drug Discovery
+
+1. Background and Significance
+
+Neurodegenerative diseases, including Alzheimer's and Parkinson's, affect over 50 million people globally, with prevalence projected to triple by 2050 as populations age. Despite decades of research, therapeutic options remain limited, with drug development hampered by the extraordinary complexity of protein-ligand interactions underlying neurodegeneration.
+
+Classical computational approaches to drug discovery face fundamental limitations. Molecular dynamics simulations of protein folding and drug binding require exponential computational resources as system size increases, making accurate simulation of large biomolecular systems practically infeasible. Current approximation methods sacrifice accuracy for tractability, potentially missing promising drug candidates.
+
+Quantum computing offers a paradigm shift for computational chemistry. Quantum systems can naturally represent molecular wavefunctions, enabling exponentially more efficient simulation of electronic structures through algorithms such as Variational Quantum Eigensolver (VQE) and Quantum Phase Estimation. Recent hardware advances—including IBM's 1000+ qubit processors and improved error correction—have brought practical quantum advantage within reach for chemistry applications.
+
+This research proposes to develop and validate quantum computing approaches for simulating protein-drug interactions relevant to neurodegenerative disease targets, potentially accelerating the identification of promising therapeutic candidates.
+
+2. Specific Aims and Hypotheses
+
+Aim 1: Develop hybrid quantum-classical algorithms optimized for simulating amyloid-beta and alpha-synuclein binding interactions.
+Hypothesis: Quantum algorithms can achieve chemical accuracy (< 1 kcal/mol error) for binding energy calculations at computational costs orders of magnitude lower than classical methods for systems exceeding 100 atoms.
+
+Aim 2: Validate quantum simulation predictions through comparison with experimental binding data and high-level classical calculations for known drug candidates.
+Hypothesis: Quantum-derived binding predictions will correlate more strongly with experimental IC50 values than predictions from standard docking software.
+
+Aim 3: Apply validated quantum workflows to screen a virtual library of novel compounds, identifying candidates for experimental testing.
+Hypothesis: Quantum-enhanced screening will identify at least three novel lead compounds with experimental binding affinity exceeding current drug candidates.
+
+3. Research Methodology
+
+3.1 Algorithm Development
+We will extend VQE algorithms for larger molecular systems by implementing active space selection methods that identify chemically essential orbitals for quantum processing while treating peripheral electrons classically. Ansatz circuits will be optimized through machine learning-guided architecture search, balancing accuracy against noise sensitivity on near-term hardware.
+
+3.2 Hardware Platform
+Primary computations will utilize IBM Quantum systems accessed through the IBM Quantum Network, supplemented by IonQ trapped-ion systems for comparison. Error mitigation techniques including zero-noise extrapolation and probabilistic error cancellation will address hardware noise.
+
+3.3 Validation Protocol
+We will benchmark quantum results against gold-standard CCSD(T) calculations for small model systems (< 20 atoms) and against experimental binding data from published literature for larger protein-ligand systems. Statistical metrics including mean absolute error, correlation coefficients, and ranking accuracy will quantify performance.
+
+3.4 Virtual Screening
+A library of 10,000 compounds from the ZINC database, filtered for blood-brain barrier permeability and drug-likeness, will be screened against validated protein targets. Top candidates will be synthesized and tested in collaboration with medicinal chemistry partners.
+
+4. Expected Outcomes and Impact
+
+Primary Deliverables:
+• Open-source quantum chemistry software package optimized for drug discovery applications
+• Validated binding predictions for 50+ known compounds targeting amyloid-beta and alpha-synuclein
+• 3-5 novel lead compound candidates with experimental validation
+• Published benchmarking datasets enabling community method comparison
+
+Scientific Impact:
+This project will establish the practical utility of quantum computing for drug discovery, demonstrating computational advantages while identifying limitations requiring further hardware development. Methodological advances will transfer to other therapeutic areas and materials science applications.
+
+Societal Impact:
+Success could accelerate development of desperately needed neurodegenerative disease treatments, potentially reducing the 10-15 year drug development timeline and associated costs.
+
+5. Timeline and Milestones
+
+Year 1:
+• Q1-Q2: Algorithm development and small-molecule benchmarking
+• Q3-Q4: Protocol validation on model protein systems
+
+Year 2:
+• Q1-Q2: Full-scale protein-ligand simulations; comparison with experimental data
+• Q3-Q4: Virtual screening; candidate selection for synthesis
+
+Year 3:
+• Q1-Q2: Experimental validation of lead compounds
+• Q3-Q4: Publication, software release, and dissemination
+
+6. Budget Justification (Summary)
+Total: $1.2M over 3 years
+Personnel (60%): PI, 2 postdoctoral researchers, 1 graduate student
+Quantum Computing Access (25%): Cloud computing credits for IBM and IonQ systems
+Experimental Validation (10%): Compound synthesis and binding assays
+Travel/Publication (5%): Conference presentations and open-access publication fees`,
+    
+    vocabulary: ["Variational Quantum Eigensolver", "protein-ligand interactions", "active space selection", "error mitigation", "blood-brain barrier permeability", "CCSD(T) calculations"]
+  },
+  
+  // 学术书评写作 (Academic Book Review)
+  {
+    id: 'academic_020',
+    type: WRITING_TYPES.ACADEMIC_REVIEW,
+    topic: TOPIC_CATEGORIES.SOCIETY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "学术书评 - 社会学著作评析",
+    taskType: "Academic Book Review",
+    
+    prompt: "Write an academic book review of a hypothetical new sociological work titled 'Digital Divides: Technology and Inequality in the Twenty-First Century' by Dr. Maria Chen. Summarize key arguments, evaluate methodology, assess contributions, and identify limitations.",
+    
+    outline: {
+      summary: "Main arguments and structure",
+      methodology: "Research approach evaluation",
+      contributions: "Scholarly significance",
+      critique: "Limitations and counterarguments",
+      recommendation: "Overall assessment"
+    },
+    
+    sampleResponse: `Book Review: Digital Divides: Technology and Inequality in the Twenty-First Century
+By Maria Chen. Cambridge University Press, 2024. 342 pp. $34.95 (cloth).
+
+In an era of unprecedented technological proliferation, Maria Chen's ambitious new work addresses a paradox of our digital age: even as technology becomes ever more ubiquitous, its benefits remain starkly unequally distributed. "Digital Divides" offers a comprehensive, empirically grounded analysis of how technological change intersects with and often amplifies existing social stratifications.
+
+Summary of Arguments
+
+Chen structures her analysis around three dimensions of digital inequality: access, skills, and outcomes. The access divide—traditionally conceived as the binary distinction between "haves" and "have-nots"—is reconceptualized as a graduated spectrum involving connection quality, device capabilities, and usage contexts. Drawing on survey data from 15 countries, Chen demonstrates that mobile-only internet users, disproportionately lower-income, experience functionally different internets than desktop or multi-device users, with implications for employment, education, and civic participation.
+
+The skills dimension extends beyond operational competencies to encompass critical digital literacies—the ability to evaluate information credibility, navigate algorithmic systems strategically, and protect privacy. Chen's original contribution here lies in demonstrating how skill gaps compound over time: early advantages in critical literacy enable more sophisticated engagement, generating cumulative divergence that standardized digital literacy training cannot easily address.
+
+Most provocatively, Chen argues that even controlling for access and skills, digital technologies generate systematically unequal outcomes. Platform algorithms, designed to maximize engagement and revenue, allocate attention and opportunity in ways that favor already-advantaged groups. Her analysis of algorithmic job matching platforms reveals that identical qualifications yield differential outcomes based on neighborhood proxies for race and class.
+
+Methodological Evaluation
+
+Chen's mixed-methods approach represents a notable strength. Quantitative analyses of large-scale survey data establish patterns at population scale, while ethnographic case studies in communities spanning San Francisco's Mission District to rural Kentucky illuminate mechanisms and lived experiences. This triangulation lends credibility to claims that neither method alone could substantiate.
+
+However, the cross-sectional survey design limits causal inference. Chen acknowledges this limitation but perhaps underestimates its implications—the correlation between digital engagement patterns and life outcomes could reflect selection effects whereby pre-existing advantages enable sophisticated technology use rather than technology generating advantages.
+
+Scholarly Contributions
+
+"Digital Divides" makes several significant contributions. First, Chen's multidimensional framework advances beyond outdated binary conceptualizations, providing vocabulary and measures for more nuanced policy analysis. Second, the algorithmic inequality analysis extends critical algorithm studies beyond journalism to systematic social scientific investigation. Third, the comparative international scope reveals how national contexts—particularly educational systems and labor market structures—moderate technology's stratifying effects.
+
+Limitations and Critique
+
+Several limitations warrant note. Chen's focus on individual-level inequalities underattends structural and institutional dimensions; how organizations and governments adopt and deploy technology receives cursory treatment. Additionally, the algorithmic analysis, while compelling, relies heavily on audit methodologies whose generalizability remains uncertain. Finally, the rapid pace of technological change threatens relevance—some platforms analyzed have already modified practices in response to scrutiny.
+
+Chen's normative stance, while clearly stated, would benefit from engagement with counterarguments. Techno-optimists might argue that mobile-first access, while inferior, still represents meaningful improvement over no access. Similarly, the skills analysis assumes particular literacy forms as valuable without fully interrogating whose knowledge counts as competence.
+
+Recommendation
+
+Despite these limitations, "Digital Divides" represents essential reading for scholars and practitioners concerned with technology and inequality. Chen's rigorous empiricism, conceptual sophistication, and accessible prose make this work valuable across disciplinary boundaries. For a field often characterized by anecdote and speculation, Chen's systematic approach provides a foundation for evidence-based policy discussion. Recommended for graduate courses in digital sociology, science and technology studies, and social policy.`,
+    
+    vocabulary: ["digital literacy", "algorithmic inequality", "cross-sectional design", "selection effects", "audit methodologies", "techno-optimists"]
+  },
+  
+  // 案例分析写作 (Case Study Analysis)
+  {
+    id: 'academic_021',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.BUSINESS,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700, // 45分钟
+    wordCount: { min: 450, max: 600 },
+    
+    title: "案例分析 - 企业数字化转型",
+    taskType: "Case Study Analysis",
+    
+    prompt: "Write a case study analysis examining the digital transformation journey of a traditional manufacturing company. Apply relevant theoretical frameworks, analyze key decisions, evaluate outcomes, and derive generalizable lessons.",
+    
+    outline: {
+      introduction: "Case overview and significance",
+      analysis: "Application of theoretical frameworks",
+      decisions: "Critical decision points",
+      outcomes: "Results and evaluation",
+      lessons: "Generalizable insights"
+    },
+    
+    sampleResponse: `Case Study Analysis: Digital Transformation at Precision Manufacturing Corp.
+
+Executive Summary
+
+This case analysis examines the five-year digital transformation journey of Precision Manufacturing Corp. (PMC), a mid-sized industrial equipment manufacturer that successfully transitioned from traditional operations to a digitally-enabled business model. Through systematic analysis applying established transformation frameworks, we identify critical success factors and derive lessons applicable to similar organizations navigating digital disruption.
+
+Company Background
+
+Founded in 1978, PMC manufactured precision tooling equipment for automotive and aerospace industries, generating $450 million in annual revenue with 2,200 employees across three facilities. By 2018, PMC faced mounting competitive pressure from digitally-native competitors offering smart, connected products with predictive maintenance capabilities. Customer expectations were shifting toward outcome-based purchasing models. PMC's legacy systems, siloed operations, and engineering-dominant culture presented significant transformation barriers.
+
+Theoretical Framework
+
+We analyze PMC's transformation through the lens of dynamic capabilities theory (Teece, 2007), which emphasizes sensing, seizing, and reconfiguring as key organizational capacities for adapting to changing environments. Additionally, we apply the ambidexterity framework (O'Reilly & Tushman, 2008) to examine how PMC balanced exploitation of existing competencies with exploration of new capabilities.
+
+Sensing: Recognizing the Need for Change
+
+PMC's transformation began when new CEO Sarah Martinez commissioned a competitive intelligence initiative in 2018. Market analysis revealed that digitally-enabled competitors were capturing market share by offering IoT-connected equipment with remote monitoring and predictive maintenance—capabilities PMC lacked entirely. Customer surveys indicated that 67% of major accounts were evaluating competitors specifically for digital capabilities. This systematic environmental scanning—rather than reactive crisis response—exemplifies effective sensing.
+
+Critically, Martinez translated these external signals into internal urgency by communicating findings widely and establishing cross-functional task forces to develop response strategies. The sensing phase concluded with a board-approved digital transformation strategy identifying three priorities: smart product development, manufacturing digitization, and customer experience enhancement.
+
+Seizing: Strategic Decisions and Resource Allocation
+
+The transformation unfolded through several critical decision points:
+
+Decision 1: Build vs. Buy Technology Capabilities
+Rather than attempting to develop IoT platforms internally, PMC acquired Sensorix, a 35-person startup specializing in industrial sensing and analytics, for $28 million. This decision accelerated capability development by approximately two years while bringing digital-native talent into the organization. Integration challenges arose—cultural conflicts between startup and legacy workforces required sustained management attention—but the acquisition ultimately proved pivotal.
+
+Decision 2: Organizational Structure for Transformation
+PMC established a separate Digital Innovation unit reporting directly to the CEO, rather than embedding transformation within existing business units. This structural ambidexterity enabled exploration activities to proceed without being constrained by legacy operational metrics and cultural norms. However, PMC also established explicit integration mechanisms—joint project teams, shared performance metrics, and rotation programs—to ensure eventual capability transfer to core operations.
+
+Decision 3: Phased vs. Big Bang Implementation
+PMC adopted a staged implementation approach, piloting smart product capabilities with three willing customers before broad rollout. This deliberate experimentation enabled learning and adjustment while limiting risk exposure. The pilot phase identified critical software bugs and user experience issues that were addressed before scale deployment.
+
+Resource Allocation
+Total transformation investment reached $85 million over five years, representing approximately 19% of cumulative net income. This significant commitment demonstrated strategic seriousness while requiring careful financial management to maintain operational performance during the transition.
+
+Reconfiguring: Operational Transformation
+
+By 2023, PMC had fundamentally reconfigured its business model. Key outcomes included:
+
+• Product Transformation: 78% of new product revenue now derives from smart, connected equipment, up from 0% in 2018.
+• Service Revenue: Predictive maintenance contracts generated $62 million in recurring service revenue, improving customer retention by 23%.
+• Operational Efficiency: Manufacturing digitization reduced production costs by 12% through predictive quality management and optimized scheduling.
+• Customer Satisfaction: Net Promoter Score increased from 32 to 58 as customers valued outcome-focused relationships.
+
+However, outcomes were not uniformly positive. Legacy product lines experienced accelerated decline as resources shifted to digital offerings. Some long-tenured employees—particularly in traditional engineering roles—departed, representing knowledge loss. Additionally, the $28 million acquisition was later assessed as overpriced given comparable deals in the sector.
+
+Generalizable Lessons
+
+Several lessons emerge from PMC's experience:
+
+1. Leadership Commitment Is Necessary but Insufficient: CEO Martinez's vision and sustained attention were essential, but success required distributed leadership across functions. The CDO, CTO, and business unit leaders all played critical roles.
+
+2. Ambidexterity Requires Explicit Design: Separating exploration from exploitation enabled innovation but created reintegration challenges. Organizations should plan for integration from the outset.
+
+3. Acquisition Can Accelerate Capability Development: PMC's acquisition strategy proved effective, but integration demands significant management attention and cultural sensitivity.
+
+4. Customer Co-creation Reduces Risk: Pilot implementations with engaged customers provided invaluable feedback while building advocates for new offerings.
+
+5. Transformation Is Continuous: PMC's leaders emphasized that digital transformation is not a destination but an ongoing capability. The organizational capacities developed—sensing, experimentation, adaptation—represent enduring competitive assets.
+
+Conclusion
+
+PMC's transformation illustrates how established manufacturers can successfully navigate digital disruption through systematic application of dynamic capabilities and organizational ambidexterity. While context-specific factors inevitably limit direct transferability, the patterns identified here offer guidance for practitioners facing similar challenges.`,
+    
+    vocabulary: ["dynamic capabilities", "ambidexterity", "digital disruption", "IoT-connected", "structural separation", "customer co-creation"]
+  },
+  
+  // 实验报告写作 (Lab Report / Experimental Paper)
+  {
+    id: 'academic_022',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "实验报告 - 材料科学研究",
+    taskType: "Experimental Report",
+    
+    prompt: "Write a results and discussion section for an experimental study investigating the mechanical properties of a novel biodegradable polymer composite for medical implant applications. Present data clearly and interpret findings.",
+    
+    outline: {
+      results: "Systematic data presentation",
+      statistical: "Statistical analysis",
+      interpretation: "Meaning of findings",
+      comparison: "Relation to existing materials",
+      implications: "Clinical significance"
+    },
+    
+    sampleResponse: `Results and Discussion
+
+Mechanical Characterization Results
+
+Tensile testing of the novel PLA-hydroxyapatite nanocomposite (PLA-nHA) across varying nanoparticle concentrations (0%, 5%, 10%, 15%, 20% w/w) revealed significant composition-dependent mechanical behavior. Results for all test conditions (n = 6 per group) are summarized in Table 1.
+
+Ultimate tensile strength (UTS) increased progressively with nHA content up to 15% (45.2 ± 2.1 MPa to 72.8 ± 3.4 MPa, p < 0.001, one-way ANOVA), representing a 61% improvement over neat PLA. However, further increasing nHA to 20% produced no additional strength gain (71.9 ± 4.2 MPa) and increased variability, likely reflecting nanoparticle agglomeration at higher concentrations as confirmed by SEM imaging (Figure 2).
+
+Young's modulus exhibited similar compositional dependence. The 15% nHA composite achieved modulus of 4.2 ± 0.3 GPa, approaching cortical bone values (15-25 GPa) more closely than neat PLA (2.8 ± 0.2 GPa). This improved stiffness matching may reduce stress shielding effects in load-bearing implant applications.
+
+Notably, elongation at break decreased monotonically with nHA content, from 8.2 ± 1.1% (neat PLA) to 3.4 ± 0.6% (20% nHA). This brittleness-strength tradeoff reflects the constraining effect of rigid ceramic inclusions on polymer chain mobility. The 15% composition represents a balanced compromise, maintaining 4.8 ± 0.7% elongation while maximizing strength.
+
+Fatigue Testing Results
+
+Cyclic loading tests at 60% UTS (corresponding to physiological loading magnitudes for orthopedic applications) revealed that the 15% PLA-nHA composite sustained 1.2 × 10⁶ cycles before failure, substantially exceeding the 0.4 × 10⁶ cycles achieved by neat PLA (p < 0.01). This three-fold improvement in fatigue life suggests that nHA reinforcement enhances long-term durability under cyclic physiological loads.
+
+S-N curve analysis indicated that the fatigue endurance limit (stress level sustainable for > 10⁷ cycles) increased from approximately 35% UTS for neat PLA to 45% UTS for the 15% nHA composite. This elevated endurance limit provides additional safety margin for implant applications where load magnitudes may exceed design assumptions.
+
+Biodegradation Kinetics
+
+Accelerated degradation studies in phosphate-buffered saline (PBS, pH 7.4, 37°C) over 24 weeks revealed distinct degradation profiles. Mass loss rates fitted well to first-order kinetics (R² > 0.95 for all compositions). The degradation rate constant decreased with nHA content: k = 0.028 week⁻¹ for neat PLA versus k = 0.019 week⁻¹ for 15% nHA composite, corresponding to projected complete degradation times of approximately 18 versus 26 months respectively.
+
+Importantly, mechanical property retention during degradation favored nHA-reinforced compositions. After 12 weeks, the 15% nHA composite retained 78% of initial UTS compared to only 52% for neat PLA. This extended mechanical integrity is clinically significant, as implants must maintain load-bearing capacity throughout the healing period.
+
+pH monitoring of degradation media showed less acidic accumulation for nHA composites (minimum pH 6.8 versus 6.2 for neat PLA), attributed to buffering capacity of released hydroxyapatite dissolution products. This buffered degradation may reduce inflammatory responses associated with acidic PLA degradation products—a known limitation of PLA implants.
+
+Interpretation and Comparison with Existing Materials
+
+The observed property profile positions PLA-nHA composites favorably relative to existing biodegradable implant materials. Compared to pure PLA (approved for numerous medical devices), the 15% nHA composition offers superior strength, improved modulus matching to bone, enhanced fatigue resistance, and potentially reduced inflammatory responses during degradation.
+
+Comparison with the current clinical standard for resorbable orthopedic fixation—70:30 poly(L-lactide-co-D,L-lactide) copolymers—reveals that PLA-nHA achieves comparable strength (72.8 vs. ~70 MPa) with substantially improved stiffness (4.2 vs. ~2.5 GPa). The closer mechanical match to bone may improve load transfer and reduce stress concentration at implant-bone interfaces.
+
+The osteoconductive potential of hydroxyapatite represents an additional advantage not captured in mechanical testing. Previous in vitro studies with similar compositions have demonstrated enhanced osteoblast adhesion and proliferation on nHA-containing surfaces, suggesting the composite may actively promote bone integration rather than merely serving as passive space-holders.
+
+Clinical Implications and Limitations
+
+For load-bearing orthopedic applications such as interference screws or fracture fixation devices, the 15% PLA-nHA composite demonstrates mechanical properties adequate for initial fixation strength while providing extended mechanical integrity during the typical 3-6 month bone healing period. The gradual degradation profile allows progressive load transfer to healing bone, potentially reducing stress shielding concerns.
+
+However, several limitations constrain clinical translation. First, mechanical properties, while improved, remain below those of metallic implants (titanium UTS ~900 MPa), limiting applications to lower-load anatomical sites. Second, our accelerated degradation conditions may not perfectly predict in vivo behavior, where enzymatic activity and dynamic loading affect degradation kinetics. Third, biocompatibility assessment through cell culture and animal studies is required before human application.`,
+    
+    vocabulary: ["ultimate tensile strength", "Young's modulus", "stress shielding", "fatigue endurance limit", "biodegradation kinetics", "osteoconductive"]
+  },
+  
+  // 因果分析论文 (Causal Analysis Essay)
+  {
+    id: 'academic_023',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.SOCIETY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "因果分析 - 社交媒体与青少年心理健康",
+    taskType: "Causal Analysis Essay",
+    
+    prompt: "Write a causal analysis essay examining the relationship between social media use and adolescent mental health. Identify potential causal mechanisms, evaluate evidence quality, consider alternative explanations, and draw nuanced conclusions.",
+    
+    outline: {
+      phenomenon: "Observed patterns",
+      mechanisms: "Proposed causal pathways",
+      evidence: "Research evidence evaluation",
+      alternatives: "Competing explanations",
+      synthesis: "Nuanced conclusions"
+    },
+    
+    sampleResponse: `The Relationship Between Social Media Use and Adolescent Mental Health: A Causal Analysis
+
+Introduction: The Observed Phenomenon
+
+Rates of anxiety, depression, and psychological distress among adolescents have increased substantially since 2012—coinciding with widespread smartphone and social media adoption. In the United States, the proportion of teens reporting persistent feelings of sadness or hopelessness rose from 26% in 2009 to 44% in 2021, with particularly steep increases among girls. This temporal correlation has prompted intense speculation—and growing parental concern—that social media may be causally responsible for deteriorating adolescent mental health.
+
+However, establishing causation from correlation presents formidable challenges. This essay systematically evaluates the evidence for causal relationships between social media use and adolescent mental wellbeing, identifying proposed mechanisms, assessing evidence quality, and considering alternative explanations.
+
+Proposed Causal Mechanisms
+
+Several theoretical pathways have been proposed through which social media might negatively impact adolescent mental health:
+
+Social Comparison: Social media platforms expose users to curated, idealized presentations of peers' lives, potentially triggering unfavorable social comparisons. Festinger's social comparison theory predicts that such upward comparisons generate negative self-evaluations, particularly when comparison targets are perceived as similar. Adolescents, developmentally primed for peer comparison, may be especially vulnerable.
+
+Sleep Displacement: Social media use, particularly before bedtime, may displace sleep or impair sleep quality through blue light exposure and arousal effects. Adolescents require 8-10 hours of sleep for optimal functioning; chronic sleep insufficiency is strongly associated with depression and anxiety.
+
+Cyberbullying: Social media platforms enable peer harassment that follows victims beyond school hours, potentially intensifying victimization experiences. Unlike face-to-face bullying, cyberbullying can be anonymous, persistent, and publicly visible.
+
+Displacement of Protective Activities: Time spent on social media may displace face-to-face social interaction, physical activity, and other activities with established mental health benefits.
+
+Algorithmic Amplification: Platform algorithms optimized for engagement may preferentially surface emotionally provocative content, potentially creating "filter bubbles" of negative material for vulnerable users.
+
+Evidence Evaluation
+
+The evidence base for these mechanisms varies considerably in quality and consistency.
+
+Correlational studies consistently find associations between social media use and poor mental health outcomes, but effect sizes are typically modest (r ≈ 0.10-0.15). Importantly, correlation cannot establish causation; the observed associations might reflect reverse causation (distressed adolescents turning to social media for coping) or confounding by third variables (e.g., family dysfunction affecting both social media use and mental health).
+
+Longitudinal studies improve upon cross-sectional designs by examining temporal precedence. Findings are mixed: some studies find that social media use predicts subsequent mental health problems, others find no relationship after controlling for prior mental health, and some find bidirectional effects. A recent coordinated analysis across seven longitudinal datasets found small prospective effects that diminished after accounting for baseline symptoms.
+
+Experimental studies provide stronger causal leverage. Randomized trials in which participants reduce or abstain from social media have generally found modest improvements in wellbeing, though effects are inconsistent and may reflect demand characteristics or withdrawal effects rather than genuine causal relationships. Notably, experimental abstinence studies cannot capture long-term developmental effects.
+
+Natural experiments—such as the staggered rollout of Facebook across universities—offer additional causal evidence. Braghieri et al. (2022) found that Facebook introduction was associated with increased depression and anxiety symptoms among college students, with effects concentrated among more vulnerable students. However, the unique context of early Facebook adoption may limit generalizability.
+
+Alternative Explanations
+
+Several factors beyond social media may contribute to adolescent mental health trends:
+
+Economic Insecurity: The 2008 financial crisis and subsequent economic instability affected family wellbeing during formative years for current adolescents.
+
+Academic Pressure: College admission competitiveness has intensified, potentially elevating achievement anxiety.
+
+Awareness and Reporting: Increased mental health awareness may have changed symptom recognition and reporting rather than actual prevalence.
+
+Pandemic Effects: Recent data reflect COVID-19 disruptions that confound social media-specific effects.
+
+Measurement Changes: Survey methodology modifications complicate trend interpretation.
+
+Synthesized Conclusions
+
+The evidence suggests that social media use likely has some causal influence on adolescent mental health, but the effect is probably smaller than public discourse implies, highly heterogeneous across individuals, and interacts with pre-existing vulnerabilities.
+
+Several conclusions appear warranted:
+
+First, social media is neither universally harmful nor universally benign. Effects depend on usage patterns, content exposure, and individual characteristics. Passive consumption and social comparison behaviors appear more problematic than active communication and support-seeking.
+
+Second, vulnerable adolescents—those with pre-existing mental health challenges, body image concerns, or limited offline social support—appear most susceptible to negative effects. Universal interventions may be less efficient than targeted approaches for at-risk youth.
+
+Third, platform design matters. Features that intensify social comparison (visible likes, follower counts, filtered images) may be more harmful than features supporting authentic connection.
+
+Fourth, the moderate effect sizes observed should not be dismissed. At population scale, even small effects translate to meaningful numbers of affected individuals. However, moral panic and simplistic conclusions are equally unwarranted.
+
+For policy and practice, this analysis suggests that measured responses—promoting digital literacy, supporting parental engagement, and encouraging platform design modifications—are more appropriate than extreme restrictions whose benefits remain uncertain and whose costs (social isolation, reduced information access) may be substantial.`,
+    
+    vocabulary: ["social comparison theory", "temporal precedence", "demand characteristics", "natural experiments", "heterogeneous effects", "confounding variables"]
   }
 ];
 
@@ -6352,3 +6753,495 @@ if (typeof window !== 'undefined') {
 
 console.log('✅ V45 综合写作助手集成加载完成');
 console.log('🎉 AI 写作辅助模块 V36-V45 全部加载完成！');
+
+// ==================== V46: 增强版 AI 段落评分系统 ====================
+/**
+ * 高级学术写作评分系统
+ * 功能：段落级别详细评分、具体问题定位、改进建议
+ */
+
+// 学术写作评分标准
+const ACADEMIC_SCORING_CRITERIA = {
+  // 结构与组织 (25分)
+  structure: {
+    weight: 25,
+    criteria: {
+      introduction: { weight: 6, description: '引言是否清晰陈述研究背景和目的' },
+      thesis: { weight: 5, description: '论点是否明确' },
+      bodyOrganization: { weight: 6, description: '主体段落是否逻辑清晰' },
+      transitions: { weight: 4, description: '段落间过渡是否自然' },
+      conclusion: { weight: 4, description: '结论是否有效总结' }
+    }
+  },
+  // 论证与分析 (25分)
+  argumentation: {
+    weight: 25,
+    criteria: {
+      evidence: { weight: 8, description: '是否有充分的证据支持' },
+      analysis: { weight: 8, description: '分析是否深入' },
+      counterarguments: { weight: 5, description: '是否考虑了对立观点' },
+      logic: { weight: 4, description: '逻辑推理是否严密' }
+    }
+  },
+  // 语言与词汇 (25分)
+  language: {
+    weight: 25,
+    criteria: {
+      vocabulary: { weight: 8, description: '学术词汇使用' },
+      grammar: { weight: 7, description: '语法正确性' },
+      clarity: { weight: 5, description: '表达清晰度' },
+      formality: { weight: 5, description: '学术语体规范' }
+    }
+  },
+  // 学术规范 (25分)
+  academic: {
+    weight: 25,
+    criteria: {
+      citations: { weight: 6, description: '引用是否规范' },
+      objectivity: { weight: 6, description: '是否保持客观' },
+      hedging: { weight: 5, description: '是否使用适当的谨慎表达' },
+      precision: { weight: 4, description: '术语使用是否准确' },
+      formatting: { weight: 4, description: '格式是否规范' }
+    }
+  }
+};
+
+// 学术词汇库
+const ACADEMIC_VOCABULARY = {
+  // 引入观点
+  introduction: ['this paper examines', 'this study investigates', 'the purpose of this research', 
+    'this analysis explores', 'the present study aims', 'this article addresses'],
+  // 对比连接词
+  contrast: ['however', 'nevertheless', 'conversely', 'on the other hand', 'in contrast', 
+    'alternatively', 'whereas', 'despite', 'notwithstanding'],
+  // 因果关系
+  causation: ['consequently', 'therefore', 'thus', 'hence', 'as a result', 'accordingly',
+    'due to', 'owing to', 'leads to', 'results in', 'contributes to'],
+  // 强调
+  emphasis: ['significantly', 'notably', 'importantly', 'crucially', 'fundamentally',
+    'particularly', 'especially', 'primarily'],
+  // 谨慎表达 (hedging)
+  hedging: ['may', 'might', 'could', 'appears to', 'seems to', 'suggests', 'indicates',
+    'tends to', 'arguably', 'potentially', 'likely', 'possibly'],
+  // 总结
+  conclusion: ['in conclusion', 'to summarize', 'in summary', 'overall', 'taken together',
+    'these findings suggest', 'this analysis demonstrates']
+};
+
+// 常见学术写作问题模式
+const WRITING_ISSUE_PATTERNS = {
+  // 过于绝对的表述
+  absoluteStatements: {
+    pattern: /\b(always|never|all|none|every|no one|everyone|absolutely|definitely|certainly|undoubtedly|proves? that|clearly shows?)\b/gi,
+    issue: '表述过于绝对',
+    suggestion: '使用更谨慎的表达如 "suggests", "indicates", "tends to"'
+  },
+  // 第一人称过度使用
+  excessiveFirstPerson: {
+    pattern: /\b(I think|I believe|I feel|in my opinion|my view)\b/gi,
+    issue: '第一人称表达过多',
+    suggestion: '学术写作应保持客观，使用"This study argues..."等表达'
+  },
+  // 口语化表达
+  informalLanguage: {
+    pattern: /\b(gonna|wanna|gotta|kinda|sorta|lots of|a lot of|things|stuff|get|got|big|good|bad|nice|pretty much|basically)\b/gi,
+    issue: '口语化表达',
+    suggestion: '使用更正式的学术词汇'
+  },
+  // 缩写
+  contractions: {
+    pattern: /\b(can't|won't|don't|doesn't|isn't|aren't|wasn't|weren't|hasn't|haven't|hadn't|couldn't|wouldn't|shouldn't|it's|that's|there's)\b/gi,
+    issue: '使用了缩写形式',
+    suggestion: '学术写作应避免缩写，使用完整形式'
+  },
+  // 空洞的开头
+  weakOpeners: {
+    pattern: /^(There (is|are|was|were)|It (is|was) (clear|obvious|evident|important|interesting))/gim,
+    issue: '段落开头空洞',
+    suggestion: '使用更具体、更有力的开头'
+  },
+  // 句子过长
+  longSentences: {
+    pattern: /[^.!?]{150,}/g,
+    issue: '句子过长',
+    suggestion: '将长句拆分为更短、更清晰的句子'
+  },
+  // 重复用词
+  repetition: {
+    check: (text) => {
+      const words = text.toLowerCase().match(/\b\w{5,}\b/g) || [];
+      const counts = {};
+      words.forEach(w => counts[w] = (counts[w] || 0) + 1);
+      return Object.entries(counts)
+        .filter(([word, count]) => count > 3 && !['which', 'these', 'their', 'would', 'could', 'should', 'about', 'other'].includes(word))
+        .map(([word, count]) => ({ word, count }));
+    },
+    issue: '词汇重复',
+    suggestion: '使用同义词或变换表达方式'
+  }
+};
+
+/**
+ * 分析单个段落
+ * @param {string} paragraph - 段落文本
+ * @param {number} index - 段落索引
+ * @param {number} totalParagraphs - 总段落数
+ * @returns {Object} 段落分析结果
+ */
+function analyzeParagraph(paragraph, index, totalParagraphs) {
+  const result = {
+    index: index,
+    position: index === 0 ? 'introduction' : (index === totalParagraphs - 1 ? 'conclusion' : 'body'),
+    text: paragraph,
+    wordCount: paragraph.split(/\s+/).filter(w => w.length > 0).length,
+    sentenceCount: paragraph.split(/[.!?]+/).filter(s => s.trim().length > 0).length,
+    score: 100,
+    issues: [],
+    strengths: [],
+    suggestions: []
+  };
+  
+  // 检查字数
+  if (result.wordCount < 30) {
+    result.issues.push({ type: 'length', message: '段落过短，内容不够充分' });
+    result.score -= 10;
+  } else if (result.wordCount > 250) {
+    result.issues.push({ type: 'length', message: '段落过长，建议拆分' });
+    result.score -= 5;
+  }
+  
+  // 检查问题模式
+  Object.entries(WRITING_ISSUE_PATTERNS).forEach(([key, pattern]) => {
+    if (pattern.pattern) {
+      const matches = paragraph.match(pattern.pattern);
+      if (matches && matches.length > 0) {
+        result.issues.push({
+          type: key,
+          message: pattern.issue,
+          instances: matches.slice(0, 3),
+          suggestion: pattern.suggestion
+        });
+        result.score -= Math.min(15, matches.length * 3);
+      }
+    }
+  });
+  
+  // 检查重复用词
+  const repetitions = WRITING_ISSUE_PATTERNS.repetition.check(paragraph);
+  if (repetitions.length > 0) {
+    result.issues.push({
+      type: 'repetition',
+      message: '存在重复用词',
+      instances: repetitions.slice(0, 3).map(r => `"${r.word}" (${r.count}次)`),
+      suggestion: WRITING_ISSUE_PATTERNS.repetition.suggestion
+    });
+    result.score -= repetitions.length * 3;
+  }
+  
+  // 检查学术词汇使用
+  let academicWordCount = 0;
+  Object.values(ACADEMIC_VOCABULARY).flat().forEach(phrase => {
+    if (paragraph.toLowerCase().includes(phrase.toLowerCase())) {
+      academicWordCount++;
+    }
+  });
+  
+  if (academicWordCount >= 3) {
+    result.strengths.push('学术词汇运用良好');
+    result.score = Math.min(100, result.score + 5);
+  } else if (academicWordCount === 0 && result.wordCount > 50) {
+    result.issues.push({
+      type: 'vocabulary',
+      message: '缺少学术词汇',
+      suggestion: '添加适当的学术连接词和表达方式'
+    });
+    result.score -= 5;
+  }
+  
+  // 根据位置检查特定要求
+  if (result.position === 'introduction') {
+    // 检查引言是否包含关键要素
+    const hasBackground = /\b(context|background|recent(ly)?|study|research|investigate|examine)\b/i.test(paragraph);
+    const hasThesis = /\b(this (paper|study|research|article|analysis)|aim|purpose|argue|examine|investigate)\b/i.test(paragraph);
+    
+    if (hasBackground) result.strengths.push('包含研究背景');
+    else {
+      result.issues.push({ type: 'structure', message: '引言缺少研究背景', suggestion: '添加研究背景和上下文' });
+      result.score -= 8;
+    }
+    
+    if (hasThesis) result.strengths.push('论点明确');
+    else {
+      result.issues.push({ type: 'structure', message: '引言缺少明确论点', suggestion: '明确陈述研究目的或主要论点' });
+      result.score -= 10;
+    }
+  }
+  
+  if (result.position === 'conclusion') {
+    const hasSummary = /\b(in conclusion|to summarize|in summary|overall|therefore|thus|these findings|this (study|analysis|research) (shows?|demonstrates?|suggests?))\b/i.test(paragraph);
+    
+    if (hasSummary) result.strengths.push('结论总结到位');
+    else {
+      result.issues.push({ type: 'structure', message: '结论缺少总结性语言', suggestion: '添加总结词如"In conclusion", "To summarize"等' });
+      result.score -= 8;
+    }
+  }
+  
+  if (result.position === 'body') {
+    // 检查主体段落的主题句
+    const firstSentence = paragraph.split(/[.!?]/)[0] || '';
+    if (firstSentence.length < 20) {
+      result.issues.push({ type: 'structure', message: '主题句不够清晰', suggestion: '段落首句应明确陈述本段主要观点' });
+      result.score -= 5;
+    }
+    
+    // 检查是否有证据或例子
+    const hasEvidence = /\b(for example|for instance|such as|according to|research shows?|studies? (indicate|suggest|show)|evidence|data|statistics|findings)\b/i.test(paragraph);
+    if (hasEvidence) result.strengths.push('有证据支持论点');
+    else if (result.wordCount > 60) {
+      result.suggestions.push('考虑添加具体例证或数据支持');
+    }
+  }
+  
+  result.score = Math.max(0, Math.min(100, result.score));
+  return result;
+}
+
+/**
+ * 完整的学术写作评分
+ * @param {string} text - 完整文章
+ * @param {Object} topic - 题目信息（可选）
+ * @returns {Object} 评分结果
+ */
+function scoreAcademicWriting(text, topic = null) {
+  const paragraphs = text.split(/\n\n+/).filter(p => p.trim().length > 20);
+  const totalWords = text.split(/\s+/).filter(w => w.length > 0).length;
+  const sentences = text.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  
+  const result = {
+    overallScore: 0,
+    grade: '',
+    totalWords: totalWords,
+    paragraphCount: paragraphs.length,
+    sentenceCount: sentences.length,
+    avgSentenceLength: Math.round(totalWords / sentences.length) || 0,
+    
+    // 各维度分数
+    dimensions: {
+      structure: { score: 0, maxScore: 25, feedback: [] },
+      argumentation: { score: 0, maxScore: 25, feedback: [] },
+      language: { score: 0, maxScore: 25, feedback: [] },
+      academic: { score: 0, maxScore: 25, feedback: [] }
+    },
+    
+    // 段落分析
+    paragraphAnalysis: [],
+    
+    // 总体反馈
+    strengths: [],
+    weaknesses: [],
+    priorityImprovements: [],
+    
+    // 最需要改进的段落
+    weakestParagraph: null
+  };
+  
+  // 分析每个段落
+  paragraphs.forEach((para, idx) => {
+    const analysis = analyzeParagraph(para, idx, paragraphs.length);
+    result.paragraphAnalysis.push(analysis);
+  });
+  
+  // 找出最弱的段落
+  const sortedByScore = [...result.paragraphAnalysis].sort((a, b) => a.score - b.score);
+  if (sortedByScore.length > 0 && sortedByScore[0].score < 70) {
+    result.weakestParagraph = {
+      index: sortedByScore[0].index + 1,
+      position: sortedByScore[0].position,
+      score: sortedByScore[0].score,
+      mainIssues: sortedByScore[0].issues.slice(0, 3)
+    };
+  }
+  
+  // 计算结构分数
+  if (paragraphs.length >= 3) {
+    result.dimensions.structure.score += 10;
+    result.dimensions.structure.feedback.push('✓ 段落数量合适');
+  } else {
+    result.dimensions.structure.feedback.push('✗ 段落数量不足，建议至少3段');
+  }
+  
+  const introAnalysis = result.paragraphAnalysis.find(p => p.position === 'introduction');
+  const conclusionAnalysis = result.paragraphAnalysis.find(p => p.position === 'conclusion');
+  
+  if (introAnalysis && introAnalysis.strengths.includes('论点明确')) {
+    result.dimensions.structure.score += 8;
+  }
+  if (conclusionAnalysis && conclusionAnalysis.strengths.includes('结论总结到位')) {
+    result.dimensions.structure.score += 7;
+  }
+  
+  // 计算语言分数
+  let totalIssues = result.paragraphAnalysis.reduce((sum, p) => sum + p.issues.length, 0);
+  let academicStrengths = result.paragraphAnalysis.filter(p => p.strengths.includes('学术词汇运用良好')).length;
+  
+  result.dimensions.language.score = Math.max(0, 25 - totalIssues * 2);
+  if (academicStrengths >= 2) {
+    result.dimensions.language.score = Math.min(25, result.dimensions.language.score + 5);
+    result.dimensions.language.feedback.push('✓ 学术词汇运用得当');
+  }
+  
+  // 计算论证分数
+  const evidenceParagraphs = result.paragraphAnalysis.filter(p => p.strengths.includes('有证据支持论点')).length;
+  result.dimensions.argumentation.score = Math.min(25, 10 + evidenceParagraphs * 5);
+  if (evidenceParagraphs >= 2) {
+    result.dimensions.argumentation.feedback.push('✓ 论证有充分证据支持');
+  } else {
+    result.dimensions.argumentation.feedback.push('✗ 需要更多证据和例证支持论点');
+  }
+  
+  // 计算学术规范分数
+  const contractionIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'contractions')).length;
+  const firstPersonIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'excessiveFirstPerson')).length;
+  
+  result.dimensions.academic.score = 25;
+  if (contractionIssues > 0) {
+    result.dimensions.academic.score -= contractionIssues * 5;
+    result.dimensions.academic.feedback.push('✗ 存在缩写形式，应展开');
+  }
+  if (firstPersonIssues > 0) {
+    result.dimensions.academic.score -= firstPersonIssues * 3;
+    result.dimensions.academic.feedback.push('✗ 第一人称使用过多');
+  }
+  if (result.dimensions.academic.score >= 20) {
+    result.dimensions.academic.feedback.push('✓ 学术规范较好');
+  }
+  result.dimensions.academic.score = Math.max(0, result.dimensions.academic.score);
+  
+  // 计算总分
+  result.overallScore = 
+    result.dimensions.structure.score +
+    result.dimensions.argumentation.score +
+    result.dimensions.language.score +
+    result.dimensions.academic.score;
+  
+  // 如果有题目要求，检查字数
+  if (topic && topic.wordCount) {
+    if (totalWords < topic.wordCount.min) {
+      result.overallScore = Math.max(0, result.overallScore - 10);
+      result.weaknesses.push(`字数不足（${totalWords}/${topic.wordCount.min}词）`);
+    } else if (totalWords > topic.wordCount.max * 1.2) {
+      result.overallScore = Math.max(0, result.overallScore - 5);
+      result.weaknesses.push(`字数过多（${totalWords}/${topic.wordCount.max}词）`);
+    }
+  }
+  
+  // 生成等级
+  if (result.overallScore >= 90) result.grade = 'A (优秀)';
+  else if (result.overallScore >= 80) result.grade = 'B (良好)';
+  else if (result.overallScore >= 70) result.grade = 'C (中等)';
+  else if (result.overallScore >= 60) result.grade = 'D (及格)';
+  else result.grade = 'F (需改进)';
+  
+  // 汇总优缺点
+  result.paragraphAnalysis.forEach(p => {
+    p.strengths.forEach(s => {
+      if (!result.strengths.includes(s)) result.strengths.push(s);
+    });
+    p.issues.forEach(issue => {
+      if (!result.weaknesses.some(w => w.includes(issue.type))) {
+        result.weaknesses.push(issue.message);
+      }
+    });
+  });
+  
+  // 生成优先改进建议
+  if (result.weakestParagraph) {
+    result.priorityImprovements.push({
+      priority: 1,
+      area: `第${result.weakestParagraph.index}段 (${result.weakestParagraph.position === 'introduction' ? '引言' : result.weakestParagraph.position === 'conclusion' ? '结论' : '主体'})`,
+      issues: result.weakestParagraph.mainIssues.map(i => i.message),
+      action: '这是最需要改进的段落'
+    });
+  }
+  
+  if (result.dimensions.language.score < 15) {
+    result.priorityImprovements.push({
+      priority: 2,
+      area: '语言表达',
+      issues: ['存在多处语言问题'],
+      action: '检查并修正语言错误，增加学术词汇'
+    });
+  }
+  
+  if (result.dimensions.structure.score < 15) {
+    result.priorityImprovements.push({
+      priority: 3,
+      area: '文章结构',
+      issues: ['结构不够完整'],
+      action: '确保有清晰的引言、主体和结论'
+    });
+  }
+  
+  return result;
+}
+
+/**
+ * 生成详细的段落反馈HTML
+ */
+function generateParagraphFeedbackHTML(analysis) {
+  return analysis.paragraphAnalysis.map((para, idx) => {
+    const positionLabel = para.position === 'introduction' ? '引言' : 
+                          para.position === 'conclusion' ? '结论' : `主体段${idx}`;
+    const scoreClass = para.score >= 80 ? 'good' : para.score >= 60 ? 'warning' : 'error';
+    
+    let issuesHTML = '';
+    if (para.issues.length > 0) {
+      issuesHTML = `
+        <div class="para-issues">
+          ${para.issues.map(issue => `
+            <div class="issue-item">
+              <span class="issue-icon">⚠️</span>
+              <span class="issue-text">${issue.message}</span>
+              ${issue.instances ? `<span class="issue-examples">(如: ${issue.instances.slice(0, 2).join(', ')})</span>` : ''}
+              ${issue.suggestion ? `<div class="issue-suggestion">💡 ${issue.suggestion}</div>` : ''}
+            </div>
+          `).join('')}
+        </div>
+      `;
+    }
+    
+    let strengthsHTML = '';
+    if (para.strengths.length > 0) {
+      strengthsHTML = `
+        <div class="para-strengths">
+          ${para.strengths.map(s => `<span class="strength-tag">✓ ${s}</span>`).join('')}
+        </div>
+      `;
+    }
+    
+    return `
+      <div class="paragraph-feedback ${scoreClass}">
+        <div class="para-header">
+          <span class="para-label">${positionLabel}</span>
+          <span class="para-score">${para.score}分</span>
+          <span class="para-words">${para.wordCount}词</span>
+        </div>
+        ${strengthsHTML}
+        ${issuesHTML}
+      </div>
+    `;
+  }).join('');
+}
+
+// 导出 V46 功能
+if (typeof window !== 'undefined') {
+  window.WritingAI = window.WritingAI || {};
+  window.WritingAI.scoreAcademicWriting = scoreAcademicWriting;
+  window.WritingAI.analyzeParagraph = analyzeParagraph;
+  window.WritingAI.generateParagraphFeedbackHTML = generateParagraphFeedbackHTML;
+  window.WritingAI.ACADEMIC_SCORING_CRITERIA = ACADEMIC_SCORING_CRITERIA;
+  window.WritingAI.ACADEMIC_VOCABULARY = ACADEMIC_VOCABULARY;
+}
+
+console.log('✅ V46 增强版 AI 段落评分系统加载完成');

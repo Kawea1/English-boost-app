@@ -25268,3 +25268,334 @@ body.theme-dark .pet-name-tag {
     background: #333;
     color: #fff;
 }
+
+/* ==================== AI 评分分析样式 ==================== */
+.ai-analysis-section {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.ai-analysis-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid var(--accent-color);
+}
+
+.ai-icon {
+    font-size: 1.5rem;
+}
+
+.ai-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+/* 维度评分 */
+.ai-dimensions {
+    margin-bottom: 24px;
+}
+
+.ai-dimensions h4 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.dimension-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.dimension-item {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.dim-label {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+}
+
+.dim-score {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 8px;
+}
+
+.dim-bar {
+    height: 6px;
+    background: rgba(0,0,0,0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.dim-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light, #60a5fa));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+
+/* 段落分析 */
+.ai-paragraphs {
+    margin-bottom: 24px;
+}
+
+.ai-paragraphs h4 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+}
+
+.para-analysis {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 12px;
+    border-left: 4px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.para-analysis.score-good {
+    border-left-color: #22c55e;
+}
+
+.para-analysis.score-warning {
+    border-left-color: #f59e0b;
+}
+
+.para-analysis.score-error {
+    border-left-color: #ef4444;
+}
+
+.para-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.para-name {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.para-score-badge {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.1);
+}
+
+.para-score-badge.score-good {
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+}
+
+.para-score-badge.score-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #b45309;
+}
+
+.para-score-badge.score-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #dc2626;
+}
+
+.para-words {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-left: auto;
+}
+
+.para-strengths {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.strength-tag {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    background: rgba(34, 197, 94, 0.15);
+    color: #15803d;
+    border-radius: 12px;
+}
+
+.para-issues {
+    margin-top: 8px;
+}
+
+.para-issue {
+    padding: 10px;
+    background: rgba(239, 68, 68, 0.05);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.issue-badge {
+    margin-right: 6px;
+}
+
+.issue-msg {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.issue-example {
+    display: block;
+    font-size: 0.8rem;
+    color: #ef4444;
+    margin-top: 4px;
+    padding-left: 24px;
+    font-style: italic;
+}
+
+.issue-tip {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    margin-top: 6px;
+    padding-left: 24px;
+}
+
+/* 优先改进 */
+.ai-priority {
+    margin-bottom: 24px;
+}
+
+.ai-priority h4 {
+    font-size: 1rem;
+    margin-bottom: 12px;
+}
+
+.priority-card {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(251, 146, 60, 0.1));
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.priority-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.priority-icon {
+    font-size: 1.2rem;
+}
+
+.priority-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.priority-score {
+    font-weight: 700;
+    color: #ef4444;
+}
+
+.priority-issues {
+    padding-left: 32px;
+}
+
+.priority-issue {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+/* 优缺点总结 */
+.ai-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.summary-col {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 14px;
+}
+
+.summary-col h5 {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.summary-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.summary-col li {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    padding: 4px 0;
+    padding-left: 12px;
+    position: relative;
+}
+
+.summary-col li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--text-secondary);
+}
+
+/* 深色模式适配 */
+body.theme-dark .ai-analysis-section {
+    background: #1e1e1e;
+    border-color: #333;
+}
+
+body.theme-dark .dimension-item,
+body.theme-dark .para-analysis,
+body.theme-dark .summary-col {
+    background: #2a2a2a;
+}
+
+body.theme-dark .para-issue {
+    background: rgba(239, 68, 68, 0.1);
+}
+
+body.theme-dark .priority-card {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.15), rgba(251, 146, 60, 0.15));
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+body.theme-dark .strength-tag {
+    background: rgba(34, 197, 94, 0.2);
+}
+
+body.theme-dark .para-score-badge.score-good {
+    background: rgba(34, 197, 94, 0.2);
+}
+
+body.theme-dark .para-score-badge.score-warning {
+    background: rgba(245, 158, 11, 0.2);
+}
+
+body.theme-dark .para-score-badge.score-error {
+    background: rgba(239, 68, 68, 0.2);
+}

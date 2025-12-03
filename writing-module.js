@@ -710,8 +710,14 @@
             
             const wordCount = content.split(/\s+/).length;
             
-            // 简单评分
-            const score = this.calculateScore(content, this.currentTopic);
+            // 使用增强版 AI 评分系统
+            let aiAnalysis = null;
+            if (window.WritingAI && window.WritingAI.scoreAcademicWriting) {
+                aiAnalysis = window.WritingAI.scoreAcademicWriting(content, this.currentTopic);
+            }
+            
+            // 获取分数（优先使用 AI 评分）
+            const score = aiAnalysis ? aiAnalysis.overallScore : this.calculateScore(content, this.currentTopic);
             
             // 保存记录
             const record = {
@@ -721,6 +727,7 @@
                 content: content,
                 wordCount: wordCount,
                 score: score,
+                aiAnalysis: aiAnalysis,
                 timeUsed: this.currentTopic.timeLimit - this.timeRemaining,
                 submittedAt: new Date().toISOString()
             };
@@ -794,6 +801,135 @@
             const timeUsedMins = Math.floor(record.timeUsed / 60);
             const timeUsedSecs = record.timeUsed % 60;
             
+            // 生成 AI 分析内容
+            let aiAnalysisHTML = '';
+            if (record.aiAnalysis) {
+                const ai = record.aiAnalysis;
+                
+                // 维度分数
+                const dimensionHTML = `
+                    <div class="ai-dimensions">
+                        <h4>📊 各维度评分</h4>
+                        <div class="dimension-grid">
+                            <div class="dimension-item">
+                                <div class="dim-label">结构组织</div>
+                                <div class="dim-score">${ai.dimensions.structure.score}/${ai.dimensions.structure.maxScore}</div>
+                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.structure.score / ai.dimensions.structure.maxScore * 100}%"></div></div>
+                            </div>
+                            <div class="dimension-item">
+                                <div class="dim-label">论证分析</div>
+                                <div class="dim-score">${ai.dimensions.argumentation.score}/${ai.dimensions.argumentation.maxScore}</div>
+                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.argumentation.score / ai.dimensions.argumentation.maxScore * 100}%"></div></div>
+                            </div>
+                            <div class="dimension-item">
+                                <div class="dim-label">语言表达</div>
+                                <div class="dim-score">${ai.dimensions.language.score}/${ai.dimensions.language.maxScore}</div>
+                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.language.score / ai.dimensions.language.maxScore * 100}%"></div></div>
+                            </div>
+                            <div class="dimension-item">
+                                <div class="dim-label">学术规范</div>
+                                <div class="dim-score">${ai.dimensions.academic.score}/${ai.dimensions.academic.maxScore}</div>
+                                <div class="dim-bar"><div class="dim-fill" style="width: ${ai.dimensions.academic.score / ai.dimensions.academic.maxScore * 100}%"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // 段落分析
+                let paragraphHTML = '';
+                if (ai.paragraphAnalysis && ai.paragraphAnalysis.length > 0) {
+                    paragraphHTML = `
+                        <div class="ai-paragraphs">
+                            <h4>📝 段落分析</h4>
+                            ${ai.paragraphAnalysis.map((para, idx) => {
+                                const posLabel = para.position === 'introduction' ? '引言段' : 
+                                                para.position === 'conclusion' ? '结论段' : `主体段${idx}`;
+                                const scoreClass = para.score >= 80 ? 'score-good' : para.score >= 60 ? 'score-warning' : 'score-error';
+                                
+                                let issuesList = '';
+                                if (para.issues.length > 0) {
+                                    issuesList = para.issues.map(issue => `
+                                        <div class="para-issue">
+                                            <span class="issue-badge">⚠️</span>
+                                            <span class="issue-msg">${issue.message}</span>
+                                            ${issue.instances ? `<span class="issue-example">${issue.instances.slice(0, 2).join(', ')}</span>` : ''}
+                                            ${issue.suggestion ? `<div class="issue-tip">💡 ${issue.suggestion}</div>` : ''}
+                                        </div>
+                                    `).join('');
+                                }
+                                
+                                let strengthsList = '';
+                                if (para.strengths.length > 0) {
+                                    strengthsList = para.strengths.map(s => `<span class="strength-tag">✓ ${s}</span>`).join('');
+                                }
+                                
+                                return `
+                                    <div class="para-analysis ${scoreClass}">
+                                        <div class="para-header">
+                                            <span class="para-name">${posLabel}</span>
+                                            <span class="para-score-badge ${scoreClass}">${para.score}分</span>
+                                            <span class="para-words">${para.wordCount}词</span>
+                                        </div>
+                                        ${strengthsList ? `<div class="para-strengths">${strengthsList}</div>` : ''}
+                                        ${issuesList ? `<div class="para-issues">${issuesList}</div>` : ''}
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+                
+                // 最需要改进的段落
+                let weakestHTML = '';
+                if (ai.weakestParagraph) {
+                    weakestHTML = `
+                        <div class="ai-priority">
+                            <h4>🎯 优先改进</h4>
+                            <div class="priority-card">
+                                <div class="priority-header">
+                                    <span class="priority-icon">📍</span>
+                                    <span class="priority-title">第${ai.weakestParagraph.index}段需要重点修改</span>
+                                    <span class="priority-score">${ai.weakestParagraph.score}分</span>
+                                </div>
+                                <div class="priority-issues">
+                                    ${ai.weakestParagraph.mainIssues.map(i => `<div class="priority-issue">• ${i.message}</div>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 优缺点总结
+                let summaryHTML = '';
+                if (ai.strengths.length > 0 || ai.weaknesses.length > 0) {
+                    summaryHTML = `
+                        <div class="ai-summary">
+                            <div class="summary-col">
+                                <h5>✅ 优点</h5>
+                                <ul>${ai.strengths.slice(0, 4).map(s => `<li>${s}</li>`).join('') || '<li>继续努力!</li>'}</ul>
+                            </div>
+                            <div class="summary-col">
+                                <h5>⚠️ 待改进</h5>
+                                <ul>${ai.weaknesses.slice(0, 4).map(w => `<li>${w}</li>`).join('') || '<li>表现不错!</li>'}</ul>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                aiAnalysisHTML = `
+                    <div class="ai-analysis-section">
+                        <div class="ai-analysis-header">
+                            <span class="ai-icon">🤖</span>
+                            <span class="ai-title">AI 智能评分分析</span>
+                        </div>
+                        ${dimensionHTML}
+                        ${weakestHTML}
+                        ${paragraphHTML}
+                        ${summaryHTML}
+                    </div>
+                `;
+            }
+            
             writingArea.innerHTML = `
                 <div class="writing-result">
                     <div class="result-header">
@@ -806,7 +942,7 @@
                             <span class="score-value">${record.score}</span>
                             <span class="score-label">分</span>
                         </div>
-                        <div class="score-grade">${this.getGrade(record.score)}</div>
+                        <div class="score-grade">${record.aiAnalysis ? record.aiAnalysis.grade : this.getGrade(record.score)}</div>
                     </div>
                     
                     <div class="result-stats">
@@ -822,17 +958,19 @@
                         </div>
                         <div class="stat-item">
                             <span class="stat-icon">📊</span>
-                            <span class="stat-value">${this.getTypeLabel(record.type)}</span>
-                            <span class="stat-label">题型</span>
+                            <span class="stat-value">${record.aiAnalysis ? record.aiAnalysis.paragraphCount : '-'}</span>
+                            <span class="stat-label">段落</span>
                         </div>
                     </div>
                     
-                    <div class="result-feedback">
-                        <h4>评分反馈</h4>
-                        <ul>
-                            ${this.getFeedback(record)}
-                        </ul>
-                    </div>
+                    ${aiAnalysisHTML || `
+                        <div class="result-feedback">
+                            <h4>评分反馈</h4>
+                            <ul>
+                                ${this.getFeedback(record)}
+                            </ul>
+                        </div>
+                    `}
                     
                     <div class="result-content">
                         <h4>你的作文</h4>
