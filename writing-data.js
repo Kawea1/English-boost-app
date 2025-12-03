@@ -2897,6 +2897,431 @@ Fourth, the moderate effect sizes observed should not be dismissed. At populatio
 For policy and practice, this analysis suggests that measured responses—promoting digital literacy, supporting parental engagement, and encouraging platform design modifications—are more appropriate than extreme restrictions whose benefits remain uncertain and whose costs (social isolation, reduced information access) may be substantial.`,
     
     vocabulary: ["social comparison theory", "temporal precedence", "demand characteristics", "natural experiments", "heterogeneous effects", "confounding variables"]
+  },
+  
+  // ==================== 新增多样题型学术写作 V32 ====================
+  
+  // 批判性分析写作 (Critical Analysis Essay)
+  {
+    id: 'academic_024',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.PHILOSOPHY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700, // 45分钟
+    wordCount: { min: 450, max: 600 },
+    
+    title: "批判性分析 - 功利主义伦理学批评",
+    taskType: "Critical Analysis Essay",
+    
+    prompt: "Write a critical analysis essay examining the strengths and weaknesses of utilitarian ethical theory. Engage with major objections, evaluate responses, and develop your own reasoned assessment.",
+    
+    outline: {
+      exposition: "Clear statement of the theory",
+      strengths: "Arguments in favor",
+      objections: "Major criticisms",
+      responses: "Defenses and counterarguments",
+      assessment: "Your evaluated position"
+    },
+    
+    sampleResponse: `A Critical Analysis of Utilitarian Ethics
+
+Introduction
+
+Utilitarianism, the ethical theory holding that actions are right insofar as they maximize aggregate well-being, has exerted profound influence on moral philosophy, public policy, and everyday ethical reasoning since its systematic articulation by Jeremy Bentham and John Stuart Mill. Its intuitive appeal—that we should act to produce the greatest good for the greatest number—has made it perhaps the most influential consequentialist framework. Yet utilitarianism has also attracted sustained philosophical criticism. This essay critically examines the theory's strengths and weaknesses, evaluates major objections and responses, and develops an assessed judgment of utilitarianism's adequacy as a comprehensive ethical theory.
+
+Exposition of the Theory
+
+Classical utilitarianism comprises several core commitments. First, consequentialism: the moral status of actions depends solely on their outcomes, not on intentions, motives, or adherence to rules independent of consequences. Second, welfarism: the relevant consequences are those affecting well-being or welfare. Third, aggregationism: the morally relevant outcome is the sum total of individual welfare, without privileging any particular person's interests. Fourth, maximization: among available actions, the right choice is that which produces the greatest aggregate welfare.
+
+These commitments admit considerable variation. Hedonistic utilitarians identify welfare with pleasure and the absence of pain; preference utilitarians with satisfaction of preferences; objective list theorists with possession of objectively valuable goods. Act utilitarians apply the maximization principle directly to individual actions; rule utilitarians to general rules of conduct.
+
+Strengths of Utilitarianism
+
+Utilitarianism possesses several theoretical virtues. First, its impartiality: by counting everyone's welfare equally, utilitarianism embodies the moral insight that arbitrary distinctions—of race, nationality, or social position—should not determine whose interests matter. This egalitarian foundation has powered progressive moral arguments from abolitionism to animal welfare.
+
+Second, utilitarianism provides determinate guidance. Where deontological theories may generate conflicting duties without decision procedures, utilitarianism offers a common metric—welfare—for comparing alternatives. This calculability makes utilitarian reasoning practically applicable to policy analysis, where trade-offs between competing goods are unavoidable.
+
+Third, utilitarianism's focus on actual outcomes aligns with common moral intuitions that consequences matter. An ethics that condemned actions producing wonderful outcomes while approving those causing suffering would seem perverse. Utilitarianism captures this intuition systematically.
+
+Major Objections
+
+Despite these strengths, utilitarianism faces formidable objections.
+
+The Demandingness Objection: If morality requires maximizing aggregate welfare, virtually any personal pursuit—enjoying a meal, spending time with family, pursuing hobbies—is morally impermissible when resources could instead relieve suffering elsewhere. This seems to make morality impossibly demanding, leaving no space for personal projects and relationships that give life meaning. Bernard Williams famously argued that utilitarianism alienates agents from their own commitments, destroying the integrity essential to meaningful agency.
+
+The Justice Objection: Utilitarianism appears to permit—indeed require—grave injustices if they maximize aggregate welfare. A surgeon might be obligated to kill one healthy patient to harvest organs saving five others. Punishment of the innocent could be justified if it maximally deterred crime. These implications clash violently with deeply held moral convictions about individual rights and justice.
+
+The Measurement Problem: Meaningful interpersonal welfare comparisons face formidable philosophical and practical obstacles. How can we compare the intensity of different persons' pleasures, or aggregate incommensurable values like health, knowledge, and relationships into a single welfare metric? Without such comparisons, the utilitarian calculus becomes indeterminate.
+
+The Integrity Objection: Williams argued that utilitarianism fails to respect the separateness of persons, treating individuals merely as containers for welfare units rather than as distinct agents with their own projects and commitments. This reduces persons to mere locations where value might be produced or destroyed.
+
+Utilitarian Responses
+
+Sophisticated utilitarians have developed responses to these objections.
+
+To demandingness, some argue that maximizing welfare in practice requires sustainable moral commitment; burning out through excessive sacrifice ultimately reduces welfare production. Rule utilitarianism accommodates personal prerogatives by noting that rules permitting personal pursuits likely maximize welfare compared to maximally demanding alternatives.
+
+To justice objections, rule utilitarians argue that institutions protecting individual rights generally maximize long-term welfare; the organ-harvesting surgeon would undermine trust in medicine, producing net disutility. Even act utilitarians note that our intuitions about such cases may be unreliable guides, shaped by evolutionary and cultural factors poorly tracking actual welfare.
+
+To measurement concerns, defenders argue that approximate comparisons suffice for practical guidance; we need not measure welfare precisely to judge that alleviating severe suffering matters more than satisfying trivial preferences. Preference utilitarianism sidesteps some measurement problems by respecting individuals' own valuations.
+
+Critical Assessment
+
+These responses, while partially successful, do not fully vindicate utilitarianism. The rule utilitarian response to justice objections succeeds only contingently—if circumstances arose where injustice truly maximized welfare, the theory would endorse it. The commitment to maximization that drives utilitarianism's determinacy also generates its most troubling implications.
+
+More fundamentally, utilitarianism struggles to capture the moral significance of how welfare is distributed, not merely how much exists. A distribution concentrating all welfare in a few while others suffer seems morally inferior to a more equal distribution of the same total—yet aggregative utilitarianism cannot accommodate this intuition.
+
+My assessed judgment is that utilitarianism captures important moral truths—that consequences matter, that suffering should be reduced, that all persons' interests count equally—while failing as a complete ethical theory. These insights are better incorporated within a pluralistic framework that also recognizes constraints on how individuals may be treated and prerogatives to pursue personal projects. Utilitarianism illuminates one important dimension of moral evaluation but cannot bear the weight of serving as our sole ethical criterion.`,
+    
+    vocabulary: ["consequentialism", "welfarism", "aggregationism", "demandingness objection", "separateness of persons", "rule utilitarianism"]
+  },
+  
+  // 综合回应写作 (Synthesis Essay)
+  {
+    id: 'academic_025',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.EDUCATION,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "综合写作 - 高等教育的目的",
+    taskType: "Synthesis Essay",
+    
+    prompt: "Synthesize multiple perspectives on the purpose of higher education. Draw from at least three different viewpoints (economic, civic, personal development, etc.), identify areas of agreement and tension, and develop an integrated position.",
+    
+    outline: {
+      introduction: "Frame the question",
+      perspectives: "Present multiple viewpoints",
+      analysis: "Areas of agreement and conflict",
+      synthesis: "Integrated position",
+      implications: "Practical consequences"
+    },
+    
+    sampleResponse: `The Purpose of Higher Education: A Synthesis of Perspectives
+
+Introduction
+
+What is higher education for? This seemingly simple question has generated vastly different answers from economists, philosophers, civic leaders, and students themselves. As universities face mounting pressures—from rising costs and student debt to demands for demonstrable "return on investment"—clarity about educational purposes has become urgently practical. This essay synthesizes major perspectives on higher education's purpose, identifies tensions and convergences among them, and develops an integrated position that honors multiple legitimate aims.
+
+The Economic Perspective
+
+From an economic standpoint, higher education functions primarily as human capital development—the cultivation of knowledge and skills that enhance individual productivity and, in aggregate, drive economic growth. This view emphasizes vocational preparation: universities should equip graduates with competencies employers value, ensuring smooth labor market transitions and justifying educational investments through enhanced lifetime earnings.
+
+Supporting this perspective, empirical research consistently finds substantial earnings premiums for college graduates—approximately $1 million in additional lifetime earnings compared to high school graduates in the United States. Economists like Claudia Goldin and Lawrence Katz have documented how educational attainment expansion drove twentieth-century economic growth.
+
+Critics note that reducing education to economic training impoverishes our understanding of what universities can offer while pressuring curricula toward narrow vocationalism at the expense of broader intellectual development.
+
+The Civic Perspective
+
+Political theorists from Thomas Jefferson to contemporary scholars like Martha Nussbaum have emphasized higher education's role in cultivating democratic citizenship. On this view, universities should develop the critical thinking, historical understanding, and civic knowledge necessary for informed participation in self-governance.
+
+Jefferson's vision of public education aimed to identify and cultivate "natural aristocracy"—individuals of talent who would lead democratic institutions. Contemporary advocates emphasize that democracy requires citizens capable of evaluating complex policy arguments, understanding diverse perspectives, and engaging constructively across differences.
+
+This perspective supports broad general education requirements, including history, political science, and ethics, even when such courses lack obvious vocational application. The recent erosion of civic knowledge among young Americans—surveys reveal alarming ignorance of basic governmental structures—suggests this purpose remains urgent.
+
+The Personal Development Perspective
+
+Humanistic educators emphasize higher education as a transformative journey of personal growth and self-discovery. Cardinal Newman's classic "Idea of a University" articulated this vision: universities should cultivate the "philosophical habit of mind"—the capacity for integrated, critical thinking across domains—rather than merely transmitting specialized knowledge.
+
+On this view, exposure to great works of literature, philosophy, and science expands students' horizons, challenges parochial assumptions, and develops capacities for reflection and meaning-making that enrich lives regardless of career outcomes. Education is intrinsically valuable, not merely instrumentally useful.
+
+Critics worry this perspective is elitist—a luxury affordable only for the privileged—and insufficiently attentive to students' legitimate concerns about employability.
+
+The Knowledge Creation Perspective
+
+Universities are not merely teaching institutions but sites of research and knowledge creation. This perspective, associated with the Humboldtian research university model, emphasizes the unity of teaching and research: students learn not just established knowledge but how knowledge is produced, ideally participating themselves in scholarly inquiry.
+
+This research mission generates discoveries with broad social benefits—from medical breakthroughs to technological innovations—while training the next generation of scholars and scientists. Graduate education and research-intensive undergraduate programs embody this purpose.
+
+Tensions and Convergences
+
+These perspectives generate genuine tensions. Economic and personal development views may conflict when liberal arts education lacks clear labor market returns. Civic and economic perspectives diverge when civic education competes with vocational training for curricular space. Research priorities may conflict with undergraduate teaching quality when faculty incentives emphasize publication over instruction.
+
+Yet convergences also exist. Critical thinking—emphasized by humanistic and civic perspectives—also enhances economic productivity in knowledge economies requiring adaptable, analytical workers. Research and teaching can be complementary when students engage in inquiry alongside faculty. And all perspectives share commitment to developing human potential, differing primarily in which potentials they emphasize.
+
+An Integrated Position
+
+Rather than privileging one purpose, I argue universities should explicitly pursue multiple aims while acknowledging tensions among them. Higher education should prepare students for productive work without reducing education to job training; should cultivate civic capacities without imposing particular political views; should foster personal growth without ignoring economic realities facing graduates.
+
+Achieving this integration requires institutional self-awareness about purposes and trade-offs. Curricula should combine depth in disciplinary or professional knowledge with breadth in general education. Teaching should connect specialized content to broader questions of meaning and application. Assessment should measure multiple dimensions of student development, not merely employment outcomes.
+
+Most importantly, universities should resist external pressures to collapse multiple purposes into a single metric—whether graduation rates, starting salaries, or research rankings. The richness of higher education lies precisely in serving diverse legitimate aims, even when these exist in productive tension.`,
+    
+    vocabulary: ["human capital", "vocational preparation", "democratic citizenship", "philosophical habit of mind", "Humboldtian model", "general education"]
+  },
+  
+  // 问题-解决方案论文 (Problem-Solution Essay)
+  {
+    id: 'academic_026',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.ENVIRONMENT,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "问题-解决方案 - 海洋塑料污染",
+    taskType: "Problem-Solution Essay",
+    
+    prompt: "Write a problem-solution essay addressing the crisis of ocean plastic pollution. Clearly define the problem, analyze causes, propose evidence-based solutions, and evaluate their feasibility.",
+    
+    outline: {
+      problem: "Define and scope the issue",
+      causes: "Root cause analysis",
+      solutions: "Proposed interventions",
+      evaluation: "Feasibility assessment",
+      action: "Implementation priorities"
+    },
+    
+    sampleResponse: `Addressing the Ocean Plastic Pollution Crisis: Problems and Solutions
+
+The Problem Defined
+
+Plastic pollution has emerged as one of the most visible and intractable environmental challenges of our era. An estimated 8 million metric tons of plastic enter the world's oceans annually—equivalent to dumping a garbage truck of plastic into the ocean every minute. At current trajectories, ocean plastic could outweigh fish by 2050.
+
+This pollution takes multiple forms: visible debris accumulating in massive ocean gyres; microplastics—fragments smaller than 5mm—pervading marine ecosystems and food chains; and "ghost gear"—abandoned fishing equipment that continues capturing and killing marine life. Impacts include entanglement and ingestion affecting over 800 marine species, ecosystem disruption, economic damage to fisheries and tourism, and emerging concerns about microplastics entering human food supplies.
+
+The problem's scope and persistence demand urgent attention. Unlike many pollutants that degrade over time, conventional plastics persist for centuries, meaning that today's pollution represents a legacy burden for generations.
+
+Root Causes
+
+Effective solutions require understanding why plastic enters oceans in the first place. Several interconnected factors drive the problem:
+
+Production Growth: Global plastic production has increased exponentially—from 2 million tons in 1950 to over 400 million tons annually today—driven by plastic's versatility, durability, and low cost. This production growth has far outpaced waste management infrastructure development.
+
+Linear Economic Model: The dominant "take-make-dispose" economic model treats plastics as single-use, disposable commodities rather than valuable materials warranting recovery and reuse. Only 9% of plastic ever produced has been recycled.
+
+Inadequate Waste Management: In many developing nations experiencing rapid economic growth, waste collection and processing infrastructure remains underdeveloped. An estimated 80% of ocean plastic originates from land-based sources in countries with inadequate waste systems, particularly in Southeast Asia.
+
+Export of Plastic Waste: Until recently, wealthy nations exported vast quantities of plastic waste to developing countries for "recycling"—much of which was actually dumped or burned due to insufficient processing capacity.
+
+Product Design: Many products are designed without consideration for end-of-life management, incorporating materials that complicate recycling or embedding plastics in ways that prevent recovery.
+
+Proposed Solutions
+
+Addressing ocean plastic requires interventions across the plastics value chain:
+
+1. Reduce Production of Virgin Plastic
+The most effective intervention targets the problem at its source. Policies could include taxes on virgin plastic production, making recycled alternatives more cost-competitive; bans on demonstrably unnecessary single-use plastics (straws, bags, cutlery); and extended producer responsibility (EPR) schemes requiring manufacturers to finance end-of-life management. The European Union's Single-Use Plastics Directive exemplifies this approach.
+
+2. Improve Waste Management Infrastructure
+In high-leakage regions, investments in basic waste collection can dramatically reduce ocean inputs. The Ocean Conservancy estimates that improving waste management in just five Asian countries (China, Indonesia, Philippines, Thailand, Vietnam) could reduce ocean plastic by 45%. Financing mechanisms could include international climate funds, development assistance, and EPR revenues from global producers.
+
+3. Promote Circular Economy Approaches
+Redesigning products for recyclability, developing deposit-return systems for packaging, and creating markets for recycled materials can shift from linear to circular material flows. Chemical recycling technologies that break plastics into molecular building blocks offer potential for processing mixed plastics that mechanical recycling cannot handle.
+
+4. Innovate Alternative Materials
+Truly biodegradable plastics and bio-based alternatives could reduce persistence for applications where recycling is impractical. However, current "biodegradable" plastics often require industrial composting conditions absent in marine environments. Research investment should prioritize materials that genuinely degrade in natural conditions.
+
+5. Remove Existing Pollution
+While prevention should be prioritized, some removal of existing pollution is warranted. Intercepting plastic in rivers before ocean entry offers more efficiency than open-ocean cleanup. Technologies like boom systems and trash wheels have demonstrated effectiveness in concentrated pollution areas.
+
+Feasibility Assessment
+
+These solutions vary in feasibility. Production reduction faces industry resistance but has proven politically achievable in some jurisdictions. Waste infrastructure investment requires significant capital but generates co-benefits for public health and economic development. Circular economy transitions require coordination across complex value chains but align with emerging business opportunities. Material innovation shows promise but requires continued R&D investment before commercial viability.
+
+Implementation Priorities
+
+Given resource constraints, priorities should reflect both impact and feasibility. Short-term priorities include waste management infrastructure in high-leakage regions and eliminating demonstrably unnecessary single-use plastics. Medium-term priorities include comprehensive EPR systems and circular economy infrastructure. Long-term priorities include material innovation and legacy pollution remediation.
+
+Success requires coordinated action across governmental, corporate, and civil society actors. The recently initiated UN Plastics Treaty negotiations offer an opportunity to establish binding international frameworks. However, policy leadership from major economies and corporate commitment to supply chain transformation will ultimately determine whether the tide of ocean plastic can be turned.`,
+    
+    vocabulary: ["microplastics", "ocean gyres", "extended producer responsibility", "circular economy", "chemical recycling", "single-use plastics"]
+  },
+  
+  // 过程分析论文 (Process Analysis Essay)
+  {
+    id: 'academic_027',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "过程分析 - mRNA疫苗开发流程",
+    taskType: "Process Analysis Essay",
+    
+    prompt: "Write a process analysis essay explaining how mRNA vaccines are developed and manufactured. Explain each stage clearly, discuss key challenges, and highlight innovations that enabled rapid COVID-19 vaccine development.",
+    
+    outline: {
+      overview: "Process introduction",
+      stages: "Sequential steps explained",
+      challenges: "Technical obstacles",
+      innovations: "Key breakthroughs",
+      implications: "Future applications"
+    },
+    
+    sampleResponse: `The Development and Manufacturing of mRNA Vaccines: A Process Analysis
+
+Introduction
+
+The unprecedented speed of COVID-19 mRNA vaccine development—from viral sequence publication to emergency authorization in under eleven months—represented a scientific achievement that transformed pandemic response while heralding a new era in vaccinology. Understanding how mRNA vaccines are designed, tested, and manufactured illuminates both the remarkable scientific advances that enabled this achievement and the processes that will shape future vaccine development.
+
+Overview of mRNA Vaccine Technology
+
+Traditional vaccines use weakened or inactivated pathogens, or protein subunits, to train immune systems. mRNA vaccines take a fundamentally different approach: rather than introducing antigens directly, they deliver genetic instructions that enable the body's own cells to produce target proteins, which then trigger immune responses. This approach offers significant advantages—rapid design iteration, no need to culture live pathogens, and potentially strong immune responses—but required decades of research to overcome formidable technical challenges.
+
+Stage 1: Target Identification and Sequence Design
+
+Vaccine development begins with identifying appropriate antigenic targets—proteins that will elicit protective immune responses. For SARS-CoV-2, researchers focused on the spike protein, which mediates viral entry into host cells and is accessible to neutralizing antibodies.
+
+Once the target is selected, the mRNA sequence must be designed. This involves more than simply transcribing the protein-coding sequence. Key design decisions include:
+
+Codon Optimization: Selecting synonymous codons preferred by human cellular machinery to maximize translation efficiency.
+
+Nucleoside Modification: Incorporating modified nucleosides (such as pseudouridine or N1-methylpseudouridine) that reduce innate immune sensing of foreign RNA—a breakthrough by Katalin Karikó and Drew Weissman that was essential to mRNA vaccine viability.
+
+Structural Elements: Designing 5' cap structures, untranslated regions (UTRs), and poly-A tails that enhance mRNA stability and translation.
+
+For the COVID-19 spike protein, researchers introduced additional modifications—proline substitutions that lock the protein in prefusion conformation—enhancing immunogenicity.
+
+Stage 2: mRNA Synthesis
+
+The designed sequence is synthesized through in vitro transcription (IVT), an enzymatic process using DNA templates. Steps include:
+
+Template Preparation: Producing linearized plasmid DNA containing the target sequence flanked by promoter elements.
+
+Transcription Reaction: Using T7 RNA polymerase to synthesize mRNA from the DNA template, incorporating modified nucleotides as specified.
+
+Capping: Adding 5' cap structures either co-transcriptionally or enzymatically post-transcription.
+
+Purification: Removing DNA templates, enzymes, and truncated products through chromatographic methods. Highly pure mRNA is essential—contaminants can trigger unwanted immune responses or reduce efficacy.
+
+Stage 3: Formulation with Lipid Nanoparticles
+
+Naked mRNA is rapidly degraded and poorly taken up by cells. Encapsulation in lipid nanoparticles (LNPs) is critical for protecting mRNA and enabling cellular delivery. The formulation process involves:
+
+Lipid Preparation: Dissolving ionizable lipids, structural lipids (cholesterol, phospholipids), and PEGylated lipids in ethanol. The ionizable lipid component—subject to extensive optimization and proprietary to each manufacturer—becomes positively charged at low pH to complex with negatively charged mRNA, then neutralizes at physiological pH.
+
+Microfluidic Mixing: Rapidly combining aqueous mRNA solution with ethanolic lipid solution under controlled conditions. This self-assembly process produces uniform nanoparticles approximately 80-100nm in diameter.
+
+Purification and Concentration: Removing ethanol and concentrating the product through tangential flow filtration.
+
+Stage 4: Fill-Finish and Quality Control
+
+The formulated vaccine undergoes aseptic filling into vials, a process requiring stringent contamination controls. Critical quality control tests include:
+
+Identity Testing: Confirming mRNA sequence integrity through sequencing or hybridization assays.
+
+Potency Assays: Measuring protein expression in cell-based systems.
+
+Purity Analysis: Assessing RNA integrity, residual DNA, and endotoxin levels.
+
+Particle Characterization: Confirming LNP size distribution and encapsulation efficiency.
+
+Stability Testing: Evaluating product integrity under various storage conditions.
+
+The ultra-cold storage requirements for some mRNA vaccines (-70°C for Pfizer-BioNTech initially) reflect mRNA's inherent instability—a challenge addressed through formulation optimization, with newer products stable at standard refrigeration temperatures.
+
+Stage 5: Clinical Development
+
+Parallel to manufacturing scale-up, clinical trials proceed through phases:
+
+Phase 1: Safety assessment and dose-finding in small groups (tens of participants).
+
+Phase 2: Expanded safety and immunogenicity evaluation (hundreds of participants).
+
+Phase 3: Large-scale efficacy trials (tens of thousands) comparing vaccinated and placebo groups for infection rates.
+
+The COVID-19 vaccines compressed these timelines through overlapping phases, at-risk manufacturing investments, and rolling regulatory submissions—innovations in process rather than cutting corners on safety assessment.
+
+Key Innovations Enabling Rapid Development
+
+Several factors enabled unprecedented development speed:
+
+Platform Technology: Years of prior mRNA vaccine research meant foundational technologies existed; only target sequence design was COVID-specific.
+
+Modified Nucleosides: The Karikó-Weissman discovery, recognized with the 2023 Nobel Prize, solved the critical immunogenicity problem.
+
+Lipid Nanoparticle Advances: Decades of LNP development for siRNA therapeutics provided delivery solutions.
+
+Regulatory Innovation: Expedited review pathways and continuous data submission accelerated authorization.
+
+Investment: Massive government funding removed financial risk barriers to parallel processing.
+
+Future Implications
+
+mRNA technology's demonstrated success opens extensive applications: personalized cancer vaccines, universal influenza vaccines, and treatments for genetic diseases. Manufacturing platforms established for COVID-19 provide infrastructure for rapid responses to future pandemic threats. The mRNA revolution, born of decades of persistent research, has permanently transformed vaccine science.`,
+    
+    vocabulary: ["in vitro transcription", "lipid nanoparticles", "codon optimization", "nucleoside modification", "immunogenicity", "prefusion conformation"]
+  },
+  
+  // 比较对比论文 (Compare-Contrast Essay)
+  {
+    id: 'academic_028',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.GOVERNMENT,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400, // 40分钟
+    wordCount: { min: 400, max: 550 },
+    
+    title: "比较对比 - 民主治理模式比较",
+    taskType: "Compare-Contrast Essay",
+    
+    prompt: "Write a compare-contrast essay analyzing presidential and parliamentary systems of democratic governance. Compare their structures, examine their strengths and weaknesses, and evaluate which system better promotes democratic accountability and effective governance.",
+    
+    outline: {
+      introduction: "Framework for comparison",
+      similarities: "Common democratic elements",
+      differences: "Structural distinctions",
+      evaluation: "Comparative assessment",
+      conclusion: "Reasoned judgment"
+    },
+    
+    sampleResponse: `Presidential vs. Parliamentary Democracy: A Comparative Analysis
+
+Introduction
+
+Democratic governance takes varied institutional forms, with presidential and parliamentary systems representing two dominant models. The United States exemplifies presidentialism, with separately elected executive and legislative branches; the United Kingdom typifies parliamentarism, where executive authority derives from legislative confidence. These structural differences carry profound implications for accountability, representation, and governmental effectiveness. This essay systematically compares these systems, evaluating their respective strengths and limitations.
+
+Common Democratic Foundations
+
+Before examining differences, noting shared commitments is important. Both systems embrace fundamental democratic principles: popular sovereignty expressed through elections, constitutional constraints on governmental power, protection of individual rights, and rule of law. Both accommodate multi-party competition, though different structures create different party system incentives. Both have proven capable of sustaining stable democracy over extended periods.
+
+These commonalities suggest that democratic quality depends less on institutional form than on deeper factors—political culture, civic engagement, institutional integrity—that determine how formal structures function in practice.
+
+Structural Differences
+
+Executive Selection and Accountability
+The defining distinction concerns executive-legislative relationships. In presidential systems, the executive (president) is independently elected for a fixed term, creating separate mandates for executive and legislative branches. In parliamentary systems, the executive (prime minister and cabinet) emerges from the legislature, serving at legislative pleasure.
+
+This structural difference generates cascading consequences. Presidential executives cannot be removed except through extraordinary procedures (impeachment), while parliamentary executives face continuous accountability through confidence votes. Parliamentary systems thus provide more immediate mechanisms for replacing failed leadership, while presidential systems offer stability against legislative mood swings.
+
+Separation vs. Fusion of Powers
+Presidential systems embody separation of powers—distinct branches exercising executive, legislative, and judicial functions with mutual checks. Parliamentary systems fuse executive and legislative powers, with cabinets drawn from and accountable to parliament.
+
+This affects policy-making dynamics. Presidential systems create potential for gridlock when different parties control executive and legislative branches—"divided government" blocking policy action. Parliamentary systems concentrate power, enabling decisive government action when majorities are cohesive, but risking insufficient checks on executive authority.
+
+Electoral Representation
+Parliamentary systems typically use proportional representation, producing multi-party legislatures that reflect diverse voter preferences but often requiring coalition governments. Presidential systems more commonly use winner-take-all elections that advantage two-party competition, simplifying voter choices but potentially excluding minority viewpoints.
+
+Comparative Advantages
+
+Presidential System Strengths:
+Direct executive election provides clear voter choice for national leadership, enhancing democratic accountability. Fixed terms provide stability and policy continuity. Separation of powers creates robust checks against executive overreach—the judiciary and legislature can constrain presidential action. The system may be better suited to diverse, federal states where regional representation in the legislature is paramount.
+
+Presidential System Weaknesses:
+Divided government can produce policy paralysis, with presidents and legislatures blaming each other for inaction. Fixed terms make removing failed presidents difficult—Nixon's prolonged resistance to resignation illustrates the challenge. Dual democratic legitimacy claims (both branches elected) can generate constitutional crises when branches conflict without resolution mechanisms.
+
+Parliamentary System Strengths:
+Executive accountability is continuous—governments must maintain legislative confidence, and failed leadership can be replaced swiftly. Fusion of powers enables coherent policy implementation when governments command majorities. Coalition requirements can moderate extreme positions and incorporate diverse viewpoints. The system provides clearer responsibility attribution, as governing parties cannot blame separate institutions for policy failures.
+
+Parliamentary System Weaknesses:
+Government instability can result when fragmented legislatures cannot sustain coalitions—Italy's frequent government turnover exemplifies this risk. Concentrated power raises concerns about executive dominance of weak legislatures, particularly with strong majorities. Prime ministerial accountability may be diffused through collective cabinet responsibility.
+
+Empirical Evidence
+
+Comparative political science offers mixed empirical guidance. Juan Linz's influential analysis argued presidentialism's inherent instability contributed to democratic breakdown in Latin America. However, subsequent research (e.g., Cheibub 2007) suggests that presidential democracy's poor track record reflects context—presidents were adopted in regions with challenging conditions for democracy—rather than institutional design per se.
+
+Measures of democratic quality, governance effectiveness, and citizen satisfaction show variation within each system type at least as large as between them, suggesting that institutional form matters less than how institutions are implemented.
+
+Evaluated Conclusion
+
+Neither system is inherently superior; each embodies different trade-offs between competing democratic values. Presidential systems prioritize checks and balances, executive stability, and direct popular mandate. Parliamentary systems prioritize accountability, governmental coherence, and adaptive responsiveness.
+
+Optimal institutional choice depends on context: presidential systems may better suit divided societies requiring strong executive coordination; parliamentary systems may better serve homogeneous societies valuing responsive government. Most importantly, both systems can sustain healthy democracy when supported by robust democratic culture, independent judiciary, free press, and engaged citizenry. Institutional design matters, but it is one factor among many determining democratic flourishing.`,
+    
+    vocabulary: ["separation of powers", "confidence votes", "divided government", "proportional representation", "coalition government", "democratic accountability"]
   }
 ];
 
