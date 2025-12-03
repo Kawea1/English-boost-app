@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '4.9.0';
-    const APP_VERSION_CODE = 490;
+    const APP_VERSION = '4.9.1';
+    const APP_VERSION_CODE = 491;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
@@ -1018,6 +1018,25 @@ function openModule(moduleName) {
                     var bottomNav = document.getElementById('bottomNav');
                     if (bottomNav) bottomNav.classList.add('hidden');
                     
+
+// v4.9.1: 首页卡片展开/收起功能
+function toggleHomeCard(btn) {
+    var card = btn.closest('.core-card-v11');
+    var expandedContent = card.querySelector('.card-expanded-content');
+    var isExpanded = !expandedContent.classList.contains('hidden');
+    
+    if (isExpanded) {
+        // 收起
+        expandedContent.classList.add('hidden');
+        btn.innerHTML = '⋮';
+        btn.style.transform = 'translateY(-50%) rotate(0deg)';
+    } else {
+        // 展开
+        expandedContent.classList.remove('hidden');
+        btn.innerHTML = '×';
+        btn.style.transform = 'translateY(-50%) rotate(180deg)';
+    }
+}
                     // V4: 显示写作模块
                     writingModule.classList.remove('hidden');
                     

@@ -25860,6 +25860,7 @@ body.theme-dark .para-score-badge.score-error {
     display: flex;
     align-items: center;
     gap: 10px;
+    position: relative;
 }
 
 .card-header-minimal h3 {
@@ -25867,6 +25868,78 @@ body.theme-dark .para-score-badge.score-error {
     font-weight: 600;
     color: var(--gray-800);
     margin: 0;
+    flex: 1;
+}
+
+/* v4.9.1: 卡片展开/收起按钮 */
+.card-toggle-v11 {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--gray-100);
+    border: none;
+    font-size: 16px;
+    color: var(--gray-600);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.card-toggle-v11:hover {
+    background: var(--gray-200);
+    color: var(--gray-800);
+}
+
+.card-toggle-v11:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* v4.9.1: 卡片展开内容 */
+.card-expanded-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+    border-top: 1px solid var(--gray-100);
+    animation: slideDown 0.3s ease;
+}
+
+.card-expanded-content.hidden {
+    display: none;
+}
+
+.card-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    background: var(--gray-50);
+    border-radius: 8px;
+    font-size: 13px;
+    color: var(--gray-700);
+}
+
+.card-detail-item svg {
+    color: var(--primary-500);
+    flex-shrink: 0;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 独立标题（无进度条的卡片） */

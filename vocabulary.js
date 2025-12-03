@@ -1913,6 +1913,9 @@ var learningModeState = {
     consecutiveCorrect: 0 // 连续正确次数
 };
 
+// v4.9.1: 单词卡片折叠状态
+var isWordCardExpanded = false;
+
 function showCurrentWord() {
     if (!learningQueue || learningQueue.length === 0) {
         initSessionWords();
@@ -1921,6 +1924,9 @@ function showCurrentWord() {
     
     // 确保掌握度样式已加载
     addMasteryTrackingStyles();
+    
+    // v4.9.1: 重置卡片为简版
+    isWordCardExpanded = false;
     
     // 检查是否完成所有学习
     if (currentQueueIndex >= learningQueue.length) {
@@ -1999,10 +2005,81 @@ function showCurrentWord() {
     // 更新学习进度指示器
     updateLearningProgressIndicator();
     
+    // v4.9.1: 显示首次使用说明
+    showFirstTimeGuide();
+    
+    // v4.9.1: 添加卡片展开/收起按钮
+    addCardToggleButton();
+    
     // V4.8.12: 修复发音问题 - 在动画完成后朗读新单词
     setTimeout(function() {
         speakText(wordData.word);
     }, 300);
+}
+
+// v4.9.1: 首次使用说明（仅首次安装时显示）
+function showFirstTimeGuide() {
+    var hasShownGuide = localStorage.getItem('vocabGuideShown');
+    if (hasShownGuide) return;
+    
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:100000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;';
+    
+    var guide = document.createElement('div');
+    guide.style.cssText = 'background:#fff;border-radius:24px;padding:32px 24px;max-width:340px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3);animation:scaleIn 0.4s ease;';
+    guide.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">📖</div><h3 style="font-size:22px;font-weight:700;color:#1f2937;margin:0 0 12px;">学习规则说明</h3><div style="text-align:left;background:#f9fafb;padding:16px;border-radius:12px;margin:20px 0;"><div style="margin-bottom:12px;"><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#10b981;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✓</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">连续认识3次即完成学习</div></div><div><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#ef4444;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✗</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"不认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">重新开始学习该单词</div></div></div><div style="background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:20px;"><div style="color:#92400e;font-size:13px;line-height:1.5;">💡 提示：卡片右侧有 <strong>⋮</strong> 按钮<br/>点击可展开查看详细释义和例句</div></div><button onclick="this.closest(\'div[style*=\\\"position:fixed\\\"]\').remove();localStorage.setItem(\'vocabGuideShown\',\'true\');" style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#a855f7);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;">开始学习</button></div>';
+    
+    overlay.appendChild(guide);
+    document.body.appendChild(overlay);
+}
+
+// v4.9.1: 添加卡片展开/收起按钮
+function addCardToggleButton() {
+    var wordCard = document.getElementById('wordCard');
+    if (!wordCard) return;
+    
+    var existing = document.getElementById('cardToggleBtn');
+    if (existing) existing.remove();
+    
+    var toggleBtn = document.createElement('button');
+    toggleBtn.id = 'cardToggleBtn';
+    toggleBtn.innerHTML = '⋮';
+    toggleBtn.style.cssText = 'position:absolute;top:50%;right:16px;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:#f3f4f6;border:none;font-size:20px;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10;';
+    toggleBtn.onclick = function() {
+        toggleWordCard();
+    };
+    wordCard.style.position = 'relative';
+    wordCard.appendChild(toggleBtn);
+}
+
+// v4.9.1: 切换单词卡片展开/收起
+function toggleWordCard() {
+    isWordCardExpanded = !isWordCardExpanded;
+    var wordMeaning = document.getElementById('wordMeaning');
+    var toggleBtn = document.getElementById('cardToggleBtn');
+    var rateButtons = document.getElementById('rateButtons');
+    var showMeaningBtn = document.getElementById('showMeaningBtn');
+    
+    if (isWordCardExpanded) {
+        // 展开 - 显示详细信息
+        if (wordMeaning) wordMeaning.classList.remove('hidden');
+        if (toggleBtn) {
+            toggleBtn.innerHTML = '×';
+            toggleBtn.style.fontSize = '28px';
+        }
+        // 自动显示评分按钮
+        if (rateButtons) rateButtons.classList.remove('hidden');
+        if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
+    } else {
+        // 收起 - 仅显示单词
+        if (wordMeaning) wordMeaning.classList.add('hidden');
+        if (toggleBtn) {
+            toggleBtn.innerHTML = '⋮';
+            toggleBtn.style.fontSize = '20px';
+        }
+        if (rateButtons) rateButtons.classList.add('hidden');
+        if (showMeaningBtn) showMeaningBtn.classList.remove('hidden');
+    }
 }
 
 // V1: 显示掌握度徽章
@@ -2737,18 +2814,7 @@ function rateWord(rating) {
                 updateDailyProgress('vocabulary', 1);
             }
             
-            // v3.5.0: 触发成就检查
-            if (window.UX && window.UX.Achievements) {
-                window.UX.Achievements.checkWordCount(learnedWords.length);
-                if (learnedWords.length % 10 === 0) {
-                    const msg = window.UX.EncouragementSystem.getRandom('milestone');
-                    window.UX.showSmartToast(msg, 'achievement');
-                } else if (Math.random() < 0.3) {
-                    const msg = window.UX.EncouragementSystem.getRandom('progress');
-                    window.UX.showSmartToast(msg, 'success');
-                }
-                window.UX.LevelSystem.checkLevelUp();
-            }
+            // v4.9.1: 已移除成就鼓励系统
         }
         
         // 如果评分为简单，标记为已掌握
