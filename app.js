@@ -1586,13 +1586,134 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(function(err) {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+            console.log('Service Worker注册成功');
+            
+            // ========== 后台自动检查更新 ==========
+            // 延迟2秒后静默检查更新，不打扰用户
+            setTimeout(() => {
+                silentUpdateCheck(registration);
+            }, 2000);
+            
+        }).catch(function(err) {
             console.log('Service Worker注册失败:', err);
         });
     }
     
     console.log('App initialized successfully');
 });
+
+// ========== 静默更新检查系统 ==========
+// 进入应用后自动后台检查更新，发现新版本时提示用户
+function silentUpdateCheck(registration) {
+    console.log('🔄 后台检查更新...');
+    
+    registration.update().then(() => {
+        // 监听新的 Service Worker 安装
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            console.log('📦 发现新版本，正在下载...');
+            
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // 新版本已下载完成，提示用户更新
+                    showUpdateNotification();
+                }
+            });
+        });
+        
+        // 如果已经有等待中的 worker，直接提示
+        if (registration.waiting) {
+            showUpdateNotification();
+        }
+    }).catch(err => {
+        console.log('更新检查失败:', err);
+    });
+}
+
+// 显示更新提示通知
+function showUpdateNotification() {
+    // 避免重复显示
+    if (document.getElementById('updateNotification')) return;
+    
+    const notification = document.createElement('div');
+    notification.id = 'updateNotification';
+    notification.className = 'update-notification';
+    notification.innerHTML = `
+        <div class="update-notification-content">
+            <div class="update-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </div>
+            <div class="update-text">
+                <strong>发现新版本</strong>
+                <span>点击立即更新，获得最新功能</span>
+            </div>
+            <button class="update-btn" onclick="applyUpdate()">立即更新</button>
+            <button class="update-close" onclick="dismissUpdate()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 添加入场动画
+    setTimeout(() => notification.classList.add('show'), 100);
+}
+
+// 应用更新
+function applyUpdate() {
+    const notification = document.getElementById('updateNotification');
+    if (notification) {
+        notification.innerHTML = `
+            <div class="update-notification-content updating">
+                <div class="update-spinner"></div>
+                <span>正在更新...</span>
+            </div>
+        `;
+    }
+    
+    // 通知 Service Worker 跳过等待并激活
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.ready.then(registration => {
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+        });
+    }
+    
+    // 监听控制器变化，然后刷新页面
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+    });
+    
+    // 备用：2秒后强制刷新
+    setTimeout(() => {
+        window.location.reload(true);
+    }, 2000);
+}
+
+// 关闭更新提示
+function dismissUpdate() {
+    const notification = document.getElementById('updateNotification');
+    if (notification) {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }
+}
+
+// 导出更新相关函数
+window.silentUpdateCheck = silentUpdateCheck;
+window.showUpdateNotification = showUpdateNotification;
+window.applyUpdate = applyUpdate;
+window.dismissUpdate = dismissUpdate;
 
 // 导出新函数到全局
 window.confirmResetStats = confirmResetStats;
