@@ -2257,7 +2257,7 @@ function updateLearningBadge() {
     }
 }
 
-// 更新学习进度指示器
+// 更新学习进度指示器 (V12: 使用三点指示器)
 function updateLearningProgressIndicator() {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
@@ -2266,38 +2266,18 @@ function updateLearningProgressIndicator() {
     var progress = sessionWordProgress[word] || { times: 0, completed: false };
     var currentTimes = progress.times;
     
-    // 查找或创建进度指示器容器
-    var indicatorContainer = document.getElementById('learningProgressIndicator');
-    if (!indicatorContainer) {
-        var wordCard = document.getElementById('wordCard');
-        if (wordCard) {
-            indicatorContainer = document.createElement('div');
-            indicatorContainer.id = 'learningProgressIndicator';
-            indicatorContainer.className = 'learning-progress-indicator';
-            wordCard.appendChild(indicatorContainer);
-        }
-    }
-    
-    if (indicatorContainer) {
-        var dotsHtml = '';
-        for (var i = 0; i < requiredLearningTimes; i++) {
-            var dotClass = 'progress-dot';
-            if (i < currentTimes) {
-                dotClass += ' completed';
-            } else if (i === currentTimes) {
-                dotClass += ' current';
+    // V12: 使用HTML中的三点指示器
+    var learningDots = document.getElementById('learningDots');
+    if (learningDots) {
+        var dots = learningDots.querySelectorAll('.dot');
+        dots.forEach(function(dot, index) {
+            dot.classList.remove('active', 'completed');
+            if (index < currentTimes) {
+                dot.classList.add('completed');
+            } else if (index === currentTimes) {
+                dot.classList.add('active');
             }
-            dotsHtml += '<div class="' + dotClass + '"></div>';
-        }
-        
-        var statusText = '';
-        if (progress.completed) {
-            statusText = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#10b981" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>已掌握';
-        } else {
-            statusText = '第 ' + (currentTimes + 1) + '/' + requiredLearningTimes + ' 次学习';
-        }
-        
-        indicatorContainer.innerHTML = dotsHtml + '<span class="progress-label">' + statusText + '</span>';
+        });
     }
 }
 

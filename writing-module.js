@@ -60,6 +60,10 @@
                 this.highlightRecommendedType(recommendedType);
             }
             
+            // V11.1: 默认加载学术英语题目（不需要用户手动选择）
+            this.currentType = 'academic';
+            this.showTopicList('academic');
+            
             console.log('✍️ 写作模块已加载');
         },
         
@@ -673,7 +677,6 @@
             container.innerHTML = this.currentTopic.vocabulary.map(word => `
                 <div class="vocab-item-v11" onclick="WritingModule.insertWord('${word}')">
                     <span class="vocab-word-v11">${word}</span>
-                    <span class="vocab-meaning-v11">点击插入</span>
                 </div>
             `).join('');
         },
@@ -844,16 +847,32 @@
         
         // 提交作文
         submitWriting() {
+            console.log('✍️ submitWriting 被调用');
             clearInterval(this.timer);
             
             const textarea = document.getElementById('writing-textarea');
-            if (!textarea || !this.currentTopic) return;
+            console.log('✍️ textarea:', textarea);
+            console.log('✍️ currentTopic:', this.currentTopic);
+            
+            if (!textarea) {
+                console.error('❌ 找不到 writing-textarea');
+                alert('系统错误：找不到文本框');
+                return;
+            }
+            
+            if (!this.currentTopic) {
+                console.error('❌ currentTopic 为空');
+                alert('请先选择一个题目');
+                return;
+            }
             
             const content = textarea.value.trim();
             if (!content) {
                 alert('请先写入内容');
                 return;
             }
+            
+            console.log('✍️ 准备提交，内容长度:', content.length);
             
             const wordCount = content.split(/\s+/).length;
             

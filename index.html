@@ -528,9 +528,11 @@
                         <!-- 单词主体 - 超大字号突出显示 -->
                         <div class="word-text-v10" id="wordMain">aberrant</div>
                         <div class="word-phonetic-v10" id="wordPhonetic">/əˈberənt/</div>
-                        <!-- V6: 滑动提示 -->
-                        <div class="swipe-hint" id="swipeHint">
-                            <span>👆 点击显示释义</span>
+                        <!-- V12: 学习进度三点指示器 -->
+                        <div class="learning-dots" id="learningDots">
+                            <span class="dot"></span>
+                            <span class="dot"></span>
+                            <span class="dot"></span>
                         </div>
                     </div>
                     
@@ -555,28 +557,14 @@
                         <span class="btn-shortcut">空格</span>
                     </button>
                     
-                    <!-- V7: 极简评分 - 只有图标和颜色 -->
+                    <!-- V12: 极简评分 - 只有认识/不认识 -->
                     <div class="rate-system-v10 hidden" id="rateButtons">
-                        <div class="rate-track">
+                        <div class="rate-track rate-simple">
                             <button class="rate-option again" onclick="rateWord('again')" data-key="1">
-                                <div class="rate-dot"></div>
                                 <span class="rate-text">不认识</span>
-                                <kbd>1</kbd>
                             </button>
-                            <button class="rate-option hard" onclick="rateWord('hard')" data-key="2">
-                                <div class="rate-dot"></div>
-                                <span class="rate-text">模糊</span>
-                                <kbd>2</kbd>
-                            </button>
-                            <button class="rate-option good" onclick="rateWord('good')" data-key="3">
-                                <div class="rate-dot"></div>
+                            <button class="rate-option good" onclick="rateWord('good')" data-key="2">
                                 <span class="rate-text">认识</span>
-                                <kbd>3</kbd>
-                            </button>
-                            <button class="rate-option easy" onclick="rateWord('easy')" data-key="4">
-                                <div class="rate-dot"></div>
-                                <span class="rate-text">简单</span>
-                                <kbd>4</kbd>
                             </button>
                         </div>
                     </div>
@@ -586,7 +574,7 @@
             <!-- V9: 键盘快捷键提示 -->
             <div class="keyboard-hints hidden" id="keyboardHints">
                 <div class="hint-item"><kbd>Space</kbd> 显示/下一个</div>
-                <div class="hint-item"><kbd>1-4</kbd> 评分</div>
+                <div class="hint-item"><kbd>1-2</kbd> 评分</div>
                 <div class="hint-item"><kbd>S</kbd> 发音</div>
             </div>
         </div>
@@ -1249,45 +1237,6 @@
                         </div>
                     </div>
 
-                    <!-- 复习统计 -->
-                    <div class="stats-section-title">
-                        <span class="section-icon premium-gradient brain"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z"/><path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z"/><path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4"/><path d="M17.599 6.5a3 3 0 0 0 .399-1.375"/><path d="M6.003 5.125A3 3 0 0 0 6.401 6.5"/><path d="M3.477 10.896a4 4 0 0 1 .585-.396"/><path d="M19.938 10.5a4 4 0 0 1 .585.396"/><path d="M6 18a4 4 0 0 1-1.967-.516"/><path d="M19.967 17.484A4 4 0 0 1 18 18"/></svg></span>
-                        <span>复习进度</span>
-                    </div>
-                    
-                    <div class="review-stats-card">
-                        <div class="review-stat-row">
-                            <div class="review-stat-item">
-                                <span class="review-stat-icon mastered"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span>
-                                <div class="review-stat-info">
-                                    <span class="review-stat-value" id="stat_mastered">0</span>
-                                    <span class="review-stat-label">已掌握</span>
-                                </div>
-                            </div>
-                            <div class="review-stat-item">
-                                <span class="review-stat-icon reviewing"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg></span>
-                                <div class="review-stat-info">
-                                    <span class="review-stat-value" id="stat_reviewing">0</span>
-                                    <span class="review-stat-label">复习中</span>
-                                </div>
-                            </div>
-                            <div class="review-stat-item">
-                                <span class="review-stat-icon pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
-                                <div class="review-stat-info">
-                                    <span class="review-stat-value" id="stat_pending">0</span>
-                                    <span class="review-stat-label">待复习</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="review-progress-bar">
-                            <div class="review-progress-fill" id="reviewProgressFill" style="width: 0%"></div>
-                        </div>
-                        <div class="review-progress-text">
-                            <span>掌握进度</span>
-                            <span id="reviewProgressPercent">0%</span>
-                        </div>
-                    </div>
-
                     <!-- 操作按钮 -->
                     <div class="stats-actions">
                         <button class="stats-action-btn export" onclick="exportStats()">
@@ -1363,35 +1312,14 @@
                 </div>
                 
                 <div class="settings-content-v10">
-                    <!-- V10 标签导航 -->
-                    <div class="settings-tabs-v10">
-                        <button class="settings-tab-v10 active" data-tab="general" onclick="switchSettingsTab('general')">
-                            <span class="tab-emoji-v10">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="12" r="3"/></svg>
-                            </span>
-                            <span class="tab-name-v10">常规</span>
-                        </button>
-                        <button class="settings-tab-v10" data-tab="audio" onclick="switchSettingsTab('audio')">
-                            <span class="tab-emoji-v10">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
-                            </span>
-                            <span class="tab-name-v10">音频</span>
-                        </button>
-                        <button class="settings-tab-v10" data-tab="data" onclick="switchSettingsTab('data')">
-                            <span class="tab-emoji-v10">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
-                            </span>
-                            <span class="tab-name-v10">数据</span>
-                        </button>
-                        <button class="settings-tab-v10" data-tab="about" onclick="switchSettingsTab('about')">
-                            <span class="tab-emoji-v10">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-                            </span>
-                            <span class="tab-name-v10">关于</span>
-                        </button>
+                    <!-- V12: 单一滚动页面设置 - 移除标签导航 -->
+                    
+                    <!-- 常规设置 -->
+                    <div class="settings-section-title-v12">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="13.5" cy="6.5" r="2.5"/><circle cx="19" cy="17" r="2"/><circle cx="6" cy="12" r="3"/></svg>
+                        <span>常规设置</span>
                     </div>
-
-                    <!-- 常规设置面板 V10 -->
+                    
                     <div class="settings-panel active" id="settingsPanel-general">
                         <!-- 主题设置卡片 V10 -->
                         <div class="settings-card-v10">
@@ -1609,8 +1537,13 @@
                         </div>
                     </div>
 
-                    <!-- 音频设置面板 V10 -->
-                    <div class="settings-panel" id="settingsPanel-audio">
+                    <!-- 音频设置 -->
+                    <div class="settings-section-title-v12">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                        <span>音频设置</span>
+                    </div>
+                    
+                    <div class="settings-panel active" id="settingsPanel-audio">
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
                                 <span class="card-emoji-v10">
@@ -1682,8 +1615,13 @@
                         </div>
                     </div>
 
-                    <!-- 数据管理面板 V10 -->
-                    <div class="settings-panel" id="settingsPanel-data">
+                    <!-- 数据管理 -->
+                    <div class="settings-section-title-v12">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        <span>数据管理</span>
+                    </div>
+                    
+                    <div class="settings-panel active" id="settingsPanel-data">
                         <div class="settings-card-v10">
                             <div class="card-header-v10">
                                 <span class="card-emoji-v10">
@@ -1762,16 +1700,24 @@
                         </div>
                     </div>
 
-                    <!-- 关于面板 V10 -->
-                    <div class="settings-panel" id="settingsPanel-about">
-                        <!-- 订阅状态 -->
-                        <div class="settings-card-v10 subscription">
+                    <!-- 关于 & 订阅 -->
+                    <div class="settings-section-title-v12">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        <span>关于 & 订阅</span>
+                    </div>
+                    
+                    <div class="settings-panel active" id="settingsPanel-about">
+                        <!-- 订阅状态 - 可点击购买 -->
+                        <div class="settings-card-v10 subscription" onclick="openSubscriptionPage()" style="cursor: pointer;">
                             <div class="card-header-v10">
-                                <span class="card-emoji-v10">⭐</span>
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                </span>
                                 <div class="card-title-v10">
                                     <h4>订阅状态</h4>
-                                    <p>管理您的会员权益</p>
+                                    <p>点击管理您的会员权益</p>
                                 </div>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-left: auto;"><path d="M9 18l6-6-6-6"/></svg>
                             </div>
                             <div class="subscription-status-v10" id="subscriptionStatusContent">
                                 <!-- 由 JavaScript 动态渲染 -->

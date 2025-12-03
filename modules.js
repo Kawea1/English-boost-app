@@ -3980,7 +3980,17 @@ function loadRandomUnreadPassage() {
     var passages = window.READING_PASSAGES;
     if (!passages || passages.length === 0) {
         var el = document.getElementById("readingList");
-        if (el) el.innerHTML = "<p style='color:#f44336;padding:20px;text-align:center;'>阅读数据加载中...</p>";
+        if (el) {
+            el.innerHTML = "<p style='color:#6366f1;padding:20px;text-align:center;'>正在加载阅读数据...</p>";
+            // 尝试延迟重新加载
+            setTimeout(function() {
+                if (window.READING_PASSAGES && window.READING_PASSAGES.length > 0) {
+                    loadRandomUnreadPassage();
+                } else {
+                    el.innerHTML = "<p style='color:#ef4444;padding:20px;text-align:center;'>阅读数据加载失败<br><small style='color:#6b7280;'>请刷新页面重试</small></p>";
+                }
+            }, 1000);
+        }
         return;
     }
     

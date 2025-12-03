@@ -3759,3 +3759,14 @@ document.addEventListener('DOMContentLoaded', function() {
 // 暴露全局
 window.NetworkStability = NetworkStability;
 
+// V12: 打开订阅页面
+function openSubscriptionPage() {
+    if (typeof showPaymentModal === 'function') {
+        showPaymentModal();
+    } else {
+        console.error('showPaymentModal 函数不存在');
+        alert('订阅功能正在准备中');
+    }
+}
+
+window.openSubscriptionPage = openSubscriptionPage;

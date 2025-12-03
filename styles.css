@@ -3056,22 +3056,28 @@ svg {
     margin-bottom: 16px;
 }
 
-/* V6: 滑动提示 */
-.swipe-hint {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 16px;
-    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
-    border-radius: 20px;
-    font-size: 13px;
-    color: #0284c7;
-    animation: gentlePulse 2s ease-in-out infinite;
+/* V12: 学习进度三点指示器 */
+.learning-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 12px;
 }
 
-@keyframes gentlePulse {
-    0%, 100% { opacity: 0.9; }
-    50% { opacity: 1; }
+.learning-dots .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    transition: all 0.3s ease;
+}
+
+.learning-dots .dot.active {
+    background-color: #6366f1;
+}
+
+.learning-dots .dot.completed {
+    background-color: #22c55e;
 }
 
 /* V3: 释义区域 */
@@ -3281,6 +3287,36 @@ svg {
     box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
 }
 .rate-option.easy:active { transform: scale(0.95); }
+
+/* V12: 简化版评分按钮 - 只有认识/不认识 */
+.rate-track.rate-simple {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+}
+
+.rate-track.rate-simple .rate-option {
+    flex: none;
+    width: 45%;
+    padding: 16px 24px;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.rate-track.rate-simple .rate-option .rate-text {
+    font-size: 15px;
+}
+
+.rate-track.rate-simple .rate-option.again {
+    background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+    border: 2px solid #fecaca;
+}
+
+.rate-track.rate-simple .rate-option.good {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 2px solid #bbf7d0;
+}
 
 /* V9: 键盘快捷键提示 */
 .keyboard-hints {
@@ -7125,17 +7161,34 @@ body.liquid-glass-mode .liquid-glass-settings {
     padding: 0;
     background: var(--bg-secondary, #f5f5f7);
     min-height: calc(100vh - 80px);
+    overflow-y: auto;
 }
 
-/* V10 标签导航 */
-.settings-tabs-v10 {
+/* V12: 设置分区标题 */
+.settings-section-title-v12 {
     display: flex;
-    background: white;
-    padding: 12px 16px;
-    gap: 8px;
-    border-bottom: 1px solid var(--border-color);
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    align-items: center;
+    gap: 10px;
+    padding: 16px 20px 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-600);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.settings-section-title-v12 svg {
+    color: var(--accent-color, #6366f1);
+}
+
+/* V12: 所有面板始终显示 */
+.settings-panel {
+    display: block !important;
+}
+
+/* V10 标签导航 - 隐藏 */
+.settings-tabs-v10 {
+    display: none;
 }
 
 .settings-tabs-v10::-webkit-scrollbar {
