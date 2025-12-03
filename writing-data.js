@@ -1979,6 +1979,523 @@ Synthesizing these perspectives, the evidence suggests that compatibility depend
 For policy-makers, this analysis implies that the growth-sustainability trade-off is not inevitable but must be actively managed through strategic investments in clean technology, appropriate pricing of environmental externalities, and reformed measures of economic success that account for natural capital depreciation.`,
     
     vocabulary: ["Environmental Kuznets Curve", "emissions intensity", "decoupled", "rebound effect", "carbon neutrality", "natural capital depreciation"]
+  },
+  
+  // ==================== 新增高级学术写作题目 ====================
+  
+  // 学术论文 - 研究背景与问题陈述
+  {
+    id: 'academic_008',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.HEALTH,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400,
+    wordCount: { min: 350, max: 500 },
+    
+    title: "研究背景 - 公共卫生危机应对",
+    
+    prompt: "Write a background and problem statement section for a research paper examining the effectiveness of different public health communication strategies during disease outbreaks. Establish the research context, identify the gap in knowledge, and articulate the problem.",
+    
+    outline: {
+      context: "Historical and current public health landscape",
+      existing_knowledge: "What we know from prior research",
+      gap: "What remains unknown or contested",
+      problem: "Clear articulation of the research problem",
+      rationale: "Why this problem matters"
+    },
+    
+    sampleResponse: `Public health communication during disease outbreaks represents a critical determinant of population-level behavioral responses and, consequently, epidemiological outcomes. The COVID-19 pandemic dramatically illustrated how communication strategies can either facilitate or undermine public health objectives, with substantial variation observed across jurisdictions in message clarity, consistency, and public reception.
+
+Historical analysis of outbreak communication reveals evolving paradigms. During the 2003 SARS outbreak, health authorities largely employed top-down, expert-driven messaging with limited attention to community engagement. The 2009 H1N1 influenza pandemic marked a shift toward more interactive communication, utilizing emerging social media platforms. However, Vaughan and Tinker's (2009) comprehensive review noted that communication strategies remained predominantly reactive rather than strategic, with insufficient attention to audience segmentation and message tailoring.
+
+The scholarly literature on health communication has generated important insights regarding message framing, source credibility, and channel selection. Meta-analyses by Noar et al. (2016) demonstrate that gain-framed messages promoting preventive behaviors generally outperform loss-framed alternatives, though effect sizes vary considerably across contexts. Research on source effects indicates that trust in communicators significantly moderates message acceptance, with Siegrist and Zingg (2014) finding that perceived competence and benevolence independently predict behavioral compliance.
+
+Despite this substantial knowledge base, critical gaps persist. First, most existing research derives from controlled experimental settings that may poorly approximate the complex, evolving information environments characteristic of actual outbreaks. Second, limited research examines how competing information sources—including misinformation—interact with official communications to shape public understanding. Third, the differential effectiveness of communication strategies across diverse populations remains inadequately characterized, raising concerns about health equity implications.
+
+The current research problem centers on understanding which communication approaches most effectively promote protective behaviors during outbreak scenarios, and for whom. This question has acquired renewed urgency given the proliferation of digital information channels and the documented challenges of maintaining public trust amid prolonged health emergencies. Addressing this gap holds significant implications for pandemic preparedness planning and evidence-based public health practice.`,
+    
+    vocabulary: ["epidemiological outcomes", "audience segmentation", "message framing", "source credibility", "health equity", "pandemic preparedness"]
+  },
+  
+  // 学术论文 - 理论框架
+  {
+    id: 'academic_009',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.PSYCHOLOGY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700,
+    wordCount: { min: 400, max: 550 },
+    
+    title: "理论框架 - 行为改变理论整合",
+    
+    prompt: "Write a theoretical framework section that integrates multiple behavior change theories to explain technology adoption among older adults. Justify your theoretical choices and explain how concepts interrelate.",
+    
+    outline: {
+      overview: "Introduction to theoretical approach",
+      theory1: "First major theory and its contribution",
+      theory2: "Second theory and complementary insights",
+      integration: "How theories work together",
+      application: "Application to research context"
+    },
+    
+    sampleResponse: `This study employs an integrated theoretical framework drawing upon the Technology Acceptance Model (TAM), Social Cognitive Theory (SCT), and the Unified Theory of Acceptance and Use of Technology (UTAUT) to explain the complex dynamics underlying technology adoption among older adults. While each theory offers valuable but partial explanations, their integration provides a more comprehensive lens for understanding adoption processes in this demographic.
+
+The Technology Acceptance Model, originally proposed by Davis (1989), posits that perceived usefulness and perceived ease of use constitute the primary determinants of technology acceptance. Extensive empirical testing has validated TAM's predictive validity across diverse populations and technologies. However, TAM's parsimony comes at the cost of explanatory depth—it identifies what predicts adoption but provides limited insight into the mechanisms through which perceptions form and evolve. For older adults specifically, TAM fails to account for the unique barriers they face, including age-related cognitive and physical changes, generational differences in technology exposure, and distinctive motivational profiles.
+
+Social Cognitive Theory addresses several of TAM's limitations by emphasizing the role of self-efficacy—the belief in one's capability to perform specific behaviors—as a critical mediating variable. Bandura's (1986) triadic reciprocal determinism framework suggests that behavior, personal factors, and environmental influences continuously interact to shape outcomes. Applied to technology adoption, SCT highlights how observational learning from peers, vicarious experiences, and verbal persuasion from trusted others can build or diminish confidence in using new technologies. For older adults, who may lack technology-proficient peer networks, SCT illuminates the importance of social support structures and modeling opportunities.
+
+The Unified Theory of Acceptance and Use of Technology extends these perspectives by incorporating facilitating conditions and social influence as direct predictors of adoption behavior. UTAUT's recognition of moderating variables—age, gender, experience, and voluntariness—provides explicit theoretical grounding for examining how adoption processes vary across the older adult population, which itself exhibits substantial heterogeneity.
+
+Our integrated framework synthesizes these perspectives as follows: perceived usefulness and ease of use (TAM) shape behavioral intentions, but these perceptions are themselves influenced by self-efficacy beliefs (SCT) developed through social learning processes. Facilitating conditions (UTAUT) both directly enable adoption behavior and indirectly influence self-efficacy through mastery experiences. Social influence (UTAUT) operates through SCT's observational learning mechanisms. This integration predicts that interventions targeting self-efficacy enhancement through supported practice opportunities, combined with structural facilitation and normative peer influence, will most effectively promote sustained technology adoption among older adults.`,
+    
+    vocabulary: ["Technology Acceptance Model", "self-efficacy", "triadic reciprocal determinism", "observational learning", "facilitating conditions", "behavioral intentions"]
+  },
+  
+  // 学术论文 - 研究结果呈现
+  {
+    id: 'academic_010',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.BUSINESS,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400,
+    wordCount: { min: 350, max: 500 },
+    
+    title: "研究结果 - 组织变革与员工绩效",
+    
+    prompt: "Write a results section for a quantitative study examining the relationship between organizational change communication and employee performance. Present statistical findings clearly with appropriate interpretation.",
+    
+    outline: {
+      preliminary: "Descriptive statistics and assumptions",
+      main_analysis: "Primary hypothesis testing",
+      additional: "Supplementary analyses",
+      summary: "Key findings overview"
+    },
+    
+    sampleResponse: `This section presents the results of analyses examining the relationship between organizational change communication quality (OCCQ) and employee performance, including tests of hypothesized mediating and moderating effects.
+
+Preliminary Analyses
+
+Descriptive statistics and correlations among study variables are presented in Table 1. Mean OCCQ scores (M = 3.42, SD = 0.89) indicated moderate perceived communication quality, with substantial variation across organizational units (range: 2.18 to 4.67). Employee performance ratings (M = 3.78, SD = 0.74) were slightly above the scale midpoint. As expected, OCCQ correlated positively with performance (r = .41, p < .001), change readiness (r = .52, p < .001), and organizational trust (r = .58, p < .001). Variance inflation factors ranged from 1.24 to 2.31, indicating no multicollinearity concerns.
+
+Primary Hypothesis Tests
+
+Hypothesis 1 predicted that OCCQ would positively predict employee performance controlling for baseline performance and demographic variables. Hierarchical regression analysis supported this hypothesis. After accounting for control variables (Step 1: R² = .12, p < .001), OCCQ explained significant additional variance (ΔR² = .14, p < .001). The standardized coefficient (β = .38, p < .001) indicated that a one standard deviation increase in OCCQ was associated with a .38 standard deviation increase in performance.
+
+Hypothesis 2 proposed that organizational trust would mediate the OCCQ-performance relationship. Bootstrap analysis (5,000 samples) revealed a significant indirect effect (ab = 0.21, 95% CI [0.14, 0.29]). The direct effect remained significant but was substantially reduced (c' = 0.19, p < .01), suggesting partial mediation. Trust accounted for approximately 52% of the total effect, indicating that enhanced organizational trust represents a key mechanism through which communication quality influences performance.
+
+Hypothesis 3 tested whether employee tenure moderated the OCCQ-performance relationship. The interaction term was significant (β = -.12, p < .05). Simple slopes analysis revealed that OCCQ more strongly predicted performance among employees with shorter tenure (b = 0.48, p < .001) compared to longer-tenured employees (b = 0.28, p < .01), though effects were significant for both groups.
+
+Supplementary Analyses
+
+Exploratory analyses examined whether specific communication dimensions—clarity, frequency, and two-way dialogue—differentially predicted outcomes. Results indicated that clarity (β = .22, p < .001) and two-way dialogue (β = .19, p < .01) were significant predictors, while frequency alone was not (β = .06, p = .18), suggesting that communication quality rather than quantity drives performance effects.
+
+Summary
+
+Results supported all three hypotheses, demonstrating that organizational change communication quality significantly predicts employee performance, with organizational trust serving as a partial mediator and employee tenure moderating effect strength.`,
+    
+    vocabulary: ["hierarchical regression", "variance inflation factors", "bootstrap analysis", "indirect effect", "simple slopes analysis", "partial mediation"]
+  },
+  
+  // 文献综述 - 跨学科研究
+  {
+    id: 'academic_011',
+    type: WRITING_TYPES.ACADEMIC_REVIEW,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 3000,
+    wordCount: { min: 450, max: 650 },
+    
+    title: "跨学科文献综述 - 神经科学与教育",
+    
+    prompt: "Write a literature review examining the intersection of neuroscience and educational practice. Critically evaluate claims about 'brain-based learning' and identify what neuroscience can legitimately contribute to education.",
+    
+    outline: {
+      introduction: "The neuro-education movement",
+      promises: "What neuroscience claims to offer education",
+      critiques: "Scholarly criticisms and neuromyths",
+      legitimate: "Valid contributions of neuroscience",
+      integration: "Pathways for meaningful integration"
+    },
+    
+    sampleResponse: `The past two decades have witnessed growing enthusiasm for applying neuroscientific findings to educational practice, generating a burgeoning "neuroeducation" movement. This review critically examines the literature at this intersection, evaluating both the promises and limitations of neuroscience-informed pedagogy.
+
+The Appeal of Brain-Based Learning
+
+The allure of neuroscience for educators is readily understandable. Advances in neuroimaging technologies have rendered brain activity visible in unprecedented ways, and the biological grounding of neuroscientific explanations lends them an aura of scientific authority. Proponents argue that understanding how the brain learns should logically inform how we teach. Commercial "brain-based learning" programs have proliferated, promising to optimize instruction based on neuroscientific principles.
+
+Howard-Jones (2014) categorizes neuroscience applications in education into several domains: attention and memory enhancement, understanding developmental trajectories, identifying learning disabilities, and designing optimal learning environments. Each domain has generated substantial research activity and practical applications of varying quality.
+
+The Problem of Neuromyths
+
+Scholarly analysis has identified significant problems with how neuroscience is translated into educational practice. Dekker et al. (2012) surveyed teachers across multiple countries, finding that 49% endorsed neuromyths—false beliefs about the brain presented as scientific fact. The most prevalent myths included learning styles based on hemispheric dominance, the claim that we use only 10% of our brains, and critical periods that strictly constrain learning windows.
+
+These misconceptions persist despite explicit debunking because they often contain a kernel of neuroscientific truth that becomes distorted through oversimplification. The "left brain/right brain" myth, for instance, reflects genuine hemispheric specialization but grossly overstates the degree of functional lateralization in normal cognition. Similarly, while neural plasticity exhibits age-related patterns, the notion of fixed critical periods for most learning is neurobiologically inaccurate.
+
+Bruer's (1997) influential critique argued that neuroscience and education remain "a bridge too far" apart—the level of analysis appropriate for educational intervention (behavioral, cognitive) differs fundamentally from neuroscientific analysis (neural, molecular). Attempting to derive classroom practices directly from brain imaging studies involves problematic inferential leaps across explanatory levels.
+
+Legitimate Contributions
+
+Despite these critiques, neuroscience has made genuine contributions to educational understanding. Research on reading disabilities exemplifies productive integration. Neuroimaging studies have revealed that dyslexia involves atypical activation patterns in left temporoparietal regions during phonological processing, providing biological validation for phonics-based interventions that behavioral research had already supported. Importantly, neuroscience here complements rather than replaces cognitive and educational perspectives.
+
+Understanding of memory consolidation processes has informed spacing and interleaving recommendations with legitimate neuroscientific grounding. The role of sleep in memory consolidation, emotional regulation in learning, and the neurobiological effects of chronic stress all represent areas where neuroscience offers educationally relevant insights.
+
+Toward Meaningful Integration
+
+For neuroscience to contribute productively to education, several conditions must be met. First, claims must be appropriately modest, recognizing that neuroscience typically explains why interventions work rather than prescribing what interventions to use. Second, educational implications should be derived through careful translation that acknowledges different levels of analysis. Third, practitioners need sufficient scientific literacy to evaluate neuroscience claims critically.
+
+The most promising pathway involves collaborative research programs where neuroscientists and educators jointly design studies addressing educationally meaningful questions with neurobiologically informed methods. Such "use-inspired basic research" can generate knowledge that advances both scientific understanding and practical application.`,
+    
+    vocabulary: ["neuroimaging", "neuromyths", "hemispheric specialization", "neural plasticity", "phonological processing", "memory consolidation"]
+  },
+  
+  // 学术论文 - 研究讨论部分
+  {
+    id: 'academic_012',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.ENVIRONMENT,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700,
+    wordCount: { min: 400, max: 550 },
+    
+    title: "研究讨论 - 可再生能源政策效果",
+    
+    prompt: "Write a discussion section for a study that examined the effectiveness of renewable energy subsidies across different national contexts. Interpret findings, compare with prior research, acknowledge limitations, and discuss implications.",
+    
+    outline: {
+      interpretation: "What findings mean",
+      comparison: "Relation to prior research",
+      mechanisms: "Explanations for observed patterns",
+      limitations: "Study constraints",
+      implications: "Theoretical and practical significance"
+    },
+    
+    sampleResponse: `This study examined the effectiveness of renewable energy subsidies across 28 OECD countries over a 15-year period, with particular attention to how institutional and economic contexts moderate policy impacts. The findings advance understanding of renewable energy transitions while highlighting the contingent nature of policy effectiveness.
+
+Interpretation of Key Findings
+
+Our results demonstrate substantial heterogeneity in subsidy effectiveness across national contexts. While the average effect of feed-in tariffs on renewable capacity additions was positive and significant (β = 0.34), this aggregate finding masks considerable variation. Countries with strong institutional quality indicators experienced effects roughly twice as large as those with weaker governance structures. This pattern suggests that policy design alone is insufficient—implementation capacity and regulatory credibility fundamentally shape outcomes.
+
+The finding that subsidy effectiveness diminishes at higher renewable penetration levels carries important implications. The nonlinear relationship identified (with inflection points around 25% renewable share) indicates that policies effective during early-stage transitions may require modification as renewable portfolios mature. This trajectory aligns with theoretical expectations regarding grid integration challenges, diminishing returns to capacity expansion, and evolving political economy dynamics as incumbent interests adapt.
+
+Comparison with Prior Research
+
+These findings partially align with and partially extend existing literature. Consistent with Johnstone et al.'s (2010) cross-national analysis, we find that policy stability matters more than policy generosity—countries with frequent policy changes showed substantially lower effectiveness regardless of subsidy levels. However, our findings qualify the optimistic conclusions of studies that examined early-adopter countries in isolation. The strong results observed in Germany, Denmark, and Spain during their initial renewable buildouts do not straightforwardly generalize to later adopters facing different technological, economic, and political conditions.
+
+The moderating role of institutional quality echoes findings from the broader policy implementation literature while specifying mechanisms relevant to energy transitions. Our results suggest that regulatory independence of energy authorities and judicial enforcement of contracts represent particularly important institutional dimensions, more so than generic governance indices.
+
+Explaining Observed Patterns
+
+Several mechanisms likely account for the institutional moderation effects. First, investor confidence in subsidy durability depends on credible commitment mechanisms that stronger institutions provide. Second, effective grid management and infrastructure planning require competent regulatory agencies. Third, opposition from incumbent energy interests may be more effectively managed within robust institutional frameworks.
+
+The diminishing returns at higher penetration levels likely reflect multiple overlapping factors: grid integration costs that rise nonlinearly, political resistance that intensifies as transitions threaten established interests, and simple saturation of optimal deployment sites. Disentangling these mechanisms would require more granular data than our cross-national approach permits.
+
+Limitations
+
+Several limitations warrant acknowledgment. The observational design limits causal inference despite our use of fixed effects and instrumental variables; unobserved confounders may influence both policy adoption and outcomes. Our renewable energy measure aggregates diverse technologies (solar, wind, biomass) that respond differently to policy instruments. The focus on OECD countries limits generalizability to developing economy contexts where different dynamics may prevail.
+
+Theoretical and Practical Implications
+
+Theoretically, these findings underscore the importance of contingent policy analysis that moves beyond universal best-practice recommendations. Energy transition scholarship should more explicitly incorporate institutional political economy perspectives that recognize how context shapes policy effects.
+
+For policymakers, our results suggest that renewable energy policy design should be calibrated to national institutional capacities. Countries with weaker governance structures might prioritize institution-building alongside subsidy implementation, or adopt policy designs that require less administrative capacity. Additionally, policy approaches should evolve as renewable portfolios mature, with different instruments appropriate at different transition stages.`,
+    
+    vocabulary: ["feed-in tariffs", "institutional quality", "regulatory credibility", "grid integration", "observational design", "instrumental variables"]
+  },
+  
+  // 研究摘要 - 社会科学研究
+  {
+    id: 'academic_013',
+    type: WRITING_TYPES.ACADEMIC_ABSTRACT,
+    topic: TOPIC_CATEGORIES.SOCIETY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 1800,
+    wordCount: { min: 250, max: 350 },
+    
+    title: "研究摘要 - 社会流动性与教育不平等",
+    
+    prompt: "Write an abstract for a sociological research paper examining intergenerational social mobility and the role of educational institutions in reproducing or reducing inequality.",
+    
+    outline: {
+      background: "Social mobility context",
+      objective: "Research aims",
+      methods: "Data and analytical approach",
+      findings: "Key results",
+      conclusions: "Implications"
+    },
+    
+    sampleResponse: `Intergenerational social mobility—the extent to which children's socioeconomic outcomes differ from their parents'—represents a fundamental indicator of societal openness and equality of opportunity. This study investigates whether educational institutions serve as "great equalizers" that promote mobility or as mechanisms of social reproduction that perpetuate inequality across generations.
+
+Drawing upon longitudinal panel data tracking 12,847 individuals across three generations in the United States and United Kingdom (1970-2020), we employ intergenerational elasticity measures and structural equation modeling to examine how educational attainment mediates the relationship between parental socioeconomic status and children's adult outcomes. We disaggregate effects by educational sector (public versus private), institutional selectivity, and credential type to identify where mobility-enhancing or reproduction effects concentrate.
+
+Results reveal a complex picture that challenges both strong mobility and strong reproduction narratives. Educational attainment significantly mediates intergenerational status transmission, accounting for approximately 40% of the parent-child socioeconomic correlation in both countries. However, the mediating role of education has weakened over the study period as credential inflation has increased educational requirements for equivalent occupational positions.
+
+Critically, we find substantial heterogeneity across educational pathways. Elite higher education institutions exhibit strong reproduction effects—children from advantaged backgrounds who attend selective universities experience enhanced mobility relative to similarly-qualified peers at non-selective institutions, while disadvantaged students at elite institutions show more modest gains. Conversely, vocational education pathways demonstrate stronger equalizing effects, providing meaningful mobility channels for students from working-class backgrounds.
+
+Cross-national comparison reveals that institutional structures matter: the UK's more stratified educational system produces greater reproduction effects than the US system, though neither country achieves the mobility levels that meritocratic ideals would predict.
+
+These findings suggest that educational expansion alone is insufficient for enhancing mobility; attention must focus on reducing inequalities in access to high-return educational pathways and addressing non-educational factors that enable advantaged families to convert credentials into outcomes more effectively.`,
+    
+    vocabulary: ["intergenerational elasticity", "structural equation modeling", "credential inflation", "reproduction effects", "stratified educational system", "meritocratic ideals"]
+  },
+  
+  // 学术论文 - 政策分析
+  {
+    id: 'academic_014',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.GOVERNMENT,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700,
+    wordCount: { min: 400, max: 550 },
+    
+    title: "政策分析 - 数据隐私监管框架比较",
+    
+    prompt: "Write a comparative policy analysis section examining different approaches to data privacy regulation (GDPR vs. US sectoral approach vs. China's framework). Evaluate strengths and weaknesses of each approach.",
+    
+    outline: {
+      framework: "Analytical approach",
+      gdpr: "European comprehensive model",
+      us: "American sectoral approach",
+      china: "Chinese state-centered model",
+      evaluation: "Comparative assessment"
+    },
+    
+    sampleResponse: `This analysis examines three distinct regulatory approaches to data privacy protection: the European Union's comprehensive General Data Protection Regulation (GDPR), the United States' sectoral patchwork system, and China's emerging state-centered framework. Using a comparative institutional analysis framework, we evaluate each approach across dimensions of individual protection, innovation effects, enforcement mechanisms, and international implications.
+
+Analytical Framework
+
+Effective data privacy regulation must balance multiple objectives that exist in tension: protecting individual autonomy and preventing harm, enabling beneficial data uses that drive innovation, maintaining regulatory coherence and enforceability, and functioning within broader geopolitical and economic contexts. No regulatory approach optimizes all dimensions simultaneously; each reflects distinctive normative priorities and institutional capabilities.
+
+The European Model: GDPR
+
+The GDPR, implemented in 2018, represents the most comprehensive data privacy regulatory framework globally. Its key features include: extraterritorial application to any organization processing EU residents' data; requirements for explicit consent for data collection; data subject rights including access, rectification, erasure ("right to be forgotten"), and portability; mandatory data protection impact assessments; and substantial penalties (up to 4% of global revenue).
+
+The GDPR's strengths include regulatory clarity through unified rules, strong individual rights protections, and global influence as a de facto international standard. However, significant limitations have emerged. Compliance costs disproportionately burden small enterprises, potentially advantaging established incumbents. Consent mechanisms have generated "consent fatigue" without necessarily improving informed decision-making. Enforcement remains uneven across member states, with under-resourced data protection authorities struggling to address complaint backlogs.
+
+The American Model: Sectoral Regulation
+
+The United States lacks comprehensive federal privacy legislation, instead relying on sector-specific laws (HIPAA for health, COPPA for children, GLBA for finance) supplemented by Federal Trade Commission enforcement against "unfair and deceptive practices" and state-level initiatives, most notably California's CCPA.
+
+This approach offers flexibility and accommodates sector-specific risk profiles. Innovation effects appear more positive than under GDPR—American technology companies have maintained competitive advantages partly attributable to lighter regulatory burdens. However, gaps between sectoral laws create protection inconsistencies, and enforcement depends heavily on FTC resources and priorities. The absence of baseline federal standards generates compliance complexity for businesses operating across jurisdictions while leaving many data practices unregulated.
+
+The Chinese Model: State-Centered Framework
+
+China's Personal Information Protection Law (PIPL), effective 2021, superficially resembles GDPR but operates within fundamentally different political-economic logic. While PIPL establishes consent requirements, data subject rights, and cross-border transfer restrictions, it explicitly exempts state surveillance activities and requires companies to assist government data requests.
+
+This framework prioritizes state capacity alongside individual protection, reflecting authoritarian governance priorities. For individuals, PIPL provides meaningful protections against commercial data misuse while providing no safeguards against state monitoring. For foreign businesses, data localization requirements and vague national security provisions create substantial compliance uncertainty and potential vulnerability to political pressure.
+
+Comparative Assessment
+
+Each model embodies distinctive regulatory philosophies. The EU prioritizes individual rights as fundamental, accepting innovation costs. The US privileges market flexibility, accepting protection gaps. China instrumentalizes privacy protection within state capacity objectives. These differences reflect deeper variations in political values, institutional capacities, and economic structures that make simple "best practice" recommendations inappropriate.
+
+International regulatory fragmentation creates challenges for global data flows and digital commerce. Emerging discussions around interoperability mechanisms (adequacy decisions, standard contractual clauses, certification schemes) represent attempts to manage this fragmentation, but fundamental normative divergences limit harmonization prospects. Organizations operating globally must navigate this complex landscape, often implementing the most restrictive applicable standard—typically GDPR—as a practical compliance strategy.`,
+    
+    vocabulary: ["extraterritorial application", "data portability", "sectoral regulation", "consent fatigue", "data localization", "regulatory fragmentation"]
+  },
+  
+  // 文献综述 - 研究方法评估
+  {
+    id: 'academic_015',
+    type: WRITING_TYPES.ACADEMIC_REVIEW,
+    topic: TOPIC_CATEGORIES.SCIENCE,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2700,
+    wordCount: { min: 400, max: 550 },
+    
+    title: "方法论综述 - 因果推断方法的演进",
+    
+    prompt: "Write a methodological literature review examining the evolution of causal inference methods in social science research. Compare experimental, quasi-experimental, and observational approaches.",
+    
+    outline: {
+      evolution: "Historical development",
+      experimental: "Randomized experiments",
+      quasi: "Quasi-experimental designs",
+      observational: "Observational methods",
+      synthesis: "Integration and future directions"
+    },
+    
+    sampleResponse: `The pursuit of causal knowledge represents a foundational aspiration of scientific inquiry. This review traces the evolution of causal inference methods in social science research, examining how methodological innovations have expanded researchers' capacity to draw credible causal conclusions from diverse data structures.
+
+Historical Development
+
+Causal inference methodology has undergone substantial transformation over the past century. Fisher's (1935) formalization of randomized experimentation established the "gold standard" for causal identification, demonstrating how random assignment eliminates confounding and enables unbiased treatment effect estimation. However, the recognition that many important social science questions preclude experimental manipulation—for ethical, practical, or fundamental reasons—motivated development of alternative approaches.
+
+The Rubin Causal Model, elaborated through the 1970s and 1980s, provided a unified potential outcomes framework that clarified the fundamental problem of causal inference: for any individual, we can observe only one potential outcome (under treatment or control), rendering individual causal effects inherently unidentifiable. This formalization clarified that causal inference requires assumptions that substitute for missing counterfactual data, whether through randomization, design, or statistical modeling.
+
+Randomized Controlled Trials
+
+Randomized experiments remain the methodological benchmark for causal inference. Random assignment ensures that treatment and control groups are, in expectation, equivalent on all pre-treatment characteristics—both observed and unobserved—eliminating confounding by design. When experiments achieve adequate statistical power and avoid attrition and contamination threats, they provide highly credible causal estimates.
+
+However, experimental limitations are well-documented. External validity concerns arise when experimental samples or settings poorly represent target populations. Ethical constraints prohibit randomizing many consequential treatments. Practical considerations often limit experimental duration, precluding examination of long-term effects. The rise of field experiments has addressed some concerns by conducting randomization in naturalistic settings, though selection into experimental participation remains a validity threat.
+
+Quasi-Experimental Methods
+
+The methodological innovations of greatest practical significance involve quasi-experimental designs that exploit natural variation for causal identification. Regression discontinuity designs leverage arbitrary thresholds in treatment assignment—such as test score cutoffs determining program eligibility—to compare observations just above and just below cutoffs where assignment is effectively random. Difference-in-differences approaches compare outcome changes between treated and untreated groups, with the "parallel trends" assumption substituting for random assignment.
+
+Instrumental variables methods address confounding by identifying exogenous variation that affects treatment but influences outcomes only through treatment. The credibility revolution in economics has emphasized the importance of "natural experiments" providing plausibly exogenous instruments, though debates continue regarding what constitutes sufficient evidence of instrument validity.
+
+Recent innovations include synthetic control methods for comparative case studies and regression kink designs that exploit discontinuities in treatment intensity rather than assignment. Each method involves characteristic assumptions whose plausibility must be evaluated contextually.
+
+Observational Approaches
+
+When quasi-experimental opportunities are unavailable, researchers employ statistical techniques to address confounding. Propensity score methods model treatment assignment probability and use these scores for matching, stratification, or weighting, intending to balance observed covariates between treatment groups. However, selection on unobservables remains a fundamental threat.
+
+Sensitivity analysis approaches—including Rosenbaum bounds and the E-value framework—characterize how strong unobserved confounding would need to be to explain away observed effects, providing readers information to assess robustness. Newer machine learning methods for causal inference, including causal forests and double machine learning, offer improved flexibility in modeling complex confounding structures while maintaining valid inference.
+
+Synthesis and Future Directions
+
+The methodological landscape has evolved toward explicit acknowledgment of identifying assumptions and their testable implications. Contemporary best practice involves multiple analysis approaches—triangulating across methods with different assumptions to assess robustness. The integration of experimental and observational evidence through meta-analysis and replication studies further strengthens causal inference.
+
+Future developments will likely involve greater use of machine learning for treatment effect heterogeneity, refined methods for dynamic treatment regimes, and continued attention to external validity—understanding not just whether effects exist but for whom and under what conditions they generalize.`,
+    
+    vocabulary: ["potential outcomes framework", "regression discontinuity", "difference-in-differences", "instrumental variables", "propensity score", "sensitivity analysis"]
+  },
+  
+  // 学术论文 - 伦理考量
+  {
+    id: 'academic_016',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.TECHNOLOGY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2400,
+    wordCount: { min: 350, max: 500 },
+    
+    title: "伦理讨论 - 人工智能研究伦理",
+    
+    prompt: "Write an ethics section for a research paper that developed and tested an AI system for automated hiring decisions. Address fairness, transparency, accountability, and human oversight concerns.",
+    
+    outline: {
+      framework: "Ethical principles guiding the research",
+      fairness: "Bias and discrimination concerns",
+      transparency: "Explainability issues",
+      accountability: "Responsibility allocation",
+      safeguards: "Protective measures implemented"
+    },
+    
+    sampleResponse: `The development and deployment of AI systems for high-stakes decisions such as employment selection raises profound ethical concerns that require explicit acknowledgment and systematic address. This section examines the ethical dimensions of our research through the lens of established AI ethics principles: fairness, transparency, accountability, and human oversight.
+
+Ethical Framework
+
+Our research was guided by the IEEE Ethically Aligned Design principles and the European Commission's Ethics Guidelines for Trustworthy AI. These frameworks emphasize that AI systems should respect human autonomy, prevent harm, ensure fairness, and maintain explicability. We established an ethics advisory board comprising computer scientists, legal scholars, and civil society representatives who reviewed research design and implementation at key milestones.
+
+Fairness and Non-Discrimination
+
+AI hiring systems risk encoding and amplifying existing societal biases, potentially producing discriminatory outcomes at scale. Our approach addressed fairness through multiple mechanisms. First, we conducted extensive bias audits examining model performance across protected categories (gender, race, age, disability status) using both individual fairness and group fairness metrics. Where disparate impact was detected (adverse impact ratios below 0.8), we implemented algorithmic interventions including reweighting, adversarial debiasing, and post-processing calibration.
+
+However, we acknowledge fundamental limitations. "Fairness" admits multiple, sometimes conflicting, mathematical definitions—equalizing false positive rates may conflict with equalizing false negative rates. Our choices among fairness criteria reflect value judgments that reasonable people might contest. Additionally, historical training data inevitably reflects historical inequities; while we can mitigate measured disparities, we cannot ensure the system is free from all discriminatory effects.
+
+Transparency and Explainability
+
+Black-box AI decision-making poses challenges for affected individuals' rights to explanation and for organizational accountability. Our system implements local interpretable explanations (LIME/SHAP values) that identify which features most influenced individual decisions. Candidates receive explanations for automated screening decisions, and human reviewers access feature importance information alongside model recommendations.
+
+Yet transparency has limits. The underlying model involves complex feature interactions that simple explanations may not fully capture. There exists an inherent tension between model accuracy (which often benefits from complexity) and explainability. We prioritized explanations that are meaningful to non-technical audiences over complete technical disclosure, a choice that involves epistemic trade-offs.
+
+Accountability and Responsibility
+
+AI systems complicate traditional accountability structures by distributing decision-making across human developers, algorithmic processes, and deploying organizations. We address this through explicit responsibility allocation: the development team is accountable for model validity and bias mitigation; deploying organizations bear responsibility for appropriate use and human oversight; and we have established clear appeal mechanisms for candidates to contest automated decisions.
+
+We maintain comprehensive audit logs documenting training data, model versions, and decision rationales to enable retrospective accountability. However, accountability remains challenging when harms emerge from complex system interactions rather than identifiable individual failures.
+
+Human Oversight and Control
+
+Given the limitations and risks of automated decision-making, we designed the system to augment rather than replace human judgment. Automated screening produces recommendations rather than final decisions; human recruiters review all recommendations before candidates are advanced or rejected. We implemented override capabilities allowing human reviewers to countermand algorithmic recommendations with documented justification.
+
+We recognize that human oversight can become perfunctory if users develop automation bias—excessive trust in algorithmic recommendations. To mitigate this, we randomized whether recommendations were displayed before or after initial human review in a subset of cases, monitoring for systematic differences that would indicate overdependence on automation.
+
+Despite these safeguards, we cannot guarantee that our system, if widely deployed, would improve upon existing hiring practices in all dimensions. The appropriate role of AI in high-stakes decisions remains contested, and our research should be understood as exploring possibilities rather than providing definitive solutions.`,
+    
+    vocabulary: ["disparate impact", "adversarial debiasing", "local interpretable explanations", "automation bias", "audit logs", "algorithmic accountability"]
+  },
+  
+  // 研究摘要 - 交叉学科研究
+  {
+    id: 'academic_017',
+    type: WRITING_TYPES.ACADEMIC_ABSTRACT,
+    topic: TOPIC_CATEGORIES.HEALTH,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 1800,
+    wordCount: { min: 250, max: 350 },
+    
+    title: "研究摘要 - 城市设计与公共健康",
+    
+    prompt: "Write an abstract for an interdisciplinary research paper examining how urban design features influence physical activity levels and mental health outcomes in city residents.",
+    
+    outline: {
+      context: "Built environment and health nexus",
+      purpose: "Study objectives",
+      methods: "Research design",
+      results: "Main findings",
+      significance: "Implications"
+    },
+    
+    sampleResponse: `The built environment shapes daily behaviors in ways that substantially influence population health outcomes. This interdisciplinary study examines how specific urban design features—walkability, green space access, mixed land use, and public transit availability—affect physical activity levels and mental health among urban residents, with attention to how effects vary across sociodemographic groups.
+
+We conducted a cross-sectional study in three diverse metropolitan areas (N = 8,426 adults) combining objective environmental measures derived from geographic information systems with individual-level health data from surveys and accelerometer-measured physical activity. Multilevel regression models estimated associations between neighborhood-level design features and individual outcomes while accounting for residential self-selection through propensity score weighting.
+
+Results revealed that walkability—operationalized as a composite of residential density, intersection density, and land use mix—demonstrated the strongest associations with physical activity. Residents of high-walkability neighborhoods accumulated 23 additional minutes of moderate-to-vigorous physical activity per week compared to low-walkability residents (95% CI: 17-29 minutes). Green space within 500 meters of residence was associated with both increased recreational activity and reduced depressive symptoms (β = -0.14, p < .001), with effects on mental health operating partially through social cohesion mechanisms.
+
+Importantly, associations varied by socioeconomic status. Walkability effects on physical activity were substantially stronger among higher-income residents, potentially reflecting differences in time flexibility, safety perceptions, and destination quality. Conversely, green space mental health benefits were more pronounced among lower-income residents, suggesting parks may provide compensatory resources for populations with fewer private alternatives.
+
+Mixed land use showed nuanced effects: commercial diversity supported walking for transportation but not recreational activity, while transit proximity increased overall mobility but was not independently associated with health outcomes after controlling for walkability.
+
+These findings support health-promoting urban design investments while highlighting the importance of equity considerations. Design features that benefit population health on average may not equally serve all residents; targeted interventions addressing access barriers and neighborhood quality in disadvantaged areas are necessary to realize equitable health benefits from built environment improvements. Future longitudinal research should examine whether neighborhood changes produce corresponding health changes among existing residents.`,
+    
+    vocabulary: ["built environment", "walkability", "accelerometer-measured", "multilevel regression", "residential self-selection", "social cohesion"]
+  },
+  
+  // 学术论文 - 研究局限与未来方向
+  {
+    id: 'academic_018',
+    type: WRITING_TYPES.ACADEMIC_PAPER,
+    topic: TOPIC_CATEGORIES.ECONOMY,
+    difficulty: DIFFICULTY_LEVELS.ADVANCED,
+    timeLimit: 2100,
+    wordCount: { min: 300, max: 450 },
+    
+    title: "研究局限与未来方向 - 数字平台经济研究",
+    
+    prompt: "Write a limitations and future directions section for a study examining the economic impacts of gig economy platforms on labor markets and worker welfare.",
+    
+    outline: {
+      limitations: "Study constraints",
+      internal: "Internal validity concerns",
+      external: "External validity concerns",
+      future: "Research agenda",
+      conclusion: "Closing thoughts"
+    },
+    
+    sampleResponse: `While this study advances understanding of gig economy labor market effects, several limitations warrant acknowledgment and point toward productive directions for future research.
+
+Study Limitations
+
+First, our analysis relies primarily on administrative data from a single platform operating in the United States, limiting generalizability to other platforms, gig work modalities, and national contexts. Platform-specific effects may reflect idiosyncratic features of the studied company's algorithms, policies, and worker composition rather than gig economy dynamics broadly. Different platforms exhibit substantial variation in worker classification, compensation structures, and algorithmic management practices that may produce heterogeneous labor market effects.
+
+Second, the observational design constrains causal inference despite our use of instrumental variables and difference-in-differences approaches. The instruments employed—geographic variation in smartphone adoption timing—may not satisfy exclusion restrictions if smartphone diffusion correlates with unobserved local economic conditions that independently affect labor outcomes. Sensitivity analyses suggest our main findings are robust to moderate violations of identifying assumptions, but we cannot rule out confounding by unobserved factors.
+
+Third, our outcome measures, while comprehensive regarding earnings and hours, incompletely capture worker welfare. We lack direct measures of job satisfaction, work-related stress, skill development, or long-term career trajectories. The welfare implications of gig work likely involve trade-offs between flexibility benefits and security costs that our economic metrics do not fully represent.
+
+Internal Validity Concerns
+
+Selection into gig work is non-random and potentially endogenous to the outcomes we study. Workers may enter gig platforms precisely when traditional employment options deteriorate, conflating platform effects with broader labor market shocks. Our attempts to address selection through matching on observables cannot eliminate selection on unobservables. Ideal identification would involve random assignment to platform access, which is neither feasible nor ethical at scale.
+
+Measurement error presents additional concerns. Earnings reported through the platform may not reflect total worker income if participants engage in multiple income sources simultaneously. Additionally, platform algorithm changes during our study period may have altered the treatment being measured in ways our time-fixed specifications cannot capture.
+
+External Validity Considerations
+
+Generalization beyond our study context faces multiple challenges. The US regulatory environment regarding worker classification, benefits mandates, and minimum wage laws differs substantially from other jurisdictions, likely moderating platform effects. Cultural differences in work orientation and social safety net variations affect how workers experience gig arrangements. Our findings may not extrapolate to contexts where gig work substitutes for informal rather than formal employment.
+
+The platform economy continues evolving rapidly; findings from our 2018-2022 study period may not describe current or future dynamics. Regulatory changes, platform consolidation, and technological developments (including AI-driven automation) continuously reshape the landscape.
+
+Future Research Directions
+
+Several productive research directions emerge from these limitations. First, multi-platform and cross-national comparative studies could identify which findings generalize versus reflect context-specific factors. Collaborations with multiple platforms willing to share data would enable such research while addressing platform-specific confounds.
+
+Second, prospective longitudinal designs following individuals before and after gig platform engagement could better address selection concerns while capturing longer-term career trajectory effects. Ideal designs would combine administrative records across employment types with survey measures of subjective welfare.
+
+Third, experimental or quasi-experimental studies exploiting platform policy variations—such as algorithmic changes, compensation structure modifications, or benefits provision pilots—could provide cleaner causal identification of specific mechanism effects.
+
+Finally, research integrating quantitative labor market analysis with qualitative investigation of worker experiences could provide richer understanding of how platform work is lived, moving beyond aggregate patterns to illuminate heterogeneous experiences and their determinants.`,
+    
+    vocabulary: ["gig economy", "exclusion restrictions", "difference-in-differences", "selection on unobservables", "external validity", "algorithmic management"]
   }
 ];
 
