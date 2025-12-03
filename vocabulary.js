@@ -2345,12 +2345,7 @@ function showMeaning() {
             meaningHtml += '</div>';
         }
         
-        // 操作按钮区 - 极简版
-        meaningHtml += '<div style="display:flex;gap:6px;margin-top:10px;padding-top:8px;border-top:1px solid #e9d5ff;">';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;padding:6px;background:#10b981;border:none;border-radius:4px;color:white;font-size:11px;cursor:pointer;">记住了</button>';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;padding:6px;background:#f59e0b;border:none;border-radius:4px;color:white;font-size:11px;cursor:pointer;">再强化</button>';
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="flex:1;padding:6px;background:#8b5cf6;border:none;border-radius:4px;color:white;font-size:11px;cursor:pointer;">编辑</button>';
-        meaningHtml += '</div>';
+        // V5: 操作按钮已移除，保持极简
         
         meaningHtml += '</div>'; // 整个助记卡片结束
     } else {
@@ -2668,7 +2663,7 @@ function rateWord(rating) {
             // 从困难列表移除
             var hardIndex = hardWordsInSession.indexOf(word);
             if (hardIndex > -1) hardWordsInSession.splice(hardIndex, 1);
-            showRatingFeedback('good', '继续保持');
+            // 评分反馈已简化
             break;
             
         case 'easy': // 简单 - 加速掌握
@@ -2677,7 +2672,7 @@ function rateWord(rating) {
             // 从困难列表移除
             var easyHardIndex = hardWordsInSession.indexOf(word);
             if (easyHardIndex > -1) hardWordsInSession.splice(easyHardIndex, 1);
-            showRatingFeedback('easy', '太棒了');
+            // 评分反馈已简化
             break;
             
         // 兼容旧版评分

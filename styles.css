@@ -3527,8 +3527,29 @@ svg {
     transition: all 0.3s ease;
 }
 
+/* V5: 深色模式文字对比度增强 */
+body.theme-dark .word-main {
+    color: #f3f4f6;
+}
+
+body.theme-dark .meaning-cn {
+    color: #f3f4f6;
+}
+
+body.theme-dark .meaning-en {
+    color: #d1d5db;
+}
+
+body.theme-dark .word-phonetic {
+    color: #9ca3af;
+}
+
 .word-card:hover .word-main {
     color: #4f46e5;
+}
+
+body.theme-dark .word-card:hover .word-main {
+    color: #818cf8;
 }
 
 .word-phonetic { 

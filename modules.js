@@ -2877,8 +2877,8 @@ function initSpeechRecognition() {
     }
 }
 
-// 按住录音 - 开始 v4.0
-async function startHoldRecording(event) {
+// 按住录音 - 开始 v4.1 (修复异步问题)
+function startHoldRecording(event) {
     if (event && event.preventDefault) {
         event.preventDefault();
         event.stopPropagation();
@@ -2902,7 +2902,12 @@ async function startHoldRecording(event) {
     updateRecordingUI(true);
     showToast('🎤 正在准备录音...');
     
-    // 自动申请麦克风权限
+    // 自动申请麦克风权限并启动
+    checkAndRequestMicPermissionThenStart();
+}
+
+// v4.1: 权限检查和启动的独立函数
+async function checkAndRequestMicPermissionThenStart() {
     if (!micPermissionGranted) {
         var granted = await checkAndRequestMicPermission();
         if (!granted) {
