@@ -1991,8 +1991,15 @@ function showCurrentWord() {
     // V16: 显示真题标记标签
     showExamTagsBadge(wordData.word);
     
-    // 隐藏释义区域
-    if (wordMeaning) wordMeaning.classList.add('hidden');
+    // v4.9.3: 中文释义默认显示,但详细信息隐藏
+    if (wordMeaning) {
+        wordMeaning.classList.remove('hidden');
+        // 只显示中文释义,隐藏详细信息
+        var meaningCn = wordMeaning.querySelector('.meaning-cn');
+        if (meaningCn) {
+            meaningCn.style.display = 'block';
+        }
+    }
     if (rateButtons) rateButtons.classList.add('hidden');
     if (showMeaningBtn) showMeaningBtn.classList.remove('hidden');
     if (swipeHint) swipeHint.style.display = '';
@@ -2332,8 +2339,8 @@ function showMeaning() {
         meaningHtml += '</div>';
     }
     
-    // 中英文释义 - 极简版
-    meaningHtml += '<div class="meaning-cn" style="font-size:18px;color:#1e1b4b;margin-bottom:10px;font-weight:600;">' + (wordData.meaningCn || '暂无中文释义') + '</div>';
+    // 中英文释义 - 极简版,v4.9.3增大字号更突出
+    meaningHtml += '<div class="meaning-cn" style="font-size:22px;color:#1e1b4b;margin-bottom:12px;font-weight:700;line-height:1.4;">' + (wordData.meaningCn || '暂无中文释义') + '</div>';
     meaningHtml += '<div class="meaning-en" style="color:#6b7280;font-size:14px;margin-bottom:14px;line-height:1.6;">' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
     
     // V16: 真题词汇标记展示
