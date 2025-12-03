@@ -3668,8 +3668,8 @@
         }
     };
     
-    // 初始化
-    setTimeout(() => VirtualPetSystem.init(), 1500);
+    // V4.8.13: 宠物系统已移除，减少视觉干扰
+    // setTimeout(() => VirtualPetSystem.init(), 1500);
 
     // v10 精简版导出
     window.UX = {

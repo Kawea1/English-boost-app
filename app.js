@@ -2324,8 +2324,11 @@ function updateTimeScene(timePeriod) {
         header.setAttribute('data-time-period', timePeriod);
     }
     
+    // V4.8.13: 只在用户选择"动态场景"时才自动更新图标
+    var avatarType = localStorage.getItem('avatarType') || 'scene';
+    
     // 设置场景图标
-    if (sceneIcon) {
+    if (sceneIcon && avatarType === 'scene') {
         sceneIcon.innerHTML = getSceneIcon(timePeriod);
     }
     

@@ -42,7 +42,7 @@ function updateListeningForReviewMode() {
         if (titleEl) {
             var badge = document.createElement('span');
             badge.className = 'review-mode-badge';
-            badge.innerHTML = '📝 复习模式';
+            badge.innerHTML = '复习模式';
             titleEl.parentNode.insertBefore(badge, titleEl.nextSibling);
         }
     }
@@ -413,7 +413,7 @@ function checkAnswerEnhanced() {
     const feedback = document.getElementById('answerFeedback');
     
     if (!feedback) {
-        alert(input === correct ? '✅ 正确！' : '❌ 错误，答案是: ' + currentListeningSentence.blank);
+        alert(input === correct ? '正确！' : '错误，答案是: ' + currentListeningSentence.blank);
         return;
     }
     
@@ -541,7 +541,7 @@ function resetListeningProgress() {
         completedListeningSentences = [];
         localStorage.setItem('completedListeningSentences', '[]');
         loadNextListeningSentence();
-        if (typeof showToast === 'function') showToast('✅ 进度已重置');
+        if (typeof showToast === 'function') showToast('进度已重置');
     }
 }
 

@@ -681,27 +681,64 @@
             `).join('');
         },
         
-        // 加载模板到面板
+        // V4.8.13: 根据当前题目类型加载相应模板
         loadTemplates() {
             const container = document.getElementById('template-content');
             if (!container) return;
             
             const templates = window.WRITING_TEMPLATES || {};
+            const currentTopic = WritingModule.currentTopic;
+            
+            // 根据题目类型选择合适的模板
+            let introType = 'opinion';
+            let bodyType = 'reason_example';
+            let conclusionType = 'opinion';
+            
+            if (currentTopic) {
+                // TOEFL综合写作
+                if (currentTopic.type === 'toefl_integrated') {
+                    introType = 'summary';
+                    bodyType = 'summary_points';
+                    conclusionType = 'summary';
+                }
+                // GRE Argument
+                else if (currentTopic.type === 'gre_argument') {
+                    introType = 'critique';
+                    bodyType = 'logical_flaw';
+                    conclusionType = 'evaluation';
+                }
+                // 问题解决类
+                else if (currentTopic.type === 'problem_solution' || currentTopic.prompt?.includes('solution')) {
+                    introType = 'problem_solution';
+                    bodyType = 'solution_details';
+                    conclusionType = 'call_to_action';
+                }
+                // 讨论类
+                else if (currentTopic.type === 'discussion' || currentTopic.prompt?.includes('discuss both')) {
+                    introType = 'discussion';
+                    bodyType = 'both_sides';
+                    conclusionType = 'balanced';
+                }
+            }
+            
+            const introTemplates = templates.introductions?.[introType] || templates.introductions?.opinion || [];
+            const bodyTemplates = templates.bodyParagraphs?.[bodyType] || templates.bodyParagraphs?.reason_example || [];
+            const conclusionTemplates = templates.conclusions?.[conclusionType] || templates.conclusions?.opinion || [];
             
             container.innerHTML = `
                 <div class="template-category-v11">
                     <h5>开头段模板</h5>
-                    ${(templates.introductions?.opinion || []).slice(0, 3).map(t => `
+                    ${introTemplates.slice(0, 3).map(t => `
                         <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
-                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
+                            ${t.replace(/\{([^}]+)\}/g, '<code>$1</code>')}
                         </div>
                     `).join('')}
                 </div>
                 <div class="template-category-v11">
                     <h5>论证段模板</h5>
-                    ${(templates.bodyParagraphs?.reason_example || []).slice(0, 3).map(t => `
+                    ${bodyTemplates.slice(0, 3).map(t => `
                         <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
-                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
+                            ${t.replace(/\{([^}]+)\}/g, '<code>$1</code>')}
                         </div>
                     `).join('')}
                 </div>
@@ -717,9 +754,9 @@
                 </div>
                 <div class="template-category-v11">
                     <h5>结尾段模板</h5>
-                    ${(templates.conclusions?.opinion || []).slice(0, 2).map(t => `
+                    ${conclusionTemplates.slice(0, 2).map(t => `
                         <div class="template-item-v11" onclick="WritingModule.insertTemplate(\`${t}\`)">
-                            ${t.replace(/\[([^\]]+)\]/g, '<code>$1</code>')}
+                            ${t.replace(/\{([^}]+)\}/g, '<code>$1</code>')}
                         </div>
                     `).join('')}
                 </div>

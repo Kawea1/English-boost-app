@@ -83,7 +83,45 @@ const WRITING_TEMPLATES = {
     ],
     problem_solution: [
       "The phenomenon of {problem} has emerged as a pressing concern in contemporary society.",
-      "{Problem} poses significant challenges that require immediate attention and innovative solutions."
+      "{Problem} poses significant challenges that require immediate attention and innovative solutions.",
+      "In addressing {problem}, it is essential to consider both immediate interventions and long-term strategies."
+    ],
+    summary: [
+      "The reading passage discusses {topic}, presenting several key points.",
+      "Both the reading and the lecture address {topic}, but they present contrasting perspectives.",
+      "The lecturer challenges the main arguments presented in the reading passage regarding {topic}."
+    ],
+    critique: [
+      "The argument claims that {claim}, but this reasoning contains several logical flaws.",
+      "While the author asserts {claim}, the argument relies on questionable assumptions.",
+      "The conclusion that {claim} is undermined by insufficient evidence and logical gaps."
+    ]
+  },
+  
+  // 论证段模板
+  bodyParagraphs: {
+    reason_example: [
+      "First and foremost, {reason}. For instance, {example}.",
+      "Another significant factor is {reason}. This is evident in {example}.",
+      "Moreover, {reason}, which can be demonstrated by {example}."
+    ],
+    both_sides: [
+      "On the one hand, proponents argue that {viewA}. They point to {evidence}.",
+      "Conversely, critics contend that {viewB}. Their reasoning is based on {counterEvidence}."
+    ],
+    solution_details: [
+      "One effective approach would be to {solution}. This could be implemented through {details}.",
+      "A practical solution involves {action}, which has proven successful in {context}."
+    ],
+    summary_points: [
+      "The lecturer refutes the reading's first point by explaining that {counterArgument}.",
+      "Regarding {point}, the professor provides evidence that contradicts the reading.",
+      "The lecture challenges this claim, noting that {alternative explanation}."
+    ],
+    logical_flaw: [
+      "The argument assumes that {assumption}, but this overlooks {flaw}.",
+      "A critical weakness is the failure to consider {alternative}.",
+      "The reasoning depends on {correlation}, which does not necessarily indicate causation."
     ]
   },
   
@@ -106,6 +144,18 @@ const WRITING_TEMPLATES = {
     balanced: [
       "In light of the arguments presented, a nuanced approach that considers both perspectives seems most appropriate.",
       "To conclude, while both viewpoints have merit, the key lies in finding a balanced solution."
+    ],
+    summary: [
+      "In summary, the lecture effectively challenges the reading's main arguments through {key points}.",
+      "The professor's counterarguments cast significant doubt on the claims made in the reading passage."
+    ],
+    call_to_action: [
+      "Therefore, immediate action is required to implement {solutions} and address {problem}.",
+      "It is imperative that we take concrete steps to {action} before the situation worsens."
+    ],
+    evaluation: [
+      "In conclusion, the argument fails to provide convincing evidence due to {flaws}.",
+      "Ultimately, these logical weaknesses significantly undermine the argument's credibility."
     ]
   }
 };
