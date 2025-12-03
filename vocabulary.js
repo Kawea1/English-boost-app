@@ -306,9 +306,9 @@ function renderMasteryCard(word) {
     
     // 三维度进度条
     html += '<div class="mastery-dimensions">';
-    html += renderDimensionBar('🎤 发音', mastery.pronunciationScore);
-    html += renderDimensionBar('✏️ 拼写', mastery.spellingScore);
-    html += renderDimensionBar('📖 释义', mastery.meaningScore);
+    html += renderDimensionBar('发音', mastery.pronunciationScore);
+    html += renderDimensionBar('拼写', mastery.spellingScore);
+    html += renderDimensionBar('释义', mastery.meaningScore);
     html += '</div>';
     
     // 统计信息
@@ -663,127 +663,117 @@ try {
     chunkingGroups = {};
 }
 
-// V14-V19: 科学记忆方法类型（基于研究）- UI/Emoji优化版
+// V14-V19: 科学记忆方法类型（基于研究）- 极简纯净版
 var MNEMONIC_SCIENCE = {
     types: {
         'etymology': { 
-            name: '词源分析', 
-            icon: '🌳', 
-            iconAlt: '📜',
+            name: '词源', 
+            icon: 'root', 
             color: '#166534', 
             bg: '#dcfce7', 
             bgGradient: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
             effectiveness: 0.85, 
-            description: '追溯词根词缀，建立深层语义联系',
-            shortDesc: '词根词缀'
+            description: '词根词缀',
+            shortDesc: '词根'
         },
         'phonetic': { 
-            name: '谐音记忆', 
-            icon: '🎵', 
-            iconAlt: '🔔',
+            name: '谐音', 
+            icon: 'sound', 
             color: '#92400e', 
             bg: '#fef3c7', 
             bgGradient: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
             effectiveness: 0.72, 
-            description: '声音相似性，快速联想记忆',
-            shortDesc: '声音联想'
+            description: '声音联想',
+            shortDesc: '音联'
         },
         'visual': { 
-            name: '形象联想', 
-            icon: '🖼️', 
-            iconAlt: '👁️',
+            name: '联想', 
+            icon: 'image', 
             color: '#1e40af', 
             bg: '#dbeafe', 
             bgGradient: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
             effectiveness: 0.88, 
-            description: '生动视觉画面，激活视觉皮层',
-            shortDesc: '画面想象'
+            description: '画面联想',
+            shortDesc: '联想'
         },
         'story': { 
-            name: '故事记忆', 
-            icon: '📚', 
-            iconAlt: '🎬',
+            name: '故事', 
+            icon: 'book', 
             color: '#7c2d12', 
             bg: '#ffedd5', 
             bgGradient: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)',
             effectiveness: 0.90, 
-            description: '编织叙事情节，利用情节记忆优势',
-            shortDesc: '编故事'
+            description: '情节联想',
+            shortDesc: '故事'
         },
         'loci': { 
-            name: '记忆宫殿', 
-            icon: '🏰', 
-            iconAlt: '🗺️',
+            name: '定位', 
+            icon: 'location', 
             color: '#5b21b6', 
             bg: '#ede9fe', 
             bgGradient: 'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
             effectiveness: 0.92, 
-            description: '空间定位法，世界记忆冠军技术',
-            shortDesc: '空间定位'
+            description: '空间记忆',
+            shortDesc: '定位'
         },
         'chunking': { 
-            name: '分块记忆', 
-            icon: '🧱', 
-            iconAlt: '📦',
+            name: '分块', 
+            icon: 'grid', 
             color: '#0f766e', 
             bg: '#ccfbf1', 
             bgGradient: 'linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%)',
             effectiveness: 0.80, 
-            description: '信息分组，减轻工作记忆负担',
-            shortDesc: '分组记忆'
+            description: '分组记忆',
+            shortDesc: '分块'
         },
         'emotional': { 
-            name: '情感锚定', 
-            icon: '💝', 
-            iconAlt: '🎭',
+            name: '情感', 
+            icon: 'heart', 
             color: '#be123c', 
             bg: '#ffe4e6', 
             bgGradient: 'linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%)',
             effectiveness: 0.87, 
-            description: '建立情感连接，增强长期记忆',
-            shortDesc: '情感连接'
+            description: '情感联想',
+            shortDesc: '情感'
         },
         'kinesthetic': { 
-            name: '动作记忆', 
-            icon: '🏃', 
-            iconAlt: '✋',
+            name: '动作', 
+            icon: 'move', 
             color: '#4338ca', 
             bg: '#e0e7ff', 
             bgGradient: 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)',
             effectiveness: 0.78, 
-            description: '身体动作参与，多感官编码',
-            shortDesc: '动作参与'
+            description: '动作记忆',
+            shortDesc: '动作'
         },
         'elaboration': { 
-            name: '精细加工', 
-            icon: '🔍', 
-            iconAlt: '⚗️',
+            name: '加工', 
+            icon: 'search', 
             color: '#6d28d9', 
             bg: '#f3e8ff', 
             bgGradient: 'linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)',
             effectiveness: 0.86, 
-            description: '深度处理信息，建立多重联结',
-            shortDesc: '深度加工'
+            description: '深度处理',
+            shortDesc: '加工'
         },
         'dual_coding': { 
-            name: '双重编码', 
-            icon: '🔀', 
-            iconAlt: '🎯',
+            name: '双编码', 
+            icon: 'layers', 
             color: '#0369a1', 
             bg: '#e0f2fe', 
             bgGradient: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
             effectiveness: 0.89, 
-            description: '语言+图像双通道编码',
-            shortDesc: '双通道'
+            description: '双通道',
+            shortDesc: '双编码'
         }
     },
-    // V15: 效果等级emoji映射
+    // V15: 效果等级映射（无emoji）
     effectivenessEmoji: function(score) {
-        if (score >= 0.9) return { emoji: '🏆', label: '顶级', color: '#f59e0b' };
-        if (score >= 0.85) return { emoji: '⭐', label: '优秀', color: '#22c55e' };
-        if (score >= 0.8) return { emoji: '✨', label: '良好', color: '#3b82f6' };
-        if (score >= 0.7) return { emoji: '👍', label: '不错', color: '#8b5cf6' };
-        return { emoji: '💪', label: '加油', color: '#6b7280' };
+        if (score >= 0.9) return { emoji: '', label: 'S', color: '#f59e0b' };
+        if (score >= 0.85) return { emoji: '', label: 'A', color: '#22c55e' };
+        if (score >= 0.8) return { emoji: '', label: 'B', color: '#3b82f6' };
+        if (score >= 0.7) return { emoji: '', label: 'C', color: '#8b5cf6' };
+        return { emoji: '', label: 'D', color: '#6b7280' };
     },
     // 记忆强度计算（基于艾宾浩斯遗忘曲线修正）
     calculateRetention: function(initialStrength, hoursSinceEncoding, reviewCount) {
@@ -892,14 +882,14 @@ function addToMemoryPalace(word, location, imageDescription) {
 // V14.4: 设置情感锚定
 function setEmotionalAnchor(word, emotion, intensity) {
     var emotions = {
-        'joy': { icon: '😊', name: '快乐', color: '#fbbf24' },
-        'surprise': { icon: '😲', name: '惊讶', color: '#8b5cf6' },
-        'fear': { icon: '😨', name: '恐惧', color: '#6b7280' },
-        'disgust': { icon: '🤢', name: '厌恶', color: '#22c55e' },
-        'anger': { icon: '😠', name: '愤怒', color: '#ef4444' },
-        'sadness': { icon: '😢', name: '悲伤', color: '#3b82f6' },
-        'love': { icon: '❤️', name: '爱', color: '#ec4899' },
-        'curiosity': { icon: '🤔', name: '好奇', color: '#f59e0b' }
+        'joy': { icon: '●', name: '快乐', color: '#fbbf24' },
+        'surprise': { icon: '●', name: '惊讶', color: '#8b5cf6' },
+        'fear': { icon: '●', name: '恐惧', color: '#6b7280' },
+        'disgust': { icon: '●', name: '厌恶', color: '#22c55e' },
+        'anger': { icon: '●', name: '愤怒', color: '#ef4444' },
+        'sadness': { icon: '●', name: '悲伤', color: '#3b82f6' },
+        'love': { icon: '●', name: '爱', color: '#ec4899' },
+        'curiosity': { icon: '●', name: '好奇', color: '#f59e0b' }
     };
     
     emotionalAnchorData[word.toLowerCase()] = {
@@ -2106,8 +2096,8 @@ function showMasteryDetailPopup(word) {
     
     // 标题栏
     var header = '<div style="padding:16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">';
-    header += '<span style="font-size:18px;font-weight:700;">📊 ' + word + ' 掌握度</span>';
-    header += '<button onclick="document.getElementById(\'masteryDetailOverlay\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;">✕</button>';
+    header += '<span style="font-size:18px;font-weight:700;">' + word + ' 掌握度</span>';
+    header += '<button onclick="document.getElementById(\'masteryDetailOverlay\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;">×</button>';
     header += '</div>';
     
     popup.innerHTML = header + renderMasteryCard(word);
@@ -2139,11 +2129,11 @@ function showDifficultyBadge(word) {
         if (difficulty) {
             // 根据难度等级设置不同颜色
             var levelStyles = {
-                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '🌱', label: '基础' },
-                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '📘', label: '中等' },
-                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '📙', label: '中高级' },
-                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '📕', label: '高级' },
-                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '🎓', label: '专业' }
+                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '●', label: '基础' },
+                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '●', label: '中等' },
+                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '●', label: '中高级' },
+                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '●', label: '高级' },
+                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '●', label: '专业' }
             };
             var style = levelStyles[difficulty.level] || levelStyles[3];
             badge.style.background = style.bg;
@@ -2198,13 +2188,13 @@ function showExamTagsBadge(word) {
             examBadge.style.color = '#92400e';
             examBadge.style.border = '1px solid #fcd34d';
             
-            var content = '<span>📚</span>';
+            var content = '<span style="font-weight:600;font-size:10px;color:#92400e;margin-right:4px;">真题</span>';
             if (examTags.gre) {
-                var greHeat = examTags.gre.count >= 12 ? '🔥🔥' : examTags.gre.count >= 8 ? '🔥' : '';
+                var greHeat = examTags.gre.count >= 12 ? '★★' : examTags.gre.count >= 8 ? '★' : '';
                 content += '<span style="background:#7c3aed;color:white;padding:1px 6px;border-radius:4px;font-size:9px;">GRE×' + examTags.gre.count + greHeat + '</span>';
             }
             if (examTags.toefl) {
-                var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥' : examTags.toefl.count >= 6 ? '🔥' : '';
+                var toeflHeat = examTags.toefl.count >= 10 ? '★★' : examTags.toefl.count >= 6 ? '★' : '';
                 content += '<span style="background:#2563eb;color:white;padding:1px 6px;border-radius:4px;font-size:9px;margin-left:2px;">TOEFL×' + examTags.toefl.count + toeflHeat + '</span>';
             }
             
@@ -2326,12 +2316,12 @@ function showMeaning() {
         meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:8px;box-shadow:0 2px 6px rgba(245,158,11,0.3);">';
         meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
         meaningHtml += '</span>';
-        meaningHtml += '<span style="font-weight:700;font-size:14px;color:#92400e;">📚 真题高频词汇</span>';
+        meaningHtml += '<span style="font-weight:700;font-size:14px;color:#92400e;">真题高频词汇</span>';
         meaningHtml += '</div>';
         meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
         
         if (examTags.gre) {
-            var greHeat = examTags.gre.count >= 12 ? '🔥🔥🔥' : examTags.gre.count >= 8 ? '🔥🔥' : '🔥';
+            var greHeat = examTags.gre.count >= 12 ? '★★★' : examTags.gre.count >= 8 ? '★★' : '★';
             meaningHtml += '<div style="background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(124,58,237,0.3);">';
             meaningHtml += '<span style="font-weight:700;font-size:13px;">GRE</span>';
             meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.gre.count + ' 次</span>';
@@ -2339,13 +2329,13 @@ function showMeaning() {
             meaningHtml += '</div>';
             if (examTags.gre.years && examTags.gre.years.length > 0) {
                 meaningHtml += '<div style="background:rgba(124,58,237,0.1);color:#6d28d9;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>📅</span><span>' + examTags.gre.years.join(', ') + '</span>';
+                meaningHtml += '<span>' + examTags.gre.years.join(', ') + '</span>';
                 meaningHtml += '</div>';
             }
         }
         
         if (examTags.toefl) {
-            var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥🔥' : examTags.toefl.count >= 6 ? '🔥🔥' : '🔥';
+            var toeflHeat = examTags.toefl.count >= 10 ? '★★★' : examTags.toefl.count >= 6 ? '★★' : '★';
             meaningHtml += '<div style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.3);">';
             meaningHtml += '<span style="font-weight:700;font-size:13px;">TOEFL</span>';
             meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.toefl.count + ' 次</span>';
@@ -2353,7 +2343,7 @@ function showMeaning() {
             meaningHtml += '</div>';
             if (examTags.toefl.years && examTags.toefl.years.length > 0) {
                 meaningHtml += '<div style="background:rgba(37,99,235,0.1);color:#1d4ed8;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>📅</span><span>' + examTags.toefl.years.join(', ') + '</span>';
+                meaningHtml += '<span>' + examTags.toefl.years.join(', ') + '</span>';
                 meaningHtml += '</div>';
             }
         }
@@ -2362,37 +2352,33 @@ function showMeaning() {
         meaningHtml += '</div>';
     }
     
-    // V14-V19: 科学助记系统 - UI优化增强版
+    // V14-V19: 科学助记系统 - 极简版
     if (mnemonic || enhancedMnemonic.hasEnhancements) {
-        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:20px;overflow:hidden;border:1px solid rgba(192,132,252,0.15);box-shadow:0 8px 24px rgba(168,85,247,0.12),0 2px 8px rgba(0,0,0,0.04);">';
+        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:16px;overflow:hidden;border:1px solid rgba(139,92,246,0.2);box-shadow:0 4px 12px rgba(139,92,246,0.08);">';
         
-        // V16: 头部重新设计 - 更现代的渐变和图标
-        meaningHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 35%,#6366f1 70%,#4f46e5 100%);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;">';
-        // V17: 添加装饰性背景元素
-        meaningHtml += '<div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>';
-        meaningHtml += '<div style="position:absolute;bottom:-30px;left:40%;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">';
-        // V18: 更精美的图标容器
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:rgba(255,255,255,0.18);border-radius:12px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.1);"><span style="font-size:20px;">🧬</span></span>';
-        meaningHtml += '<div><div style="color:white;font-weight:700;font-size:15px;text-shadow:0 1px 2px rgba(0,0,0,0.1);">💡 科学记忆法</div>';
-        meaningHtml += '<div style="color:rgba(255,255,255,0.85);font-size:11px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">🔬</span> 认知心理学 · 记忆增强</div></div>';
+        // 简化头部
+        meaningHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;">';
+        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;">';
+        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.2);border-radius:8px;">';
+        meaningHtml += '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>';
+        meaningHtml += '</span>';
+        meaningHtml += '<div><div style="color:white;font-weight:600;font-size:14px;">记忆技巧</div>';
+        meaningHtml += '<div style="color:rgba(255,255,255,0.75);font-size:10px;">科学记忆方法</div></div>';
         meaningHtml += '</div>';
         
-        // V19: 效果评估指示器 - 增强视觉效果
+        // 效果评估指示器 - 简化版
         var effectivenessScore = enhancedMnemonic.effectiveness ? Math.round(enhancedMnemonic.effectiveness.effectiveness * 100) : null;
         if (effectivenessScore !== null) {
-            var scoreEmoji = effectivenessScore >= 90 ? '🏆' : effectivenessScore >= 75 ? '⭐' : effectivenessScore >= 50 ? '📈' : '💪';
+            var scoreLabel = effectivenessScore >= 90 ? 'S' : effectivenessScore >= 75 ? 'A' : effectivenessScore >= 50 ? 'B' : 'C';
             var scoreColor = effectivenessScore >= 80 ? '#4ade80' : effectivenessScore >= 50 ? '#fbbf24' : '#f87171';
             var scoreBg = effectivenessScore >= 80 ? 'rgba(74,222,128,0.2)' : effectivenessScore >= 50 ? 'rgba(251,191,36,0.2)' : 'rgba(248,113,113,0.2)';
-            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:' + scoreBg + ';padding:6px 12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);position:relative;z-index:1;">';
-            meaningHtml += '<span style="font-size:14px;">' + scoreEmoji + '</span>';
-            meaningHtml += '<span style="font-size:11px;color:white;opacity:0.9;">效果</span>';
-            meaningHtml += '<span style="font-weight:700;color:' + scoreColor + ';text-shadow:0 1px 2px rgba(0,0,0,0.2);">' + effectivenessScore + '%</span>';
+            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:' + scoreBg + ';padding:4px 10px;border-radius:16px;">';
+            meaningHtml += '<span style="font-weight:700;font-size:12px;color:' + scoreColor + ';">' + scoreLabel + '</span>';
+            meaningHtml += '<span style="font-size:11px;color:white;opacity:0.8;">' + effectivenessScore + '%</span>';
             meaningHtml += '</div>';
         } else {
             // 新词显示
-            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.15);padding:5px 10px;border-radius:20px;position:relative;z-index:1;">';
-            meaningHtml += '<span style="font-size:12px;">✨</span>';
+            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.15);padding:5px 10px;border-radius:20px;">';
             meaningHtml += '<span style="font-size:11px;color:white;font-weight:500;">新学习</span>';
             meaningHtml += '</div>';
         }
@@ -2423,132 +2409,113 @@ function showMeaning() {
             meaningHtml += '</div>';
             if (enhancedMnemonic.custom) {
                 meaningHtml += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:16px;border:1px solid #3b82f622;">';
-                meaningHtml += '<span style="font-size:11px;">✨</span>';
                 meaningHtml += '<span style="font-size:11px;color:#1e40af;font-weight:600;">我的创作</span>';
                 meaningHtml += '</div>';
             }
             meaningHtml += '</div>';
             
-            // V17: 主助记内容 - 更精美的卡片设计
-            meaningHtml += '<div style="font-size:16px;color:#581c87;line-height:1.8;font-weight:500;padding:14px 16px;background:linear-gradient(135deg,#ffffff,#fefbff);border-radius:14px;border-left:5px solid;border-image:linear-gradient(180deg,#a855f7,#7c3aed) 1;margin-bottom:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),0 2px 8px rgba(168,85,247,0.08);position:relative;">';
-            meaningHtml += '<span style="position:absolute;top:8px;right:10px;font-size:16px;opacity:0.15;">💡</span>';
+            // 主助记内容 - 简洁卡片
+            meaningHtml += '<div style="font-size:15px;color:#581c87;line-height:1.7;font-weight:500;padding:12px 14px;background:white;border-radius:12px;border-left:4px solid #a855f7;margin-bottom:12px;box-shadow:0 2px 6px rgba(0,0,0,0.04);">';
             meaningHtml += activeMnemonic.mnemonic;
             meaningHtml += '</div>';
             
-            // V18: 词根信息 - 更精美的信息卡片
+            // 词根信息
             if (activeMnemonic.roots) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.04));border-radius:12px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.12);">';
-                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#a855f7,#7c3aed);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(168,85,247,0.3);flex-shrink:0;">🌳</span>';
-                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">📜</span> 词根解析 Etymology</div>';
-                meaningHtml += '<div style="font-size:13px;color:#6b21a8;line-height:1.6;">' + activeMnemonic.roots + '</div></div>';
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(139,92,246,0.06);border-radius:10px;margin-bottom:8px;">';
+                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#8b5cf6;border-radius:8px;color:white;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>';
+                meaningHtml += '<div style="flex:1;"><div style="font-size:10px;color:#7c3aed;font-weight:600;margin-bottom:4px;">词根</div>';
+                meaningHtml += '<div style="font-size:13px;color:#6b21a8;line-height:1.5;">' + activeMnemonic.roots + '</div></div>';
                 meaningHtml += '</div>';
             }
             
-            // V18: 联想画面 - 更生动的视觉设计
+            // 联想画面
             if (activeMnemonic.association) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(59,130,246,0.03));border-radius:12px;margin-bottom:10px;border:1px solid rgba(59,130,246,0.12);">';
-                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;">🖼️</span>';
-                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#2563eb;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">👁️</span> 视觉联想 Dual Coding</div>';
-                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.6);border-radius:8px;border-left:3px solid #3b82f6;">"' + activeMnemonic.association + '"</div></div>';
+                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(59,130,246,0.06);border-radius:10px;margin-bottom:8px;">';
+                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#3b82f6;border-radius:8px;color:white;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg></span>';
+                meaningHtml += '<div style="flex:1;"><div style="font-size:10px;color:#2563eb;font-weight:600;margin-bottom:4px;">联想</div>';
+                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;line-height:1.5;">' + activeMnemonic.association + '</div></div>';
                 meaningHtml += '</div>';
             }
         }
         
-        // V19: 记忆宫殿位置 - 增强视觉设计
+        // 记忆宫殿位置 - 简化版
         if (enhancedMnemonic.memoryPalace) {
             var location = memoryPalaceData.locations.find(function(l) { return l.id === enhancedMnemonic.memoryPalace.locationId; });
-            var locIcon = location ? location.icon : '🏛️';
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(139,92,246,0.05));border-radius:14px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.08;">' + locIcon + '</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#8b5cf6,#6366f1);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(139,92,246,0.35);flex-shrink:0;">🏰</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">📍</span> 记忆宫殿定位</div>';
-            meaningHtml += '<div style="font-size:13px;color:#5b21b6;line-height:1.6;"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(139,92,246,0.15);border-radius:6px;margin-right:6px;"><span style="font-size:14px;">' + locIcon + '</span><strong>' + (location ? location.name : '位置') + '</strong></span>' + enhancedMnemonic.memoryPalace.image + '</div></div>';
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(139,92,246,0.06);border-radius:10px;margin-bottom:8px;">';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#8b5cf6;border-radius:8px;color:white;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/></svg></span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:10px;color:#7c3aed;font-weight:600;margin-bottom:4px;">记忆宫殿</div>';
+            meaningHtml += '<div style="font-size:13px;color:#5b21b6;line-height:1.5;"><strong>' + (location ? location.name : '位置') + '</strong> ' + enhancedMnemonic.memoryPalace.image + '</div></div>';
             meaningHtml += '</div>';
         }
         
-        // V19: 情感锚定 - 更生动的视觉表达
+        // 情感锚定 - 简化版
         if (enhancedMnemonic.emotionalAnchor) {
             var emo = enhancedMnemonic.emotionalAnchor;
             var intensityBars = '';
             for (var i = 1; i <= 10; i++) {
                 var isActive = i <= emo.intensity;
-                intensityBars += '<span style="display:inline-block;width:8px;height:' + (4 + i * 1.5) + 'px;background:' + (isActive ? emo.data.color : 'rgba(0,0,0,0.1)') + ';border-radius:2px;margin-right:1px;transition:all 0.2s;"></span>';
+                intensityBars += '<span style="display:inline-block;width:6px;height:' + (4 + i) + 'px;background:' + (isActive ? emo.data.color : 'rgba(0,0,0,0.1)') + ';border-radius:2px;margin-right:1px;"></span>';
             }
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(236,72,153,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(236,72,153,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-15px;right:-15px;font-size:50px;opacity:0.06;">' + emo.data.icon + '</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:linear-gradient(135deg,#ec4899,#db2777);border-radius:50%;font-size:22px;box-shadow:0 3px 10px rgba(236,72,153,0.35);flex-shrink:0;animation:pulse-soft 2s infinite;">' + emo.data.icon + '</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#be185d;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">💫</span> 情感记忆锚点</div>';
-            meaningHtml += '<div style="font-size:14px;color:#9d174d;font-weight:600;margin-bottom:6px;">' + emo.data.name + '</div>';
-            meaningHtml += '<div style="display:flex;align-items:flex-end;gap:2px;">' + intensityBars + '<span style="margin-left:6px;font-size:11px;color:#be185d;font-weight:600;">' + emo.intensity + '/10</span></div></div>';
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(236,72,153,0.06);border-radius:10px;margin-bottom:8px;">';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:' + emo.data.color + ';border-radius:8px;color:white;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg></span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:10px;color:#be185d;font-weight:600;margin-bottom:4px;">情感锚点</div>';
+            meaningHtml += '<div style="font-size:13px;color:#9d174d;font-weight:500;margin-bottom:4px;">' + emo.data.name + '</div>';
+            meaningHtml += '<div style="display:flex;align-items:flex-end;gap:1px;">' + intensityBars + '<span style="margin-left:4px;font-size:10px;color:#be185d;">' + emo.intensity + '/10</span></div></div>';
             meaningHtml += '</div>';
         }
         
-        // V19: 分块记忆组 - 更精美的标签设计
+        // 分块记忆组 - 简化版
         if (enhancedMnemonic.chunkGroup) {
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(20,184,166,0.1),rgba(20,184,166,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(20,184,166,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.06;">🧩</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#14b8a6,#0d9488);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(20,184,166,0.35);flex-shrink:0;">🧩</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#0f766e;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">🔗</span> 记忆分块: <span style="padding:2px 8px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:10px;font-size:10px;">' + enhancedMnemonic.chunkGroup.name + '</span></div>';
-            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
+            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 12px;background:rgba(20,184,166,0.06);border-radius:10px;margin-bottom:8px;">';
+            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:28px;height:28px;background:#14b8a6;border-radius:8px;color:white;flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg></span>';
+            meaningHtml += '<div style="flex:1;"><div style="font-size:10px;color:#0f766e;font-weight:600;margin-bottom:4px;">记忆分块 <span style="padding:1px 6px;background:#14b8a6;color:white;border-radius:8px;font-size:9px;">' + enhancedMnemonic.chunkGroup.name + '</span></div>';
+            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:4px;">';
             enhancedMnemonic.chunkGroup.words.slice(0, 6).forEach(function(w, idx) {
                 var isCurrent = w.toLowerCase() === wordData.word.toLowerCase();
                 if (isCurrent) {
-                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:20px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(20,184,166,0.4);display:flex;align-items:center;gap:4px;"><span>👉</span>' + w + '</span>';
+                    meaningHtml += '<span style="padding:2px 8px;background:#14b8a6;color:white;border-radius:12px;font-size:11px;font-weight:600;">✓ ' + w + '</span>';
                 } else {
-                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#f0fdfa,#ccfbf1);color:#0f766e;border-radius:20px;font-size:12px;font-weight:500;border:1px solid rgba(20,184,166,0.2);display:flex;align-items:center;gap:3px;"><span style=\"opacity:0.6;font-size:10px;\">' + (idx + 1) + '</span>' + w + '</span>';
+                    meaningHtml += '<span style="padding:2px 8px;background:#f0fdfa;color:#0f766e;border-radius:12px;font-size:11px;">' + w + '</span>';
                 }
             });
             if (enhancedMnemonic.chunkGroup.words.length > 6) {
-                meaningHtml += '<span style="padding:4px 10px;background:#f0fdfa;color:#0d9488;border-radius:20px;font-size:11px;font-weight:600;border:1px dashed #99f6e4;">+' + (enhancedMnemonic.chunkGroup.words.length - 6) + ' more</span>';
+                meaningHtml += '<span style="padding:2px 6px;color:#0d9488;font-size:10px;">+' + (enhancedMnemonic.chunkGroup.words.length - 6) + '</span>';
             }
             meaningHtml += '</div></div></div>';
         }
         
-        // V19: 操作按钮区 - 完全重新设计的圆角胶囊按钮
-        meaningHtml += '<div style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(168,85,247,0.1);position:relative;">';
-        meaningHtml += '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fdf4ff,#fae8ff);padding:2px 12px;border-radius:10px;border:1px solid rgba(168,85,247,0.15);"><span style="font-size:10px;color:#9333ea;font-weight:600;">✨ 记忆工具箱 ✨</span></div>';
+        // 操作按钮区 - 简化版
+        meaningHtml += '<div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(168,85,247,0.1);">';
         
-        // 第一行：反馈按钮
-        meaningHtml += '<div style="display:flex;gap:10px;margin-bottom:10px;margin-top:8px;">';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#10b981 0%,#059669 50%,#047857 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(16,185,129,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;position:relative;overflow:hidden;"><span style=\"font-size:18px;\">✅</span><span>记住了!</span></button>';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(245,158,11,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;"><span style=\"font-size:18px;\">🔁</span><span>再强化</span></button>';
+        // 反馈按钮 - 简化版
+        meaningHtml += '<div style="display:flex;gap:8px;margin-bottom:10px;">';
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;padding:10px;background:#10b981;border:none;border-radius:10px;color:white;font-size:13px;font-weight:600;cursor:pointer;">✓ 记住了</button>';
+        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;padding:10px;background:#f59e0b;border:none;border-radius:10px;color:white;font-size:13px;font-weight:600;cursor:pointer;">− 再强化</button>';
         meaningHtml += '</div>';
         
-        // 第二行：功能按钮
-        meaningHtml += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">';
-        
-        // 练习按钮 - 黄色
-        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fcd34d;border-radius:14px;color:#92400e;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(251,191,36,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏋️</span><span>练习</span></button>';
-        
-        // 自定义按钮 - 紫色
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#f3e8ff 0%,#e9d5ff 100%);border:1px solid #d8b4fe;border-radius:14px;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(139,92,246,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🎨</span><span>创作</span></button>';
-        
-        // 宫殿按钮 - 靛蓝色
-        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#e0e7ff 0%,#c7d2fe 100%);border:1px solid #a5b4fc;border-radius:14px;color:#4338ca;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(99,102,241,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏰</span><span>宫殿</span></button>';
-        
-        // 统计按钮 - 粉色
-        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:10px 6px;background:linear-gradient(180deg,#fce7f3 0%,#fbcfe8 100%);border:1px solid #f9a8d4;border-radius:14px;color:#be185d;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(236,72,153,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">📈</span><span>统计</span></button>';
-        
+        // 功能按钮 - 简化版
+        meaningHtml += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;">';
+        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:8px 4px;background:#fef3c7;border:1px solid #fcd34d;border-radius:8px;color:#92400e;font-size:10px;font-weight:600;cursor:pointer;">练习</button>';
+        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:8px 4px;background:#f3e8ff;border:1px solid #d8b4fe;border-radius:8px;color:#7c3aed;font-size:10px;font-weight:600;cursor:pointer;">创作</button>';
+        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:8px 4px;background:#e0e7ff;border:1px solid #a5b4fc;border-radius:8px;color:#4338ca;font-size:10px;font-weight:600;cursor:pointer;">宫殿</button>';
+        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:8px 4px;background:#fce7f3;border:1px solid #f9a8d4;border-radius:8px;color:#be185d;font-size:10px;font-weight:600;cursor:pointer;">统计</button>';
         meaningHtml += '</div>';
         meaningHtml += '</div>';
         
         meaningHtml += '</div>'; // 主体内容区结束
         meaningHtml += '</div>'; // 整个助记卡片结束
     } else {
-        // 没有助记时显示添加建议
+        // 没有助记时显示添加建议 - 简化版
         var recommended = MNEMONIC_SCIENCE.recommendType(wordData.word, mnemonicEffectivenessData._typeStats || {});
         var recType = MNEMONIC_SCIENCE.types[recommended.type];
         
-        meaningHtml += '<div style="margin-bottom:16px;padding:16px;background:linear-gradient(135deg,#f9fafb 0%,#f3f4f6 100%);border-radius:12px;border:2px dashed #d1d5db;">';
+        meaningHtml += '<div style="margin-bottom:16px;padding:14px;background:#f9fafb;border-radius:10px;border:1px dashed #d1d5db;">';
         meaningHtml += '<div style="text-align:center;">';
-        meaningHtml += '<div style="font-size:32px;margin-bottom:8px;">💡</div>';
-        meaningHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:12px;">暂无记忆技巧，建议添加</div>';
-        meaningHtml += '<div style="margin-bottom:12px;padding:8px;background:' + recType.bg + ';border-radius:8px;display:inline-block;">';
-        meaningHtml += '<span style="font-size:16px;margin-right:6px;">' + recType.icon + '</span>';
-        meaningHtml += '<span style="color:' + recType.color + ';font-weight:600;font-size:13px;">推荐: ' + recType.name + '</span>';
-        meaningHtml += '<div style="font-size:11px;color:' + recType.color + ';opacity:0.8;margin-top:4px;">' + recType.description + '</div>';
+        meaningHtml += '<div style="font-size:13px;color:#6b7280;margin-bottom:10px;">暂无记忆技巧</div>';
+        meaningHtml += '<div style="margin-bottom:10px;padding:6px 12px;background:' + recType.bg + ';border-radius:6px;display:inline-block;">';
+        meaningHtml += '<span style="color:' + recType.color + ';font-weight:600;font-size:12px;">推荐: ' + recType.name + '</span>';
         meaningHtml += '</div>';
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 20px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,0.3);">✨ 创建我的记忆法</button>';
+        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="display:block;margin:0 auto;padding:8px 16px;background:#8b5cf6;border:none;border-radius:8px;color:white;font-size:13px;font-weight:600;cursor:pointer;">+ 创建记忆法</button>';
         meaningHtml += '</div></div>';
     }
     
@@ -2840,7 +2807,7 @@ function rateWord(rating) {
         case 'again': // 重学 - 立即加入即时复习队列
             // 不增加学习次数
             addToImmediateReview(wordData, 1); // 1个单词后立即复习
-            showRatingFeedback('again', '马上再来一次！💪');
+            showRatingFeedback('again', '马上再来一次');
             break;
             
         case 'hard': // 困难 - 稍后在本组内复习
@@ -2850,7 +2817,7 @@ function rateWord(rating) {
                 hardWordsInSession.push(word);
             }
             addToImmediateReview(wordData, 3); // 3个单词后复习
-            showRatingFeedback('hard', '稍后再复习 📝');
+            showRatingFeedback('hard', '稍后再复习');
             break;
             
         case 'good': // 良好 - 正常进度
@@ -2859,7 +2826,7 @@ function rateWord(rating) {
             // 从困难列表移除
             var hardIndex = hardWordsInSession.indexOf(word);
             if (hardIndex > -1) hardWordsInSession.splice(hardIndex, 1);
-            showRatingFeedback('good', '继续保持！✓');
+            showRatingFeedback('good', '继续保持');
             break;
             
         case 'easy': // 简单 - 加速掌握
@@ -2868,7 +2835,7 @@ function rateWord(rating) {
             // 从困难列表移除
             var easyHardIndex = hardWordsInSession.indexOf(word);
             if (easyHardIndex > -1) hardWordsInSession.splice(easyHardIndex, 1);
-            showRatingFeedback('easy', '太棒了！🎉');
+            showRatingFeedback('easy', '太棒了');
             break;
             
         // 兼容旧版评分
@@ -3005,21 +2972,21 @@ function addToImmediateReview(wordData, gap) {
     }
 }
 
-// V5: 显示评分反馈（带状态卡片效果）
+// V5: 显示评分反馈（简化版）
 function showRatingFeedback(rating, message) {
     var colors = {
-        again: { bg: 'linear-gradient(135deg,#fef2f2 0%,#fee2e2 100%)', border: '#fecaca', text: '#dc2626', icon: '🔄' },
-        hard: { bg: 'linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%)', border: '#fed7aa', text: '#ea580c', icon: '💪' },
-        good: { bg: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', border: '#bbf7d0', text: '#16a34a', icon: '✓' },
-        easy: { bg: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', border: '#bfdbfe', text: '#2563eb', icon: '🎉' }
+        again: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+        hard: { bg: '#fff7ed', border: '#fed7aa', text: '#ea580c' },
+        good: { bg: '#f0fdf4', border: '#bbf7d0', text: '#16a34a' },
+        easy: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' }
     };
     
     var style = colors[rating] || colors.good;
     
     var feedback = document.createElement('div');
     feedback.className = 'rating-feedback-card';
-    feedback.innerHTML = '<span class="feedback-icon">' + style.icon + '</span><span class="feedback-text">' + message + '</span>';
-    feedback.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);background:' + style.bg + ';color:' + style.text + ';padding:16px 28px;border-radius:16px;font-size:16px;font-weight:700;z-index:10001;box-shadow:0 10px 40px rgba(0,0,0,0.15);animation:feedbackBounce 0.4s ease;border:2px solid ' + style.border + ';display:flex;align-items:center;gap:10px;';
+    feedback.innerHTML = '<span class="feedback-text">' + message + '</span>';
+    feedback.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);background:' + style.bg + ';color:' + style.text + ';padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 4px 16px rgba(0,0,0,0.1);animation:feedbackBounce 0.3s ease;border:1px solid ' + style.border + ';';
     document.body.appendChild(feedback);
     
     setTimeout(function() {
@@ -3096,8 +3063,8 @@ function showSettingsUpdateToast(message) {
 function showCompletionToast(word) {
     var toast = document.createElement('div');
     toast.className = 'word-completion-toast';
-    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><strong style="font-size:18px;">' + word + '</strong><div style="font-size:13px;opacity:0.9;margin-top:2px;">学习完成！继续加油 ✓</div></div>';
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:white;padding:20px 32px;border-radius:20px;font-size:16px;font-weight:600;z-index:10001;box-shadow:0 15px 50px rgba(16,185,129,0.45);animation:toastIn 0.4s ease;display:flex;align-items:center;';
+    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><strong style="font-size:16px;">' + word + '</strong><div style="font-size:12px;opacity:0.9;margin-top:2px;">学习完成</div></div>';
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#10b981;color:white;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 8px 24px rgba(16,185,129,0.3);animation:toastIn 0.3s ease;display:flex;align-items:center;';
     document.body.appendChild(toast);
     
     setTimeout(function() {
@@ -3117,33 +3084,29 @@ function showLearningModeIndicator(mode) {
     var modeConfig = {
         normal: { 
             text: '新词学习', 
-            icon: '📖', 
             color: '#6366f1',
-            bgGradient: 'linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%)',
+            bgGradient: '#eef2ff',
             borderColor: '#c7d2fe',
             hint: '认真记忆'
         },
         review: { 
             text: '复习巩固', 
-            icon: '🔄', 
             color: '#f59e0b',
-            bgGradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+            bgGradient: '#fffbeb',
             borderColor: '#fde68a',
             hint: '加深印象'
         },
         immediate: { 
             text: '立即复习', 
-            icon: '⚡', 
             color: '#ef4444',
-            bgGradient: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
+            bgGradient: '#fef2f2',
             borderColor: '#fecaca',
             hint: '再来一次'
         },
         difficult: { 
             text: '攻克难词', 
-            icon: '💪', 
             color: '#ea580c',
-            bgGradient: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
+            bgGradient: '#fff7ed',
             borderColor: '#fed7aa',
             hint: '专注记忆'
         }
@@ -3154,8 +3117,8 @@ function showLearningModeIndicator(mode) {
     var indicator = document.createElement('div');
     indicator.id = 'learningModeIndicator';
     indicator.className = 'learning-mode-indicator mode-' + mode;
-    indicator.innerHTML = '<span class="mode-icon">' + config.icon + '</span><span class="mode-text">' + config.text + '</span><span class="mode-hint">' + config.hint + '</span>';
-    indicator.style.cssText = 'position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:' + config.bgGradient + ';color:' + config.color + ';padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;z-index:10;display:flex;align-items:center;gap:6px;border:2px solid ' + config.borderColor + ';box-shadow:0 4px 12px rgba(0,0,0,0.1);animation:modeIndicatorIn 0.3s ease;white-space:nowrap;';
+    indicator.innerHTML = '<span class="mode-text">' + config.text + '</span>';
+    indicator.style.cssText = 'position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:' + config.bgGradient + ';color:' + config.color + ';padding:4px 12px;border-radius:12px;font-size:11px;font-weight:600;z-index:10;border:1px solid ' + config.borderColor + ';box-shadow:0 2px 6px rgba(0,0,0,0.05);white-space:nowrap;';
     
     var wordCard = document.getElementById('wordCard');
     if (wordCard) {
@@ -3234,25 +3197,25 @@ function showSessionSummary() {
     // 顶部成就徽章
     summaryHtml += '<div style="text-align:center;margin-bottom:20px;">';
     summaryHtml += '<div style="width:80px;height:80px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 10px 40px rgba(16,185,129,0.35);animation:completionBounce 0.6s ease;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
-    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:26px;font-weight:800;">🎉 学习完成！</h2>';
-    summaryHtml += '<p style="color:#6b7280;margin-top:10px;font-size:15px;">共学习 <span style="color:#6366f1;font-weight:700;">' + sessionWords.length + '</span> 个单词</p>';
+    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:22px;font-weight:700;">学习完成</h2>';
+    summaryHtml += '<p style="color:#6b7280;margin-top:8px;font-size:14px;">共学习 <span style="color:#6366f1;font-weight:600;">' + sessionWords.length + '</span> 个单词</p>';
     summaryHtml += '</div>';
     
-    // V9: 学习统计卡片
-    summaryHtml += '<div class="session-stats-card" style="background:linear-gradient(135deg,#f8fafc 0%,#eef2ff 100%);border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid rgba(99,102,241,0.15);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-around;">';
+    // 学习统计卡片 - 简化版
+    summaryHtml += '<div class="session-stats-card" style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid #e5e7eb;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-around;">';
     
     // 用时统计
-    summaryHtml += '<div style="text-align:center;min-width:60px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">⏱️ 用时</div><div style="font-size:16px;font-weight:700;color:#1e1b4b;">' + timeStr + '</div></div>';
+    summaryHtml += '<div style="text-align:center;min-width:50px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">用时</div><div style="font-size:14px;font-weight:600;color:#1e1b4b;">' + timeStr + '</div></div>';
     
     // 准确率
-    summaryHtml += '<div style="text-align:center;min-width:60px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">🎯 准确率</div><div style="font-size:16px;font-weight:700;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
+    summaryHtml += '<div style="text-align:center;min-width:50px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">准确率</div><div style="font-size:14px;font-weight:600;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
     
     // 评分分布 - 简化展示
-    summaryHtml += '<div style="text-align:center;min-width:80px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">📊 评分分布</div><div style="display:flex;gap:4px;justify-content:center;font-size:11px;font-weight:600;">';
-    if (easyCount > 0) summaryHtml += '<span style="color:#2563eb;" title="简单">' + easyCount + '🎉</span>';
-    if (goodCount > 0) summaryHtml += '<span style="color:#16a34a;" title="良好">' + goodCount + '✓</span>';
-    if (hardCount > 0) summaryHtml += '<span style="color:#ea580c;" title="困难">' + hardCount + '💪</span>';
-    if (againCount > 0) summaryHtml += '<span style="color:#dc2626;" title="重学">' + againCount + '🔄</span>';
+    summaryHtml += '<div style="text-align:center;min-width:70px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">评分</div><div style="display:flex;gap:4px;justify-content:center;font-size:10px;font-weight:600;">';
+    if (easyCount > 0) summaryHtml += '<span style="color:#2563eb;">简单' + easyCount + '</span>';
+    if (goodCount > 0) summaryHtml += '<span style="color:#16a34a;">良好' + goodCount + '</span>';
+    if (hardCount > 0) summaryHtml += '<span style="color:#ea580c;">困难' + hardCount + '</span>';
+    if (againCount > 0) summaryHtml += '<span style="color:#dc2626;">重学' + againCount + '</span>';
     summaryHtml += '</div></div>';
     
     summaryHtml += '</div>';
@@ -3277,23 +3240,23 @@ function showSessionSummary() {
     sessionWords.forEach(function(wordData, index) {
         var rating = wordRatings[wordData.word] ? wordRatings[wordData.word].rating : 'good';
         var ratingConfig = {
-            easy: { icon: '🎉', bg: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', border: '#bfdbfe' },
-            good: { icon: '✓', bg: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', border: '#bbf7d0' },
-            hard: { icon: '💪', bg: 'linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%)', border: '#fed7aa' },
-            again: { icon: '🔄', bg: 'linear-gradient(135deg,#fef2f2 0%,#fee2e2 100%)', border: '#fecaca' },
-            medium: { icon: '•', bg: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)', border: '#fde68a' }
+            easy: { label: '简单', bg: '#eff6ff', border: '#bfdbfe', color: '#2563eb' },
+            good: { label: '良好', bg: '#f0fdf4', border: '#bbf7d0', color: '#16a34a' },
+            hard: { label: '困难', bg: '#fff7ed', border: '#fed7aa', color: '#ea580c' },
+            again: { label: '重学', bg: '#fef2f2', border: '#fecaca', color: '#dc2626' },
+            medium: { label: '中等', bg: '#fffbeb', border: '#fde68a', color: '#92400e' }
         };
         var config = ratingConfig[rating] || ratingConfig.good;
         
-        summaryHtml += '<div style="background:' + config.bg + ';border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid ' + config.border + ';">';
-        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
-        summaryHtml += '<div style="display:flex;align-items:center;gap:10px;">';
-        summaryHtml += '<span style="background:linear-gradient(135deg,#6366f1,#a855f7);color:white;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">' + (index + 1) + '</span>';
-        summaryHtml += '<span style="font-size:17px;font-weight:700;color:#1e1b4b;">' + wordData.word + '</span>';
+        summaryHtml += '<div style="background:' + config.bg + ';border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid ' + config.border + ';">';
+        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">';
+        summaryHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+        summaryHtml += '<span style="background:#6366f1;color:white;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;">' + (index + 1) + '</span>';
+        summaryHtml += '<span style="font-size:15px;font-weight:600;color:#1e1b4b;">' + wordData.word + '</span>';
         summaryHtml += '</div>';
-        summaryHtml += '<span style="font-size:18px;">' + config.icon + '</span>';
+        summaryHtml += '<span style="font-size:10px;color:' + config.color + ';font-weight:600;">' + config.label + '</span>';
         summaryHtml += '</div>';
-        summaryHtml += '<div style="font-size:14px;color:#374151;font-weight:600;">' + (wordData.meaningCn || '') + '</div>';
+        summaryHtml += '<div style="font-size:13px;color:#374151;font-weight:500;">' + (wordData.meaningCn || '') + '</div>';
         summaryHtml += '</div>';
     });
     
@@ -3302,7 +3265,7 @@ function showSessionSummary() {
     // 操作按钮
     summaryHtml += '<div style="display:flex;gap:12px;margin-top:20px;">';
     summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:16px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(99,102,241,0.35);display:flex;align-items:center;justify-content:center;gap:8px;"><span>🚀</span>继续学习</button>';
-    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:16px;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);color:#6366f1;border:2px solid rgba(99,102,241,0.3);border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><span>✅</span>完成</button>';
+    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:14px;background:#f8fafc;color:#6366f1;border:1px solid #c7d2fe;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">完成</button>';
     summaryHtml += '</div>';
     summaryHtml += '</div>';
     
@@ -3323,7 +3286,7 @@ function getLearningAdvice(masteryRate, hardCount, againCount) {
     if (masteryRate >= 90) {
         return '🌟 太棒了！继续保持！';
     } else if (masteryRate >= 70) {
-        return '👍 学得不错，再努力一下！';
+        return '学得不错，再努力一下';
     } else if (hardCount > 0 || againCount > 0) {
         return '💡 建议复习困难单词';
     } else {
@@ -3513,7 +3476,7 @@ function rateMnemonicEffectiveness(word, wasEffective) {
         (wasEffective ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#f97316,#ea580c)') + 
         ';color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;' +
         'box-shadow:0 8px 32px rgba(0,0,0,0.2);animation:mnemonicFeedback 0.5s ease-out;';
-    feedbackEl.innerHTML = wasEffective ? '👍 已记录！继续加油' : '🔄 已标记，会加强复习';
+    feedbackEl.innerHTML = wasEffective ? '已记录，继续加油' : '已标记，会加强复习';
     document.body.appendChild(feedbackEl);
     
     setTimeout(function() { feedbackEl.remove(); }, 1500);
@@ -3543,7 +3506,7 @@ function showCustomMnemonicEditor(word) {
     editorHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 50%,#6366f1 100%);padding:20px;border-radius:20px 20px 0 0;">';
     editorHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
     editorHtml += '<div style="display:flex;align-items:center;gap:12px;">';
-    editorHtml += '<span style="font-size:32px;">✨</span>';
+    editorHtml += '<span style="font-size:24px;color:#8b5cf6;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>';
     editorHtml += '<div><div style="color:white;font-size:18px;font-weight:700;">创建我的记忆法</div>';
     editorHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">' + word + '</div></div>';
     editorHtml += '</div>';
@@ -3688,7 +3651,7 @@ function saveCustomMnemonicFromEditor(word) {
     // 显示保存成功提示
     var toast = document.createElement('div');
     toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#22c55e,#16a34a);color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
-    toast.innerHTML = '✅ 保存成功！';
+    toast.innerHTML = '保存成功';
     document.body.appendChild(toast);
     setTimeout(function() { toast.remove(); }, 1500);
 }
@@ -4165,7 +4128,7 @@ function ratePracticeResult(word, quality) {
     
     // 显示结果反馈
     var feedback = document.createElement('div');
-    var feedbackText = quality >= 4 ? '🎉 太棒了！' : quality >= 3 ? '👍 继续加油！' : '💪 多复习几次！';
+    var feedbackText = quality >= 4 ? '太棒了' : quality >= 3 ? '继续加油' : '多复习几次';
     feedback.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;padding:20px 32px;border-radius:16px;font-size:20px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
     feedback.innerHTML = feedbackText;
     document.body.appendChild(feedback);
@@ -4191,7 +4154,7 @@ function showMnemonicStats() {
     statsHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 50%,#3b82f6 100%);padding:24px;border-radius:24px 24px 0 0;">';
     statsHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
     statsHtml += '<div style="display:flex;align-items:center;gap:14px;">';
-    statsHtml += '<span style="font-size:36px;">📊</span>';
+    statsHtml += '<span style="font-size:28px;color:#8b5cf6;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>';
     statsHtml += '<div><div style="color:white;font-size:20px;font-weight:700;">记忆效果统计</div>';
     statsHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">科学追踪你的学习进展</div></div>';
     statsHtml += '</div>';
@@ -4228,7 +4191,7 @@ function showMnemonicStats() {
     
     // 各类型效果分析
     statsHtml += '<div style="margin-bottom:20px;">';
-    statsHtml += '<div style="font-size:14px;font-weight:700;color:#1f2937;margin-bottom:12px;">📈 各记忆法效果</div>';
+    statsHtml += '<div style="font-size:13px;font-weight:600;color:#1f2937;margin-bottom:10px;">各记忆法效果</div>';
     
     if (stats.typeStats && Object.keys(stats.typeStats).length > 0) {
         Object.keys(stats.typeStats).forEach(function(type) {
