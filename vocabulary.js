@@ -3021,15 +3021,12 @@ function showDifficultyFeedback(message) {
 // ====== 版本2改进：设置更新提示 ======
 function showSettingsUpdateToast(message) {
     var toast = document.createElement('div');
-    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:10px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span style="font-weight:600;">' + message + '</span>';
-    toast.style.cssText = 'position:fixed;top:15%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:white;padding:14px 24px;border-radius:14px;font-size:14px;z-index:10001;box-shadow:0 8px 30px rgba(99,102,241,0.35);animation:toastIn 0.3s ease;display:flex;align-items:center;';
+    toast.innerHTML = message;
+    toast.style.cssText = 'position:fixed;top:15%;left:50%;transform:translateX(-50%);background:#6366f1;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:10001;';
     document.body.appendChild(toast);
     
     setTimeout(function() {
-        toast.style.animation = 'toastOut 0.3s ease';
-        setTimeout(function() {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 300);
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
     }, 1500);
 }
 
@@ -3037,16 +3034,13 @@ function showSettingsUpdateToast(message) {
 function showCompletionToast(word) {
     var toast = document.createElement('div');
     toast.className = 'word-completion-toast';
-    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:10px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><strong style="font-size:16px;">' + word + '</strong><div style="font-size:12px;opacity:0.9;margin-top:2px;">学习完成</div></div>';
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#10b981;color:white;padding:16px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 8px 24px rgba(16,185,129,0.3);animation:toastIn 0.3s ease;display:flex;align-items:center;';
+    toast.innerHTML = '<strong>' + word + '</strong> 已掌握';
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#10b981;color:white;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:500;z-index:10001;';
     document.body.appendChild(toast);
     
     setTimeout(function() {
-        toast.style.animation = 'toastOut 0.3s ease';
-        setTimeout(function() {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 300);
-    }, 1500);
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 1200);
 }
 
 // V6: 显示学习模式指示器
@@ -3056,34 +3050,10 @@ function showLearningModeIndicator(mode) {
     if (oldIndicator) oldIndicator.remove();
     
     var modeConfig = {
-        normal: { 
-            text: '新词学习', 
-            color: '#6366f1',
-            bgGradient: '#eef2ff',
-            borderColor: '#c7d2fe',
-            hint: '认真记忆'
-        },
-        review: { 
-            text: '复习巩固', 
-            color: '#f59e0b',
-            bgGradient: '#fffbeb',
-            borderColor: '#fde68a',
-            hint: '加深印象'
-        },
-        immediate: { 
-            text: '立即复习', 
-            color: '#ef4444',
-            bgGradient: '#fef2f2',
-            borderColor: '#fecaca',
-            hint: '再来一次'
-        },
-        difficult: { 
-            text: '攻克难词', 
-            color: '#ea580c',
-            bgGradient: '#fff7ed',
-            borderColor: '#fed7aa',
-            hint: '专注记忆'
-        }
+        normal: { text: '新词学习', color: '#6366f1', bg: '#eef2ff' },
+        review: { text: '复习巩固', color: '#f59e0b', bg: '#fffbeb' },
+        immediate: { text: '立即复习', color: '#ef4444', bg: '#fef2f2' },
+        difficult: { text: '攻克难词', color: '#ea580c', bg: '#fff7ed' }
     };
     
     var config = modeConfig[mode] || modeConfig.normal;
@@ -3091,8 +3061,8 @@ function showLearningModeIndicator(mode) {
     var indicator = document.createElement('div');
     indicator.id = 'learningModeIndicator';
     indicator.className = 'learning-mode-indicator mode-' + mode;
-    indicator.innerHTML = '<span class="mode-text">' + config.text + '</span>';
-    indicator.style.cssText = 'position:absolute;top:-8px;left:50%;transform:translateX(-50%);background:' + config.bgGradient + ';color:' + config.color + ';padding:4px 12px;border-radius:12px;font-size:11px;font-weight:600;z-index:10;border:1px solid ' + config.borderColor + ';box-shadow:0 2px 6px rgba(0,0,0,0.05);white-space:nowrap;';
+    indicator.innerHTML = config.text;
+    indicator.style.cssText = 'position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:' + config.bg + ';color:' + config.color + ';padding:3px 10px;border-radius:10px;font-size:11px;font-weight:500;z-index:10;';
     
     var wordCard = document.getElementById('wordCard');
     if (wordCard) {
@@ -3165,81 +3135,66 @@ function showSessionSummary() {
     var easyCount = stats.easy || 0;
     var totalRatings = againCount + hardCount + goodCount + easyCount;
     
-    // V7: 构建增强版总结HTML
-    var summaryHtml = '<div style="padding:20px;">';
+    // V7: 构建增强版总结HTML - 简化版
+    var summaryHtml = '<div style="padding:16px;">';
     
-    // 顶部成就徽章
-    summaryHtml += '<div style="text-align:center;margin-bottom:20px;">';
-    summaryHtml += '<div style="width:80px;height:80px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 10px 40px rgba(16,185,129,0.35);animation:completionBounce 0.6s ease;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
-    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:22px;font-weight:700;">学习完成</h2>';
-    summaryHtml += '<p style="color:#6b7280;margin-top:8px;font-size:14px;">共学习 <span style="color:#6366f1;font-weight:600;">' + sessionWords.length + '</span> 个单词</p>';
+    // 顶部标题
+    summaryHtml += '<div style="text-align:center;margin-bottom:16px;">';
+    summaryHtml += '<div style="font-size:40px;margin-bottom:8px;">✓</div>';
+    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:18px;font-weight:600;">学习完成</h2>';
+    summaryHtml += '<p style="color:#6b7280;margin-top:4px;font-size:13px;">共 ' + sessionWords.length + ' 个单词</p>';
     summaryHtml += '</div>';
     
     // 学习统计卡片 - 简化版
-    summaryHtml += '<div class="session-stats-card" style="background:#f8fafc;border-radius:12px;padding:14px;margin-bottom:16px;border:1px solid #e5e7eb;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-around;">';
+    summaryHtml += '<div style="background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:12px;display:flex;gap:16px;justify-content:center;">';
+    summaryHtml += '<div style="text-align:center;"><div style="font-size:10px;color:#6b7280;">用时</div><div style="font-size:13px;font-weight:600;color:#1e1b4b;">' + timeStr + '</div></div>';
+    summaryHtml += '<div style="text-align:center;"><div style="font-size:10px;color:#6b7280;">准确率</div><div style="font-size:13px;font-weight:600;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
+    summaryHtml += '</div>';
     
-    // 用时统计
-    summaryHtml += '<div style="text-align:center;min-width:50px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">用时</div><div style="font-size:14px;font-weight:600;color:#1e1b4b;">' + timeStr + '</div></div>';
-    
-    // 准确率
-    summaryHtml += '<div style="text-align:center;min-width:50px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">准确率</div><div style="font-size:14px;font-weight:600;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
-    
-    // 评分分布 - 简化展示
-    summaryHtml += '<div style="text-align:center;min-width:70px;"><div style="font-size:10px;color:#6b7280;margin-bottom:2px;">评分</div><div style="display:flex;gap:4px;justify-content:center;font-size:10px;font-weight:600;">';
+    // 评分分布
+    summaryHtml += '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;font-size:11px;">';
     if (easyCount > 0) summaryHtml += '<span style="color:#2563eb;">简单' + easyCount + '</span>';
     if (goodCount > 0) summaryHtml += '<span style="color:#16a34a;">良好' + goodCount + '</span>';
     if (hardCount > 0) summaryHtml += '<span style="color:#ea580c;">困难' + hardCount + '</span>';
     if (againCount > 0) summaryHtml += '<span style="color:#dc2626;">重学' + againCount + '</span>';
-    summaryHtml += '</div></div>';
-    
     summaryHtml += '</div>';
     
-    // V7: 进度可视化环形图
+    // 简化掌握度显示
     var masteryRate = totalRatings > 0 ? Math.round(((easyCount + goodCount) / totalRatings) * 100) : 0;
-    summaryHtml += '<div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px;">';
-    summaryHtml += '<div style="position:relative;width:80px;height:80px;">';
-    summaryHtml += '<svg viewBox="0 0 36 36" style="width:80px;height:80px;transform:rotate(-90deg);">';
-    summaryHtml += '<circle cx="18" cy="18" r="16" fill="none" stroke="#e5e7eb" stroke-width="3"/>';
-    summaryHtml += '<circle cx="18" cy="18" r="16" fill="none" stroke="url(#progressGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + masteryRate + ' ' + (100 - masteryRate) + '" style="transition:stroke-dasharray 1s ease;"/>';
-    summaryHtml += '<defs><linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#10b981"/></linearGradient></defs>';
-    summaryHtml += '</svg>';
-    summaryHtml += '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;"><div style="font-size:18px;font-weight:800;color:#1e1b4b;">' + masteryRate + '%</div><div style="font-size:9px;color:#6b7280;">掌握度</div></div>';
-    summaryHtml += '</div>';
-    summaryHtml += '<div style="text-align:left;"><div style="font-size:12px;color:#6b7280;margin-bottom:6px;">学习建议</div><div style="font-size:13px;color:#374151;font-weight:600;">' + getLearningAdvice(masteryRate, hardCount, againCount) + '</div></div>';
+    summaryHtml += '<div style="text-align:center;margin-bottom:12px;font-size:13px;color:#374151;">';
+    summaryHtml += '掌握度: <span style="font-weight:600;color:#6366f1;">' + masteryRate + '%</span>';
     summaryHtml += '</div>';
     
     // 单词列表
-    summaryHtml += '<div style="max-height:300px;overflow-y:auto;">';
+    summaryHtml += '<div style="max-height:280px;overflow-y:auto;">';
     
     sessionWords.forEach(function(wordData, index) {
         var rating = wordRatings[wordData.word] ? wordRatings[wordData.word].rating : 'good';
         var ratingConfig = {
-            easy: { label: '简单', bg: '#eff6ff', border: '#bfdbfe', color: '#2563eb' },
-            good: { label: '良好', bg: '#f0fdf4', border: '#bbf7d0', color: '#16a34a' },
-            hard: { label: '困难', bg: '#fff7ed', border: '#fed7aa', color: '#ea580c' },
-            again: { label: '重学', bg: '#fef2f2', border: '#fecaca', color: '#dc2626' },
-            medium: { label: '中等', bg: '#fffbeb', border: '#fde68a', color: '#92400e' }
+            easy: { label: '简', color: '#2563eb' },
+            good: { label: '良', color: '#16a34a' },
+            hard: { label: '难', color: '#ea580c' },
+            again: { label: '重', color: '#dc2626' },
+            medium: { label: '中', color: '#92400e' }
         };
         var config = ratingConfig[rating] || ratingConfig.good;
         
-        summaryHtml += '<div style="background:' + config.bg + ';border-radius:10px;padding:12px;margin-bottom:8px;border:1px solid ' + config.border + ';">';
-        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">';
+        summaryHtml += '<div style="background:#f9fafb;border-radius:6px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;">';
         summaryHtml += '<div style="display:flex;align-items:center;gap:8px;">';
-        summaryHtml += '<span style="background:#6366f1;color:white;width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;">' + (index + 1) + '</span>';
-        summaryHtml += '<span style="font-size:15px;font-weight:600;color:#1e1b4b;">' + wordData.word + '</span>';
+        summaryHtml += '<span style="color:#6b7280;font-size:11px;">' + (index + 1) + '</span>';
+        summaryHtml += '<span style="font-size:14px;font-weight:500;color:#1e1b4b;">' + wordData.word + '</span>';
+        summaryHtml += '<span style="font-size:12px;color:#6b7280;">' + (wordData.meaningCn || '').substring(0, 15) + '</span>';
         summaryHtml += '</div>';
-        summaryHtml += '<span style="font-size:10px;color:' + config.color + ';font-weight:600;">' + config.label + '</span>';
-        summaryHtml += '</div>';
-        summaryHtml += '<div style="font-size:13px;color:#374151;font-weight:500;">' + (wordData.meaningCn || '') + '</div>';
+        summaryHtml += '<span style="font-size:10px;color:' + config.color + ';">' + config.label + '</span>';
         summaryHtml += '</div>';
     });
     
     summaryHtml += '</div>';
     
-    // 操作按钮
-    summaryHtml += '<div style="display:flex;gap:12px;margin-top:20px;">';
-    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:16px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(99,102,241,0.35);display:flex;align-items:center;justify-content:center;gap:8px;"><span>🚀</span>继续学习</button>';
-    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:14px;background:#f8fafc;color:#6366f1;border:1px solid #c7d2fe;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;">完成</button>';
+    // 操作按钮 - 简化版
+    summaryHtml += '<div style="display:flex;gap:10px;margin-top:16px;">';
+    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:12px;background:#6366f1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">继续学习</button>';
+    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">完成</button>';
     summaryHtml += '</div>';
     summaryHtml += '</div>';
     
@@ -3258,13 +3213,13 @@ function showSessionSummary() {
 // V7: 获取学习建议
 function getLearningAdvice(masteryRate, hardCount, againCount) {
     if (masteryRate >= 90) {
-        return '🌟 太棒了！继续保持！';
+        return '继续保持';
     } else if (masteryRate >= 70) {
-        return '学得不错，再努力一下';
+        return '学得不错';
     } else if (hardCount > 0 || againCount > 0) {
-        return '💡 建议复习困难单词';
+        return '建议复习困难单词';
     } else {
-        return '📚 多看几遍，加深记忆';
+        return '多看几遍加深记忆';
     }
 }
 
