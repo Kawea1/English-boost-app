@@ -14,53 +14,31 @@
         // 轻触反馈
         light() {
             if (this.isSupported) navigator.vibrate(10);
-            this.playSound('tap');
+            // 已禁用点击音效
         },
         
         // 中等反馈
         medium() {
             if (this.isSupported) navigator.vibrate(20);
-            this.playSound('click');
+            // 已禁用点击音效
         },
         
         // 成功反馈
         success() {
             if (this.isSupported) navigator.vibrate([10, 50, 10]);
-            this.playSound('success');
+            // 已禁用点击音效
         },
         
         // 错误反馈
         error() {
             if (this.isSupported) navigator.vibrate([50, 100, 50]);
-            this.playSound('error');
+            // 已禁用点击音效
         },
         
-        // 播放音效（可选）
+        // 播放音效（已禁用）
         playSound(type) {
-            if (!window.uxSettings?.soundEnabled) return;
-            // 使用 Web Audio API 生成简单音效
-            try {
-                const ctx = new (window.AudioContext || window.webkitAudioContext)();
-                const osc = ctx.createOscillator();
-                const gain = ctx.createGain();
-                osc.connect(gain);
-                gain.connect(ctx.destination);
-                
-                const sounds = {
-                    tap: { freq: 800, duration: 0.05 },
-                    click: { freq: 600, duration: 0.08 },
-                    success: { freq: 880, duration: 0.15 },
-                    error: { freq: 300, duration: 0.2 }
-                };
-                
-                const sound = sounds[type] || sounds.tap;
-                osc.frequency.value = sound.freq;
-                gain.gain.value = 0.1;
-                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + sound.duration);
-                
-                osc.start();
-                osc.stop(ctx.currentTime + sound.duration);
-            } catch (e) {}
+            // 音效已禁用，保持视觉动画即可
+            return;
         }
     };
     
