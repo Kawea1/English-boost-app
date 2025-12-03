@@ -2293,59 +2293,36 @@ function showMeaning() {
     // 构建释义HTML（中英文双语）
     var meaningHtml = '';
     
-    // 如果有字典数据，优先显示
+    // 如果有字典数据，优先显示 - 极简版
     if (dictData) {
-        meaningHtml += '<div class="dict-container" style="background:linear-gradient(135deg,#f8f7ff 0%,#eef2ff 100%);padding:14px;border-radius:12px;margin-bottom:12px;border:1px solid rgba(99,102,241,0.1);">';
+        meaningHtml += '<div class="dict-container" style="background:#f8f7ff;padding:12px;border-radius:10px;margin-bottom:10px;border:1px solid #e5e7eb;">';
         if (dictData.definitions && dictData.definitions.length > 0) {
-            meaningHtml += '<div style="font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:6px;box-shadow:0 2px 6px rgba(99,102,241,0.3);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span style="color:#4338ca;">词典释义</span></div>';
+            meaningHtml += '<div style="font-weight:600;margin-bottom:8px;font-size:13px;color:#4338ca;">词典释义</div>';
             dictData.definitions.slice(0, 3).forEach(function(def, idx) {
-                meaningHtml += '<div style="margin-bottom:6px;font-size:14px;color:#555;">• ' + def + '</div>';
+                meaningHtml += '<div style="margin-bottom:4px;font-size:13px;color:#555;">• ' + def + '</div>';
             });
         }
         meaningHtml += '</div>';
     }
     
-    meaningHtml += '<div class="meaning-cn" style="font-size:20px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
-    meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
+    // 中英文释义 - 极简版
+    meaningHtml += '<div class="meaning-cn" style="font-size:18px;color:#1e1b4b;margin-bottom:10px;font-weight:600;">' + (wordData.meaningCn || '暂无中文释义') + '</div>';
+    meaningHtml += '<div class="meaning-en" style="color:#6b7280;font-size:14px;margin-bottom:14px;line-height:1.6;">' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
     
     // V16: 真题词汇标记展示
     var examTags = getWordExamTags(wordData.word);
     if (examTags) {
-        meaningHtml += '<div class="exam-tags-section" style="margin-bottom:16px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:16px;border:1px solid #fcd34d;">';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:8px;box-shadow:0 2px 6px rgba(245,158,11,0.3);">';
-        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
-        meaningHtml += '</span>';
-        meaningHtml += '<span style="font-weight:700;font-size:14px;color:#92400e;">真题高频词汇</span>';
-        meaningHtml += '</div>';
-        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
+        // 真题标签 - 极简版
+        meaningHtml += '<div class="exam-tags-section" style="margin-bottom:12px;padding:10px 12px;background:#fef3c7;border-radius:8px;border:1px solid #fde68a;">';
+        meaningHtml += '<div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:6px;">真题词汇</div>';
+        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
         
         if (examTags.gre) {
-            var greHeat = examTags.gre.count >= 12 ? '★★★' : examTags.gre.count >= 8 ? '★★' : '★';
-            meaningHtml += '<div style="background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(124,58,237,0.3);">';
-            meaningHtml += '<span style="font-weight:700;font-size:13px;">GRE</span>';
-            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.gre.count + ' 次</span>';
-            meaningHtml += '<span style="font-size:11px;">' + greHeat + '</span>';
-            meaningHtml += '</div>';
-            if (examTags.gre.years && examTags.gre.years.length > 0) {
-                meaningHtml += '<div style="background:rgba(124,58,237,0.1);color:#6d28d9;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>' + examTags.gre.years.join(', ') + '</span>';
-                meaningHtml += '</div>';
-            }
+            meaningHtml += '<span style="background:#7c3aed;color:white;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;">GRE ×' + examTags.gre.count + '</span>';
         }
         
         if (examTags.toefl) {
-            var toeflHeat = examTags.toefl.count >= 10 ? '★★★' : examTags.toefl.count >= 6 ? '★★' : '★';
-            meaningHtml += '<div style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.3);">';
-            meaningHtml += '<span style="font-weight:700;font-size:13px;">TOEFL</span>';
-            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.toefl.count + ' 次</span>';
-            meaningHtml += '<span style="font-size:11px;">' + toeflHeat + '</span>';
-            meaningHtml += '</div>';
-            if (examTags.toefl.years && examTags.toefl.years.length > 0) {
-                meaningHtml += '<div style="background:rgba(37,99,235,0.1);color:#1d4ed8;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>' + examTags.toefl.years.join(', ') + '</span>';
-                meaningHtml += '</div>';
-            }
+            meaningHtml += '<span style="background:#2563eb;color:white;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;">TOEFL ×' + examTags.toefl.count + '</span>';
         }
         
         meaningHtml += '</div>';
@@ -2519,37 +2496,34 @@ function showMeaning() {
         meaningHtml += '</div></div>';
     }
     
-    // V11: 同义词/反义词显示
+    // 同义词/反义词显示 - 极简版
     if (relations) {
-        meaningHtml += '<div class="word-relations" style="margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border-radius:12px;border:1px solid rgba(234,179,8,0.2);">';
+        meaningHtml += '<div class="word-relations" style="margin-bottom:12px;padding:10px;background:#fefce8;border-radius:8px;border:1px solid #fde68a;">';
         
         // 同义词
         if (relations.synonyms && relations.synonyms.length > 0) {
-            meaningHtml += '<div style="margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">';
-            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border-radius:7px;box-shadow:0 2px 6px rgba(34,197,94,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>';
-            meaningHtml += '<div><span style="font-weight:700;color:#15803d;font-size:13px;">同义词 Synonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            meaningHtml += '<div style="margin-bottom:8px;"><span style="font-weight:600;color:#15803d;font-size:11px;">同义词</span><div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;">';
             relations.synonyms.forEach(function(syn) {
-                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#166534;border:1px solid #bbf7d0;font-weight:500;">' + syn + '</span>';
+                meaningHtml += '<span style="padding:2px 8px;background:#dcfce7;border-radius:4px;font-size:12px;color:#166534;">' + syn + '</span>';
             });
-            meaningHtml += '</div></div></div>';
+            meaningHtml += '</div></div>';
         }
         
         // 反义词
         if (relations.antonyms && relations.antonyms.length > 0) {
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
-            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border-radius:7px;box-shadow:0 2px 6px rgba(239,68,68,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14"/></svg></span>';
-            meaningHtml += '<div><span style="font-weight:700;color:#b91c1c;font-size:13px;">反义词 Antonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
+            meaningHtml += '<div><span style="font-weight:600;color:#b91c1c;font-size:11px;">反义词</span><div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;">';
             relations.antonyms.forEach(function(ant) {
-                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#991b1b;border:1px solid #fecaca;font-weight:500;">' + ant + '</span>';
+                meaningHtml += '<span style="padding:2px 8px;background:#fee2e2;border-radius:4px;font-size:12px;color:#991b1b;">' + ant + '</span>';
             });
-            meaningHtml += '</div></div></div>';
+            meaningHtml += '</div></div>';
         }
         
         meaningHtml += '</div>';
     }
     
+    // 例句 - 极简版
     if (wordData.example) {
-        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
+        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:13px;font-style:italic;padding-top:12px;border-top:1px solid #e5e7eb;">' + wordData.example + '</div>';
     }
     
     // V15: 丰富例句展示
