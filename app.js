@@ -4083,3 +4083,340 @@ function openSubscriptionPage() {
 }
 
 window.openSubscriptionPage = openSubscriptionPage;
+
+// ==================== V4.9.3: 设置即时应用功能 ====================
+// 主题即时切换
+function applyThemeInstantly(theme) {
+    console.log('Applying theme instantly:', theme);
+    
+    // 调用现有的主题应用函数
+    if (typeof applyTheme === 'function') {
+        applyTheme(theme);
+    } else {
+        // 备用方案：直接修改body class
+        document.body.classList.remove(
+            'theme-default', 'theme-light', 'theme-dark',
+            'theme-ocean', 'theme-forest', 'theme-sunset',
+            'theme-rose', 'theme-mint', 'theme-coffee', 'theme-lavender'
+        );
+        document.body.classList.add('theme-' + (theme || 'default'));
+    }
+    
+    // 保存到localStorage
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.theme = theme;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 显示提示
+    showToast('主题已切换');
+}
+
+// 液态玻璃即时切换
+function toggleLiquidGlassInstantly(enabled) {
+    console.log('Toggling liquid glass instantly:', enabled);
+    
+    // 应用效果
+    if (enabled) {
+        document.body.classList.add('liquid-glass-mode');
+    } else {
+        document.body.classList.remove('liquid-glass-mode');
+    }
+    
+    // 保存到localStorage
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.liquidGlassMode = enabled;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 显示提示
+    showToast(enabled ? '液态玻璃效果已开启' : '液态玻璃效果已关闭');
+}
+
+// ==================== V4.9.3: 帮助与支持功能 ====================
+// 智能客服
+function showAISupport() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>智能客服</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 40px 20px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🤖</div>
+                <h4 style="margin-bottom: 15px;">AI智能助手</h4>
+                <p style="color: #666; line-height: 1.8; margin-bottom: 25px;">
+                    遇到问题？我们的AI智能客服随时为您服务！<br>
+                    <strong>微信联系：kawealeo</strong><br>
+                    <span style="font-size: 14px;">工作时间：周一至周五 9:00-18:00</span>
+                </p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary" onclick="window.open('weixin://'); this.closest('.custom-modal').remove();" 
+                            style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                        打开微信
+                    </button>
+                    <button class="btn-secondary" onclick="navigator.clipboard.writeText('kawealeo').then(() => alert('微信号已复制！')); this.closest('.custom-modal').remove();"
+                            style="padding: 12px 30px; background: white; border: 2px solid #667eea; 
+                            color: #667eea; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            transition: all 0.3s;">
+                        复制微信号
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 使用指南
+function showHelp() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>使用指南</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">📚 词汇学习</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        包含GRE/TOEFL/Academic核心词汇，支持发音、例句、中文释义。
+                        点击单词卡片即可查看详情，长按收藏。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">🗣️ 口语训练</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        跟读练习、角色扮演、情景对话。使用麦克风录音，
+                        AI会为您的发音打分并提供改进建议。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">👂 听力训练</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        精选真题音频材料，支持变速播放、字幕显示。
+                        练习听写、填空、选择题多种题型。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">📖 阅读理解</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        学术文章、新闻报道、长难句分析。
+                        生词自动标注，点击查看释义，全面提升阅读能力。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">🔄 复习模块</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        智能复习系统根据艾宾浩斯遗忘曲线提醒您复习。
+                        查看学习统计，巩固薄弱环节。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">⚙️ 设置技巧</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        • 主题切换：6种精美主题随心选择<br>
+                        • 液态玻璃：开启iOS风格毛玻璃效果<br>
+                        • 语音模式：切换美式/英式男女声<br>
+                        • 所有设置即时生效，无需刷新页面
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 退款政策
+function showRefundPolicy() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>退款政策</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px; line-height: 1.8;">
+                <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); 
+                            padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">📋 退款说明</h4>
+                    <p style="color: #555; font-size: 15px;">
+                        我们重视每位用户的体验，如果您对产品不满意，
+                        可以在购买后<strong>7天内</strong>申请全额退款。
+                    </p>
+                </div>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">✅ 符合退款条件</h4>
+                <ul style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>购买后7天内提出申请</li>
+                    <li>产品存在重大功能缺陷</li>
+                    <li>与描述严重不符</li>
+                    <li>无法正常使用且客服无法解决</li>
+                </ul>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">❌ 不予退款情况</h4>
+                <ul style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>超过7天退款期限</li>
+                    <li>已大量使用产品功能（学习记录>100次）</li>
+                    <li>因个人原因不再需要</li>
+                    <li>恶意退款行为</li>
+                </ul>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">📞 退款流程</h4>
+                <ol style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>添加客服微信：<strong>kawealeo</strong></li>
+                    <li>说明退款原因并提供订单号</li>
+                    <li>客服审核通过后3-5个工作日原路退回</li>
+                </ol>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea; margin-top: 20px;">
+                    <p style="color: #555; margin: 0; font-size: 14px;">
+                        💡 <strong>温馨提示：</strong>退款前请先联系客服，
+                        我们会尽力解决您遇到的问题，避免不必要的退款。
+                    </p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button onclick="showAISupport(); this.closest('.custom-modal').remove();"
+                            style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                        联系客服
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 反馈建议
+function showFeedback() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>反馈建议</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
+                    <h4 style="margin-bottom: 10px;">我们重视您的每一条建议</h4>
+                    <p style="color: #666; font-size: 14px;">
+                        您的反馈将帮助我们不断改进产品
+                    </p>
+                </div>
+                
+                <form id="feedbackForm" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            反馈类型
+                        </label>
+                        <select id="feedbackType" style="width: 100%; padding: 10px; border: 2px solid #e1e4e8; 
+                                border-radius: 8px; font-size: 14px; outline: none; transition: border 0.3s;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';">
+                            <option value="bug">🐛 Bug反馈</option>
+                            <option value="feature">✨ 功能建议</option>
+                            <option value="improvement">🚀 体验改进</option>
+                            <option value="other">💡 其他建议</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            详细描述
+                        </label>
+                        <textarea id="feedbackContent" rows="5" placeholder="请详细描述您的问题或建议..."
+                                style="width: 100%; padding: 12px; border: 2px solid #e1e4e8; border-radius: 8px; 
+                                font-size: 14px; resize: vertical; outline: none; transition: border 0.3s; font-family: inherit;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            联系方式（选填）
+                        </label>
+                        <input type="text" id="feedbackContact" placeholder="微信号/邮箱，方便我们跟进"
+                                style="width: 100%; padding: 10px; border: 2px solid #e1e4e8; border-radius: 8px; 
+                                font-size: 14px; outline: none; transition: border 0.3s;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';">
+                    </div>
+                    
+                    <button type="button" onclick="submitFeedback()" 
+                            style="padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 16px; font-weight: 600; 
+                            cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;
+                            margin-top: 10px;">
+                        提交反馈
+                    </button>
+                </form>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.6;">
+                        💡 <strong>快速联系：</strong>如需即时沟通，可添加客服微信 <strong>kawealeo</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 提交反馈
+function submitFeedback() {
+    var type = document.getElementById('feedbackType').value;
+    var content = document.getElementById('feedbackContent').value.trim();
+    var contact = document.getElementById('feedbackContact').value.trim();
+    
+    if (!content) {
+        alert('请填写反馈内容');
+        return;
+    }
+    
+    // 构建反馈数据
+    var feedbackData = {
+        type: type,
+        content: content,
+        contact: contact,
+        timestamp: new Date().toISOString(),
+        version: '4.9.3',
+        userAgent: navigator.userAgent
+    };
+    
+    // 保存到本地
+    var feedbacks = JSON.parse(localStorage.getItem('userFeedbacks') || '[]');
+    feedbacks.push(feedbackData);
+    localStorage.setItem('userFeedbacks', JSON.stringify(feedbacks));
+    
+    // 关闭弹窗并显示成功提示
+    document.querySelector('.custom-modal').remove();
+    showToast('感谢您的反馈！我们会认真阅读每一条建议');
+    
+    // 这里可以添加实际的提交逻辑（发送到服务器）
+    console.log('Feedback submitted:', feedbackData);
+}
+
+// 暴露到全局
+window.applyThemeInstantly = applyThemeInstantly;
+window.toggleLiquidGlassInstantly = toggleLiquidGlassInstantly;
+window.showAISupport = showAISupport;
+window.showHelp = showHelp;
+window.showRefundPolicy = showRefundPolicy;
+window.showFeedback = showFeedback;
+window.submitFeedback = submitFeedback;
+
