@@ -280,8 +280,8 @@
         </header>
 
         <main class="main-content">
-            <!-- 今日学习目标卡片 - 高级版 -->
-            <div id="dailyGoalsSection" class="daily-goals-card">
+            <!-- 今日学习目标卡片 - 已隐藏 -->
+            <div id="dailyGoalsSection" class="daily-goals-card" style="display: none;">
                 <div class="goals-card-header">
                     <div class="goals-title-row">
                         <div class="goals-title-left">
@@ -1095,7 +1095,7 @@
                 </div>
             </div>
 
-            <!-- 新版底部导航 -->
+            <!-- 简化底部导航 -->
             <nav class="bottom-nav" id="bottomNav">
                 <div class="nav-indicator"></div>
                 <button class="nav-item active" data-tab="home" onclick="switchTab('home')">
@@ -1105,7 +1105,7 @@
                             <polyline points="9 22 9 12 15 12 15 22"/>
                         </svg>
                     </div>
-                    <span class="nav-label">首页</span>
+                    <span class="nav-label">学习</span>
                 </button>
                 <button class="nav-item" data-tab="stats" onclick="switchTab('stats')">
                     <div class="nav-icon-wrapper">
@@ -1115,16 +1115,16 @@
                             <line x1="6" y1="20" x2="6" y2="14"/>
                         </svg>
                     </div>
-                    <span class="nav-label">统计</span>
+                    <span class="nav-label">进度</span>
                 </button>
                 <button class="nav-item" data-tab="settings" onclick="switchTab('settings')">
                     <div class="nav-icon-wrapper">
                         <svg class="nav-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="12" cy="12" r="3"/>
-                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+                            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
                         </svg>
                     </div>
-                    <span class="nav-label">设置</span>
+                    <span class="nav-label">更多</span>
                 </button>
             </nav>
 
@@ -1333,7 +1333,7 @@
                         <span class="writing-emoji">✍️</span>
                         <div class="writing-title-text">
                             <h2>写作练习</h2>
-                            <p>AI智能评分 · 真题模拟</p>
+                            <p>学术英语 · GRE · TOEFL</p>
                         </div>
                     </div>
                 </div>
@@ -1341,7 +1341,7 @@
                 <div id="writing-main" class="writing-main-v10">
                     <!-- 考试类型选择 - 横向滚动卡片 -->
                     <div class="writing-exams-v10">
-                        <div class="section-label-v10">📝 选择考试</div>
+                        <div class="section-label-v10">选择写作类型</div>
                         <div class="exam-scroll-v10">
                             <div class="exam-card-v10 toefl" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">
                                 <div class="exam-glow-v10"></div>
@@ -1376,25 +1376,12 @@
                         </div>
                     </div>
                     
-                    <!-- AI功能亮点 -->
-                    <div class="writing-features-v10">
-                        <div class="feature-pill-v10">
-                            <span class="feature-icon-v10">🤖</span>
-                            <span>AI智能批改</span>
-                        </div>
-                        <div class="feature-pill-v10">
-                            <span class="feature-icon-v10">📈</span>
-                            <span>详细评分</span>
-                        </div>
-                        <div class="feature-pill-v10">
-                            <span class="feature-icon-v10">💡</span>
-                            <span>改进建议</span>
-                        </div>
-                    </div>
+                    <!-- AI功能亮点 - 简化版 -->
+                    <div class="writing-features-v10" style="display: none;"></div>
                     
                     <!-- 题目列表 -->
                     <div class="writing-topics-v10">
-                        <div class="section-label-v10">📋 练习题目</div>
+                        <div class="section-label-v10">练习题目</div>
                         <div id="writing-topic-list" class="topic-list-v10">
                             <div class="empty-state-v10">
                                 <div class="empty-icon-v10">👆</div>
@@ -1403,15 +1390,10 @@
                         </div>
                     </div>
                     
-                    <!-- 历史记录 -->
-                    <div class="writing-history-v10">
-                        <div class="section-label-v10">🕐 写作历史</div>
-                        <div id="writing-history-list" class="history-list-v10">
-                            <div class="empty-state-v10">
-                                <div class="empty-icon-v10">📝</div>
-                                <p>完成练习后这里会显示记录</p>
-                            </div>
-                        </div>
+                    <!-- 历史记录 - 已隐藏，简化界面 -->
+                    <div class="writing-history-v10" style="display: none;">
+                        <div class="section-label-v10">写作历史</div>
+                        <div id="writing-history-list" class="history-list-v10"></div>
                     </div>
                 </div>
                 
