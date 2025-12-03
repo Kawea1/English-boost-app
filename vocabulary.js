@@ -1167,83 +1167,74 @@ function addVocabSettingsStyles() {
     style.id = 'vocabSettingsStyles';
     style.textContent = `
         .vocab-settings-panel {
-            padding: 16px 20px;
-            background: linear-gradient(135deg, #f8f7ff 0%, #e0e7ff 100%);
-            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+            padding: 12px 16px;
+            background: #f8fafc;
+            border-bottom: 1px solid #e5e7eb;
         }
         
         .settings-row {
             display: flex;
-            gap: 20px;
+            gap: 16px;
             flex-wrap: wrap;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
         
         .setting-item {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
         
         .setting-label {
             color: #374151;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 500;
+            font-size: 13px;
             white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .setting-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+            width: 18px;
+            height: 18px;
+            background: #6366f1;
             color: white;
-            border-radius: 6px;
-            font-size: 11px;
+            border-radius: 4px;
+            font-size: 10px;
             font-weight: bold;
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
         }
         
         .tip-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            width: 16px;
+            height: 16px;
+            background: #f59e0b;
             color: white;
             border-radius: 50%;
-            font-size: 10px;
-            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+            font-size: 9px;
         }
         
         .setting-select {
-            padding: 8px 14px;
-            border-radius: 10px;
-            border: 2px solid #6366f1;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid #d1d5db;
             background: white;
             color: #1e1b4b;
-            font-weight: 600;
-            font-size: 14px;
+            font-weight: 500;
+            font-size: 13px;
             cursor: pointer;
             outline: none;
-            transition: all 0.2s ease;
-            min-width: 80px;
-        }
-        
-        .setting-select:hover {
-            border-color: #4f46e5;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+            min-width: 70px;
         }
         
         .setting-select:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
         }
         
         .settings-tip {
@@ -1256,7 +1247,7 @@ function addVocabSettingsStyles() {
         
         .settings-tip strong {
             color: #6366f1;
-            font-weight: 700;
+            font-weight: 600;
         }
         
         /* 学习进度指示器 */
@@ -1264,132 +1255,110 @@ function addVocabSettingsStyles() {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            margin-top: 12px;
-            padding: 10px 16px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            border-radius: 12px;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f3f4f6;
+            border-radius: 8px;
         }
         
         .progress-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #e5e7eb;
-            transition: all 0.3s ease;
-            position: relative;
         }
         
         .progress-dot.completed {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+            background: #10b981;
         }
         
         .progress-dot.current {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            background: #6366f1;
         }
         
         .progress-label {
-            margin-left: 8px;
-            font-size: 13px;
+            margin-left: 6px;
+            font-size: 12px;
             color: #6b7280;
             font-weight: 500;
         }
         
         /* 词卡优化样式 */
         .word-card-enhanced {
-            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid #e5e7eb;
         }
         
         .word-main-enhanced {
-            font-size: 42px;
-            font-weight: 800;
+            font-size: 36px;
+            font-weight: 700;
             color: #1e1b4b;
             text-align: center;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            margin-bottom: 6px;
         }
         
         .word-phonetic-enhanced {
-            font-size: 18px;
+            font-size: 16px;
             color: #6b7280;
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
         
         /* 评分按钮优化 */
         .rate-btn-enhanced {
             flex: 1;
-            padding: 16px 12px;
+            padding: 12px 10px;
             border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 700;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .rate-btn-enhanced.hard {
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            background: #fef2f2;
             color: #dc2626;
-            border: 2px solid #fecaca;
         }
         
         .rate-btn-enhanced.hard:hover {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
+            background: #fee2e2;
         }
         
         .rate-btn-enhanced.medium {
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            background: #fffbeb;
             color: #d97706;
-            border: 2px solid #fde68a;
         }
         
         .rate-btn-enhanced.medium:hover {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.2);
+            background: #fef3c7;
         }
         
         .rate-btn-enhanced.easy {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            background: #ecfdf5;
             color: #059669;
-            border: 2px solid #a7f3d0;
         }
         
         .rate-btn-enhanced.easy:hover {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.2);
+            background: #d1fae5;
         }
         
         .rate-emoji {
-            font-size: 24px;
+            font-size: 20px;
         }
         
         .rate-text {
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .rate-hint {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.7;
             font-weight: 500;
         }
@@ -1412,76 +1381,49 @@ function addVocabSettingsStyles() {
         }
         
         .learning-badge.new {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            background: #fef3c7;
             color: #92400e;
-            border: 2px solid #fcd34d;
         }
         
         .learning-badge.new .badge-icon {
-            font-size: 14px;
-            animation: sparkle 1.5s infinite;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            font-size: 12px;
         }
         
         .learning-badge.learning {
-            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            background: #e0e7ff;
             color: #3730a3;
-            border: 2px solid #a5b4fc;
         }
         
         .learning-badge.completed {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            background: #d1fae5;
             color: #065f46;
-            border: 2px solid #6ee7b7;
         }
         
         .learning-badge.completed .badge-icon {
-            font-size: 14px;
-            animation: checkBounce 0.5s ease;
-        }
-        
-        @keyframes checkBounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
+            font-size: 12px;
         }
         
         .badge-count {
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #4f46e5;
         }
         
         .badge-separator {
-            font-size: 12px;
+            font-size: 11px;
             color: #9ca3af;
             margin: 0 1px;
         }
         
         .badge-total {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #6b7280;
         }
         
         .badge-text {
-            font-size: 12px;
+            font-size: 11px;
             margin-left: 2px;
-        }
-        
-        /* Toast 动画 */
-        @keyframes toastIn {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        @keyframes toastOut {
-            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
         }
     `;
     document.head.appendChild(style);
@@ -2219,9 +2161,7 @@ function updateLearningBadge() {
     if (!badge) {
         var wordCard = document.getElementById('wordCard');
         if (wordCard) {
-            // 确保 wordCard 是相对定位
             wordCard.style.position = 'relative';
-            
             badge = document.createElement('div');
             badge.id = 'learningBadge';
             badge.className = 'learning-badge';
@@ -2234,14 +2174,13 @@ function updateLearningBadge() {
             badge.className = 'learning-badge completed';
             badge.innerHTML = '<span class="badge-icon">✓</span><span class="badge-text">已掌握</span>';
         } else {
-            var remaining = requiredLearningTimes - currentTimes;
             badge.className = 'learning-badge';
             if (currentTimes === 0) {
                 badge.classList.add('new');
-                badge.innerHTML = '<span class="badge-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg></span><span class="badge-text">新词</span>';
+                badge.innerHTML = '<span class="badge-text">新词</span>';
             } else {
                 badge.classList.add('learning');
-                badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span><span class="badge-text" style="margin-left:4px;">复习中</span>';
+                badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span>';
             }
         }
     }
