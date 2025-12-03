@@ -21383,6 +21383,416 @@ body.theme-dark .rich-examples-section {
     margin: 0;
 }
 
+/* ===== 写作模块 V10 重设计 ===== */
+.writing-header-v10 {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+    border-radius: 0 0 28px 28px;
+    margin: -16px -16px 20px -16px;
+    box-shadow: 0 8px 32px rgba(249, 115, 22, 0.25);
+}
+
+.writing-back-v10 {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+}
+
+.writing-back-v10:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.05);
+}
+
+.writing-back-v10:active {
+    transform: scale(0.95);
+}
+
+.writing-title-v10 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.writing-emoji {
+    font-size: 2rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.writing-title-text h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: white;
+    margin: 0;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.writing-title-text p {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.85);
+    margin: 2px 0 0;
+}
+
+.writing-main-v10 {
+    padding: 0 4px;
+}
+
+/* 考试类型横向滚动 */
+.writing-exams-v10 {
+    margin-bottom: 20px;
+}
+
+.section-label-v10 {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.exam-scroll-v10 {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 8px 4px 12px;
+    margin: 0 -4px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.exam-scroll-v10::-webkit-scrollbar {
+    display: none;
+}
+
+.exam-card-v10 {
+    position: relative;
+    min-width: 110px;
+    padding: 16px 14px;
+    border-radius: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+    border: 2px solid transparent;
+    flex-shrink: 0;
+}
+
+.exam-card-v10.toefl {
+    background: linear-gradient(145deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.exam-card-v10.gre {
+    background: linear-gradient(145deg, #8b5cf6 0%, #6d28d9 100%);
+}
+
+.exam-card-v10.ielts {
+    background: linear-gradient(145deg, #10b981 0%, #059669 100%);
+}
+
+.exam-card-v10.kaoyan {
+    background: linear-gradient(145deg, #f59e0b 0%, #d97706 100%);
+}
+
+.exam-card-v10.cet6 {
+    background: linear-gradient(145deg, #ec4899 0%, #db2777 100%);
+}
+
+.exam-glow-v10 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3), transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.exam-card-v10:hover .exam-glow-v10,
+.exam-card-v10.selected .exam-glow-v10 {
+    opacity: 1;
+}
+
+.exam-card-v10:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+}
+
+.exam-card-v10.selected {
+    border-color: white;
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.3), 0 12px 28px rgba(0,0,0,0.2);
+    transform: translateY(-4px) scale(1.05);
+}
+
+.exam-card-v10:active {
+    transform: scale(0.98);
+}
+
+.exam-emoji-v10 {
+    display: block;
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
+
+.exam-name-v10 {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+
+.exam-tasks-v10 {
+    display: block;
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.8);
+    margin-top: 3px;
+}
+
+/* AI功能亮点 */
+.writing-features-v10 {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.feature-pill-v10 {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 14px;
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+    border: 1px solid rgba(249, 115, 22, 0.2);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #ea580c;
+    transition: all 0.2s;
+}
+
+.feature-pill-v10:hover {
+    background: linear-gradient(135deg, rgba(249, 115, 22, 0.15) 0%, rgba(234, 88, 12, 0.15) 100%);
+    transform: translateY(-1px);
+}
+
+.feature-icon-v10 {
+    font-size: 0.9rem;
+}
+
+/* 题目和历史区块 */
+.writing-topics-v10,
+.writing-history-v10 {
+    margin-bottom: 24px;
+}
+
+.topic-list-v10,
+.history-list-v10 {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* 空状态 */
+.empty-state-v10 {
+    text-align: center;
+    padding: 40px 20px;
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 2px dashed var(--border-color);
+}
+
+.empty-icon-v10 {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+    opacity: 0.6;
+}
+
+.empty-state-v10 p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+/* 题目卡片 V10 样式 */
+.topic-card-v10 {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.topic-card-v10::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(180deg, #f97316 0%, #ea580c 100%);
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.topic-card-v10:hover {
+    border-color: #f97316;
+    transform: translateX(4px);
+    box-shadow: 0 8px 24px rgba(249, 115, 22, 0.15);
+}
+
+.topic-card-v10:hover::before {
+    opacity: 1;
+}
+
+.topic-card-v10:active {
+    transform: scale(0.98);
+}
+
+.topic-card-v10 .topic-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.topic-card-v10 .topic-number {
+    font-size: 0.75rem;
+    color: #f97316;
+    font-weight: 600;
+}
+
+.topic-card-v10 .topic-type {
+    font-size: 0.7rem;
+    background: rgba(249, 115, 22, 0.1);
+    color: #ea580c;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.topic-card-v10 .topic-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.4;
+}
+
+.topic-card-v10 .topic-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* 历史卡片 V10 样式 */
+.history-card-v10 {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 14px 16px;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.history-card-v10:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+}
+
+.history-score-v10 {
+    width: 48px;
+    height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+}
+
+.history-score-v10.high {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.history-score-v10.medium {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+
+.history-score-v10.low {
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+
+.history-info-v10 {
+    flex: 1;
+    min-width: 0;
+}
+
+.history-info-v10 .history-title {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.history-info-v10 .history-meta {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.history-arrow-v10 {
+    color: var(--text-tertiary);
+    opacity: 0;
+    transition: all 0.2s;
+}
+
+.history-card-v10:hover .history-arrow-v10 {
+    opacity: 1;
+    transform: translateX(4px);
+}
+
+/* 深色模式适配 */
+body.theme-dark .writing-header-v10 {
+    background: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
+}
+
+body.theme-dark .feature-pill-v10 {
+    background: rgba(249, 115, 22, 0.15);
+    border-color: rgba(249, 115, 22, 0.25);
+}
+
+body.theme-dark .empty-state-v10 {
+    background: var(--card-bg);
+    border-color: var(--border-color);
+}
+
 /* 考试类型选择 */
 .writing-exam-types {
     margin-bottom: 24px;

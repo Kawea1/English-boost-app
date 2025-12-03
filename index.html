@@ -1321,68 +1321,95 @@
                 </div>
             </div>
 
-            <!-- 写作模块 -->
+            <!-- 写作模块 V10 -->
             <div class="module-page hidden" id="writing-module">
-                <div class="module-header">
-                    <button class="back-btn" onclick="closeModule()">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <div class="writing-header-v10">
+                    <button class="writing-back-v10" onclick="closeModule()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                             <path d="M19 12H5M12 19l-7-7 7-7"/>
                         </svg>
                     </button>
-                    <h2>✍️ 写作练习</h2>
+                    <div class="writing-title-v10">
+                        <span class="writing-emoji">✍️</span>
+                        <div class="writing-title-text">
+                            <h2>写作练习</h2>
+                            <p>AI智能评分 · 真题模拟</p>
+                        </div>
+                    </div>
                 </div>
                 
-                <div id="writing-main">
-                    <!-- 考试类型选择 -->
-                    <div class="writing-exam-types">
-                        <h3>选择考试类型</h3>
-                        <div class="exam-type-grid">
-                            <div class="writing-exam-type" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">
-                                <div class="exam-icon">🎯</div>
-                                <div class="exam-name">TOEFL</div>
-                                <div class="exam-desc">综合写作 + 学术讨论</div>
+                <div id="writing-main" class="writing-main-v10">
+                    <!-- 考试类型选择 - 横向滚动卡片 -->
+                    <div class="writing-exams-v10">
+                        <div class="section-label-v10">📝 选择考试</div>
+                        <div class="exam-scroll-v10">
+                            <div class="exam-card-v10 toefl" data-type="toefl" onclick="WritingModule.selectExamType('toefl')">
+                                <div class="exam-glow-v10"></div>
+                                <span class="exam-emoji-v10">🎯</span>
+                                <span class="exam-name-v10">TOEFL</span>
+                                <span class="exam-tasks-v10">综合 + 讨论</span>
                             </div>
-                            <div class="writing-exam-type" data-type="gre" onclick="WritingModule.selectExamType('gre')">
-                                <div class="exam-icon">📊</div>
-                                <div class="exam-name">GRE</div>
-                                <div class="exam-desc">Issue + Argument</div>
+                            <div class="exam-card-v10 gre" data-type="gre" onclick="WritingModule.selectExamType('gre')">
+                                <div class="exam-glow-v10"></div>
+                                <span class="exam-emoji-v10">📊</span>
+                                <span class="exam-name-v10">GRE</span>
+                                <span class="exam-tasks-v10">Issue + Argument</span>
                             </div>
-                            <div class="writing-exam-type" data-type="ielts" onclick="WritingModule.selectExamType('ielts')">
-                                <div class="exam-icon">🌍</div>
-                                <div class="exam-name">雅思</div>
-                                <div class="exam-desc">Task1 + Task2</div>
+                            <div class="exam-card-v10 ielts" data-type="ielts" onclick="WritingModule.selectExamType('ielts')">
+                                <div class="exam-glow-v10"></div>
+                                <span class="exam-emoji-v10">🌍</span>
+                                <span class="exam-name-v10">雅思</span>
+                                <span class="exam-tasks-v10">Task1 + Task2</span>
                             </div>
-                            <div class="writing-exam-type" data-type="kaoyan" onclick="WritingModule.selectExamType('kaoyan')">
-                                <div class="exam-icon">📚</div>
-                                <div class="exam-name">考研</div>
-                                <div class="exam-desc">应用文 + 图画作文</div>
+                            <div class="exam-card-v10 kaoyan" data-type="kaoyan" onclick="WritingModule.selectExamType('kaoyan')">
+                                <div class="exam-glow-v10"></div>
+                                <span class="exam-emoji-v10">📚</span>
+                                <span class="exam-name-v10">考研</span>
+                                <span class="exam-tasks-v10">应用文 + 图画</span>
                             </div>
-                            <div class="writing-exam-type" data-type="cet6" onclick="WritingModule.selectExamType('cet6')">
-                                <div class="exam-icon">🎓</div>
-                                <div class="exam-name">六级</div>
-                                <div class="exam-desc">议论文 + 图画题</div>
+                            <div class="exam-card-v10 cet6" data-type="cet6" onclick="WritingModule.selectExamType('cet6')">
+                                <div class="exam-glow-v10"></div>
+                                <span class="exam-emoji-v10">🎓</span>
+                                <span class="exam-name-v10">六级</span>
+                                <span class="exam-tasks-v10">议论文 + 图画</span>
                             </div>
                         </div>
                     </div>
                     
+                    <!-- AI功能亮点 -->
+                    <div class="writing-features-v10">
+                        <div class="feature-pill-v10">
+                            <span class="feature-icon-v10">🤖</span>
+                            <span>AI智能批改</span>
+                        </div>
+                        <div class="feature-pill-v10">
+                            <span class="feature-icon-v10">📈</span>
+                            <span>详细评分</span>
+                        </div>
+                        <div class="feature-pill-v10">
+                            <span class="feature-icon-v10">💡</span>
+                            <span>改进建议</span>
+                        </div>
+                    </div>
+                    
                     <!-- 题目列表 -->
-                    <div class="writing-topics-section">
-                        <h3>练习题目</h3>
-                        <div id="writing-topic-list" class="writing-topic-list">
-                            <div class="empty-state">
-                                <div class="empty-icon">👆</div>
-                                <p>请先选择考试类型</p>
+                    <div class="writing-topics-v10">
+                        <div class="section-label-v10">📋 练习题目</div>
+                        <div id="writing-topic-list" class="topic-list-v10">
+                            <div class="empty-state-v10">
+                                <div class="empty-icon-v10">👆</div>
+                                <p>选择上方考试类型开始练习</p>
                             </div>
                         </div>
                     </div>
                     
                     <!-- 历史记录 -->
-                    <div class="writing-history-section">
-                        <h3>写作历史</h3>
-                        <div id="writing-history-list" class="writing-history-list">
-                            <div class="empty-state">
-                                <div class="empty-icon">📋</div>
-                                <p>暂无写作记录</p>
+                    <div class="writing-history-v10">
+                        <div class="section-label-v10">🕐 写作历史</div>
+                        <div id="writing-history-list" class="history-list-v10">
+                            <div class="empty-state-v10">
+                                <div class="empty-icon-v10">📝</div>
+                                <p>完成练习后这里会显示记录</p>
                             </div>
                         </div>
                     </div>
