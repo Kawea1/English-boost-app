@@ -531,3 +531,54 @@ window.showGetCodeHelp = showGetCodeHelp;
 window.showDeviceMigration = showDeviceMigration;
 window.formatActivationInput = formatActivationInput;
 window.handleActivationKeydown = handleActivationKeydown;
+
+// V10: 切换激活表单显示
+function toggleActivationForm() {
+    var form = document.getElementById('activationFormV10');
+    var toggle = document.querySelector('.activation-toggle');
+    
+    if (form && toggle) {
+        form.classList.toggle('collapsed');
+        toggle.classList.toggle('active');
+    }
+}
+window.toggleActivationForm = toggleActivationForm;
+
+// V10: 检查并更新试用按钮状态
+function updateTrialButtonState() {
+    var welcomeCard = document.getElementById('welcomeCard');
+    var trialBtn = document.getElementById('trialBtn');
+    
+    // 检查是否已使用过试用
+    var hasUsedTrial = localStorage.getItem('trialUsed') === 'true';
+    var trialExpired = false;
+    
+    try {
+        var trialEndDate = localStorage.getItem('trialEndDate');
+        if (trialEndDate && new Date(trialEndDate) < new Date()) {
+            trialExpired = true;
+        }
+    } catch(e) {}
+    
+    if (welcomeCard && trialBtn && (hasUsedTrial || trialExpired)) {
+        welcomeCard.classList.add('trial-used');
+        var ctaTitle = trialBtn.querySelector('.cta-title');
+        var ctaSubtitle = trialBtn.querySelector('.cta-subtitle');
+        var ctaIcon = trialBtn.querySelector('.cta-icon');
+        
+        if (ctaIcon) ctaIcon.textContent = '⏰';
+        if (ctaTitle) ctaTitle.textContent = '试用已结束';
+        if (ctaSubtitle) ctaSubtitle.textContent = '请输入激活码继续使用';
+        
+        // 点击时展开激活码输入
+        trialBtn.onclick = function(e) {
+            e.preventDefault();
+            toggleActivationForm();
+        };
+    }
+}
+
+// 页面加载时检查状态
+document.addEventListener('DOMContentLoaded', function() {
+    updateTrialButtonState();
+});
