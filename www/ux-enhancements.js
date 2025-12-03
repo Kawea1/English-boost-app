@@ -410,8 +410,9 @@
     };
     
     // ========== 版本4: 成就系统与激励机制 ==========
+    // v4.9.3: 已禁用成就系统,追求严谨客观的学习体验
     
-    // 成就定义
+    /* 成就定义 - 已禁用
     const Achievements = {
         list: {
             'first_word': { name: '初出茅庐', desc: '学习第一个单词', icon: '🌱', points: 10 },
@@ -524,8 +525,9 @@
             if (hour >= 0 && hour < 5) this.check('night_owl');
         }
     };
+    */
     
-    // 等级系统
+    /* 等级系统 - 已禁用
     const LevelSystem = {
         levels: [
             { level: 1, name: '学习新手', minPoints: 0, icon: '🌱' },
@@ -608,6 +610,7 @@
             }, 3000);
         }
     };
+    */
     
     // ========== 版本5: 个性化体验优化 ==========
     
@@ -3709,8 +3712,8 @@
         addTooltip,
         showShortcutHint,
         OnboardingFlow,
-        Achievements,
-        LevelSystem,
+        // Achievements,  // v4.9.3: 已禁用成就系统
+        // LevelSystem,   // v4.9.3: 已禁用等级系统
         LearningAnalytics,
         SmartReminder,
         EncouragementSystem,

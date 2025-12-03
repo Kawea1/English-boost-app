@@ -7538,10 +7538,15 @@ function scoreAcademicWriting(text, topic = null) {
     };
   }
   
-  // 计算结构分数
-  if (paragraphs.length >= 3) {
-    result.dimensions.structure.score += 10;
-    result.dimensions.structure.feedback.push('✓ 段落数量合适');
+  // 计算结构分数 - 基础分8分,根据实际表现评分
+  result.dimensions.structure.score = 8;  // 基础分
+  
+  if (paragraphs.length >= 5) {
+    result.dimensions.structure.score += 5;
+    result.dimensions.structure.feedback.push('✓ 段落结构完整');
+  } else if (paragraphs.length >= 3) {
+    result.dimensions.structure.score += 3;
+    result.dimensions.structure.feedback.push('○ 段落数量基本合适');
   } else {
     result.dimensions.structure.feedback.push('✗ 段落数量不足，建议至少3段');
   }
@@ -7549,49 +7554,144 @@ function scoreAcademicWriting(text, topic = null) {
   const introAnalysis = result.paragraphAnalysis.find(p => p.position === 'introduction');
   const conclusionAnalysis = result.paragraphAnalysis.find(p => p.position === 'conclusion');
   
-  if (introAnalysis && introAnalysis.strengths.includes('论点明确')) {
-    result.dimensions.structure.score += 8;
-  }
-  if (conclusionAnalysis && conclusionAnalysis.strengths.includes('结论总结到位')) {
-    result.dimensions.structure.score += 7;
+  if (introAnalysis) {
+    if (introAnalysis.strengths.includes('论点明确')) {
+      result.dimensions.structure.score += 6;
+      result.dimensions.structure.feedback.push('✓ 引言论点明确');
+    } else {
+      result.dimensions.structure.feedback.push('✗ 引言论点不够清晰');
+    }
+  } else {
+    result.dimensions.structure.feedback.push('✗ 缺少明确的引言段');
   }
   
-  // 计算语言分数
+  if (conclusionAnalysis) {
+    if (conclusionAnalysis.strengths.includes('结论总结到位')) {
+      result.dimensions.structure.score += 6;
+      result.dimensions.structure.feedback.push('✓ 结论总结有效');
+    } else {
+      result.dimensions.structure.feedback.push('○ 结论总结可进一步强化');
+    }
+  } else {
+    result.dimensions.structure.feedback.push('✗ 缺少结论段');
+  }
+  
+  result.dimensions.structure.score = Math.max(0, Math.min(25, result.dimensions.structure.score));
+  
+  // 计算语言分数 - 基于实际问题严格评分
   let totalIssues = result.paragraphAnalysis.reduce((sum, p) => sum + p.issues.length, 0);
   let academicStrengths = result.paragraphAnalysis.filter(p => p.strengths.includes('学术词汇运用良好')).length;
   
-  result.dimensions.language.score = Math.max(0, 25 - totalIssues * 2);
-  if (academicStrengths >= 2) {
-    result.dimensions.language.score = Math.min(25, result.dimensions.language.score + 5);
+  // 基础分10分,每个学术优势+3分,每个问题-2分
+  result.dimensions.language.score = 10;
+  result.dimensions.language.score += academicStrengths * 3;
+  result.dimensions.language.score -= totalIssues * 2;
+  result.dimensions.language.score = Math.max(0, Math.min(25, result.dimensions.language.score));
+  
+  if (academicStrengths >= 3) {
     result.dimensions.language.feedback.push('✓ 学术词汇运用得当');
-  }
-  
-  // 计算论证分数
-  const evidenceParagraphs = result.paragraphAnalysis.filter(p => p.strengths.includes('有证据支持论点')).length;
-  result.dimensions.argumentation.score = Math.min(25, 10 + evidenceParagraphs * 5);
-  if (evidenceParagraphs >= 2) {
-    result.dimensions.argumentation.feedback.push('✓ 论证有充分证据支持');
+  } else if (academicStrengths >= 1) {
+    result.dimensions.language.feedback.push('○ 学术词汇使用尚可,可进一步提升');
   } else {
-    result.dimensions.argumentation.feedback.push('✗ 需要更多证据和例证支持论点');
+    result.dimensions.language.feedback.push('✗ 缺乏学术词汇,建议增加高级词汇使用');
   }
   
-  // 计算学术规范分数
+  if (totalIssues > 3) {
+    result.dimensions.language.feedback.push('✗ 语言问题较多,需要仔细检查语法和表达');
+  }
+  
+  // 计算论证分数 - 基础分5分,根据证据质量评分
+  const evidenceParagraphs = result.paragraphAnalysis.filter(p => p.strengths.includes('有证据支持论点')).length;
+  const totalBodyParagraphs = result.paragraphAnalysis.filter(p => p.position === 'body').length;
+  
+  result.dimensions.argumentation.score = 5;  // 基础分
+  
+  if (evidenceParagraphs >= 3) {
+    result.dimensions.argumentation.score += 15;
+    result.dimensions.argumentation.feedback.push('✓ 论证有充分证据支持');
+  } else if (evidenceParagraphs >= 2) {
+    result.dimensions.argumentation.score += 10;
+    result.dimensions.argumentation.feedback.push('○ 论证有一定证据,可进一步充实');
+  } else if (evidenceParagraphs >= 1) {
+    result.dimensions.argumentation.score += 5;
+    result.dimensions.argumentation.feedback.push('✗ 证据不足,需要更多例证支持论点');
+  } else {
+    result.dimensions.argumentation.feedback.push('✗ 缺乏证据支持,论证力度较弱');
+  }
+  
+  // 检查分析深度
+  const analysisDepth = result.paragraphAnalysis.filter(p => 
+    p.text.length > 150 && p.position === 'body'
+  ).length;
+  if (analysisDepth >= 2) {
+    result.dimensions.argumentation.score += 5;
+    result.dimensions.argumentation.feedback.push('✓ 分析较为深入');
+  } else if (analysisDepth >= 1) {
+    result.dimensions.argumentation.feedback.push('○ 分析尚可,建议进一步深化');
+  } else {
+    result.dimensions.argumentation.feedback.push('✗ 分析不够深入,建议详细论述');
+  }
+  
+  result.dimensions.argumentation.score = Math.max(0, Math.min(25, result.dimensions.argumentation.score));
+  
+  // 计算学术规范分数 - 严格基于实际表现评分
   const contractionIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'contractions')).length;
   const firstPersonIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'excessiveFirstPerson')).length;
+  const absoluteIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'absoluteStatements')).length;
+  const informalIssues = result.paragraphAnalysis.filter(p => p.issues.some(i => i.type === 'informalLanguage')).length;
   
-  result.dimensions.academic.score = 25;
+  // 基础分12分,根据各类问题扣分
+  result.dimensions.academic.score = 12;
+  
   if (contractionIssues > 0) {
-    result.dimensions.academic.score -= contractionIssues * 5;
-    result.dimensions.academic.feedback.push('✗ 存在缩写形式，应展开');
+    result.dimensions.academic.score -= contractionIssues * 4;
+    result.dimensions.academic.feedback.push('✗ 存在缩写形式(如don\'t, can\'t),学术写作应使用完整形式');
   }
+  
   if (firstPersonIssues > 0) {
     result.dimensions.academic.score -= firstPersonIssues * 3;
-    result.dimensions.academic.feedback.push('✗ 第一人称使用过多');
+    result.dimensions.academic.feedback.push('✗ 第一人称使用过多,学术写作应保持客观');
   }
-  if (result.dimensions.academic.score >= 20) {
-    result.dimensions.academic.feedback.push('✓ 学术规范较好');
+  
+  if (absoluteIssues > 0) {
+    result.dimensions.academic.score -= absoluteIssues * 3;
+    result.dimensions.academic.feedback.push('✗ 表述过于绝对,缺乏学术谨慎性(hedging)');
   }
-  result.dimensions.academic.score = Math.max(0, result.dimensions.academic.score);
+  
+  if (informalIssues > 0) {
+    result.dimensions.academic.score -= informalIssues * 2;
+    result.dimensions.academic.feedback.push('✗ 存在口语化表达,不符合学术规范');
+  }
+  
+  // 检查是否有hedging用法(谨慎表达)
+  const hasHedging = result.paragraphAnalysis.some(p => 
+    p.text.match(/\b(may|might|could|appears?|seems?|suggests?|indicates?|tends?|arguably|potentially|likely|possibly)\b/i)
+  );
+  if (hasHedging) {
+    result.dimensions.academic.score += 5;
+    result.dimensions.academic.feedback.push('✓ 使用了谨慎表达(hedging),符合学术规范');
+  } else {
+    result.dimensions.academic.feedback.push('○ 建议使用谨慎表达词汇(如may, suggests, appears to等)');
+  }
+  
+  // 检查是否有学术连接词
+  const hasAcademicTransitions = result.paragraphAnalysis.some(p => 
+    p.text.match(/\b(however|nevertheless|furthermore|moreover|consequently|therefore|thus)\b/i)
+  );
+  if (hasAcademicTransitions) {
+    result.dimensions.academic.score += 4;
+    result.dimensions.academic.feedback.push('✓ 使用了学术连接词');
+  }
+  
+  result.dimensions.academic.score = Math.max(0, Math.min(25, result.dimensions.academic.score));
+  
+  if (result.dimensions.academic.score >= 18) {
+    result.dimensions.academic.feedback.push('✓ 整体学术规范良好');
+  } else if (result.dimensions.academic.score >= 12) {
+    result.dimensions.academic.feedback.push('○ 学术规范尚可,仍有提升空间');
+  } else {
+    result.dimensions.academic.feedback.push('✗ 学术规范需要显著改进');
+  }
   
   // 计算总分
   result.overallScore = 

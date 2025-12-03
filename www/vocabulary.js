@@ -2814,7 +2814,8 @@ function rateWord(rating) {
                 updateDailyProgress('vocabulary', 1);
             }
             
-            // v3.5.0: 触发成就检查
+            // v4.9.3: 已移除成就鼓励系统,追求严谨客观的学习体验
+            /* 成就系统已禁用
             if (window.UX && window.UX.Achievements) {
                 window.UX.Achievements.checkWordCount(learnedWords.length);
                 if (learnedWords.length % 10 === 0) {
@@ -2826,6 +2827,7 @@ function rateWord(rating) {
                 }
                 window.UX.LevelSystem.checkLevelUp();
             }
+            */
         }
         
         // 如果评分为简单，标记为已掌握
