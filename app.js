@@ -1199,9 +1199,9 @@ function drawLearningChart() {
         ctx.stroke();
     }
     
-    // 绘制Y轴标签
+    // 绘制Y轴标签 - 增强锐利度
     ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#6b7280';
-    ctx.font = '11px -apple-system, system-ui, sans-serif';
+    ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
     ctx.textAlign = 'right';
     for (let i = 0; i <= 5; i++) {
         const value = Math.round((maxValue / 5) * (5 - i));
@@ -1209,7 +1209,8 @@ function drawLearningChart() {
         ctx.fillText(value.toString(), padding.left - 8, y + 4);
     }
     
-    // 绘制X轴标签（日期）
+    // 绘制X轴标签（日期）- 增强锐利度
+    ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
     ctx.textAlign = 'center';
     historyData.forEach((data, index) => {
         const x = padding.left + xStep * index;

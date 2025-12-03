@@ -7319,12 +7319,13 @@ body.liquid-glass-mode .liquid-glass-settings {
     overflow-y: auto;
 }
 
-/* V12: 设置分区标题 */
+/* V12: 设置分区标题 - 减少间距 */
 .settings-section-title-v12 {
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 16px 20px 8px;
+    padding: 8px 20px 6px;
+    margin-top: 4px;
     font-size: 14px;
     font-weight: 600;
     color: var(--gray-600);
