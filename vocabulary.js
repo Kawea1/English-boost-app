@@ -2727,6 +2727,11 @@ function rateWord(rating) {
                 recordDailyStats('words', 1);
             }
             
+            // 更新首页词汇进度
+            if (typeof updateVocabProgress === 'function') {
+                updateVocabProgress();
+            }
+            
             // 更新今日目标进度
             if (typeof updateDailyProgress === 'function') {
                 updateDailyProgress('vocabulary', 1);

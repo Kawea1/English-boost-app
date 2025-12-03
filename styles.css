@@ -25842,7 +25842,8 @@ body.theme-dark .para-score-badge.score-error {
     border: 1px solid var(--gray-200);
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 12px;
+    min-height: 100px;
 }
 
 .core-card-v11:hover {
@@ -25854,35 +25855,94 @@ body.theme-dark .para-score-badge.score-error {
     transform: translateY(0);
 }
 
+/* 卡片头部 - 水平布局 */
+.card-header-minimal {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-header-minimal h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0;
+}
+
+/* 独立标题（无进度条的卡片） */
+.core-card-v11 > h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-800);
+    margin: 0;
+}
+
 /* 卡片图标 */
 .card-icon-v11 {
-    width: 44px;
-    height: 44px;
+    width: 36px;
+    height: 36px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;
+    border-radius: 10px;
     flex-shrink: 0;
 }
 
 .card-icon-v11 svg {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
 }
 
-/* 卡片信息 */
-.card-info-v11 h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--gray-800);
-    margin: 0 0 4px 0;
+/* 极简进度条系统 */
+.progress-bar-minimal {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: auto;
 }
 
-.card-info-v11 p {
+.progress-track {
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #8b5cf6, #a78bfa);
+    border-radius: 3px;
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.progress-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.progress-stats {
     font-size: 12px;
-    color: var(--gray-500);
-    margin: 0;
-    line-height: 1.3;
+    color: var(--gray-600);
+    font-weight: 500;
+    text-align: right;
+}
+
+.progress-stats span {
+    color: var(--gray-800);
+    font-weight: 600;
 }
 
 /* 词汇模块 - 紫色 */
@@ -25897,7 +25957,7 @@ body.theme-dark .para-score-badge.score-error {
     box-shadow: 0 8px 24px rgba(139, 92, 246, 0.15);
 }
 
-/* 写作模块 - 橙色 (特色模块) */
+/* 写作模块 - 橙色 */
 .core-card-v11.writing .card-icon-v11 {
     background: linear-gradient(135deg, #ffedd5, #fed7aa);
 }
@@ -25907,24 +25967,6 @@ body.theme-dark .para-score-badge.score-error {
 .core-card-v11.writing:hover {
     border-color: rgba(249, 115, 22, 0.3);
     box-shadow: 0 8px 24px rgba(249, 115, 22, 0.15);
-}
-
-/* 特色卡片样式 */
-.core-card-v11.featured {
-    background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
-    border-color: rgba(249, 115, 22, 0.2);
-}
-
-.core-card-v11.featured .featured-tag {
-    position: absolute;
-    top: 8px;
-    right: 8px;
-    font-size: 10px;
-    font-weight: 600;
-    color: #ea580c;
-    background: rgba(249, 115, 22, 0.15);
-    padding: 2px 8px;
-    border-radius: 10px;
 }
 
 /* 阅读模块 - 绿色 */

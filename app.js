@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '3.9.0';
-    const APP_VERSION_CODE = 390;
+    const APP_VERSION = '4.9.0';
+    const APP_VERSION_CODE = 490;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
@@ -1675,6 +1675,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // 初始化今日目标
         initDailyGoals();
         
+        // 更新首页词汇进度
+        updateVocabProgress();
+        
         // 初始化导航滚动行为
         initNavScrollBehavior();
         
@@ -2144,6 +2147,36 @@ function updateDailyProgress(module, increment) {
 // ==================== 智能问候系统 V10 ====================
 // V1: 修正时间段划分逻辑（凌晨不再说早上好）
 // V2: 丰富问候语多样性（每个时段5-8种）
+// ==================== 首页词汇进度更新 ====================
+// 更新首页词汇进度条和统计
+function updateVocabProgress() {
+    const learnedCount = parseInt(localStorage.getItem('learnedCount') || '0');
+    const totalWords = 10000; // 总词库数量
+    const percentage = Math.min(Math.round((learnedCount / totalWords) * 100), 100);
+    
+    // 更新进度条
+    const progressBar = document.getElementById('vocabProgressBar');
+    if (progressBar) {
+        // 使用setTimeout确保动画效果
+        setTimeout(() => {
+            progressBar.style.width = percentage + '%';
+        }, 100);
+    }
+    
+    // 更新已学数量
+    const learnedEl = document.getElementById('vocabLearned2');
+    if (learnedEl) {
+        learnedEl.textContent = learnedCount.toLocaleString();
+    }
+    
+    // 更新总数显示
+    const totalEl = document.getElementById('vocabTotal');
+    if (totalEl) {
+        totalEl.textContent = totalWords.toLocaleString() + '+';
+    }
+}
+
+// ==================== 时段问候系统 ====================
 // V3: 太阳/月亮根据实时位置移动
 // V4: 添加天气氛围效果
 // V5: 个性化问候语（基于学习状态）
