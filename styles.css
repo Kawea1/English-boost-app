@@ -7780,6 +7780,33 @@ body.liquid-glass-mode .liquid-glass-settings {
     transform: translateX(4px);
 }
 
+/* AI客服高亮样式 */
+.link-item-v10.highlight {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.08) 0%, rgba(139, 92, 246, 0.08) 100%);
+    margin: 0 -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+    border-bottom: none !important;
+    margin-bottom: 4px;
+}
+
+.link-item-v10.highlight:hover {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+}
+
+.link-badge-v10 {
+    font-size: 10px;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-left: auto;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* V10 订阅状态 */
 .subscription-status-v10 {
     padding: 16px;

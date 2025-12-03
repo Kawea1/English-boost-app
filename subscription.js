@@ -706,17 +706,41 @@
                     
                     <!-- 微信/支付宝支付区域 -->
                     <div class="payment-qr-section" id="paymentQrSection">
-                        <div class="qr-placeholder">
-                            <svg width="160" height="160" viewBox="0 0 160 160">
-                                <rect width="160" height="160" fill="#f3f4f6" rx="8"/>
-                                <text x="80" y="75" text-anchor="middle" fill="#9ca3af" font-size="12">扫码支付</text>
-                                <text x="80" y="95" text-anchor="middle" fill="#9ca3af" font-size="12" id="qrPriceText">¥${SUBSCRIPTION_CONFIG.PRICE}</text>
-                            </svg>
-                            <p class="qr-hint">请联系客服获取付款码</p>
+                        <div class="qr-code-container" id="qrCodeContainer">
+                            <!-- 微信收款码 -->
+                            <div class="qr-code-wrap wechat-qr" id="wechatQrCode">
+                                <div class="qr-image-placeholder" style="width:180px;height:180px;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed #22c55e;">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="#22c55e">
+                                        <path d="M8.5 11c-.83 0-1.5-.67-1.5-1.5S7.67 8 8.5 8s1.5.67 1.5 1.5S9.33 11 8.5 11zm7 0c-.83 0-1.5-.67-1.5-1.5S14.67 8 15.5 8s1.5.67 1.5 1.5-.67 1.5-1.5 1.5zM12 2C6.48 2 2 5.58 2 10c0 2.03 1.02 3.87 2.67 5.27l-.67 2.73 3.1-1.55c1.22.38 2.55.55 3.9.55 5.52 0 10-3.58 10-8s-4.48-8-10-8z"/>
+                                    </svg>
+                                    <span style="font-size:13px;color:#16a34a;margin-top:8px;font-weight:600;">微信扫码支付</span>
+                                    <span style="font-size:20px;color:#15803d;font-weight:700;margin-top:4px;">¥<span id="wechatPrice">${SUBSCRIPTION_CONFIG.PRICE}</span></span>
+                                </div>
+                                <p class="qr-method-label">微信支付</p>
+                            </div>
+                            <!-- 支付宝收款码 -->
+                            <div class="qr-code-wrap alipay-qr hidden" id="alipayQrCode">
+                                <div class="qr-image-placeholder" style="width:180px;height:180px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px dashed #3b82f6;">
+                                    <svg width="48" height="48" viewBox="0 0 24 24" fill="#3b82f6">
+                                        <path d="M21 12V6c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c.56 0 1.07-.23 1.43-.61l-7.43-3.18c-1.31.68-2.82 1.12-4.47 1.17-1.07-.27-2.03-.78-2.76-1.5C4.65 14.78 4 13.29 4 11.68c0-2.89 2.39-5.43 5.97-6.03 3.29-.35 5.93 1.54 6.58 4.31.29-.16.58-.31.88-.44 1.69-.73 3.31-1.11 4.69-1.25.34 1.05.55 2.12.55 3.26 0 .98-.13 1.93-.38 2.84l1.72.73V12z"/>
+                                    </svg>
+                                    <span style="font-size:13px;color:#2563eb;margin-top:8px;font-weight:600;">支付宝扫码支付</span>
+                                    <span style="font-size:20px;color:#1d4ed8;font-weight:700;margin-top:4px;">¥<span id="alipayPrice">${SUBSCRIPTION_CONFIG.PRICE}</span></span>
+                                </div>
+                                <p class="qr-method-label">支付宝支付</p>
+                            </div>
+                        </div>
+                        <div class="payment-steps">
+                            <div class="step"><span class="step-num">1</span>截图保存收款码</div>
+                            <div class="step"><span class="step-num">2</span>打开微信/支付宝扫码付款</div>
+                            <div class="step"><span class="step-num">3</span>付款后联系客服获取激活码</div>
                         </div>
                         <div class="contact-info">
-                            <p>微信: <strong>${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}</strong></p>
-                            <p class="contact-note">付款后发送截图获取激活码</p>
+                            <p>客服微信: <strong>${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}</strong></p>
+                            <button class="copy-wechat-btn" onclick="copyWechatId()">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                复制微信号
+                            </button>
                         </div>
                     </div>
                     
@@ -766,6 +790,8 @@
                     const method = this.dataset.method;
                     const qrSection = document.getElementById('paymentQrSection');
                     const keySection = document.getElementById('paymentKeySection');
+                    const wechatQr = document.getElementById('wechatQrCode');
+                    const alipayQr = document.getElementById('alipayQrCode');
                     
                     if (method === 'key') {
                         qrSection.classList.add('hidden');
@@ -773,6 +799,15 @@
                     } else {
                         qrSection.classList.remove('hidden');
                         keySection.classList.add('hidden');
+                        
+                        // 切换收款码显示
+                        if (method === 'wechat') {
+                            wechatQr.classList.remove('hidden');
+                            alipayQr.classList.add('hidden');
+                        } else if (method === 'alipay') {
+                            wechatQr.classList.add('hidden');
+                            alipayQr.classList.remove('hidden');
+                        }
                     }
                 });
             });
@@ -780,6 +815,25 @@
         
         // 添加样式
         addPaymentStyles();
+    }
+    
+    // 复制微信号
+    function copyWechatId() {
+        const wechatId = SUBSCRIPTION_CONFIG.CONTACT_WECHAT;
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(wechatId).then(() => {
+                showToast('微信号已复制: ' + wechatId);
+            });
+        } else {
+            // 兼容旧浏览器
+            const textArea = document.createElement('textarea');
+            textArea.value = wechatId;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('微信号已复制: ' + wechatId);
+        }
     }
     
     // 应用优惠码UI
@@ -1431,6 +1485,75 @@
                 cursor: pointer;
             }
             
+            /* V12: 收款码区域样式 */
+            .qr-code-container {
+                margin-bottom: 16px;
+            }
+            
+            .qr-code-wrap {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .qr-method-label {
+                margin-top: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                color: #374151;
+            }
+            
+            .payment-steps {
+                display: flex;
+                justify-content: center;
+                gap: 16px;
+                margin: 16px 0;
+                padding: 12px;
+                background: #f3f4f6;
+                border-radius: 8px;
+            }
+            
+            .payment-steps .step {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 11px;
+                color: #6b7280;
+            }
+            
+            .payment-steps .step-num {
+                width: 18px;
+                height: 18px;
+                background: #6366f1;
+                color: white;
+                border-radius: 50%;
+                font-size: 10px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .copy-wechat-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                margin-top: 8px;
+                padding: 8px 16px;
+                background: #6366f1;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                font-size: 13px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .copy-wechat-btn:hover {
+                background: #4f46e5;
+            }
+            
             .hidden {
                 display: none !important;
             }
@@ -1926,6 +2049,7 @@
     window.showUpgradePrompt = showUpgradePrompt;
     window.closeUpgradePrompt = closeUpgradePrompt;
     window.getDailyUsageStats = getDailyUsageStats;
+    window.copyWechatId = copyWechatId;
     // 邀请系统
     window.showInviteModal = showInviteModal;
     window.closeInviteModal = closeInviteModal;
@@ -2461,5 +2585,996 @@
             setTimeout(renderSubscriptionSettings, 100);
         }
     };
+
+    // ==================== AI客服系统 ====================
+    
+    // FAQ知识库 - 基于本应用的常见问题
+    const FAQ_DATABASE = [
+        {
+            keywords: ['试用', '天数', '多久', '免费', '期限'],
+            question: '试用期有多长？',
+            answer: '新用户享有30天免费试用期，期间可以体验所有核心功能。试用期内有一定的使用限制（每日20个单词、3次复习等），升级终身会员后无任何限制。'
+        },
+        {
+            keywords: ['价格', '多少钱', '费用', '收费'],
+            question: '终身会员多少钱？',
+            answer: `终身会员价格为¥${SUBSCRIPTION_CONFIG.PRICE}（原价¥${SUBSCRIPTION_CONFIG.ORIGINAL_PRICE}），一次付费永久使用，包含所有功能和未来更新，无任何隐藏费用。`
+        },
+        {
+            keywords: ['支付', '付款', '微信', '支付宝', '怎么买', '购买'],
+            question: '如何购买/支付？',
+            answer: '点击"升级会员"按钮，选择微信支付或支付宝扫码付款。付款后请在输入框填写激活码（付款后联系客服获取），即可立即激活终身会员。'
+        },
+        {
+            keywords: ['激活', '激活码', '怎么激活', '输入'],
+            question: '如何使用激活码？',
+            answer: '在支付弹窗中选择"激活码"标签，输入您收到的激活码后点击确认即可。激活码格式为LIFETIME-开头的字符串，每个激活码只能使用一次。'
+        },
+        {
+            keywords: ['退款', '退钱', '不满意', '退货'],
+            question: '可以退款吗？',
+            answer: '我们提供7天无理由退款服务。如果购买后7天内对产品不满意，可以联系客服申请退款。退款后激活码将失效。注意：超过7天或已大量使用（学习超过100个单词）将不支持退款。'
+        },
+        {
+            keywords: ['GRE', '考试', '备考', '词汇'],
+            question: '这个App适合GRE备考吗？',
+            answer: '非常适合！我们的词汇库包含完整的GRE核心词汇、Kaplan词汇、AWL学术词汇，配合艾宾浩斯复习系统，帮助您高效记忆。还有学术阅读、写作、听力等模块全面提升英语能力。'
+        },
+        {
+            keywords: ['托福', 'TOEFL', '备考'],
+            question: '适合托福备考吗？',
+            answer: '是的！词汇库涵盖托福核心词汇，听力模块包含学术场景对话，阅读模块有学术文章精讲，写作模块帮助提升学术写作能力，全面覆盖托福考试需求。'
+        },
+        {
+            keywords: ['词汇', '单词', '多少', '数量'],
+            question: '词汇库有多少单词？',
+            answer: '词汇库包含：GRE核心词汇3500+、Kaplan词汇3000+、AWL学术词汇570+、托福词汇4500+，共计10000+精选词汇，每个单词都配有释义、例句和中文翻译。'
+        },
+        {
+            keywords: ['复习', '艾宾浩斯', '遗忘曲线', '记忆'],
+            question: '复习系统是怎么工作的？',
+            answer: '我们采用艾宾浩斯遗忘曲线算法，系统会在您学习后的1天、2天、4天、7天、15天、30天自动安排复习，科学对抗遗忘，让单词真正记住。'
+        },
+        {
+            keywords: ['离线', '没网', '断网', '网络'],
+            question: '可以离线使用吗？',
+            answer: '可以！这是一个PWA应用，首次加载后会缓存所有资源，之后无需网络也可正常学习。您的学习数据会在本地保存，联网后自动同步。'
+        },
+        {
+            keywords: ['数据', '同步', '换手机', '设备'],
+            question: '数据会同步吗？换设备怎么办？',
+            answer: '目前学习数据保存在本地浏览器中。换设备前请在设置中导出数据，新设备导入即可。终身会员的激活码可在新设备重新激活。'
+        },
+        {
+            keywords: ['听力', '精听', '怎么练'],
+            question: '听力模块怎么使用？',
+            answer: '听力模块提供学术场景对话和讲座，支持精听训练：播放音频后尝试听写，系统会检查您的答案并标出错误。支持调节语速、循环播放等功能。'
+        },
+        {
+            keywords: ['阅读', '文章', '怎么读'],
+            question: '阅读模块怎么使用？',
+            answer: '阅读模块提供学术文章精讲，包含各学科主题。点击生词可查看释义，文章配有阅读理解练习和词汇高亮，帮助提升学术阅读能力。'
+        },
+        {
+            keywords: ['写作', '作文', '怎么写'],
+            question: '写作模块怎么使用？',
+            answer: '写作模块提供学术写作练习，可以选择GRE或托福话题。写完后系统会分析您的文章，统计词汇使用情况，提供改进建议，帮助提升学术写作水平。'
+        },
+        {
+            keywords: ['bug', '问题', '错误', '闪退', '打不开'],
+            question: '遇到bug怎么办？',
+            answer: '请尝试以下步骤：1. 刷新页面 2. 清除缓存后重新加载 3. 检查浏览器是否为最新版本。如仍有问题，请联系微信客服：huangjiawei_boost，附上问题截图。'
+        },
+        {
+            keywords: ['联系', '客服', '微信', '人工'],
+            question: '如何联系人工客服？',
+            answer: `添加微信：${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}，或发送邮件至：${SUBSCRIPTION_CONFIG.CONTACT_EMAIL}。工作时间（9:00-21:00）通常1小时内回复。`
+        },
+        {
+            keywords: ['邀请', '好友', '延长'],
+            question: '邀请好友有什么奖励？',
+            answer: '邀请好友注册后，您可获得3天额外试用时间，被邀请的好友可获得7天试用时间。在设置页面可以生成您的专属邀请链接。'
+        },
+        {
+            keywords: ['安全', '隐私', '数据安全'],
+            question: '我的数据安全吗？',
+            answer: '您的学习数据仅保存在本地浏览器中，我们不会上传或收集任何个人信息。支付通过微信/支付宝官方渠道处理，安全有保障。'
+        }
+    ];
+    
+    // AI客服对话历史
+    let chatHistory = [];
+    
+    // 显示AI客服弹窗
+    function showAISupport() {
+        // 移除已有弹窗
+        const existingModal = document.getElementById('aiSupportModal');
+        if (existingModal) existingModal.remove();
+        
+        // 重置对话历史
+        chatHistory = [];
+        
+        const modal = document.createElement('div');
+        modal.id = 'aiSupportModal';
+        modal.className = 'payment-modal';
+        modal.innerHTML = `
+            <div class="payment-modal-content ai-support-modal">
+                <div class="payment-modal-header">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                        </svg>
+                        智能客服
+                    </h3>
+                    <button class="close-modal-btn" onclick="closeAISupport()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="18" y1="6" x2="6" y2="18"/>
+                            <line x1="6" y1="6" x2="18" y2="18"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="ai-chat-container" id="aiChatContainer">
+                    <div class="ai-message bot">
+                        <div class="ai-avatar">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A1.5 1.5 0 0 0 6 14.5A1.5 1.5 0 0 0 7.5 16A1.5 1.5 0 0 0 9 14.5A1.5 1.5 0 0 0 7.5 13m9 0a1.5 1.5 0 0 0-1.5 1.5a1.5 1.5 0 0 0 1.5 1.5a1.5 1.5 0 0 0 1.5-1.5a1.5 1.5 0 0 0-1.5-1.5M12 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z"/>
+                            </svg>
+                        </div>
+                        <div class="ai-bubble">
+                            您好！我是智能客服小助手，有什么可以帮您的吗？<br><br>
+                            您可以问我关于：
+                            <ul style="margin: 8px 0 0 0; padding-left: 16px;">
+                                <li>试用期和会员价格</li>
+                                <li>支付和激活方式</li>
+                                <li>退款政策</li>
+                                <li>功能使用方法</li>
+                                <li>常见问题解决</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="ai-quick-questions">
+                    <button class="quick-q-btn" onclick="askQuestion('试用期有多长？')">试用期</button>
+                    <button class="quick-q-btn" onclick="askQuestion('多少钱？')">价格</button>
+                    <button class="quick-q-btn" onclick="askQuestion('怎么支付？')">支付方式</button>
+                    <button class="quick-q-btn" onclick="askQuestion('可以退款吗？')">退款政策</button>
+                    <button class="quick-q-btn" onclick="askQuestion('联系人工客服')">人工客服</button>
+                </div>
+                
+                <div class="ai-input-container">
+                    <input type="text" id="aiChatInput" placeholder="输入您的问题..." onkeypress="handleChatKeypress(event)">
+                    <button class="ai-send-btn" onclick="sendChatMessage()">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        addAISupportStyles();
+        
+        // 聚焦输入框
+        setTimeout(() => {
+            document.getElementById('aiChatInput')?.focus();
+        }, 100);
+    }
+    
+    // 关闭AI客服
+    function closeAISupport() {
+        const modal = document.getElementById('aiSupportModal');
+        if (modal) {
+            modal.classList.add('closing');
+            setTimeout(() => modal.remove(), 200);
+        }
+    }
+    
+    // 处理回车键发送
+    function handleChatKeypress(event) {
+        if (event.key === 'Enter') {
+            sendChatMessage();
+        }
+    }
+    
+    // 快捷问题点击
+    function askQuestion(question) {
+        const input = document.getElementById('aiChatInput');
+        if (input) {
+            input.value = question;
+            sendChatMessage();
+        }
+    }
+    
+    // 发送消息
+    function sendChatMessage() {
+        const input = document.getElementById('aiChatInput');
+        const message = input?.value?.trim();
+        
+        if (!message) return;
+        
+        // 添加用户消息
+        addChatMessage(message, 'user');
+        input.value = '';
+        
+        // 模拟打字效果延迟
+        setTimeout(() => {
+            const response = generateAIResponse(message);
+            addChatMessage(response, 'bot');
+        }, 500 + Math.random() * 500);
+    }
+    
+    // 添加聊天消息
+    function addChatMessage(message, type) {
+        const container = document.getElementById('aiChatContainer');
+        if (!container) return;
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${type}`;
+        
+        if (type === 'bot') {
+            messageDiv.innerHTML = `
+                <div class="ai-avatar">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2a2 2 0 0 1 2 2c0 .74-.4 1.39-1 1.73V7h1a7 7 0 0 1 7 7h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1v1a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-1H2a1 1 0 0 1-1-1v-3a1 1 0 0 1 1-1h1a7 7 0 0 1 7-7h1V5.73c-.6-.34-1-.99-1-1.73a2 2 0 0 1 2-2M7.5 13A1.5 1.5 0 0 0 6 14.5A1.5 1.5 0 0 0 7.5 16A1.5 1.5 0 0 0 9 14.5A1.5 1.5 0 0 0 7.5 13m9 0a1.5 1.5 0 0 0-1.5 1.5a1.5 1.5 0 0 0 1.5 1.5a1.5 1.5 0 0 0 1.5-1.5a1.5 1.5 0 0 0-1.5-1.5M12 9a5 5 0 0 0-5 5v1h10v-1a5 5 0 0 0-5-5z"/>
+                    </svg>
+                </div>
+                <div class="ai-bubble">${message}</div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="ai-bubble">${escapeHtml(message)}</div>
+            `;
+        }
+        
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+        
+        chatHistory.push({ type, message });
+    }
+    
+    // HTML转义
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    // 生成AI回复
+    function generateAIResponse(userMessage) {
+        const lowerMessage = userMessage.toLowerCase();
+        
+        // 搜索匹配的FAQ
+        let bestMatch = null;
+        let bestScore = 0;
+        
+        for (const faq of FAQ_DATABASE) {
+            let score = 0;
+            for (const keyword of faq.keywords) {
+                if (lowerMessage.includes(keyword)) {
+                    score += 2;
+                } else if (keyword.includes(lowerMessage) || lowerMessage.includes(keyword.substring(0, 2))) {
+                    score += 1;
+                }
+            }
+            if (score > bestScore) {
+                bestScore = score;
+                bestMatch = faq;
+            }
+        }
+        
+        // 如果找到匹配
+        if (bestMatch && bestScore >= 2) {
+            return bestMatch.answer;
+        }
+        
+        // 特殊响应
+        if (lowerMessage.includes('谢谢') || lowerMessage.includes('感谢')) {
+            return '不客气！如果还有其他问题，随时问我哦。祝您学习顺利！';
+        }
+        
+        if (lowerMessage.includes('你好') || lowerMessage.includes('在吗')) {
+            return '您好！我在的，请问有什么可以帮您的吗？';
+        }
+        
+        if (lowerMessage.includes('再见') || lowerMessage.includes('拜拜')) {
+            return '再见！期待您的下次使用，祝您学习进步！';
+        }
+        
+        // 默认响应
+        return `抱歉，我没有完全理解您的问题。您可以尝试换个方式描述，或者直接联系人工客服：<br><br>` +
+               `<strong>微信：</strong>${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}<br>` +
+               `<strong>邮箱：</strong>${SUBSCRIPTION_CONFIG.CONTACT_EMAIL}<br><br>` +
+               `您也可以点击下方快捷问题按钮查看常见问题。`;
+    }
+    
+    // AI客服样式
+    function addAISupportStyles() {
+        if (document.getElementById('aiSupportStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'aiSupportStyles';
+        style.textContent = `
+            .ai-support-modal {
+                max-width: 420px;
+                max-height: 85vh;
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .ai-chat-container {
+                flex: 1;
+                min-height: 300px;
+                max-height: 400px;
+                overflow-y: auto;
+                padding: 16px;
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .ai-message {
+                display: flex;
+                gap: 10px;
+                max-width: 90%;
+                animation: fadeInUp 0.3s ease;
+            }
+            
+            .ai-message.user {
+                flex-direction: row-reverse;
+                margin-left: auto;
+            }
+            
+            .ai-avatar {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                flex-shrink: 0;
+            }
+            
+            .ai-bubble {
+                background: #f3f4f6;
+                padding: 12px 16px;
+                border-radius: 18px;
+                font-size: 14px;
+                line-height: 1.5;
+                color: #1f2937;
+            }
+            
+            .ai-message.user .ai-bubble {
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                border-radius: 18px 18px 4px 18px;
+            }
+            
+            .ai-message.bot .ai-bubble {
+                border-radius: 18px 18px 18px 4px;
+            }
+            
+            .ai-bubble ul {
+                margin: 0;
+                padding-left: 16px;
+            }
+            
+            .ai-bubble li {
+                margin: 4px 0;
+            }
+            
+            .ai-quick-questions {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px 16px;
+                border-top: 1px solid #e5e7eb;
+                border-bottom: 1px solid #e5e7eb;
+                background: #f9fafb;
+            }
+            
+            .quick-q-btn {
+                padding: 6px 12px;
+                background: white;
+                border: 1px solid #e5e7eb;
+                border-radius: 16px;
+                font-size: 12px;
+                color: #4b5563;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .quick-q-btn:hover {
+                background: #6366f1;
+                color: white;
+                border-color: #6366f1;
+            }
+            
+            .ai-input-container {
+                display: flex;
+                gap: 8px;
+                padding: 12px 16px;
+            }
+            
+            .ai-input-container input {
+                flex: 1;
+                padding: 12px 16px;
+                border: 1px solid #e5e7eb;
+                border-radius: 24px;
+                font-size: 14px;
+                outline: none;
+                transition: border-color 0.2s;
+            }
+            
+            .ai-input-container input:focus {
+                border-color: #6366f1;
+            }
+            
+            .ai-send-btn {
+                width: 44px;
+                height: 44px;
+                border: none;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+                color: white;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.2s;
+            }
+            
+            .ai-send-btn:hover {
+                transform: scale(1.05);
+                box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            /* 深色模式 */
+            [data-theme="dark"] .ai-bubble {
+                background: #374151;
+                color: #f3f4f6;
+            }
+            
+            [data-theme="dark"] .ai-quick-questions {
+                background: #1f2937;
+                border-color: #374151;
+            }
+            
+            [data-theme="dark"] .quick-q-btn {
+                background: #374151;
+                border-color: #4b5563;
+                color: #d1d5db;
+            }
+            
+            [data-theme="dark"] .ai-input-container input {
+                background: #374151;
+                border-color: #4b5563;
+                color: #f3f4f6;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // ==================== 退款系统 ====================
+    
+    // 退款政策配置
+    const REFUND_CONFIG = {
+        REFUND_WINDOW_DAYS: 7,           // 退款窗口期（天）
+        MAX_WORDS_LEARNED: 100,          // 允许退款的最大学习单词数
+        MAX_USAGE_DAYS: 3,               // 允许退款的最大使用天数
+        ONE_TIME_ONLY: true              // 每个设备只能退款一次
+    };
+    
+    // 检查是否可以退款
+    function checkRefundEligibility() {
+        const status = getSubscriptionStatus();
+        
+        // 非终身会员不能退款
+        if (status.type !== 'lifetime') {
+            return { eligible: false, reason: '仅终身会员可申请退款' };
+        }
+        
+        const purchaseDate = new Date(status.purchaseDate);
+        const now = new Date();
+        const daysSincePurchase = Math.floor((now - purchaseDate) / (1000 * 60 * 60 * 24));
+        
+        // 检查时间窗口
+        if (daysSincePurchase > REFUND_CONFIG.REFUND_WINDOW_DAYS) {
+            return { 
+                eligible: false, 
+                reason: `已超过${REFUND_CONFIG.REFUND_WINDOW_DAYS}天退款期限（购买已${daysSincePurchase}天）` 
+            };
+        }
+        
+        // 检查是否已经退款过
+        const refundHistory = JSON.parse(localStorage.getItem('refundHistory') || '[]');
+        const deviceId = typeof getDeviceFingerprint === 'function' ? getDeviceFingerprint() : 'unknown';
+        if (refundHistory.some(r => r.deviceId === deviceId)) {
+            return { eligible: false, reason: '该设备已使用过退款服务' };
+        }
+        
+        // 检查使用量
+        const stats = JSON.parse(localStorage.getItem('vocabulary_stats') || '{}');
+        const wordsLearned = Object.keys(stats.learnedWords || {}).length;
+        
+        if (wordsLearned > REFUND_CONFIG.MAX_WORDS_LEARNED) {
+            return { 
+                eligible: false, 
+                reason: `已学习${wordsLearned}个单词，超过退款限制（${REFUND_CONFIG.MAX_WORDS_LEARNED}个）` 
+            };
+        }
+        
+        // 检查使用天数
+        const usageDays = Object.keys(stats.dailyStats || {}).length;
+        if (usageDays > REFUND_CONFIG.MAX_USAGE_DAYS) {
+            return { 
+                eligible: false, 
+                reason: `已使用${usageDays}天，超过退款限制（${REFUND_CONFIG.MAX_USAGE_DAYS}天）` 
+            };
+        }
+        
+        return { 
+            eligible: true, 
+            daysRemaining: REFUND_CONFIG.REFUND_WINDOW_DAYS - daysSincePurchase,
+            wordsLearned,
+            usageDays
+        };
+    }
+    
+    // 显示退款申请页面
+    function showRefundModal() {
+        const eligibility = checkRefundEligibility();
+        
+        // 移除已有弹窗
+        const existingModal = document.getElementById('refundModal');
+        if (existingModal) existingModal.remove();
+        
+        const modal = document.createElement('div');
+        modal.id = 'refundModal';
+        modal.className = 'payment-modal';
+        
+        if (eligibility.eligible) {
+            modal.innerHTML = `
+                <div class="payment-modal-content refund-modal">
+                    <div class="payment-modal-header">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                                <polyline points="9 22 9 12 15 12 15 22"/>
+                            </svg>
+                            申请退款
+                        </h3>
+                        <button class="close-modal-btn" onclick="closeRefundModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="refund-content">
+                        <div class="refund-status eligible">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="16 12 12 8 8 12"/>
+                                <line x1="12" y1="16" x2="12" y2="8"/>
+                            </svg>
+                            <div>
+                                <h4>符合退款条件</h4>
+                                <p>剩余 ${eligibility.daysRemaining} 天退款期限</p>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-info">
+                            <div class="refund-info-item">
+                                <span>已学习单词</span>
+                                <span>${eligibility.wordsLearned} / ${REFUND_CONFIG.MAX_WORDS_LEARNED}</span>
+                            </div>
+                            <div class="refund-info-item">
+                                <span>使用天数</span>
+                                <span>${eligibility.usageDays} / ${REFUND_CONFIG.MAX_USAGE_DAYS}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-reason">
+                            <label>退款原因（必填）</label>
+                            <select id="refundReasonSelect">
+                                <option value="">请选择退款原因</option>
+                                <option value="not_useful">功能不符合预期</option>
+                                <option value="too_hard">内容太难</option>
+                                <option value="too_easy">内容太简单</option>
+                                <option value="no_time">没有时间学习</option>
+                                <option value="found_alternative">找到更好的替代品</option>
+                                <option value="technical">技术问题影响使用</option>
+                                <option value="other">其他原因</option>
+                            </select>
+                            <textarea id="refundReasonDetail" placeholder="请详细说明退款原因，帮助我们改进产品（选填）"></textarea>
+                        </div>
+                        
+                        <div class="refund-warning">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                                <line x1="12" y1="9" x2="12" y2="13"/>
+                                <line x1="12" y1="17" x2="12.01" y2="17"/>
+                            </svg>
+                            <span>退款后您的激活码将失效，且每台设备仅有一次退款机会</span>
+                        </div>
+                        
+                        <button class="refund-submit-btn" onclick="submitRefundRequest()">
+                            提交退款申请
+                        </button>
+                    </div>
+                </div>
+            `;
+        } else {
+            modal.innerHTML = `
+                <div class="payment-modal-content refund-modal">
+                    <div class="payment-modal-header">
+                        <h3>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                            退款申请
+                        </h3>
+                        <button class="close-modal-btn" onclick="closeRefundModal()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="18" y1="6" x2="6" y2="18"/>
+                                <line x1="6" y1="6" x2="18" y2="18"/>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="refund-content">
+                        <div class="refund-status ineligible">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"/>
+                                <line x1="15" y1="9" x2="9" y2="15"/>
+                                <line x1="9" y1="9" x2="15" y2="15"/>
+                            </svg>
+                            <div>
+                                <h4>暂不符合退款条件</h4>
+                                <p>${eligibility.reason}</p>
+                            </div>
+                        </div>
+                        
+                        <div class="refund-policy">
+                            <h5>退款政策</h5>
+                            <ul>
+                                <li>购买后${REFUND_CONFIG.REFUND_WINDOW_DAYS}天内可申请退款</li>
+                                <li>学习单词不超过${REFUND_CONFIG.MAX_WORDS_LEARNED}个</li>
+                                <li>使用天数不超过${REFUND_CONFIG.MAX_USAGE_DAYS}天</li>
+                                <li>每台设备仅有一次退款机会</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="refund-contact">
+                            <p>如有特殊情况，请联系人工客服：</p>
+                            <div class="contact-info">
+                                <span>微信：${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}</span>
+                                <button class="copy-btn" onclick="copyText('${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}')">复制</button>
+                            </div>
+                        </div>
+                        
+                        <button class="refund-close-btn" onclick="closeRefundModal()">
+                            我知道了
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        document.body.appendChild(modal);
+        addRefundStyles();
+    }
+    
+    // 关闭退款弹窗
+    function closeRefundModal() {
+        const modal = document.getElementById('refundModal');
+        if (modal) {
+            modal.classList.add('closing');
+            setTimeout(() => modal.remove(), 200);
+        }
+    }
+    
+    // 提交退款申请
+    function submitRefundRequest() {
+        const reasonSelect = document.getElementById('refundReasonSelect');
+        const reasonDetail = document.getElementById('refundReasonDetail');
+        
+        if (!reasonSelect.value) {
+            alert('请选择退款原因');
+            return;
+        }
+        
+        const refundRequest = {
+            reason: reasonSelect.value,
+            detail: reasonDetail.value,
+            timestamp: new Date().toISOString(),
+            deviceId: typeof getDeviceFingerprint === 'function' ? getDeviceFingerprint() : 'unknown',
+            status: 'pending'
+        };
+        
+        // 保存退款请求
+        const requests = JSON.parse(localStorage.getItem('refundRequests') || '[]');
+        requests.push(refundRequest);
+        localStorage.setItem('refundRequests', JSON.stringify(requests));
+        
+        // 显示成功信息
+        const content = document.querySelector('.refund-content');
+        if (content) {
+            content.innerHTML = `
+                <div class="refund-success">
+                    <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="9 12 12 15 16 9"/>
+                    </svg>
+                    <h4>退款申请已提交</h4>
+                    <p>我们会在1-3个工作日内处理您的申请</p>
+                    <p>请添加微信 <strong>${SUBSCRIPTION_CONFIG.CONTACT_WECHAT}</strong> 确认退款</p>
+                    <button class="refund-close-btn" onclick="closeRefundModal()">确定</button>
+                </div>
+            `;
+        }
+    }
+    
+    // 复制文本
+    function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '已复制';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 2000);
+        });
+    }
+    
+    // 退款样式
+    function addRefundStyles() {
+        if (document.getElementById('refundStyles')) return;
+        
+        const style = document.createElement('style');
+        style.id = 'refundStyles';
+        style.textContent = `
+            .refund-modal {
+                max-width: 400px;
+            }
+            
+            .refund-content {
+                padding: 20px;
+            }
+            
+            .refund-status {
+                display: flex;
+                align-items: center;
+                gap: 16px;
+                padding: 16px;
+                border-radius: 12px;
+                margin-bottom: 20px;
+            }
+            
+            .refund-status.eligible {
+                background: #ecfdf5;
+            }
+            
+            .refund-status.ineligible {
+                background: #fef2f2;
+            }
+            
+            .refund-status h4 {
+                margin: 0 0 4px 0;
+                font-size: 16px;
+            }
+            
+            .refund-status p {
+                margin: 0;
+                font-size: 14px;
+                color: #6b7280;
+            }
+            
+            .refund-info {
+                background: #f9fafb;
+                border-radius: 12px;
+                padding: 12px 16px;
+                margin-bottom: 16px;
+            }
+            
+            .refund-info-item {
+                display: flex;
+                justify-content: space-between;
+                padding: 8px 0;
+                font-size: 14px;
+            }
+            
+            .refund-info-item + .refund-info-item {
+                border-top: 1px solid #e5e7eb;
+            }
+            
+            .refund-reason {
+                margin-bottom: 16px;
+            }
+            
+            .refund-reason label {
+                display: block;
+                font-size: 14px;
+                font-weight: 500;
+                margin-bottom: 8px;
+            }
+            
+            .refund-reason select {
+                width: 100%;
+                padding: 10px 12px;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                font-size: 14px;
+                margin-bottom: 10px;
+            }
+            
+            .refund-reason textarea {
+                width: 100%;
+                height: 80px;
+                padding: 10px 12px;
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                font-size: 14px;
+                resize: none;
+            }
+            
+            .refund-warning {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px;
+                background: #fffbeb;
+                border-radius: 8px;
+                margin-bottom: 16px;
+                font-size: 12px;
+                color: #92400e;
+            }
+            
+            .refund-warning svg {
+                flex-shrink: 0;
+                color: #f59e0b;
+            }
+            
+            .refund-submit-btn {
+                width: 100%;
+                padding: 14px;
+                background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.2s;
+            }
+            
+            .refund-submit-btn:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+            }
+            
+            .refund-close-btn {
+                width: 100%;
+                padding: 14px;
+                background: #6366f1;
+                color: white;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                cursor: pointer;
+                margin-top: 16px;
+            }
+            
+            .refund-policy {
+                background: #f9fafb;
+                border-radius: 12px;
+                padding: 16px;
+                margin-bottom: 16px;
+            }
+            
+            .refund-policy h5 {
+                margin: 0 0 10px 0;
+                font-size: 14px;
+            }
+            
+            .refund-policy ul {
+                margin: 0;
+                padding-left: 20px;
+                font-size: 13px;
+                color: #6b7280;
+            }
+            
+            .refund-policy li {
+                margin: 6px 0;
+            }
+            
+            .refund-contact {
+                text-align: center;
+                margin-bottom: 16px;
+            }
+            
+            .refund-contact p {
+                font-size: 14px;
+                color: #6b7280;
+                margin-bottom: 10px;
+            }
+            
+            .contact-info {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+            }
+            
+            .contact-info span {
+                font-size: 14px;
+                font-weight: 500;
+            }
+            
+            .contact-info .copy-btn {
+                padding: 4px 10px;
+                background: #6366f1;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                font-size: 12px;
+                cursor: pointer;
+            }
+            
+            .refund-success {
+                text-align: center;
+                padding: 20px;
+            }
+            
+            .refund-success h4 {
+                margin: 16px 0 8px 0;
+                font-size: 18px;
+                color: #10b981;
+            }
+            
+            .refund-success p {
+                margin: 8px 0;
+                font-size: 14px;
+                color: #6b7280;
+            }
+            
+            .refund-success strong {
+                color: #6366f1;
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    // 导出AI客服和退款相关函数
+    window.showAISupport = showAISupport;
+    window.closeAISupport = closeAISupport;
+    window.askQuestion = askQuestion;
+    window.sendChatMessage = sendChatMessage;
+    window.handleChatKeypress = handleChatKeypress;
+    window.showRefundModal = showRefundModal;
+    window.closeRefundModal = closeRefundModal;
+    window.submitRefundRequest = submitRefundRequest;
+    window.copyText = copyText;
+    window.checkRefundEligibility = checkRefundEligibility;
 
 })();
