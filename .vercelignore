@@ -1,0 +1,72 @@
+# Vercel 部署忽略文件配置
+
+# 开发工具
+node_modules/
+.venv/
+.DS_Store
+.vscode/
+.idea/
+
+# 构建输出
+dist/
+build/
+
+# 移动端项目
+android/
+ios/
+harmony/
+harmony-next/
+
+# 脚本和工具
+scripts/
+*.sh
+build-*.sh
+deploy.sh
+
+# 大型数据文件
+official_inputs/
+official_parsed/
+public_parsed/
+
+# 文档（保留README）
+*.md
+!README.md
+!CHANGELOG.md
+*.txt
+
+# Git
+.git/
+.github/
+.gitignore
+
+# 日志
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.bak
+*.backup
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# 测试文件
+test*.html
+debug*.html
+simple-test.html
+verify.html
+clear-cache.html
+
+# 备份文件
+*_backup.*
+*.backup
+words_backup*.json
