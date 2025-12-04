@@ -1309,16 +1309,8 @@
         
         // 更新指示器位置
         updateIndicator() {
-            const activeItem = document.querySelector('.nav-item.active');
-            const indicator = document.querySelector('.nav-indicator');
-            
-            if (!activeItem || !indicator) return;
-            
-            const rect = activeItem.getBoundingClientRect();
-            const navRect = activeItem.parentElement.getBoundingClientRect();
-            const centerX = rect.left - navRect.left + rect.width / 2 - 20;
-            
-            indicator.style.transform = `translateX(${centerX}px)`;
+            // 已移除 nav-indicator 元素，此方法不再需要
+            return;
         },
         
         // 显示徽章

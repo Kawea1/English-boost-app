@@ -3911,25 +3911,6 @@ body.theme-dark .word-card:hover .word-main {
     transform: translateY(100%);
 }
 
-.bottom-nav .nav-indicator {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40px;
-    height: 4px;
-    background: var(--gray-300);
-    border-radius: 2px;
-    margin-top: 6px;
-    transition: all 0.3s ease;
-}
-
-/* 导航指示器动画 */
-.bottom-nav:hover .nav-indicator {
-    width: 60px;
-    background: var(--primary);
-}
-
 .nav-item {
     position: relative;
     background: none;
@@ -17143,18 +17124,6 @@ body.theme-transitioning * {
     right: 0;
     z-index: 1000;
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.06);
-}
-
-/* 导航指示器 */
-.nav-indicator {
-    position: absolute;
-    bottom: calc(env(safe-area-inset-bottom) + 6px);
-    height: 3px;
-    width: 40px;
-    background: var(--gradient-primary);
-    border-radius: 3px;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
 }
 
 /* 导航项升级 */
