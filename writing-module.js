@@ -948,52 +948,83 @@
             this.showResult(record);
         },
         
-        // 计算评分 (简单评分算法)
+        // 计算评分 (简单评分算法 - 备用)
         calculateScore(content, topic) {
             let score = 0;
             const wordCount = content.split(/\s+/).length;
             const minWords = topic.wordCount.min;
             const maxWords = topic.wordCount.max;
             
-            // 字数评分 (30分)
+            // 空内容直接返回0分
+            if (wordCount === 0) {
+                return 0;
+            }
+            
+            // 字数评分 (30分) - 可以是0分
             if (wordCount >= minWords && wordCount <= maxWords) {
                 score += 30;
             } else if (wordCount >= minWords * 0.8) {
-                score += 20;
-            } else if (wordCount >= minWords * 0.5) {
-                score += 10;
+                score += 24;
+            } else if (wordCount >= minWords * 0.6) {
+                score += 18;
+            } else if (wordCount >= minWords * 0.4) {
+                score += 12;
+            } else if (wordCount >= minWords * 0.2) {
+                score += 6;
             }
+            // 否则字数评分为0
             
-            // 词汇使用 (25分)
+            // 词汇使用 (25分) - 可以是0分
             if (topic.vocabulary) {
                 const usedVocab = topic.vocabulary.filter(v => 
                     content.toLowerCase().includes(v.toLowerCase())
                 ).length;
                 score += Math.min(25, usedVocab * 5);
             } else {
-                score += 15; // 默认分
+                // 词汇多样性
+                const words = content.split(/\s+/);
+                const uniqueWords = new Set(words.map(w => w.toLowerCase()));
+                const diversity = uniqueWords.size / words.length;
+                if (diversity >= 0.6) score += 25;
+                else if (diversity >= 0.5) score += 20;
+                else if (diversity >= 0.4) score += 15;
+                else if (diversity >= 0.3) score += 10;
+                else if (diversity >= 0.2) score += 5;
             }
             
-            // 段落结构 (25分)
+            // 段落结构 (25分) - 可以是0分
             const paragraphs = content.split(/\n\n+/).filter(p => p.trim().length > 0);
-            if (paragraphs.length >= 3) {
+            if (paragraphs.length >= 4) {
                 score += 25;
-            } else if (paragraphs.length >= 2) {
-                score += 15;
-            } else {
+            } else if (paragraphs.length === 3) {
+                score += 20;
+            } else if (paragraphs.length === 2) {
+                score += 12;
+            } else if (paragraphs.length === 1) {
                 score += 5;
             }
+            // 否则结构分为0
             
-            // 句子多样性 (20分)
+            // 句子多样性 (20分) - 可以是0分
             const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 0);
-            const avgLength = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0) / sentences.length;
-            if (avgLength >= 12 && avgLength <= 25) {
-                score += 20;
-            } else if (avgLength >= 8) {
-                score += 10;
+            if (sentences.length > 0) {
+                const avgLength = sentences.reduce((sum, s) => sum + s.split(/\s+/).length, 0) / sentences.length;
+                if (avgLength >= 15 && avgLength <= 25) {
+                    score += 20;
+                } else if (avgLength >= 12 && avgLength < 30) {
+                    score += 16;
+                } else if (avgLength >= 10) {
+                    score += 12;
+                } else if (avgLength >= 8) {
+                    score += 8;
+                } else if (avgLength >= 5) {
+                    score += 4;
+                }
             }
+            // 否则多样性分为0
             
-            return Math.min(100, score);
+            // 确保分数在 0-100 之间
+            return Math.max(0, Math.min(100, Math.round(score)));
         },
         
         // 显示结果

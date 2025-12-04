@@ -7,147 +7,87 @@
 
 ## 🌟 推荐方式: PWA 在线版 (所有平台)
 
-### 适用于: iOS、Android、HarmonyOS、macOS、Windows
+访问链接: **https://kawea1.github.io/English-boost-app/**
 
-**优势**: 
-- ✅ 无需下载安装包
-- ✅ 自动更新到最新版
-- ✅ 支持离线使用
-- ✅ 体验接近原生应用
+### iOS/iPadOS 
+在 Safari 中打开链接 → 点击分享按钮 → 添加到主屏幕
 
-### 安装步骤:
+### Android 
+在 Chrome 中打开链接 → 点击菜单 → 添加到主屏幕
 
-#### **iOS/iPadOS (Safari)**
-1. 使用 Safari 打开: https://kawea1.github.io/English-boost-app/
-2. 点击底部 **分享** 按钮 <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='16' height='16'%3E%3Cpath fill='%23007AFF' d='M12 2L8 6h3v8h2V6h3L12 2zm-6 14v4h12v-4h2v6H4v-6h2z'/%3E%3C/svg%3E" />
-3. 选择 **"添加到主屏幕"**
-4. 点击 **"添加"**
-5. ✅ 完成! 在主屏幕找到应用图标
+### HarmonyOS
+在华为浏览器中打开链接 → 点击菜单 → 添加到桌面
 
-#### **Android (Chrome)**
-1. 使用 Chrome 打开: https://kawea1.github.io/English-boost-app/
-2. 点击右上角 **菜单** ⋮
-3. 选择 **"添加到主屏幕"** 或 **"安装应用"**
-4. 点击 **"安装"**
-5. ✅ 完成! 应用已添加到桌面
-
-#### **HarmonyOS (华为浏览器)**
-1. 使用华为浏览器打开: https://kawea1.github.io/English-boost-app/
-2. 点击底部 **"⋮"** 菜单
-3. 选择 **"添加到桌面"**
-4. 点击 **"添加"**
-5. ✅ 完成! 应用已添加到桌面
-
-#### **macOS (Safari/Chrome)**
-1. 使用 Safari 或 Chrome 打开链接
-2. Safari: **文件 → 添加到 Dock**
-3. Chrome: **地址栏右侧 → 安装图标**
-4. ✅ 完成! 应用已添加
-
-#### **Windows (Edge/Chrome)**
-1. 使用 Edge 或 Chrome 打开链接
-2. 地址栏右侧点击 **"安装"** 图标
-3. 点击 **"安装"**
-4. ✅ 完成! 应用已添加到开始菜单
+### 电脑端 (Windows/macOS/Linux)
+在浏览器中打开链接 → 地址栏右侧点击安装图标
 
 ---
 
-## 📦 本地构建安装 (开发者)
+## 📦 移动端安装包下载
 
-### iOS 版本 (需要 macOS)
+### iOS 版本 (.ipa)
+**下载链接**: [GitHub Releases](https://github.com/Kawea1/English-boost-app/releases)
+- 文件名: `EnglishBoost-v4.9.3.ipa`
+- 安装方式: 使用 AltStore、Sideloadly 或企业证书安装
+- 要求: iOS 13.0+
 
+### Android 版本 (.apk)
+**下载链接**: [GitHub Releases](https://github.com/Kawea1/English-boost-app/releases)
+- 文件名: `EnglishBoost-v4.9.3.apk`
+- 安装方式: 直接安装（需允许未知来源）
+- 要求: Android 6.0+
+
+### HarmonyOS 版本 (.hap)
+**下载链接**: [GitHub Releases](https://github.com/Kawea1/English-boost-app/releases)
+- 文件名: `EnglishBoost-v4.9.3.hap`
+- 安装方式: 使用 DevEco Studio 或华为应用市场
+- 要求: HarmonyOS 2.0+
+
+---
+
+## 🔧 本地构建 (开发者)
+
+### iOS 构建
 ```bash
-# 1. 克隆仓库
 git clone https://github.com/Kawea1/English-boost-app.git
 cd English-boost-app
-
-# 2. 运行构建脚本
 ./build-ios.sh
-
-# 3. 在 Xcode 中运行到设备
 ```
 
-**要求**:
-- macOS 13.0+
-- Xcode 14.0+
-- CocoaPods
-- iOS 13.0+ 设备
-
----
-
-### Android 版本
-
+### Android 构建
 ```bash
-# 1. 克隆仓库
-git clone https://github.com/Kawea1/English-boost-app.git
-cd English-boost-app
-
-# 2. 运行构建脚本
 ./build-android-release.sh
-
-# 3. 选择 "1) Debug APK"
-
-# 4. 在 dist/android/ 目录找到 APK 文件
+# 生成的 APK 位于 dist/android/
 ```
 
-**要求**:
-- Java JDK 11+
-- Android Studio
-- Android SDK 30+
-
-**APK 位置**: `dist/android/app-debug.apk`
-
----
-
-### HarmonyOS 版本
-
+### HarmonyOS 构建
 ```bash
-# 1. 克隆仓库
-git clone https://github.com/Kawea1/English-boost-app.git
-cd English-boost-app
-
-# 2. 运行构建脚本
 ./build-harmony.sh
-
-# 3. 选择 "1) 同步 Web 资源"
-
-# 4. 选择 "2) 打开 DevEco Studio"
-
-# 5. 在 DevEco Studio 中构建 HAP
+# 在 DevEco Studio 中打开项目构建
 ```
-
-**要求**:
-- DevEco Studio 4.0+
-- HarmonyOS SDK
-- HarmonyOS 4.0+ 设备
 
 ---
 
-## 🆘 常见问题
+## ❓ 常见问题
 
-### Q1: PWA 安装后显示 404
-**A**: 已在 v4.9.3 修复。如遇到问题:
-1. 卸载旧版 PWA
-2. 清除浏览器缓存
-3. 重新访问链接安装
+**Q: 推荐使用哪种安装方式？**  
+A: PWA 在线版（自动更新，无需下载安装包）
 
-### Q2: iOS 无法添加到主屏幕
-**A**: 确保:
-- 使用 **Safari** 浏览器(Chrome 不支持)
-- iOS 版本 13.0+
-- 未使用隐私浏览模式
+**Q: iOS 如何安装？**  
+A: 优先使用 PWA。如需 .ipa 文件，从 GitHub Releases 下载
 
-### Q3: Android 安装提示"未知来源"
-**A**: 
-1. 设置 → 安全 → 允许未知来源
-2. 或使用 PWA 在线版,无需此权限
+**Q: Android 提示"未知来源"？**  
+A: 设置 → 安全 → 允许安装未知应用
 
-### Q4: 构建脚本报错
-**A**: 检查:
-- [ ] 网络连接正常
-- [ ] 已安装所需开发工具
-- [ ] 权限: `chmod +x build-*.sh`
-- [ ] 查看 [BUILD_TEST_REPORT.md](./BUILD_TEST_REPORT.md)
+**Q: 构建失败？**  
+A: 查看 [BUILD_TEST_REPORT.md](./BUILD_TEST_REPORT.md)
+
+---
+
+## 📞 技术支持
+
+- GitHub Issues: https://github.com/Kawea1/English-boost-app/issues
+- 文档: https://github.com/Kawea1/English-boost-app
 
 ### Q5: 如何更新到最新版
 **A**: PWA 会自动更新。如需手动:
