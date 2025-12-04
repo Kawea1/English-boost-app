@@ -3081,7 +3081,7 @@ var HeaderInteraction = (function() {
             initGreetingInteraction();     // V4
             initCelestialInteraction();    // V5
             initLongPressStats();          // V6
-            initShakeEasterEgg();          // V7
+            // initShakeEasterEgg();          // V7 - v4.9.3: 已禁用彩蛋功能
             initSwipeEffects();            // V8
             initAssistantBubble();         // V10
         }, 500);
@@ -3265,7 +3265,8 @@ var HeaderInteraction = (function() {
         });
     }
     
-    // V7: 摇一摇彩蛋
+    // V7: 摇一摇彩蛋 - v4.9.3: 已禁用
+    /* 
     function initShakeEasterEgg() {
         if (typeof DeviceMotionEvent === 'undefined') return;
         
@@ -3315,6 +3316,7 @@ var HeaderInteraction = (function() {
             });
         }
     }
+    */
     
     // V8: 手势滑动效果
     function initSwipeEffects() {
@@ -3568,7 +3570,8 @@ var HeaderInteraction = (function() {
         }
     }
     
-    // 摇一摇彩蛋
+    // 摇一摇彩蛋 - v4.9.3: 已禁用
+    /*
     function triggerShakeEasterEgg() {
         var eggs = [
             { text: '🎉 发现隐藏彩蛋！', effect: 'confetti' },
@@ -3589,6 +3592,7 @@ var HeaderInteraction = (function() {
             window.UX.HapticFeedback.heavy();
         }
     }
+    */
     
     // 获取智能提示
     function getSmartTip() {

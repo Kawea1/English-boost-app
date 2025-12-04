@@ -78,7 +78,8 @@
         setTimeout(() => element.classList.remove('ux-flip'), 600);
     }
     
-    // 成功庆祝动画
+    // 成功庆祝动画 - v4.9.3: 已禁用
+    /*
     function celebrateSuccess(element) {
         // 创建五彩纸屑
         const colors = ['#6366f1', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899'];
@@ -102,6 +103,12 @@
         element.style.position = 'relative';
         element.appendChild(container);
         setTimeout(() => container.remove(), 2000);
+    }
+    */
+    
+    // v4.9.3: 禁用彩蛋,空实现
+    function celebrateSuccess(element) {
+        // 已禁用
     }
     
     // 进度脉冲动画
@@ -1853,7 +1860,9 @@
         }
     };
     
-    // ==================== v7.8: 励志弹幕流 ====================
+    // ==================== v7.8: 励志弹幕流 ==================== 
+    // v4.9.3: 已禁用
+    /*
     const Danmaku = {
         container: null,
         messages: [
@@ -1922,6 +1931,20 @@
         toggle(enabled) {
             this.isEnabled = enabled;
         }
+    };
+    */
+    
+    // v4.9.3: 禁用弹幕,空实现
+    const Danmaku = {
+        container: null,
+        messages: [],
+        isEnabled: false,
+        interval: null,
+        init() {},
+        createContainer() {},
+        start() {},
+        send() {},
+        toggle() {}
     };
     
     // ==================== v7.9: 成就徽章展示 ====================

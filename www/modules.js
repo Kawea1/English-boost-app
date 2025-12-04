@@ -2900,7 +2900,7 @@ async function startHoldRecording(event) {
     
     // 显示加载状态
     updateRecordingUI(true);
-    showToast('🎤 正在准备录音...');
+    // showToast('🎤 正在准备录音...'); // v4.9.3: 禁用彩蛋提示
     
     // 自动申请麦克风权限
     if (!micPermissionGranted) {
