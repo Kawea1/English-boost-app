@@ -2609,9 +2609,10 @@ svg {
 .overview-stat {
     flex: 1;
     text-align: center;
-    transition: transform 0.3s ease;
+    /* v4.9.3: 删除hover动画,避免白斑闪烁 */
 }
 
+/* v4.9.3: 删除hover动画效果
 .stats-overview-card:hover .overview-stat:nth-child(1) {
     transform: translateY(-2px);
     transition-delay: 0s;
@@ -2626,6 +2627,7 @@ svg {
     transform: translateY(-2px);
     transition-delay: 0.2s;
 }
+*/
 
 .overview-value {
     display: block;
