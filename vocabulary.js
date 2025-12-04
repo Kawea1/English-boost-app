@@ -3385,24 +3385,28 @@ function changeTTSVoice(mode) {
 function selectVoiceByConfig(voices, config) {
     if (!voices || voices.length === 0) return null;
     
-    // 先尝试按名称匹配
+    // 先尝试按名称精确匹配
     for (var i = 0; i < config.names.length; i++) {
         var voice = voices.find(function(v) {
             return v.name.includes(config.names[i]) && v.lang.startsWith(config.lang);
         });
-        if (voice) return voice;
+        if (voice) {
+            console.log('找到匹配语音:', voice.name, voice.lang);
+            return voice;
+        }
     }
     
-    // 如果没找到，按语言和性别匹配
+    // 如果没找到精确匹配，按语言匹配
     var filtered = voices.filter(function(v) {
         return v.lang.startsWith(config.lang);
     });
     
     if (filtered.length > 0) {
-        // 优先选择第一个匹配的
+        console.log('使用语言匹配语音:', filtered[0].name, filtered[0].lang);
         return filtered[0];
     }
     
+    console.log('未找到匹配语音，使用默认');
     return null;
 }
 

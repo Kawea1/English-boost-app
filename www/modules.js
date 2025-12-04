@@ -2709,8 +2709,8 @@ function updateSentenceInfo() {
         infoEl.innerHTML = 
             '<span style="background:' + category.color + '20;color:' + category.color + ';padding:3px 8px;border-radius:12px;font-size:12px;display:inline-flex;align-items:center;gap:4px;">' + 
             category.icon + ' ' + category.name + '</span>' +
-            '<span style="background:' + difficulty.color + '20;color:' + difficulty.color + ';padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;display:inline-flex;align-items:center;gap:2px;">' +
-            '<svg viewBox="0 0 24 24" width="12" height="12" fill="' + difficulty.color + '" stroke="none"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>'.repeat(difficulty.stars) + ' ' + difficulty.level + '</span>';
+            '<span style="background:' + difficulty.color + '20;color:' + difficulty.color + ';padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' +
+            '⭐'.repeat(difficulty.stars) + ' ' + difficulty.level + '</span>';
     }
 }
 
@@ -4078,12 +4078,13 @@ function loadReadingPassage(index) {
         textEl.innerHTML = html;
     }
     
-    // 核心词汇
+    // 核心词汇 - v4.9.3: 修复显示中文释义
     var vocabListEl = document.getElementById("vocabList");
     if (vocabListEl && p.vocabulary && p.vocabulary.length > 0) {
         var vocabHtml = "";
         p.vocabulary.forEach(function(v) {
-            vocabHtml += "<span onclick=\"alert('" + v.word + ": " + (v.meaning || "").replace(/'/g, "\\'") + "')\" style='background:#f0f4ff;color:#667eea;padding:6px 12px;border-radius:20px;font-size:13px;cursor:pointer;transition:all 0.2s;' onmouseover=\"this.style.background='#667eea';this.style.color='white';\" onmouseout=\"this.style.background='#f0f4ff';this.style.color='#667eea';\">" + v.word + "</span>";
+            var chinese = v.chinese || v.meaning || "";
+            vocabHtml += "<span onclick=\"alert('" + v.word + "\\n" + chinese.replace(/'/g, "\\'").replace(/"/g, '&quot;') + "')\" style='background:#f0f4ff;color:#667eea;padding:6px 12px;border-radius:20px;font-size:13px;cursor:pointer;transition:all 0.2s;display:inline-block;margin:4px;' onmouseover=\"this.style.background='#667eea';this.style.color='white';\" onmouseout=\"this.style.background='#f0f4ff';this.style.color='#667eea';\">" + v.word + "</span>";
         });
         vocabListEl.innerHTML = vocabHtml;
         document.getElementById("vocabSection").style.display = "block";

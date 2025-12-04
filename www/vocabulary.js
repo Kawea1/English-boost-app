@@ -3405,6 +3405,119 @@ function setVoiceAndSpeak(utterance, voices) {
     speechSynthesis.speak(utterance);
 }
 
+// V4.8.12: 根据配置选择语音
+function selectVoiceByConfig(voices, config) {
+    if (!voices || voices.length === 0) return null;
+    
+    // 先尝试按名称精确匹配
+    for (var i = 0; i < config.names.length; i++) {
+        var voice = voices.find(function(v) {
+            return v.name.includes(config.names[i]) && v.lang.startsWith(config.lang);
+        });
+        if (voice) {
+            console.log('找到匹配语音:', voice.name, voice.lang);
+            return voice;
+        }
+    }
+    
+    // 如果没找到精确匹配，按语言匹配
+    var filtered = voices.filter(function(v) {
+        return v.lang.startsWith(config.lang);
+    });
+    
+    if (filtered.length > 0) {
+        console.log('使用语言匹配语音:', filtered[0].name, filtered[0].lang);
+        return filtered[0];
+    }
+    
+    console.log('未找到匹配语音，使用默认');
+    return null;
+}
+
+// V4.8.12: TTS语音模式配置
+var ttsVoiceConfig = {
+    mode: localStorage.getItem('ttsVoiceMode') || 'system-default',
+    voices: {
+        'us-female': { lang: 'en-US', gender: 'female', names: ['Samantha', 'Victoria', 'Joanna', 'Salli'] },
+        'us-male': { lang: 'en-US', gender: 'male', names: ['Alex', 'Matthew', 'Joey'] },
+        'uk-female': { lang: 'en-GB', gender: 'female', names: ['Kate', 'Serena', 'Amy', 'Emma'] },
+        'uk-male': { lang: 'en-GB', gender: 'male', names: ['Daniel', 'Arthur', 'Brian'] }
+    }
+};
+
+var cachedVoices = [];
+var preferredVoice = null;
+
+if ('speechSynthesis' in window) {
+    cachedVoices = speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = function() {
+        cachedVoices = speechSynthesis.getVoices();
+        preferredVoice = selectBestUSVoice(cachedVoices);
+        console.log('可用语音:', cachedVoices.map(v => v.name + ' (' + v.lang + ')'));
+        console.log('已选择语音:', preferredVoice ? preferredVoice.name : '默认');
+    };
+}
+
+// 选择最佳美式英语语音
+function selectBestUSVoice(voices) {
+    if (!voices || voices.length === 0) return null;
+    
+    // macOS 上优质美式英语语音（按优先级排序）
+    var preferredNames = [
+        'Samantha',
+        'Alex',
+        'Allison',
+        'Ava',
+        'Susan',
+        'Tom',
+        'Zoe',
+        'Samantha (Enhanced)',
+        'Alex (Enhanced)',
+        'Google US English',
+        'Microsoft Zira',
+        'Microsoft David',
+    ];
+    
+    // 按优先级查找
+    for (var i = 0; i < preferredNames.length; i++) {
+        var voice = voices.find(function(v) {
+            return v.name.includes(preferredNames[i]) && 
+                   (v.lang === 'en-US' || v.lang.startsWith('en-US'));
+        });
+        if (voice) return voice;
+    }
+    
+    // 如果没找到优先语音，查找任何美式英语语音
+    var usVoice = voices.find(function(v) {
+        return v.lang === 'en-US' || v.lang.startsWith('en-US');
+    });
+    if (usVoice) return usVoice;
+    
+    // 最后降级到任何英语语音
+    return voices.find(function(v) {
+        return v.lang.startsWith('en');
+    });
+}
+
+// V4.8.12: 切换TTS语音模式
+function changeTTSVoice(mode) {
+    ttsVoiceConfig.mode = mode;
+    localStorage.setItem('ttsVoiceMode', mode);
+    
+    // 重新选择语音
+    if (mode === 'system-default') {
+        preferredVoice = selectBestUSVoice(cachedVoices);
+    } else {
+        var config = ttsVoiceConfig.voices[mode];
+        if (config) {
+            preferredVoice = selectVoiceByConfig(cachedVoices, config);
+        }
+    }
+    
+    showToast('已切换语音模式');
+    console.log('语音模式:', mode, '使用:', preferredVoice ? preferredVoice.name : '默认');
+}
+
 window.initVocabulary = initVocabulary;
 window.showMeaning = showMeaning;
 window.rateWord = rateWord;
@@ -3414,6 +3527,7 @@ window.prevWord = prevWord;
 window.changeWordsPerSession = changeWordsPerSession;
 window.changeLearningTimes = changeLearningTimes;
 window.initSessionWords = initSessionWords;
+window.changeTTSVoice = changeTTSVoice;
 window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
 window.updateLearningProgressIndicator = updateLearningProgressIndicator;
