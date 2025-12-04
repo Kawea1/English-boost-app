@@ -255,7 +255,8 @@
             <div class="header-bg"></div>
             <div class="header-content">
                 <div class="greeting-section">
-                    <div class="scene-icon-ring" id="sceneIconRing" onclick="openAvatarPicker()" title="点击更换头像">
+                    <!-- v4.9.3: 隐藏头像圈圈 -->
+                    <div class="scene-icon-ring" id="sceneIconRing" onclick="openAvatarPicker()" title="点击更换头像" style="display:none;">
                         <!-- 动态场景图标或自定义头像 -->
                         <div class="scene-icon" id="sceneIcon"></div>
                     </div>
@@ -383,7 +384,6 @@
                                 </svg>
                             </div>
                             <h3>核心词汇</h3>
-                            <button class="card-toggle-v11" onclick="event.stopPropagation();toggleHomeCard(this)">⋮</button>
                         </div>
                         <div class="progress-bar-minimal">
                             <div class="progress-track">
@@ -463,7 +463,6 @@
                                 </svg>
                             </div>
                             <h3>精听训练</h3>
-                            <button class="card-toggle-v11" onclick="event.stopPropagation();toggleHomeCard(this)">⋮</button>
                         </div>
                         <div class="card-expanded-content hidden">
                             <div class="card-detail-item">
@@ -489,7 +488,6 @@
                                 </svg>
                             </div>
                             <h3>口语跟读</h3>
-                            <button class="card-toggle-v11" onclick="event.stopPropagation();toggleHomeCard(this)">⋮</button>
                         </div>
                         <div class="card-expanded-content hidden">
                             <div class="card-detail-item">
@@ -582,13 +580,13 @@
             <div class="vocab-immersive-content">
                 <!-- V5: 快速记忆工具栏 -->
                 <div class="vocab-toolbar" id="vocabToolbar">
-                    <button class="tool-btn" onclick="toggleWordmark()" title="收藏">
+                    <button class="tool-btn" id="bookmarkBtn" onclick="toggleWordBookmark()" title="收藏">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
                     </button>
-                    <button class="tool-btn" onclick="speakWord()" title="发音">
+                    <button class="tool-btn" id="volumeBtn" onclick="toggleVolume()" title="音量">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
                     </button>
-                    <button class="tool-btn" onclick="showWordRoot()" title="词根">
+                    <button class="tool-btn" id="timerBtn" onclick="toggleStudyTimer()" title="计时器">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
                     </button>
                 </div>

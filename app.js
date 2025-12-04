@@ -4408,8 +4408,116 @@ function submitFeedback() {
     document.querySelector('.custom-modal').remove();
     showToast('感谢您的反馈！我们会认真阅读每一条建议');
     
+    
     // 这里可以添加实际的提交逻辑（发送到服务器）
     console.log('Feedback submitted:', feedbackData);
+}
+
+// v4.9.3: 单词收藏功能
+function toggleWordBookmark() {
+    const wordMain = document.getElementById('wordMain');
+    if (!wordMain) return;
+    
+    const currentWord = wordMain.textContent.trim();
+    if (!currentWord) return;
+    
+    // 获取收藏列表
+    let bookmarks = JSON.parse(localStorage.getItem('wordBookmarks') || '[]');
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    
+    // 切换收藏状态
+    const index = bookmarks.indexOf(currentWord);
+    if (index > -1) {
+        // 取消收藏
+        bookmarks.splice(index, 1);
+        bookmarkBtn.classList.remove('active');
+        bookmarkBtn.style.color = '';
+        showToast('已取消收藏', 'info');
+    } else {
+        // 添加收藏
+        bookmarks.push(currentWord);
+        bookmarkBtn.classList.add('active');
+        bookmarkBtn.style.color = '#f59e0b';
+        showToast('已添加到收藏', 'success');
+    }
+    
+    // 保存
+    localStorage.setItem('wordBookmarks', JSON.stringify(bookmarks));
+}
+
+// v4.9.3: 音量控制功能
+let currentVolume = 1.0;
+function toggleVolume() {
+    const volumeBtn = document.getElementById('volumeBtn');
+    if (!volumeBtn) return;
+    
+    // 循环切换音量: 100% -> 50% -> 静音 -> 100%
+    if (currentVolume === 1.0) {
+        currentVolume = 0.5;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        volumeBtn.style.opacity = '0.7';
+        showToast('音量: 50%', 'info');
+    } else if (currentVolume === 0.5) {
+        currentVolume = 0;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+        volumeBtn.style.opacity = '0.4';
+        showToast('已静音', 'warning');
+    } else {
+        currentVolume = 1.0;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        volumeBtn.style.opacity = '1';
+        showToast('音量: 100%', 'success');
+    }
+    
+    // 保存设置
+    localStorage.setItem('ttsVolume', currentVolume.toString());
+}
+
+// v4.9.3: 学习计时器功能
+let studyTimerInterval = null;
+let studyStartTime = null;
+function toggleStudyTimer() {
+    const timerBtn = document.getElementById('timerBtn');
+    if (!timerBtn) return;
+    
+    if (studyTimerInterval) {
+        // 停止计时
+        clearInterval(studyTimerInterval);
+        studyTimerInterval = null;
+        studyStartTime = null;
+        timerBtn.classList.remove('active');
+        timerBtn.style.color = '';
+        
+        // 移除计时显示
+        const timerDisplay = document.getElementById('studyTimerDisplay');
+        if (timerDisplay) timerDisplay.remove();
+        
+        showToast('计时已停止', 'info');
+    } else {
+        // 开始计时
+        studyStartTime = Date.now();
+        timerBtn.classList.add('active');
+        timerBtn.style.color = '#10b981';
+        
+        // 创建计时显示
+        let timerDisplay = document.getElementById('studyTimerDisplay');
+        if (!timerDisplay) {
+            timerDisplay = document.createElement('div');
+            timerDisplay.id = 'studyTimerDisplay';
+            timerDisplay.style.cssText = 'position:fixed;top:80px;right:20px;background:rgba(16,185,129,0.9);color:white;padding:8px 16px;border-radius:20px;font-size:14px;font-weight:600;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+            document.body.appendChild(timerDisplay);
+        }
+        
+        // 更新计时
+        studyTimerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            timerDisplay.textContent = `⏱ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
+        
+        showToast('开始计时', 'success');
+    }
 }
 
 // 暴露到全局
@@ -4420,4 +4528,8 @@ window.showHelp = showHelp;
 window.showRefundPolicy = showRefundPolicy;
 window.showFeedback = showFeedback;
 window.submitFeedback = submitFeedback;
+window.toggleWordBookmark = toggleWordBookmark;
+window.toggleVolume = toggleVolume;
+window.toggleStudyTimer = toggleStudyTimer;
+
 

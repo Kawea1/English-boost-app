@@ -1955,6 +1955,9 @@ function showCurrentWord() {
     // 更新学习进度指示器
     updateLearningProgressIndicator();
     
+    // v4.9.3: 更新收藏按钮状态
+    updateBookmarkButton(wordData.word);
+    
     // 自动朗读新单词
     speakWord();
 }
@@ -2006,6 +2009,21 @@ function showMasteryDetailPopup(word) {
     };
     
     document.body.appendChild(overlay);
+}
+
+// v4.9.3: 更新收藏按钮状态
+function updateBookmarkButton(word) {
+    var bookmarkBtn = document.getElementById('bookmarkBtn');
+    if (!bookmarkBtn) return;
+    
+    var bookmarks = JSON.parse(localStorage.getItem('wordBookmarks') || '[]');
+    if (bookmarks.indexOf(word) > -1) {
+        bookmarkBtn.classList.add('active');
+        bookmarkBtn.style.color = '#f59e0b';
+    } else {
+        bookmarkBtn.classList.remove('active');
+        bookmarkBtn.style.color = '';
+    }
 }
 
 // V13: 显示难度等级标签
