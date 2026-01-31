@@ -1,41 +1,41 @@
 // vocabulary.js - 核心词汇模块（带中文释义）
 window.vocabularyData = [
     // GRE核心词汇 (50词)
-    { word: 'aberrant', phonetic: '/əˈberənt/', meaningEn: 'departing from the accepted standard', meaningCn: '异常的，偏离正道的', example: 'His aberrant behavior worried his parents.' },
-    { word: 'abstruse', phonetic: '/æbˈstruːs/', meaningEn: 'difficult to understand', meaningCn: '深奥的，难懂的', example: 'The professor made abstruse concepts accessible.' },
-    { word: 'acerbic', phonetic: '/əˈsɜːrbɪk/', meaningEn: 'sharp and critical', meaningCn: '尖刻的，辛辣的', example: 'Her acerbic wit made her famous.' },
-    { word: 'acumen', phonetic: '/əˈkjuːmən/', meaningEn: 'keen insight', meaningCn: '敏锐，聪明', example: 'His business acumen led to success.' },
-    { word: 'adamant', phonetic: '/ˈædəmənt/', meaningEn: 'refusing to change', meaningCn: '坚定不移的', example: 'She was adamant about her decision.' },
-    { word: 'admonish', phonetic: '/ədˈmɑːnɪʃ/', meaningEn: 'warn or reprimand firmly', meaningCn: '告诫，警告', example: 'The teacher admonished the students.' },
-    { word: 'aesthetic', phonetic: '/esˈθetɪk/', meaningEn: 'relating to beauty', meaningCn: '美学的，审美的', example: 'The building has great aesthetic appeal.' },
-    { word: 'affable', phonetic: '/ˈæfəbl/', meaningEn: 'friendly and easy to talk to', meaningCn: '和蔼可亲的', example: 'The affable host welcomed everyone.' },
-    { word: 'alacrity', phonetic: '/əˈlækrəti/', meaningEn: 'brisk eagerness', meaningCn: '敏捷，欣然', example: 'She accepted the offer with alacrity.' },
-    { word: 'alleviate', phonetic: '/əˈliːvieɪt/', meaningEn: 'make less severe', meaningCn: '减轻，缓解', example: 'The medicine helped alleviate the pain.' },
-    { word: 'amalgamate', phonetic: '/əˈmælɡəmeɪt/', meaningEn: 'combine or unite', meaningCn: '合并，混合', example: 'The two companies amalgamated.' },
-    { word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaningEn: 'unclear in meaning', meaningCn: '模糊的，歧义的', example: 'The statement was deliberately ambiguous.' },
-    { word: 'ameliorate', phonetic: '/əˈmiːliəreɪt/', meaningEn: 'make better', meaningCn: '改善，改进', example: 'Steps were taken to ameliorate conditions.' },
-    { word: 'amenable', phonetic: '/əˈmiːnəbl/', meaningEn: 'willing to agree', meaningCn: '顺从的，愿意接受的', example: 'He was amenable to suggestions.' },
-    { word: 'anachronistic', phonetic: '/əˌnækrəˈnɪstɪk/', meaningEn: 'belonging to a different time', meaningCn: '时代错误的', example: 'The customs seemed anachronistic.' },
-    { word: 'analogous', phonetic: '/əˈnæləɡəs/', meaningEn: 'comparable in certain respects', meaningCn: '类似的，相似的', example: 'The situation is analogous to ours.' },
-    { word: 'anomaly', phonetic: '/əˈnɑːməli/', meaningEn: 'something unusual', meaningCn: '异常，反常现象', example: 'The results revealed an anomaly.' },
-    { word: 'antipathy', phonetic: '/ænˈtɪpəθi/', meaningEn: 'strong dislike', meaningCn: '反感，厌恶', example: 'She felt antipathy toward him.' },
-    { word: 'apathy', phonetic: '/ˈæpəθi/', meaningEn: 'lack of interest', meaningCn: '冷漠，无动于衷', example: 'Voter apathy was widespread.' },
-    { word: 'appease', phonetic: '/əˈpiːz/', meaningEn: 'pacify by giving in', meaningCn: '平息，安抚', example: 'They tried to appease the angry crowd.' },
-    { word: 'arbitrary', phonetic: '/ˈɑːrbɪtreri/', meaningEn: 'based on random choice', meaningCn: '任意的，武断的', example: 'The decision seemed arbitrary.' },
-    { word: 'archaic', phonetic: '/ɑːrˈkeɪɪk/', meaningEn: 'very old or outdated', meaningCn: '古老的，过时的', example: 'The law is archaic and needs reform.' },
-    { word: 'arduous', phonetic: '/ˈɑːrdʒuəs/', meaningEn: 'difficult and tiring', meaningCn: '艰苦的，费力的', example: 'The climb was arduous but rewarding.' },
-    { word: 'articulate', phonetic: '/ɑːrˈtɪkjələt/', meaningEn: 'express clearly', meaningCn: '清楚表达的，善于表达的', example: 'She is an articulate speaker.' },
-    { word: 'ascetic', phonetic: '/əˈsetɪk/', meaningEn: 'practicing self-denial', meaningCn: '苦行的，禁欲的', example: 'He lived an ascetic life.' },
-    { word: 'assiduous', phonetic: '/əˈsɪdʒuəs/', meaningEn: 'showing great care', meaningCn: '勤勉的，刻苦的', example: 'She was assiduous in her studies.' },
-    { word: 'astute', phonetic: '/əˈstuːt/', meaningEn: 'shrewd and perceptive', meaningCn: '精明的，敏锐的', example: 'An astute observer noticed the change.' },
-    { word: 'audacious', phonetic: '/ɔːˈdeɪʃəs/', meaningEn: 'bold and daring', meaningCn: '大胆的，无畏的', example: 'It was an audacious plan.' },
-    { word: 'austere', phonetic: '/ɔːˈstɪr/', meaningEn: 'severe or strict', meaningCn: '简朴的，严峻的', example: 'The room had an austere appearance.' },
-    { word: 'avarice', phonetic: '/ˈævərɪs/', meaningEn: 'extreme greed', meaningCn: '贪婪，贪财', example: 'His avarice knew no bounds.' },
-    { word: 'banal', phonetic: '/bəˈnɑːl/', meaningEn: 'lacking originality', meaningCn: '平庸的，陈腐的', example: 'The movie had a banal plot.' },
-    { word: 'belligerent', phonetic: '/bəˈlɪdʒərənt/', meaningEn: 'hostile and aggressive', meaningCn: '好战的，挑衅的', example: 'His belligerent attitude caused problems.' },
-    { word: 'benevolent', phonetic: '/bəˈnevələnt/', meaningEn: 'well-meaning and kind', meaningCn: '仁慈的，善意的', example: 'A benevolent donor funded the project.' },
-    { word: 'bolster', phonetic: '/ˈboʊlstər/', meaningEn: 'support or strengthen', meaningCn: '支持，加强', example: 'Evidence bolstered his argument.' },
-    { word: 'burgeon', phonetic: '/ˈbɜːrdʒən/', meaningEn: 'grow rapidly', meaningCn: '迅速发展，萌芽', example: 'The industry began to burgeon.' },
+    { word: 'aberrant', phonetic: '/əˈberənt/', meaningEn: 'departing from the accepted standard', meaningCn: '异常的；偏离的 | 反常的；越轨的', example: 'His aberrant behavior worried his parents.' },
+    { word: 'abstruse', phonetic: '/æbˈstruːs/', meaningEn: 'difficult to understand', meaningCn: '深奥的；难懂的 | 晦涩的；费解的', example: 'The professor made abstruse concepts accessible.' },
+    { word: 'acerbic', phonetic: '/əˈsɜːrbɪk/', meaningEn: 'sharp and critical', meaningCn: '尖刻的；辛辣的 | 刻薄的；酸的', example: 'Her acerbic wit made her famous.' },
+    { word: 'acumen', phonetic: '/əˈkjuːmən/', meaningEn: 'keen insight', meaningCn: '敏锐；洞察力 | 精明；才智', example: 'His business acumen led to success.' },
+    { word: 'adamant', phonetic: '/ˈædəmənt/', meaningEn: 'refusing to change', meaningCn: '坚定的；固执的 | 不动摇的；坚硬的', example: 'She was adamant about her decision.' },
+    { word: 'admonish', phonetic: '/ədˈmɑːnɪʃ/', meaningEn: 'warn or reprimand firmly', meaningCn: '告诫；劝告 | 警告；训斥', example: 'The teacher admonished the students.' },
+    { word: 'aesthetic', phonetic: '/esˈθetɪk/', meaningEn: 'relating to beauty', meaningCn: '美学的；审美的 | 艺术的；雅致的', example: 'The building has great aesthetic appeal.' },
+    { word: 'affable', phonetic: '/ˈæfəbl/', meaningEn: 'friendly and easy to talk to', meaningCn: '和蔼的；友善的 | 平易近人的；温和的', example: 'The affable host welcomed everyone.' },
+    { word: 'alacrity', phonetic: '/əˈlækrəti/', meaningEn: 'brisk eagerness', meaningCn: '敏捷；迅速 | 乐意；欣然', example: 'She accepted the offer with alacrity.' },
+    { word: 'alleviate', phonetic: '/əˈliːvieɪt/', meaningEn: 'make less severe', meaningCn: '减轻；缓和 | 缓解；减缓', example: 'The medicine helped alleviate the pain.' },
+    { word: 'amalgamate', phonetic: '/əˈmælɡəmeɪt/', meaningEn: 'combine or unite', meaningCn: '合并；联合 | 混合；融合', example: 'The two companies amalgamated.' },
+    { word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaningEn: 'unclear in meaning', meaningCn: '模糊的；含糊的 | 歧义的；不明确的', example: 'The statement was deliberately ambiguous.' },
+    { word: 'ameliorate', phonetic: '/əˈmiːliəreɪt/', meaningEn: 'make better', meaningCn: '改善；改进 | 减轻；缓和', example: 'Steps were taken to ameliorate conditions.' },
+    { word: 'amenable', phonetic: '/əˈmiːnəbl/', meaningEn: 'willing to agree', meaningCn: '顺从的；听话的 | 愿意接受的；服从的', example: 'He was amenable to suggestions.' },
+    { word: 'anachronistic', phonetic: '/əˌnækrəˈnɪstɪk/', meaningEn: 'belonging to a different time', meaningCn: '时代错误的；过时的 | 不合时宜的', example: 'The customs seemed anachronistic.' },
+    { word: 'analogous', phonetic: '/əˈnæləɡəs/', meaningEn: 'comparable in certain respects', meaningCn: '类似的；相似的 | 可比拟的；对应的', example: 'The situation is analogous to ours.' },
+    { word: 'anomaly', phonetic: '/əˈnɑːməli/', meaningEn: 'something unusual', meaningCn: '异常；反常 | 不规则；例外', example: 'The results revealed an anomaly.' },
+    { word: 'antipathy', phonetic: '/ænˈtɪpəθi/', meaningEn: 'strong dislike', meaningCn: '反感；厌恶 | 憎恶；敌意', example: 'She felt antipathy toward him.' },
+    { word: 'apathy', phonetic: '/ˈæpəθi/', meaningEn: 'lack of interest', meaningCn: '冷漠；漠不关心 | 无动于衷；麻木', example: 'Voter apathy was widespread.' },
+    { word: 'appease', phonetic: '/əˈpiːz/', meaningEn: 'pacify by giving in', meaningCn: '平息；安抚 | 绥靖；姑息', example: 'They tried to appease the angry crowd.' },
+    { word: 'arbitrary', phonetic: '/ˈɑːrbɪtreri/', meaningEn: 'based on random choice', meaningCn: '任意的；随意的 | 武断的；专横的', example: 'The decision seemed arbitrary.' },
+    { word: 'archaic', phonetic: '/ɑːrˈkeɪɪk/', meaningEn: 'very old or outdated', meaningCn: '古老的；古代的 | 过时的；陈旧的', example: 'The law is archaic and needs reform.' },
+    { word: 'arduous', phonetic: '/ˈɑːrdʒuəs/', meaningEn: 'difficult and tiring', meaningCn: '艰苦的；艰巨的 | 费力的；困难的', example: 'The climb was arduous but rewarding.' },
+    { word: 'articulate', phonetic: '/ɑːrˈtɪkjələt/', meaningEn: 'express clearly', meaningCn: '善于表达的；口齿清晰的 | 明确表达；清楚说明', example: 'She is an articulate speaker.' },
+    { word: 'ascetic', phonetic: '/əˈsetɪk/', meaningEn: 'practicing self-denial', meaningCn: '苦行的；禁欲的 | 简朴的；清苦的', example: 'He lived an ascetic life.' },
+    { word: 'assiduous', phonetic: '/əˈsɪdʒuəs/', meaningEn: 'showing great care', meaningCn: '勤勉的；刻苦的 | 坚持不懈的；专心的', example: 'She was assiduous in her studies.' },
+    { word: 'astute', phonetic: '/əˈstuːt/', meaningEn: 'shrewd and perceptive', meaningCn: '精明的；敏锐的 | 狡猾的；机敏的', example: 'An astute observer noticed the change.' },
+    { word: 'audacious', phonetic: '/ɔːˈdeɪʃəs/', meaningEn: 'bold and daring', meaningCn: '大胆的；勇敢的 | 无畏的；鲁莽的', example: 'It was an audacious plan.' },
+    { word: 'austere', phonetic: '/ɔːˈstɪr/', meaningEn: 'severe or strict', meaningCn: '简朴的；朴素的 | 严峻的；严厉的', example: 'The room had an austere appearance.' },
+    { word: 'avarice', phonetic: '/ˈævərɪs/', meaningEn: 'extreme greed', meaningCn: '贪婪；贪心 | 贪财；吝啬', example: 'His avarice knew no bounds.' },
+    { word: 'banal', phonetic: '/bəˈnɑːl/', meaningEn: 'lacking originality', meaningCn: '平庸的；陈腐的 | 乏味的；老套的', example: 'The movie had a banal plot.' },
+    { word: 'belligerent', phonetic: '/bəˈlɪdʒərənt/', meaningEn: 'hostile and aggressive', meaningCn: '好战的；交战的 | 挑衅的；好斗的', example: 'His belligerent attitude caused problems.' },
+    { word: 'benevolent', phonetic: '/bəˈnevələnt/', meaningEn: 'well-meaning and kind', meaningCn: '仁慈的；慈善的 | 善意的；宽厚的', example: 'A benevolent donor funded the project.' },
+    { word: 'bolster', phonetic: '/ˈboʊlstər/', meaningEn: 'support or strengthen', meaningCn: '支持；支撑 | 加强；巩固', example: 'Evidence bolstered his argument.' },
+    { word: 'burgeon', phonetic: '/ˈbɜːrdʒən/', meaningEn: 'grow rapidly', meaningCn: '迅速发展；激增 | 萌芽；发芽', example: 'The industry began to burgeon.' },
     { word: 'cacophony', phonetic: '/kəˈkɑːfəni/', meaningEn: 'harsh mixture of sounds', meaningCn: '刺耳的声音，不和谐', example: 'A cacophony of car horns filled the air.' },
     { word: 'candid', phonetic: '/ˈkændɪd/', meaningEn: 'truthful and straightforward', meaningCn: '坦率的，直言不讳的', example: 'She gave a candid assessment.' },
     { word: 'capricious', phonetic: '/kəˈprɪʃəs/', meaningEn: 'unpredictable', meaningCn: '反复无常的，任性的', example: 'The weather was capricious.' },
@@ -1136,6 +1136,115 @@ function renderWordList() {
     updateVocabProgress();
 }
 
+// 显示完整单词列表
+function showFullWordList() {
+    var overlay = document.createElement('div');
+    overlay.id = 'wordListOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    
+    var listHtml = '<div style="background:white;border-radius:16px;width:90%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">';
+    
+    // 头部
+    listHtml += '<div style="padding:16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">';
+    listHtml += '<h3 style="margin:0;font-size:18px;font-weight:700;color:#1f2937;">单词列表</h3>';
+    listHtml += '<button onclick="closeWordList()" style="background:none;border:none;font-size:24px;color:#6b7280;cursor:pointer;">×</button>';
+    listHtml += '</div>';
+    
+    // 搜索框
+    listHtml += '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;">';
+    listHtml += '<input type="text" id="wordSearchInput" placeholder="搜索单词..." onkeyup="filterWordList(this.value)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">';
+    listHtml += '</div>';
+    
+    // 单词列表
+    listHtml += '<div id="wordListContent" style="flex:1;overflow-y:auto;padding:8px;">';
+    
+    window.vocabularyData.forEach(function(wordData, index) {
+        var isLearned = learnedWords.indexOf(wordData.word) > -1;
+        listHtml += '<div class="list-word-item" data-word="' + wordData.word.toLowerCase() + '" onclick="showWordFromList(\'' + wordData.word + '\')" style="padding:12px;margin-bottom:4px;background:' + (isLearned ? '#f0fdf4' : '#f9fafb') + ';border-radius:8px;cursor:pointer;transition:all 0.2s;">';
+        listHtml += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        listHtml += '<div style="flex:1;">';
+        listHtml += '<div style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:2px;">' + wordData.word + '</div>';
+        listHtml += '<div style="font-size:13px;color:#6b7280;">' + wordData.meaningCn + '</div>';
+        listHtml += '</div>';
+        if (isLearned) {
+            listHtml += '<span style="color:#10b981;font-size:18px;">✓</span>';
+        }
+        listHtml += '</div>';
+        listHtml += '</div>';
+    });
+    
+    listHtml += '</div>';
+    listHtml += '</div>';
+    
+    overlay.innerHTML = listHtml;
+    document.body.appendChild(overlay);
+    
+    // 添加hover效果
+    var style = document.createElement('style');
+    style.textContent = '.list-word-item:hover { background: #e0e7ff !important; transform: translateX(4px); }';
+    document.head.appendChild(style);
+}
+
+// 过滤单词列表
+function filterWordList(query) {
+    var items = document.querySelectorAll('.list-word-item');
+    var lowerQuery = query.toLowerCase();
+    
+    items.forEach(function(item) {
+        var word = item.getAttribute('data-word');
+        if (word.includes(lowerQuery)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// 从列表显示单词详情
+function showWordFromList(word) {
+    closeWordList();
+    
+    // 找到单词数据
+    var wordData = window.vocabularyData.find(function(w) {
+        return w.word.toLowerCase() === word.toLowerCase();
+    });
+    
+    if (!wordData) return;
+    
+    // 显示单词详情弹窗
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    
+    var detailHtml = '<div style="background:white;border-radius:16px;width:90%;max-width:400px;padding:24px;">';
+    detailHtml += '<div style="text-align:center;margin-bottom:16px;">';
+    detailHtml += '<div style="font-size:32px;font-weight:700;color:#1f2937;margin-bottom:8px;">' + wordData.word + '</div>';
+    detailHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:12px;">' + wordData.phonetic + '</div>';
+    detailHtml += '<button onclick="speakText(\'' + wordData.word + '\')" style="padding:8px 16px;background:#6366f1;color:white;border:none;border-radius:8px;cursor:pointer;">🔊 发音</button>';
+    detailHtml += '</div>';
+    
+    detailHtml += '<div style="background:#f9fafb;padding:16px;border-radius:12px;margin-bottom:16px;">';
+    detailHtml += '<div style="font-size:15px;color:#374151;margin-bottom:8px;font-weight:500;">' + wordData.meaningCn + '</div>';
+    detailHtml += '<div style="font-size:14px;color:#6b7280;font-style:italic;">"' + wordData.example + '"</div>';
+    detailHtml += '</div>';
+    
+    detailHtml += '<button onclick="this.parentElement.parentElement.remove()" style="width:100%;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;cursor:pointer;font-weight:500;">关闭</button>';
+    detailHtml += '</div>';
+    
+    overlay.innerHTML = detailHtml;
+    overlay.onclick = function(e) {
+        if (e.target === overlay) overlay.remove();
+    };
+    document.body.appendChild(overlay);
+    
+    speakText(wordData.word);
+}
+
+// 关闭单词列表
+function closeWordList() {
+    var overlay = document.getElementById('wordListOverlay');
+    if (overlay) overlay.remove();
+}
+
 // 切换单词详情
 function toggleWordDetail(index) {
     var wordData = sessionWords[index];
@@ -2198,100 +2307,7 @@ function showMasteryDetailPopup(word) {
     document.body.appendChild(overlay);
 }
 
-// V13: 显示难度等级标签
-function showDifficultyBadge(word) {
-    var difficulty = getWordDifficulty(word);
-    
-    // 查找或创建难度标签容器
-    var badge = document.getElementById('difficultyBadge');
-    var phoneticEl = document.getElementById('wordPhonetic');
-    
-    if (!badge && phoneticEl) {
-        badge = document.createElement('span');
-        badge.id = 'difficultyBadge';
-        badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:10px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
-        phoneticEl.parentNode.insertBefore(badge, phoneticEl.nextSibling);
-    }
-    
-    if (badge) {
-        if (difficulty) {
-            // 根据难度等级设置不同颜色
-            var levelStyles = {
-                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '●', label: '基础' },
-                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '●', label: '中等' },
-                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '●', label: '中高级' },
-                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '●', label: '高级' },
-                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '●', label: '专业' }
-            };
-            var style = levelStyles[difficulty.level] || levelStyles[3];
-            badge.style.background = style.bg;
-            badge.style.color = style.color;
-            badge.style.border = '1px solid ' + style.border;
-            badge.style.display = 'inline-flex';
-            
-            // 构建标签内容
-            var sourceTags = '';
-            if (difficulty.sources && difficulty.sources.length > 0) {
-                difficulty.sources.slice(0, 2).forEach(function(src) {
-                    var srcStyle = src === 'GRE' ? 'background:#fee2e2;color:#991b1b;' : 
-                                   src === 'TOEFL' ? 'background:#e0e7ff;color:#3730a3;' : 
-                                   'background:#f3f4f6;color:#374151;';
-                    sourceTags += '<span style="' + srcStyle + 'padding:1px 5px;border-radius:4px;font-size:9px;margin-left:4px;">' + src + '</span>';
-                });
-            }
-            
-            badge.innerHTML = '<span>' + style.icon + '</span><span>' + style.label + '</span>' + sourceTags;
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-}
-
-// V16: 显示真题标记标签
-function showExamTagsBadge(word) {
-    var examTags = getWordExamTags(word);
-    
-    // 查找或创建真题标签容器
-    var examBadge = document.getElementById('examTagsBadge');
-    var difficultyBadge = document.getElementById('difficultyBadge');
-    var phoneticEl = document.getElementById('wordPhonetic');
-    
-    if (!examBadge && (difficultyBadge || phoneticEl)) {
-        examBadge = document.createElement('span');
-        examBadge.id = 'examTagsBadge';
-        examBadge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
-        
-        // 插入到难度标签之后，或音标之后
-        if (difficultyBadge && difficultyBadge.parentNode) {
-            difficultyBadge.parentNode.insertBefore(examBadge, difficultyBadge.nextSibling);
-        } else if (phoneticEl && phoneticEl.parentNode) {
-            phoneticEl.parentNode.insertBefore(examBadge, phoneticEl.nextSibling);
-        }
-    }
-    
-    if (examBadge) {
-        if (examTags) {
-            examBadge.style.display = 'inline-flex';
-            examBadge.style.background = 'linear-gradient(135deg,#fef3c7 0%,#fde68a 100%)';
-            examBadge.style.color = '#92400e';
-            examBadge.style.border = '1px solid #fcd34d';
-            
-            var content = '<span style="font-weight:600;font-size:10px;color:#92400e;margin-right:4px;">真题</span>';
-            if (examTags.gre) {
-                var greHeat = examTags.gre.count >= 12 ? '★★' : examTags.gre.count >= 8 ? '★' : '';
-                content += '<span style="background:#7c3aed;color:white;padding:1px 6px;border-radius:4px;font-size:9px;">GRE×' + examTags.gre.count + greHeat + '</span>';
-            }
-            if (examTags.toefl) {
-                var toeflHeat = examTags.toefl.count >= 10 ? '★★' : examTags.toefl.count >= 6 ? '★' : '';
-                content += '<span style="background:#2563eb;color:white;padding:1px 6px;border-radius:4px;font-size:9px;margin-left:2px;">TOEFL×' + examTags.toefl.count + toeflHeat + '</span>';
-            }
-            
-            examBadge.innerHTML = content;
-        } else {
-            examBadge.style.display = 'none';
-        }
-    }
-}
+// Simplified - removed difficulty and exam badges
 
 // 更新右上角学习次数徽章
 function updateLearningBadge() {
@@ -2360,13 +2376,20 @@ function showMeaning() {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
-    // 构建释义HTML - 极简版：只显示一个例句
+    // 构建释义HTML - 显示中文释义（常见+偏僻）
     var meaningHtml = '';
     
-    // 只显示一个例句
+    // 显示中文释义
+    if (wordData.meaningCn) {
+        meaningHtml += '<div style="padding:16px 0;">';
+        meaningHtml += '<div style="font-size:16px;font-weight:600;color:#1f2937;line-height:1.8;">' + wordData.meaningCn + '</div>';
+        meaningHtml += '</div>';
+    }
+    
+    // 显示例句
     if (wordData.example) {
-        meaningHtml += '<div class="word-example" style="color:#374151;font-size:15px;line-height:1.6;padding:16px 0;">';
-        meaningHtml += '<div style="font-style:italic;margin-bottom:8px;">"' + wordData.example + '"</div>';
+        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;line-height:1.6;padding:12px 0;border-top:1px solid #e5e7eb;">';
+        meaningHtml += '<div style="font-style:italic;">"' + wordData.example + '"</div>';
         meaningHtml += '</div>';
     }
     
