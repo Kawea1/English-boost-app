@@ -10007,13 +10007,15 @@ body.liquid-glass-mode .settings-action-btn.save {
 /* ==================== 模块通用新样式 ==================== */
 
 /* 模块头部变体 */
-.modal-header-vocab { background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); }
-.modal-header-listen { background: linear-gradient(135deg, #3b82f6 0%, #06b6d4 100%); }
-.modal-header-speak { background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%); }
-.modal-header-read { background: linear-gradient(135deg, #14b8a6 0%, #10b981 100%); }
-.modal-header-review { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); }
-.modal-header-resource { background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%); }
-.modal-header-stats { background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%); }
+.modal-header-vocab,
+.modal-header-listen,
+.modal-header-speak,
+.modal-header-read,
+.modal-header-review,
+.modal-header-resource,
+.modal-header-stats {
+    background: var(--gradient-primary) !important;
+}
 
 .modal-title-group {
     display: flex;
@@ -12414,18 +12416,6 @@ body.liquid-glass-mode #settingsModal .settings-tabs-top {
     background: rgba(255, 255, 255, 0.5);
 }
 
-/* ==================== 主题适配修复 ==================== */
-/* 当切换主题时，让所有模块头部跟随主题色 */
-body:not(.theme-default) .modal-header-vocab,
-body:not(.theme-default) .modal-header-listen,
-body:not(.theme-default) .modal-header-speak,
-body:not(.theme-default) .modal-header-read,
-body:not(.theme-default) .modal-header-review,
-body:not(.theme-default) .modal-header-resource,
-body:not(.theme-default) .modal-header-stats {
-    background: var(--gradient-primary) !important;
-}
-
 /* ==================== 法律文档弹窗样式 ==================== */
 .legal-modal {
     position: fixed;
@@ -14508,46 +14498,6 @@ body.liquid-glass-mode .modal-header::before {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0) 100%);
     pointer-events: none;
     z-index: 0;
-}
-
-/* v2: 各模块头部跟随主题色 - 非默认主题使用主题渐变 */
-body.liquid-glass-mode:not(.theme-default) .modal-header-vocab,
-body.liquid-glass-mode:not(.theme-default) .modal-header-listen,
-body.liquid-glass-mode:not(.theme-default) .modal-header-speak,
-body.liquid-glass-mode:not(.theme-default) .modal-header-read,
-body.liquid-glass-mode:not(.theme-default) .modal-header-review,
-body.liquid-glass-mode:not(.theme-default) .modal-header-resource,
-body.liquid-glass-mode:not(.theme-default) .modal-header-stats {
-    background: var(--gradient-primary) !important;
-}
-
-/* 默认主题保持各模块专属渐变 */
-body.liquid-glass-mode.theme-default .modal-header-vocab {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-listen {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(6, 182, 212, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-speak {
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.95) 0%, rgba(244, 63, 94, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-read {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-review {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(249, 115, 22, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-resource {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.95) 0%, rgba(168, 85, 247, 0.95) 100%) !important;
-}
-
-body.liquid-glass-mode.theme-default .modal-header-stats {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%) !important;
 }
 
 /* v3: 模态框头部内容层级修复 */
