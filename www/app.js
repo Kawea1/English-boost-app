@@ -1017,32 +1017,13 @@ function openModule(moduleName) {
                     // V3: 隐藏底部导航栏
                     var bottomNav = document.getElementById('bottomNav');
                     if (bottomNav) bottomNav.classList.add('hidden');
-                    
 
-// v4.9.1: 首页卡片展开/收起功能
-function toggleHomeCard(btn) {
-    var card = btn.closest('.core-card-v11');
-    var expandedContent = card.querySelector('.card-expanded-content');
-    var isExpanded = !expandedContent.classList.contains('hidden');
-    
-    if (isExpanded) {
-        // 收起
-        expandedContent.classList.add('hidden');
-        btn.innerHTML = '⋮';
-        btn.style.transform = 'translateY(-50%) rotate(0deg)';
-    } else {
-        // 展开
-        expandedContent.classList.remove('hidden');
-        btn.innerHTML = '×';
-        btn.style.transform = 'translateY(-50%) rotate(180deg)';
-    }
-}
                     // V4: 显示写作模块
                     writingModule.classList.remove('hidden');
-                    
+
                     // V5: 滚动到顶部
                     writingModule.scrollTop = 0;
-                    
+
                     // 初始化写作模块
                     if (typeof WritingModule !== 'undefined') {
                         if (WritingModule.showHistory) WritingModule.showHistory();
@@ -1878,6 +1859,9 @@ window.dismissUpdate = dismissUpdate;
 // 导出新函数到全局
 window.confirmResetStats = confirmResetStats;
 window.initNavScrollBehavior = initNavScrollBehavior;
+window.switchTab = switchTab;
+window.showStats = showStats;
+window.showSettings = showSettings;
 
 // ==================== 今日目标功能 ====================
 var dailyGoals = {
