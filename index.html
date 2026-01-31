@@ -530,18 +530,61 @@
             </div>
         </main>
 
-        <!-- 词汇模块 V15 - 列表式背单词 -->
+        <!-- 词汇模块 V16 - 卡片式核心词汇 -->
         <div class="modal" id="vocabularyModal">
-            <div class="vocab-header-v15">
+            <div class="vocab-header-v16">
                 <button class="vocab-back-btn" onclick="closeModule()">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
                 <h2>核心词汇</h2>
-                <span class="vocab-progress" id="vocabProgressSimple">0/50</span>
+                <div class="vocab-progress-ring">
+                    <svg width="44" height="44" viewBox="0 0 44 44">
+                        <circle cx="22" cy="22" r="18" fill="none" stroke="#e5e7eb" stroke-width="4"/>
+                        <circle id="progressRingFill" cx="22" cy="22" r="18" fill="none" stroke="url(#vocabGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)"/>
+                        <defs>
+                            <linearGradient id="vocabGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" stop-color="#6366f1"/>
+                                <stop offset="100%" stop-color="#a855f7"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="progress-text" id="vocabProgressText">0</span>
+                </div>
             </div>
             
-            <div class="vocab-list-container" id="vocabListContainer">
-                <!-- 单词列表动态生成 -->
+            <!-- 学习进度点 -->
+            <div class="learning-dots" id="learningDots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            
+            <!-- 单词卡片 -->
+            <div class="word-card" id="wordCard">
+                <div class="word-main" id="wordMain">Loading...</div>
+                <div class="word-phonetic" id="wordPhonetic">/ˈləʊdɪŋ/</div>
+                <div class="word-meaning hidden" id="wordMeaning">
+                    <div class="meaning-cn" id="meaningCn"></div>
+                    <div class="word-example" id="wordExample"></div>
+                </div>
+            </div>
+            
+            <!-- 操作按钮 -->
+            <div class="vocab-actions">
+                <button id="showMeaningBtn" onclick="showMeaning()" class="btn-show-meaning">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                    显示释义
+                </button>
+                <div id="rateButtons" class="rate-buttons hidden">
+                    <button onclick="rateWord('again')" class="rate-btn again">
+                        <span class="rate-emoji">✗</span>
+                        <span class="rate-text">不认识</span>
+                    </button>
+                    <button onclick="rateWord('good')" class="rate-btn good">
+                        <span class="rate-emoji">✓</span>
+                        <span class="rate-text">认识</span>
+                    </button>
+                </div>
             </div>
         </div>
 
