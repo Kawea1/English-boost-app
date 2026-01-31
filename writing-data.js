@@ -7581,12 +7581,31 @@ function scoreAcademicWriting(text, topic = null) {
   // 计算语言分数 - 基于实际问题严格评分
   let totalIssues = result.paragraphAnalysis.reduce((sum, p) => sum + p.issues.length, 0);
   let academicStrengths = result.paragraphAnalysis.filter(p => p.strengths.includes('学术词汇运用良好')).length;
-  
-  // 基础分10分,每个学术优势+3分,每个问题-2分
-  result.dimensions.language.score = 10;
-  result.dimensions.language.score += academicStrengths * 3;
-  result.dimensions.language.score -= totalIssues * 2;
-  result.dimensions.language.score = Math.max(0, Math.min(25, result.dimensions.language.score));
+
+  // 检查文本是否有效（至少50个单词且有有效的英文内容）
+  const validWords = text.match(/[a-zA-Z]{2,}/g) || [];
+  const validWordCount = validWords.length;
+  const hasValidContent = validWordCount >= 30 && sentences.length >= 2;
+
+  // 如果内容无效，语言分数为0
+  if (!hasValidContent) {
+    result.dimensions.language.score = 0;
+    result.dimensions.language.feedback.push('✗ 内容不足或缺乏有效的英文表达');
+  } else {
+    // 基础分5分（降低基础分），每个学术优势+4分，每个问题-2分
+    result.dimensions.language.score = 5;
+    result.dimensions.language.score += academicStrengths * 4;
+    result.dimensions.language.score -= totalIssues * 2;
+
+    // 根据有效单词数量调整分数
+    if (validWordCount >= 200) {
+      result.dimensions.language.score += 5;
+    } else if (validWordCount >= 100) {
+      result.dimensions.language.score += 3;
+    }
+
+    result.dimensions.language.score = Math.max(0, Math.min(25, result.dimensions.language.score));
+  }
   
   if (academicStrengths >= 3) {
     result.dimensions.language.feedback.push('✓ 学术词汇运用得当');

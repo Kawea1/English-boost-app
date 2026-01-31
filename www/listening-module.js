@@ -42,7 +42,7 @@ function updateListeningForReviewMode() {
         if (titleEl) {
             var badge = document.createElement('span');
             badge.className = 'review-mode-badge';
-            badge.innerHTML = '📝 复习模式';
+            badge.innerHTML = '复习模式';
             titleEl.parentNode.insertBefore(badge, titleEl.nextSibling);
         }
     }
@@ -360,6 +360,11 @@ function togglePlayEnhanced() {
             // 更新统计
             const count = parseInt(localStorage.getItem('stat_listen') || '0');
             localStorage.setItem('stat_listen', (count + 1).toString());
+            
+            // 记录今日统计数据
+            if (typeof recordDailyStats === 'function') {
+                recordDailyStats('listening', 1);
+            }
         }
     } else {
         alert('您的浏览器不支持语音合成');
@@ -413,7 +418,7 @@ function checkAnswerEnhanced() {
     const feedback = document.getElementById('answerFeedback');
     
     if (!feedback) {
-        alert(input === correct ? '✅ 正确！' : '❌ 错误，答案是: ' + currentListeningSentence.blank);
+        alert(input === correct ? '正确！' : '错误，答案是: ' + currentListeningSentence.blank);
         return;
     }
     
@@ -541,7 +546,7 @@ function resetListeningProgress() {
         completedListeningSentences = [];
         localStorage.setItem('completedListeningSentences', '[]');
         loadNextListeningSentence();
-        if (typeof showToast === 'function') showToast('✅ 进度已重置');
+        if (typeof showToast === 'function') showToast('进度已重置');
     }
 }
 
