@@ -2714,85 +2714,24 @@ function updateIntervalDisplay() {
     if (easyInterval) easyInterval.textContent = intervals.easy.displayText;
 }
 
-// V1 & V2 & V4 & V8: 重写评分函数 - Anki风格智能复习（带自适应难度）
+// V1 & V2 & V4 & V8: 重写评分函数 - 极简版：只有认识/不认识
 function rateWord(rating) {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
     var word = wordData.word;
     
-    // V8: 更新自适应难度
-    updateAdaptiveDifficulty(rating);
-    
-    // V1: 更新掌握度追踪
-    var masteryResult = 'partial';
-    var masteryOptions = { type: 'review' };
-    
-    switch(rating) {
-        case 'again':
-            masteryResult = 'wrong';
-            masteryOptions.meaningScore = 20;
-            break;
-        case 'hard':
-            masteryResult = 'partial';
-            masteryOptions.meaningScore = 50;
-            break;
-        case 'good':
-            masteryResult = 'correct';
-            masteryOptions.meaningScore = 80;
-            break;
-        case 'easy':
-            masteryResult = 'correct';
-            masteryOptions.meaningScore = 100;
-            break;
-    }
-    
-    updateWordMastery(word, masteryResult, masteryOptions);
-    
     // 更新本轮学习进度
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
     
-    // V2: 根据评分处理即时复习队列
-    switch(rating) {
-        case 'again': // 重学 - 立即加入即时复习队列
-            // 不增加学习次数
-            addToImmediateReview(wordData, 1); // 1个单词后立即复习
-            showRatingFeedback('again', '马上再来一次');
-            break;
-            
-        case 'hard': // 困难 - 稍后在本组内复习
-            // 增加学习次数但标记为困难
-            sessionProgress.times++;
-            if (hardWordsInSession.indexOf(word) === -1) {
-                hardWordsInSession.push(word);
-            }
-            addToImmediateReview(wordData, 3); // 3个单词后复习
-            showRatingFeedback('hard', '稍后再复习');
-            break;
-            
-        case 'good': // 良好 - 正常进度
-            sessionProgress.times++;
-            sessionProgress.lastIndex = currentQueueIndex;
-            // 从困难列表移除
-            var hardIndex = hardWordsInSession.indexOf(word);
-            if (hardIndex > -1) hardWordsInSession.splice(hardIndex, 1);
-            // 评分反馈已简化
-            break;
-            
-        case 'easy': // 简单 - 加速掌握
-            sessionProgress.times += 2; // 简单直接+2次进度
-            sessionProgress.lastIndex = currentQueueIndex;
-            // 从困难列表移除
-            var easyHardIndex = hardWordsInSession.indexOf(word);
-            if (easyHardIndex > -1) hardWordsInSession.splice(easyHardIndex, 1);
-            // 评分反馈已简化
-            break;
-            
-        // 兼容旧版评分
-        case 'medium':
-            rating = 'good';
-            sessionProgress.times++;
-            break;
+    // 极简评分：只有 again(不认识) 和 good(认识)
+    if (rating === 'again') {
+        // 不认识 - 重置进度，稍后再复习
+        sessionProgress.times = 0;
+        addToImmediateReview(wordData, 2);
+    } else {
+        // 认识 (good/easy) - 增加进度
+        sessionProgress.times++;
     }
     
     // 判断本轮是否完成
@@ -2860,42 +2799,38 @@ function rateWord(rating) {
     
     sessionWordProgress[word] = sessionProgress;
     
-    // 保存评分（V4: 包含SM-2数据）
-    var intervalInfo = calculateReviewInterval(word, rating);
+    // 保存评分
     var prevCount = wordRatings[word] ? wordRatings[word].count : 0;
     wordRatings[word] = {
         rating: rating,
         lastReview: new Date().toISOString(),
         count: prevCount + 1,
-        interval: intervalInfo.interval,
-        easeFactor: intervalInfo.easeFactor,
         learningProgress: sessionProgress
     };
     localStorage.setItem('wordRatings', JSON.stringify(wordRatings));
+    
+    // 判断本轮是否完成
+    if (sessionProgress.times >= requiredLearningTimes) {
+        sessionProgress.completed = true;
+        
+        // 记录为已学
+        if (learnedWords.indexOf(word) === -1) {
+            learnedWords.push(word);
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+        }
+    }
+    
+    sessionWordProgress[word] = sessionProgress;
     
     // 刷新UI
     updateVocabProgress();
     updateLearningBadge();
     updateLearningProgressIndicator();
     
-    // V9: 更新学习统计
-    updateSessionStats(rating);
-    
-    // 触发全局学习进度更新事件
-    try {
-        window.dispatchEvent(new CustomEvent('vocabularyProgressUpdated', {
-            detail: {
-                word: word,
-                rating: rating,
-                sessionProgress: sessionProgress,
-                totalLearned: learnedWords.length,
-                interval: intervalInfo.interval
-            }
-        }));
-    } catch(e) {}
-    
-    // 下一个词
-    nextWord();
+    // 自动切换到下一个单词
+    setTimeout(function() {
+        nextWord();
+    }, 300);
 }
 
 // V2: 添加到即时复习队列
