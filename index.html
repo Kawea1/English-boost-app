@@ -532,27 +532,19 @@
 
         <!-- 词汇模块 V16 - 卡片式核心词汇 -->
         <div class="modal" id="vocabularyModal">
-            <div class="vocab-header-v16">
-                <button class="vocab-back-btn" onclick="closeModule()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            <div class="modal-header modal-header-vocab">
+                <button class="back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
                 </button>
-                <h2>核心词汇</h2>
+                <div class="modal-title-group">
+                    <div class="modal-icon-badge vocab">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    </div>
+                    <h2>核心词汇</h2>
+                </div>
                 <button class="vocab-list-btn" onclick="showFullWordList()" title="单词列表">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
                 </button>
-                <div class="vocab-progress-ring" style="display:none;">
-                    <svg width="44" height="44" viewBox="0 0 44 44">
-                        <circle cx="22" cy="22" r="18" fill="none" stroke="#e5e7eb" stroke-width="4"/>
-                        <circle id="progressRingFill" cx="22" cy="22" r="18" fill="none" stroke="url(#vocabGrad)" stroke-width="4" stroke-linecap="round" stroke-dasharray="113" stroke-dashoffset="113" transform="rotate(-90 22 22)"/>
-                        <defs>
-                            <linearGradient id="vocabGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#6366f1"/>
-                                <stop offset="100%" stop-color="#a855f7"/>
-                            </linearGradient>
-                        </defs>
-                    </svg>
-                    <span class="progress-text" id="vocabProgressText">0</span>
-                </div>
             </div>
             
             <!-- 学习进度点 -->
@@ -1370,6 +1362,26 @@
                                         <input type="checkbox" id="reviewReminder">
                                         <span class="toggle-slider-v10"></span>
                                     </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PWA 安装到本地 -->
+                        <div class="settings-card-v10">
+                            <div class="card-header-v10">
+                                <span class="card-emoji-v10">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                </span>
+                                <div class="card-title-v10">
+                                    <h4>安装到本地</h4>
+                                    <p id="pwaInstallStatus">点击安装到桌面，离线可用</p>
+                                </div>
+                            </div>
+                            <div class="settings-list-v10">
+                                <div class="setting-row-v10" style="justify-content: center;">
+                                    <button id="pwaInstallBtn" class="pwa-install-btn" onclick="installPWA()">
+                                        立即安装
+                                    </button>
                                 </div>
                             </div>
                         </div>

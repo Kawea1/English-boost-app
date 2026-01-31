@@ -8269,6 +8269,21 @@ window.initResourcesModule = initResourcesModule;
 window.showResourceTab = showResourceTab;
 window.updateReviewStats = updateReviewStats;
 window.startReview = startReview;
+
+// 打开词汇复习列表（跳转到词汇模块的单词列表）
+function openVocabularyReviewList() {
+    // 先打开词汇模块
+    if (typeof openModule === 'function') {
+        openModule('vocabulary');
+    }
+    // 延迟显示单词列表，等待模块加载
+    setTimeout(function() {
+        if (typeof showFullWordList === 'function') {
+            showFullWordList();
+        }
+    }, 300);
+}
+window.openVocabularyReviewList = openVocabularyReviewList;
 window.loadAppSettings = loadAppSettings;
 window.saveAppSettings = saveAppSettings;
 window.resetAppSettings = resetAppSettings;

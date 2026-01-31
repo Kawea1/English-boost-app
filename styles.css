@@ -12460,7 +12460,7 @@ body:not(.theme-default) .modal-header-stats {
     justify-content: space-between;
     padding: 20px 24px;
     border-bottom: 1px solid #e5e7eb;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: var(--gradient-primary);
     color: white;
 }
 
@@ -14510,32 +14510,43 @@ body.liquid-glass-mode .modal-header::before {
     z-index: 0;
 }
 
-/* v2: 各模块专属渐变保持 */
-body.liquid-glass-mode .modal-header-vocab {
+/* v2: 各模块头部跟随主题色 - 非默认主题使用主题渐变 */
+body.liquid-glass-mode:not(.theme-default) .modal-header-vocab,
+body.liquid-glass-mode:not(.theme-default) .modal-header-listen,
+body.liquid-glass-mode:not(.theme-default) .modal-header-speak,
+body.liquid-glass-mode:not(.theme-default) .modal-header-read,
+body.liquid-glass-mode:not(.theme-default) .modal-header-review,
+body.liquid-glass-mode:not(.theme-default) .modal-header-resource,
+body.liquid-glass-mode:not(.theme-default) .modal-header-stats {
+    background: var(--gradient-primary) !important;
+}
+
+/* 默认主题保持各模块专属渐变 */
+body.liquid-glass-mode.theme-default .modal-header-vocab {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-listen {
+body.liquid-glass-mode.theme-default .modal-header-listen {
     background: linear-gradient(135deg, rgba(59, 130, 246, 0.95) 0%, rgba(6, 182, 212, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-speak {
+body.liquid-glass-mode.theme-default .modal-header-speak {
     background: linear-gradient(135deg, rgba(236, 72, 153, 0.95) 0%, rgba(244, 63, 94, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-read {
+body.liquid-glass-mode.theme-default .modal-header-read {
     background: linear-gradient(135deg, rgba(20, 184, 166, 0.95) 0%, rgba(16, 185, 129, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-review {
+body.liquid-glass-mode.theme-default .modal-header-review {
     background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(249, 115, 22, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-resource {
+body.liquid-glass-mode.theme-default .modal-header-resource {
     background: linear-gradient(135deg, rgba(139, 92, 246, 0.95) 0%, rgba(168, 85, 247, 0.95) 100%) !important;
 }
 
-body.liquid-glass-mode .modal-header-stats {
+body.liquid-glass-mode.theme-default .modal-header-stats {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.95) 0%, rgba(59, 130, 246, 0.95) 100%) !important;
 }
 
@@ -14631,29 +14642,15 @@ body.theme-dark.liquid-glass-mode .modal-header .back-btn {
     border-color: rgba(255, 255, 255, 0.2) !important;
 }
 
-/* v5: 各模块深色主题适配 */
-body.theme-dark.liquid-glass-mode .modal-header-vocab {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.85) 0%, rgba(139, 92, 246, 0.85) 100%) !important;
-}
-
-body.theme-dark.liquid-glass-mode .modal-header-listen {
-    background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(6, 182, 212, 0.85) 100%) !important;
-}
-
-body.theme-dark.liquid-glass-mode .modal-header-speak {
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.85) 0%, rgba(244, 63, 94, 0.85) 100%) !important;
-}
-
-body.theme-dark.liquid-glass-mode .modal-header-read {
-    background: linear-gradient(135deg, rgba(20, 184, 166, 0.85) 0%, rgba(16, 185, 129, 0.85) 100%) !important;
-}
-
-body.theme-dark.liquid-glass-mode .modal-header-review {
-    background: linear-gradient(135deg, rgba(245, 158, 11, 0.85) 0%, rgba(249, 115, 22, 0.85) 100%) !important;
-}
-
-body.theme-dark.liquid-glass-mode .modal-header-resource {
-    background: linear-gradient(135deg, rgba(139, 92, 246, 0.85) 0%, rgba(168, 85, 247, 0.85) 100%) !important;
+/* v5: 深色主题 liquid-glass 模式 - 使用主题渐变 */
+body.theme-dark.liquid-glass-mode .modal-header-vocab,
+body.theme-dark.liquid-glass-mode .modal-header-listen,
+body.theme-dark.liquid-glass-mode .modal-header-speak,
+body.theme-dark.liquid-glass-mode .modal-header-read,
+body.theme-dark.liquid-glass-mode .modal-header-review,
+body.theme-dark.liquid-glass-mode .modal-header-resource,
+body.theme-dark.liquid-glass-mode .modal-header-stats {
+    background: var(--gradient-primary) !important;
 }
 
 /* v5: 模态框整体背景增强 */
@@ -27230,5 +27227,175 @@ body.theme-dark .modal-body::-webkit-scrollbar-track {
     .modal-header h3 {
         font-size: 18px;
     }
+}
+
+/* ==================== PWA 安装功能样式 ==================== */
+.pwa-install-btn {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 25px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.pwa-install-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+}
+
+.pwa-install-btn:disabled {
+    cursor: not-allowed;
+}
+
+.pwa-install-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeIn 0.3s ease;
+}
+
+.pwa-install-modal {
+    background: white;
+    border-radius: 20px;
+    max-width: 380px;
+    width: 100%;
+    overflow: hidden;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(30px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.pwa-install-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 24px;
+    background: var(--gradient-primary);
+    color: white;
+}
+
+.pwa-install-header h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.pwa-install-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.pwa-install-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.pwa-install-body {
+    padding: 24px;
+}
+
+.pwa-install-step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.pwa-install-step .step-number {
+    width: 28px;
+    height: 28px;
+    background: var(--gradient-primary);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.pwa-install-step .step-content {
+    flex: 1;
+}
+
+.pwa-install-step .step-content p {
+    margin: 0 0 8px 0;
+    color: #374151;
+    line-height: 1.5;
+}
+
+.pwa-install-step .step-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #f3f4f6;
+    border-radius: 10px;
+    color: #6366f1;
+}
+
+.pwa-install-benefits {
+    background: #f0fdf4;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+}
+
+.pwa-install-benefits p {
+    margin: 0 0 8px 0;
+    color: #166534;
+    font-size: 14px;
+}
+
+.pwa-install-benefits p:last-child {
+    margin-bottom: 0;
+}
+
+/* 深色主题适配 */
+body.theme-dark .pwa-install-modal {
+    background: var(--gray-800);
+}
+
+body.theme-dark .pwa-install-step .step-content p {
+    color: var(--gray-200);
+}
+
+body.theme-dark .pwa-install-step .step-icon {
+    background: var(--gray-700);
+}
+
+body.theme-dark .pwa-install-benefits {
+    background: rgba(16, 185, 129, 0.1);
+}
+
+body.theme-dark .pwa-install-benefits p {
+    color: #6ee7b7;
 }
 

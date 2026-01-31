@@ -1802,6 +1802,9 @@ function initSessionWords() {
     learningQueue = [];
     sessionWordProgress = {}; // 重置本轮学习进度
     
+    // 初始化会话统计
+    sessionStats = { again: 0, hard: 0, good: 0, easy: 0, startTime: Date.now() };
+    
     if (!window.vocabularyData || window.vocabularyData.length === 0) return;
     
     // V2.6: 根据学习目标过滤词汇
@@ -2712,6 +2715,9 @@ function rateWord(rating) {
     
     var word = wordData.word;
     
+    // 更新统计数据
+    updateSessionStats(rating);
+    
     // 更新本轮学习进度
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
     
@@ -2973,41 +2979,38 @@ function showLearningModeIndicator(mode) {
 }
 
 function nextWord() {
+    // 1. 移动指针
     currentQueueIndex++;
     
-    // V6: 从即时复习队列移除已处理的词
-    if (immediateReviewQueue && immediateReviewQueue.length > 0) {
-        var prevWord = learningQueue[currentQueueIndex - 1];
-        if (prevWord) {
-            immediateReviewQueue = immediateReviewQueue.filter(function(r) {
-                return r.word !== prevWord.word;
-            });
-        }
-    }
-    
+    // 2. 检查是否还在当前队列范围内
     if (currentQueueIndex < learningQueue.length) {
         showCurrentWord();
+        return; // 显式结束
+    }
+    
+    // 3. 当前队列已完成，检查整个 Session 是否全部掌握
+    var allCompleted = true;
+    sessionWords.forEach(function(w) {
+        if (!sessionWordProgress[w.word] || !sessionWordProgress[w.word].completed) {
+            allCompleted = false;
+        }
+    });
+    
+    if (allCompleted) {
+        // 全部完成 -> 显示总结
+        showSessionSummary();
+        return;
     } else {
-        // 检查是否所有单词都已完成
-        var allCompleted = true;
-        sessionWords.forEach(function(w) {
-            if (!sessionWordProgress[w.word] || !sessionWordProgress[w.word].completed) {
-                allCompleted = false;
-            }
-        });
+        // 4. 尚未全部完成 -> 重建队列（复习未掌握的词）
+        buildLearningQueue();
+        currentQueueIndex = 0;
         
-        if (allCompleted) {
-            // 学完本组，显示总结页面
-            showSessionSummary();
+        // 5. 安全检查：如果重建后队列里有词，继续学习；否则（异常情况）显示总结
+        if (learningQueue.length > 0) {
+            showCurrentWord();
         } else {
-            // 还有未完成的单词，重新构建队列
-            buildLearningQueue();
-            currentQueueIndex = 0;
-            if (learningQueue.length > 0) {
-                showCurrentWord();
-            } else {
-                showSessionSummary();
-            }
+            console.warn("Queue rebuild resulted in 0 words, forcing summary.");
+            showSessionSummary();
         }
     }
 }
@@ -3336,6 +3339,14 @@ function selectVoiceByConfig(voices, config) {
     return null;
 }
 
+// 关闭词汇模块
+function closeModule() {
+    var modal = document.getElementById('vocabularyModal');
+    if (modal) {
+        modal.classList.remove('active');
+    }
+}
+
 window.initVocabulary = initVocabulary;
 window.showMeaning = showMeaning;
 window.rateWord = rateWord;
@@ -3350,6 +3361,7 @@ window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
 window.updateLearningProgressIndicator = updateLearningProgressIndicator;
 window.updateLearningBadge = updateLearningBadge;
+window.closeModule = closeModule;
 
 // ==================== V14: 科学助记交互功能 ====================
 
@@ -4292,3 +4304,5 @@ document.addEventListener('keydown', function(e) {
 // V8: 导出统计功能
 window.toggleVocabStats = toggleVocabStats;
 window.updateVocabStats = updateVocabStats;
+window.showFullWordList = showFullWordList;
+window.closeWordList = closeWordList;

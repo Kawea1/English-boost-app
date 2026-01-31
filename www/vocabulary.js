@@ -1,41 +1,41 @@
 // vocabulary.js - 核心词汇模块（带中文释义）
 window.vocabularyData = [
     // GRE核心词汇 (50词)
-    { word: 'aberrant', phonetic: '/əˈberənt/', meaningEn: 'departing from the accepted standard', meaningCn: '异常的，偏离正道的', example: 'His aberrant behavior worried his parents.' },
-    { word: 'abstruse', phonetic: '/æbˈstruːs/', meaningEn: 'difficult to understand', meaningCn: '深奥的，难懂的', example: 'The professor made abstruse concepts accessible.' },
-    { word: 'acerbic', phonetic: '/əˈsɜːrbɪk/', meaningEn: 'sharp and critical', meaningCn: '尖刻的，辛辣的', example: 'Her acerbic wit made her famous.' },
-    { word: 'acumen', phonetic: '/əˈkjuːmən/', meaningEn: 'keen insight', meaningCn: '敏锐，聪明', example: 'His business acumen led to success.' },
-    { word: 'adamant', phonetic: '/ˈædəmənt/', meaningEn: 'refusing to change', meaningCn: '坚定不移的', example: 'She was adamant about her decision.' },
-    { word: 'admonish', phonetic: '/ədˈmɑːnɪʃ/', meaningEn: 'warn or reprimand firmly', meaningCn: '告诫，警告', example: 'The teacher admonished the students.' },
-    { word: 'aesthetic', phonetic: '/esˈθetɪk/', meaningEn: 'relating to beauty', meaningCn: '美学的，审美的', example: 'The building has great aesthetic appeal.' },
-    { word: 'affable', phonetic: '/ˈæfəbl/', meaningEn: 'friendly and easy to talk to', meaningCn: '和蔼可亲的', example: 'The affable host welcomed everyone.' },
-    { word: 'alacrity', phonetic: '/əˈlækrəti/', meaningEn: 'brisk eagerness', meaningCn: '敏捷，欣然', example: 'She accepted the offer with alacrity.' },
-    { word: 'alleviate', phonetic: '/əˈliːvieɪt/', meaningEn: 'make less severe', meaningCn: '减轻，缓解', example: 'The medicine helped alleviate the pain.' },
-    { word: 'amalgamate', phonetic: '/əˈmælɡəmeɪt/', meaningEn: 'combine or unite', meaningCn: '合并，混合', example: 'The two companies amalgamated.' },
-    { word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaningEn: 'unclear in meaning', meaningCn: '模糊的，歧义的', example: 'The statement was deliberately ambiguous.' },
-    { word: 'ameliorate', phonetic: '/əˈmiːliəreɪt/', meaningEn: 'make better', meaningCn: '改善，改进', example: 'Steps were taken to ameliorate conditions.' },
-    { word: 'amenable', phonetic: '/əˈmiːnəbl/', meaningEn: 'willing to agree', meaningCn: '顺从的，愿意接受的', example: 'He was amenable to suggestions.' },
-    { word: 'anachronistic', phonetic: '/əˌnækrəˈnɪstɪk/', meaningEn: 'belonging to a different time', meaningCn: '时代错误的', example: 'The customs seemed anachronistic.' },
-    { word: 'analogous', phonetic: '/əˈnæləɡəs/', meaningEn: 'comparable in certain respects', meaningCn: '类似的，相似的', example: 'The situation is analogous to ours.' },
-    { word: 'anomaly', phonetic: '/əˈnɑːməli/', meaningEn: 'something unusual', meaningCn: '异常，反常现象', example: 'The results revealed an anomaly.' },
-    { word: 'antipathy', phonetic: '/ænˈtɪpəθi/', meaningEn: 'strong dislike', meaningCn: '反感，厌恶', example: 'She felt antipathy toward him.' },
-    { word: 'apathy', phonetic: '/ˈæpəθi/', meaningEn: 'lack of interest', meaningCn: '冷漠，无动于衷', example: 'Voter apathy was widespread.' },
-    { word: 'appease', phonetic: '/əˈpiːz/', meaningEn: 'pacify by giving in', meaningCn: '平息，安抚', example: 'They tried to appease the angry crowd.' },
-    { word: 'arbitrary', phonetic: '/ˈɑːrbɪtreri/', meaningEn: 'based on random choice', meaningCn: '任意的，武断的', example: 'The decision seemed arbitrary.' },
-    { word: 'archaic', phonetic: '/ɑːrˈkeɪɪk/', meaningEn: 'very old or outdated', meaningCn: '古老的，过时的', example: 'The law is archaic and needs reform.' },
-    { word: 'arduous', phonetic: '/ˈɑːrdʒuəs/', meaningEn: 'difficult and tiring', meaningCn: '艰苦的，费力的', example: 'The climb was arduous but rewarding.' },
-    { word: 'articulate', phonetic: '/ɑːrˈtɪkjələt/', meaningEn: 'express clearly', meaningCn: '清楚表达的，善于表达的', example: 'She is an articulate speaker.' },
-    { word: 'ascetic', phonetic: '/əˈsetɪk/', meaningEn: 'practicing self-denial', meaningCn: '苦行的，禁欲的', example: 'He lived an ascetic life.' },
-    { word: 'assiduous', phonetic: '/əˈsɪdʒuəs/', meaningEn: 'showing great care', meaningCn: '勤勉的，刻苦的', example: 'She was assiduous in her studies.' },
-    { word: 'astute', phonetic: '/əˈstuːt/', meaningEn: 'shrewd and perceptive', meaningCn: '精明的，敏锐的', example: 'An astute observer noticed the change.' },
-    { word: 'audacious', phonetic: '/ɔːˈdeɪʃəs/', meaningEn: 'bold and daring', meaningCn: '大胆的，无畏的', example: 'It was an audacious plan.' },
-    { word: 'austere', phonetic: '/ɔːˈstɪr/', meaningEn: 'severe or strict', meaningCn: '简朴的，严峻的', example: 'The room had an austere appearance.' },
-    { word: 'avarice', phonetic: '/ˈævərɪs/', meaningEn: 'extreme greed', meaningCn: '贪婪，贪财', example: 'His avarice knew no bounds.' },
-    { word: 'banal', phonetic: '/bəˈnɑːl/', meaningEn: 'lacking originality', meaningCn: '平庸的，陈腐的', example: 'The movie had a banal plot.' },
-    { word: 'belligerent', phonetic: '/bəˈlɪdʒərənt/', meaningEn: 'hostile and aggressive', meaningCn: '好战的，挑衅的', example: 'His belligerent attitude caused problems.' },
-    { word: 'benevolent', phonetic: '/bəˈnevələnt/', meaningEn: 'well-meaning and kind', meaningCn: '仁慈的，善意的', example: 'A benevolent donor funded the project.' },
-    { word: 'bolster', phonetic: '/ˈboʊlstər/', meaningEn: 'support or strengthen', meaningCn: '支持，加强', example: 'Evidence bolstered his argument.' },
-    { word: 'burgeon', phonetic: '/ˈbɜːrdʒən/', meaningEn: 'grow rapidly', meaningCn: '迅速发展，萌芽', example: 'The industry began to burgeon.' },
+    { word: 'aberrant', phonetic: '/əˈberənt/', meaningEn: 'departing from the accepted standard', meaningCn: '异常的；偏离的 | 反常的；越轨的', example: 'His aberrant behavior worried his parents.' },
+    { word: 'abstruse', phonetic: '/æbˈstruːs/', meaningEn: 'difficult to understand', meaningCn: '深奥的；难懂的 | 晦涩的；费解的', example: 'The professor made abstruse concepts accessible.' },
+    { word: 'acerbic', phonetic: '/əˈsɜːrbɪk/', meaningEn: 'sharp and critical', meaningCn: '尖刻的；辛辣的 | 刻薄的；酸的', example: 'Her acerbic wit made her famous.' },
+    { word: 'acumen', phonetic: '/əˈkjuːmən/', meaningEn: 'keen insight', meaningCn: '敏锐；洞察力 | 精明；才智', example: 'His business acumen led to success.' },
+    { word: 'adamant', phonetic: '/ˈædəmənt/', meaningEn: 'refusing to change', meaningCn: '坚定的；固执的 | 不动摇的；坚硬的', example: 'She was adamant about her decision.' },
+    { word: 'admonish', phonetic: '/ədˈmɑːnɪʃ/', meaningEn: 'warn or reprimand firmly', meaningCn: '告诫；劝告 | 警告；训斥', example: 'The teacher admonished the students.' },
+    { word: 'aesthetic', phonetic: '/esˈθetɪk/', meaningEn: 'relating to beauty', meaningCn: '美学的；审美的 | 艺术的；雅致的', example: 'The building has great aesthetic appeal.' },
+    { word: 'affable', phonetic: '/ˈæfəbl/', meaningEn: 'friendly and easy to talk to', meaningCn: '和蔼的；友善的 | 平易近人的；温和的', example: 'The affable host welcomed everyone.' },
+    { word: 'alacrity', phonetic: '/əˈlækrəti/', meaningEn: 'brisk eagerness', meaningCn: '敏捷；迅速 | 乐意；欣然', example: 'She accepted the offer with alacrity.' },
+    { word: 'alleviate', phonetic: '/əˈliːvieɪt/', meaningEn: 'make less severe', meaningCn: '减轻；缓和 | 缓解；减缓', example: 'The medicine helped alleviate the pain.' },
+    { word: 'amalgamate', phonetic: '/əˈmælɡəmeɪt/', meaningEn: 'combine or unite', meaningCn: '合并；联合 | 混合；融合', example: 'The two companies amalgamated.' },
+    { word: 'ambiguous', phonetic: '/æmˈbɪɡjuəs/', meaningEn: 'unclear in meaning', meaningCn: '模糊的；含糊的 | 歧义的；不明确的', example: 'The statement was deliberately ambiguous.' },
+    { word: 'ameliorate', phonetic: '/əˈmiːliəreɪt/', meaningEn: 'make better', meaningCn: '改善；改进 | 减轻；缓和', example: 'Steps were taken to ameliorate conditions.' },
+    { word: 'amenable', phonetic: '/əˈmiːnəbl/', meaningEn: 'willing to agree', meaningCn: '顺从的；听话的 | 愿意接受的；服从的', example: 'He was amenable to suggestions.' },
+    { word: 'anachronistic', phonetic: '/əˌnækrəˈnɪstɪk/', meaningEn: 'belonging to a different time', meaningCn: '时代错误的；过时的 | 不合时宜的', example: 'The customs seemed anachronistic.' },
+    { word: 'analogous', phonetic: '/əˈnæləɡəs/', meaningEn: 'comparable in certain respects', meaningCn: '类似的；相似的 | 可比拟的；对应的', example: 'The situation is analogous to ours.' },
+    { word: 'anomaly', phonetic: '/əˈnɑːməli/', meaningEn: 'something unusual', meaningCn: '异常；反常 | 不规则；例外', example: 'The results revealed an anomaly.' },
+    { word: 'antipathy', phonetic: '/ænˈtɪpəθi/', meaningEn: 'strong dislike', meaningCn: '反感；厌恶 | 憎恶；敌意', example: 'She felt antipathy toward him.' },
+    { word: 'apathy', phonetic: '/ˈæpəθi/', meaningEn: 'lack of interest', meaningCn: '冷漠；漠不关心 | 无动于衷；麻木', example: 'Voter apathy was widespread.' },
+    { word: 'appease', phonetic: '/əˈpiːz/', meaningEn: 'pacify by giving in', meaningCn: '平息；安抚 | 绥靖；姑息', example: 'They tried to appease the angry crowd.' },
+    { word: 'arbitrary', phonetic: '/ˈɑːrbɪtreri/', meaningEn: 'based on random choice', meaningCn: '任意的；随意的 | 武断的；专横的', example: 'The decision seemed arbitrary.' },
+    { word: 'archaic', phonetic: '/ɑːrˈkeɪɪk/', meaningEn: 'very old or outdated', meaningCn: '古老的；古代的 | 过时的；陈旧的', example: 'The law is archaic and needs reform.' },
+    { word: 'arduous', phonetic: '/ˈɑːrdʒuəs/', meaningEn: 'difficult and tiring', meaningCn: '艰苦的；艰巨的 | 费力的；困难的', example: 'The climb was arduous but rewarding.' },
+    { word: 'articulate', phonetic: '/ɑːrˈtɪkjələt/', meaningEn: 'express clearly', meaningCn: '善于表达的；口齿清晰的 | 明确表达；清楚说明', example: 'She is an articulate speaker.' },
+    { word: 'ascetic', phonetic: '/əˈsetɪk/', meaningEn: 'practicing self-denial', meaningCn: '苦行的；禁欲的 | 简朴的；清苦的', example: 'He lived an ascetic life.' },
+    { word: 'assiduous', phonetic: '/əˈsɪdʒuəs/', meaningEn: 'showing great care', meaningCn: '勤勉的；刻苦的 | 坚持不懈的；专心的', example: 'She was assiduous in her studies.' },
+    { word: 'astute', phonetic: '/əˈstuːt/', meaningEn: 'shrewd and perceptive', meaningCn: '精明的；敏锐的 | 狡猾的；机敏的', example: 'An astute observer noticed the change.' },
+    { word: 'audacious', phonetic: '/ɔːˈdeɪʃəs/', meaningEn: 'bold and daring', meaningCn: '大胆的；勇敢的 | 无畏的；鲁莽的', example: 'It was an audacious plan.' },
+    { word: 'austere', phonetic: '/ɔːˈstɪr/', meaningEn: 'severe or strict', meaningCn: '简朴的；朴素的 | 严峻的；严厉的', example: 'The room had an austere appearance.' },
+    { word: 'avarice', phonetic: '/ˈævərɪs/', meaningEn: 'extreme greed', meaningCn: '贪婪；贪心 | 贪财；吝啬', example: 'His avarice knew no bounds.' },
+    { word: 'banal', phonetic: '/bəˈnɑːl/', meaningEn: 'lacking originality', meaningCn: '平庸的；陈腐的 | 乏味的；老套的', example: 'The movie had a banal plot.' },
+    { word: 'belligerent', phonetic: '/bəˈlɪdʒərənt/', meaningEn: 'hostile and aggressive', meaningCn: '好战的；交战的 | 挑衅的；好斗的', example: 'His belligerent attitude caused problems.' },
+    { word: 'benevolent', phonetic: '/bəˈnevələnt/', meaningEn: 'well-meaning and kind', meaningCn: '仁慈的；慈善的 | 善意的；宽厚的', example: 'A benevolent donor funded the project.' },
+    { word: 'bolster', phonetic: '/ˈboʊlstər/', meaningEn: 'support or strengthen', meaningCn: '支持；支撑 | 加强；巩固', example: 'Evidence bolstered his argument.' },
+    { word: 'burgeon', phonetic: '/ˈbɜːrdʒən/', meaningEn: 'grow rapidly', meaningCn: '迅速发展；激增 | 萌芽；发芽', example: 'The industry began to burgeon.' },
     { word: 'cacophony', phonetic: '/kəˈkɑːfəni/', meaningEn: 'harsh mixture of sounds', meaningCn: '刺耳的声音，不和谐', example: 'A cacophony of car horns filled the air.' },
     { word: 'candid', phonetic: '/ˈkændɪd/', meaningEn: 'truthful and straightforward', meaningCn: '坦率的，直言不讳的', example: 'She gave a candid assessment.' },
     { word: 'capricious', phonetic: '/kəˈprɪʃəs/', meaningEn: 'unpredictable', meaningCn: '反复无常的，任性的', example: 'The weather was capricious.' },
@@ -306,9 +306,9 @@ function renderMasteryCard(word) {
     
     // 三维度进度条
     html += '<div class="mastery-dimensions">';
-    html += renderDimensionBar('🎤 发音', mastery.pronunciationScore);
-    html += renderDimensionBar('✏️ 拼写', mastery.spellingScore);
-    html += renderDimensionBar('📖 释义', mastery.meaningScore);
+    html += renderDimensionBar('发音', mastery.pronunciationScore);
+    html += renderDimensionBar('拼写', mastery.spellingScore);
+    html += renderDimensionBar('释义', mastery.meaningScore);
     html += '</div>';
     
     // 统计信息
@@ -663,127 +663,117 @@ try {
     chunkingGroups = {};
 }
 
-// V14-V19: 科学记忆方法类型（基于研究）- UI/Emoji优化版
+// V14-V19: 科学记忆方法类型（基于研究）- 极简纯净版
 var MNEMONIC_SCIENCE = {
     types: {
         'etymology': { 
-            name: '词源分析', 
-            icon: '🌳', 
-            iconAlt: '📜',
+            name: '词源', 
+            icon: 'root', 
             color: '#166534', 
             bg: '#dcfce7', 
             bgGradient: 'linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%)',
             effectiveness: 0.85, 
-            description: '追溯词根词缀，建立深层语义联系',
-            shortDesc: '词根词缀'
+            description: '词根词缀',
+            shortDesc: '词根'
         },
         'phonetic': { 
-            name: '谐音记忆', 
-            icon: '🎵', 
-            iconAlt: '🔔',
+            name: '谐音', 
+            icon: 'sound', 
             color: '#92400e', 
             bg: '#fef3c7', 
             bgGradient: 'linear-gradient(135deg, #fef3c7 0%, #fde68a 100%)',
             effectiveness: 0.72, 
-            description: '声音相似性，快速联想记忆',
-            shortDesc: '声音联想'
+            description: '声音联想',
+            shortDesc: '音联'
         },
         'visual': { 
-            name: '形象联想', 
-            icon: '🖼️', 
-            iconAlt: '👁️',
+            name: '联想', 
+            icon: 'image', 
             color: '#1e40af', 
             bg: '#dbeafe', 
             bgGradient: 'linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%)',
             effectiveness: 0.88, 
-            description: '生动视觉画面，激活视觉皮层',
-            shortDesc: '画面想象'
+            description: '画面联想',
+            shortDesc: '联想'
         },
         'story': { 
-            name: '故事记忆', 
-            icon: '📚', 
-            iconAlt: '🎬',
+            name: '故事', 
+            icon: 'book', 
             color: '#7c2d12', 
             bg: '#ffedd5', 
             bgGradient: 'linear-gradient(135deg, #ffedd5 0%, #fed7aa 100%)',
             effectiveness: 0.90, 
-            description: '编织叙事情节，利用情节记忆优势',
-            shortDesc: '编故事'
+            description: '情节联想',
+            shortDesc: '故事'
         },
         'loci': { 
-            name: '记忆宫殿', 
-            icon: '🏰', 
-            iconAlt: '🗺️',
+            name: '定位', 
+            icon: 'location', 
             color: '#5b21b6', 
             bg: '#ede9fe', 
             bgGradient: 'linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%)',
             effectiveness: 0.92, 
-            description: '空间定位法，世界记忆冠军技术',
-            shortDesc: '空间定位'
+            description: '空间记忆',
+            shortDesc: '定位'
         },
         'chunking': { 
-            name: '分块记忆', 
-            icon: '🧱', 
-            iconAlt: '📦',
+            name: '分块', 
+            icon: 'grid', 
             color: '#0f766e', 
             bg: '#ccfbf1', 
             bgGradient: 'linear-gradient(135deg, #ccfbf1 0%, #99f6e4 100%)',
             effectiveness: 0.80, 
-            description: '信息分组，减轻工作记忆负担',
-            shortDesc: '分组记忆'
+            description: '分组记忆',
+            shortDesc: '分块'
         },
         'emotional': { 
-            name: '情感锚定', 
-            icon: '💝', 
-            iconAlt: '🎭',
+            name: '情感', 
+            icon: 'heart', 
             color: '#be123c', 
             bg: '#ffe4e6', 
             bgGradient: 'linear-gradient(135deg, #ffe4e6 0%, #fecdd3 100%)',
             effectiveness: 0.87, 
-            description: '建立情感连接，增强长期记忆',
-            shortDesc: '情感连接'
+            description: '情感联想',
+            shortDesc: '情感'
         },
         'kinesthetic': { 
-            name: '动作记忆', 
-            icon: '🏃', 
-            iconAlt: '✋',
+            name: '动作', 
+            icon: 'move', 
             color: '#4338ca', 
             bg: '#e0e7ff', 
             bgGradient: 'linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%)',
             effectiveness: 0.78, 
-            description: '身体动作参与，多感官编码',
-            shortDesc: '动作参与'
+            description: '动作记忆',
+            shortDesc: '动作'
         },
         'elaboration': { 
-            name: '精细加工', 
-            icon: '🔍', 
-            iconAlt: '⚗️',
+            name: '加工', 
+            icon: 'search', 
             color: '#6d28d9', 
             bg: '#f3e8ff', 
             bgGradient: 'linear-gradient(135deg, #f3e8ff 0%, #e9d5ff 100%)',
             effectiveness: 0.86, 
-            description: '深度处理信息，建立多重联结',
-            shortDesc: '深度加工'
+            description: '深度处理',
+            shortDesc: '加工'
         },
         'dual_coding': { 
-            name: '双重编码', 
-            icon: '🔀', 
-            iconAlt: '🎯',
+            name: '双编码', 
+            icon: 'layers', 
             color: '#0369a1', 
             bg: '#e0f2fe', 
             bgGradient: 'linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%)',
             effectiveness: 0.89, 
-            description: '语言+图像双通道编码',
-            shortDesc: '双通道'
+            description: '双通道',
+            shortDesc: '双编码'
         }
     },
-    // V15: 效果等级emoji映射
+    // V15: 效果等级映射（无emoji）
     effectivenessEmoji: function(score) {
-        if (score >= 0.9) return { emoji: '🏆', label: '顶级', color: '#f59e0b' };
-        if (score >= 0.85) return { emoji: '⭐', label: '优秀', color: '#22c55e' };
-        if (score >= 0.8) return { emoji: '✨', label: '良好', color: '#3b82f6' };
-        if (score >= 0.7) return { emoji: '👍', label: '不错', color: '#8b5cf6' };
-        return { emoji: '💪', label: '加油', color: '#6b7280' };
+        if (score >= 0.9) return { emoji: '', label: 'S', color: '#f59e0b' };
+        if (score >= 0.85) return { emoji: '', label: 'A', color: '#22c55e' };
+        if (score >= 0.8) return { emoji: '', label: 'B', color: '#3b82f6' };
+        if (score >= 0.7) return { emoji: '', label: 'C', color: '#8b5cf6' };
+        return { emoji: '', label: 'D', color: '#6b7280' };
     },
     // 记忆强度计算（基于艾宾浩斯遗忘曲线修正）
     calculateRetention: function(initialStrength, hoursSinceEncoding, reviewCount) {
@@ -892,14 +882,14 @@ function addToMemoryPalace(word, location, imageDescription) {
 // V14.4: 设置情感锚定
 function setEmotionalAnchor(word, emotion, intensity) {
     var emotions = {
-        'joy': { icon: '😊', name: '快乐', color: '#fbbf24' },
-        'surprise': { icon: '😲', name: '惊讶', color: '#8b5cf6' },
-        'fear': { icon: '😨', name: '恐惧', color: '#6b7280' },
-        'disgust': { icon: '🤢', name: '厌恶', color: '#22c55e' },
-        'anger': { icon: '😠', name: '愤怒', color: '#ef4444' },
-        'sadness': { icon: '😢', name: '悲伤', color: '#3b82f6' },
-        'love': { icon: '❤️', name: '爱', color: '#ec4899' },
-        'curiosity': { icon: '🤔', name: '好奇', color: '#f59e0b' }
+        'joy': { icon: '●', name: '快乐', color: '#fbbf24' },
+        'surprise': { icon: '●', name: '惊讶', color: '#8b5cf6' },
+        'fear': { icon: '●', name: '恐惧', color: '#6b7280' },
+        'disgust': { icon: '●', name: '厌恶', color: '#22c55e' },
+        'anger': { icon: '●', name: '愤怒', color: '#ef4444' },
+        'sadness': { icon: '●', name: '悲伤', color: '#3b82f6' },
+        'love': { icon: '●', name: '爱', color: '#ec4899' },
+        'curiosity': { icon: '●', name: '好奇', color: '#f59e0b' }
     };
     
     emotionalAnchorData[word.toLowerCase()] = {
@@ -1106,25 +1096,317 @@ try {
 
 // 初始化词汇模块
 function initVocabulary() {
-    // V8: 加载自适应难度数据
     loadAdaptiveDifficulty();
-    // V11: 加载同义词/反义词数据
     loadWordRelations();
-    // V12: 加载智能助记词数据
     loadWordMnemonics();
-    // V13: 加载词汇难度分级数据
     loadWordDifficulty();
-    // V15: 加载丰富例句数据
     loadWordExamples();
-    // V16: 加载真题词汇标记数据
     loadWordExamTags();
-    // 显示设置面板
-    showVocabSettings();
-    // 初始化本次学习的单词
+    showVocabSettings(); // 显示设置面板
     initSessionWords();
+    showCurrentWord(); // 直接显示第一个单词
+}
+
+// 渲染单词列表
+function renderWordList() {
+    var container = document.getElementById('vocabListContainer');
+    if (!container) return;
+    
+    var html = '';
+    sessionWords.forEach(function(wordData, index) {
+        var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+        var statusClass = progress.completed ? 'completed' : (progress.times > 0 ? 'learning' : 'new');
+        
+        html += '<div class="word-item ' + statusClass + '" onclick="toggleWordDetail(' + index + ')" data-index="' + index + '">';
+        html += '<div class="word-item-main" style="display:flex;gap:12px;align-items:center;">';
+        html += '<div class="word-en" style="flex:0 0 120px;font-weight:600;">' + wordData.word + '</div>';
+        html += '<div class="word-cn" style="flex:1;">' + wordData.meaningCn.split('|')[0].trim() + '</div>';
+        html += '</div>';
+        html += '<div class="word-status">';
+        if (progress.completed) {
+            html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';
+        } else {
+            html += '<span class="progress-count">' + progress.times + '/' + requiredLearningTimes + '</span>';
+        }
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    container.innerHTML = html;
     updateVocabProgress();
+}
+
+// V16: 视图模式状态
+var viewMode = 'card'; // 'card' or 'list'
+
+// 切换视图模式
+function toggleViewMode() {
+    viewMode = viewMode === 'card' ? 'list' : 'card';
+    
+    var wordCard = document.getElementById('wordCard');
+    var wordListView = document.getElementById('wordListView');
+    var vocabActions = document.querySelector('.vocab-actions');
+    var learningDots = document.getElementById('learningDots');
+    var listBtn = document.querySelector('.vocab-list-btn');
+    
+    if (viewMode === 'list') {
+        // 切换到列表视图
+        if (wordCard) wordCard.style.display = 'none';
+        if (vocabActions) vocabActions.style.display = 'none';
+        if (learningDots) learningDots.style.display = 'none';
+        if (wordListView) {
+            wordListView.style.display = 'block';
+            renderInlineWordList();
+        }
+        if (listBtn) listBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>';
+    } else {
+        // 切换回卡片视图
+        if (wordCard) wordCard.style.display = 'block';
+        if (vocabActions) vocabActions.style.display = 'flex';
+        if (learningDots) learningDots.style.display = 'flex';
+        if (wordListView) wordListView.style.display = 'none';
+        if (listBtn) listBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>';
+    }
+}
+
+// V16: 渲染内联单词列表
+function renderInlineWordList() {
+    var container = document.getElementById('wordListView');
+    if (!container) return;
+    
+    var html = '<div style="padding:16px;">';
+    
+    // 搜索框
+    html += '<div style="margin-bottom:16px;">';
+    html += '<input type="text" id="inlineSearchInput" placeholder="搜索单词..." onkeyup="filterInlineList(this.value)" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">';
+    html += '</div>';
+    
+    // 单词列表
+    html += '<div style="max-height:calc(100vh - 280px);overflow-y:auto;">';
+    
+    sessionWords.forEach(function(wordData, index) {
+        var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+        var isLearned = learnedWords.indexOf(wordData.word) > -1;
+        
+        html += '<div class="inline-word-item" data-word="' + wordData.word.toLowerCase() + '" onclick="jumpToWord(' + index + ')" style="padding:12px;margin-bottom:8px;background:' + (progress.completed ? '#f0fdf4' : '#f9fafb') + ';border-radius:8px;cursor:pointer;transition:all 0.2s;border:1px solid ' + (progress.completed ? '#bbf7d0' : '#e5e7eb') + ';">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        html += '<div style="flex:1;">';
+        html += '<div style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:4px;">' + wordData.word + '</div>';
+        html += '<div style="font-size:13px;color:#6b7280;">' + wordData.meaningCn.split('|')[0].trim() + '</div>';
+        html += '</div>';
+        
+        if (progress.completed) {
+            html += '<span style="color:#10b981;font-size:20px;">✓</span>';
+        } else if (progress.times > 0) {
+            html += '<span style="font-size:12px;color:#6366f1;font-weight:600;">' + progress.times + '/' + requiredLearningTimes + '</span>';
+        }
+        
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    html += '</div>';
+    html += '</div>';
+    
+    container.innerHTML = html;
+}
+
+// V16: 过滤内联列表
+function filterInlineList(query) {
+    var items = document.querySelectorAll('.inline-word-item');
+    var lowerQuery = query.toLowerCase();
+    
+    items.forEach(function(item) {
+        var word = item.getAttribute('data-word');
+        if (word.includes(lowerQuery)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// V16: 跳转到指定单词
+function jumpToWord(index) {
+    viewMode = 'card';
+    toggleViewMode();
+    
+    // 找到该单词在队列中的位置
+    var targetWord = sessionWords[index];
+    for (var i = 0; i < learningQueue.length; i++) {
+        if (learningQueue[i].word === targetWord.word) {
+            currentQueueIndex = i;
+            break;
+        }
+    }
+    
     showCurrentWord();
-    // speakWord已在showCurrentWord中调用，无需重复
+}
+
+// 显示完整单词列表
+function showFullWordList() {
+    var overlay = document.createElement('div');
+    overlay.id = 'wordListOverlay';
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10000;display:flex;align-items:center;justify-content:center;';
+    
+    var listHtml = '<div style="background:white;border-radius:16px;width:90%;max-width:500px;max-height:80vh;display:flex;flex-direction:column;overflow:hidden;">';
+    
+    // 头部
+    listHtml += '<div style="padding:16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">';
+    listHtml += '<h3 style="margin:0;font-size:18px;font-weight:700;color:#1f2937;">单词列表</h3>';
+    listHtml += '<button onclick="closeWordList()" style="background:none;border:none;font-size:24px;color:#6b7280;cursor:pointer;">×</button>';
+    listHtml += '</div>';
+    
+    // 搜索框
+    listHtml += '<div style="padding:12px 16px;border-bottom:1px solid #e5e7eb;">';
+    listHtml += '<input type="text" id="wordSearchInput" placeholder="搜索单词..." onkeyup="filterWordList(this.value)" style="width:100%;padding:8px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">';
+    listHtml += '</div>';
+    
+    // 单词列表
+    listHtml += '<div id="wordListContent" style="flex:1;overflow-y:auto;padding:8px;">';
+    
+    window.vocabularyData.forEach(function(wordData, index) {
+        var isLearned = learnedWords.indexOf(wordData.word) > -1;
+        listHtml += '<div class="list-word-item" data-word="' + wordData.word.toLowerCase() + '" onclick="showWordFromList(\'' + wordData.word + '\')" style="padding:12px;margin-bottom:4px;background:' + (isLearned ? '#f0fdf4' : '#f9fafb') + ';border-radius:8px;cursor:pointer;transition:all 0.2s;">';
+        listHtml += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        listHtml += '<div style="flex:1;">';
+        listHtml += '<div style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:2px;">' + wordData.word + '</div>';
+        listHtml += '<div style="font-size:13px;color:#6b7280;">' + wordData.meaningCn + '</div>';
+        listHtml += '</div>';
+        if (isLearned) {
+            listHtml += '<span style="color:#10b981;font-size:18px;">✓</span>';
+        }
+        listHtml += '</div>';
+        listHtml += '</div>';
+    });
+    
+    listHtml += '</div>';
+    listHtml += '</div>';
+    
+    overlay.innerHTML = listHtml;
+    document.body.appendChild(overlay);
+    
+    // 添加hover效果
+    var style = document.createElement('style');
+    style.textContent = '.list-word-item:hover { background: #e0e7ff !important; transform: translateX(4px); }';
+    document.head.appendChild(style);
+}
+
+// 过滤单词列表
+function filterWordList(query) {
+    var items = document.querySelectorAll('.list-word-item');
+    var lowerQuery = query.toLowerCase();
+    
+    items.forEach(function(item) {
+        var word = item.getAttribute('data-word');
+        if (word.includes(lowerQuery)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// 从列表显示单词详情
+function showWordFromList(word) {
+    closeWordList();
+    
+    // 找到单词数据
+    var wordData = window.vocabularyData.find(function(w) {
+        return w.word.toLowerCase() === word.toLowerCase();
+    });
+    
+    if (!wordData) return;
+    
+    // 显示单词详情弹窗
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.5);z-index:10001;display:flex;align-items:center;justify-content:center;';
+    
+    var detailHtml = '<div style="background:white;border-radius:16px;width:90%;max-width:400px;padding:24px;">';
+    detailHtml += '<div style="text-align:center;margin-bottom:16px;">';
+    detailHtml += '<div style="font-size:32px;font-weight:700;color:#1f2937;margin-bottom:8px;">' + wordData.word + '</div>';
+    detailHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:12px;">' + wordData.phonetic + '</div>';
+    detailHtml += '<button onclick="speakText(\'' + wordData.word + '\')" style="padding:8px 16px;background:#6366f1;color:white;border:none;border-radius:8px;cursor:pointer;">🔊 发音</button>';
+    detailHtml += '</div>';
+    
+    detailHtml += '<div style="background:#f9fafb;padding:16px;border-radius:12px;margin-bottom:16px;">';
+    detailHtml += '<div style="font-size:15px;color:#374151;margin-bottom:8px;font-weight:500;">' + wordData.meaningCn + '</div>';
+    detailHtml += '<div style="font-size:14px;color:#6b7280;font-style:italic;">"' + wordData.example + '"</div>';
+    detailHtml += '</div>';
+    
+    detailHtml += '<button onclick="this.parentElement.parentElement.remove()" style="width:100%;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;cursor:pointer;font-weight:500;">关闭</button>';
+    detailHtml += '</div>';
+    
+    overlay.innerHTML = detailHtml;
+    overlay.onclick = function(e) {
+        if (e.target === overlay) overlay.remove();
+    };
+    document.body.appendChild(overlay);
+    
+    speakText(wordData.word);
+}
+
+// 关闭单词列表
+function closeWordList() {
+    var overlay = document.getElementById('wordListOverlay');
+    if (overlay) overlay.remove();
+}
+
+// 切换单词详情
+function toggleWordDetail(index) {
+    var wordData = sessionWords[index];
+    var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+    
+    if (progress.completed) {
+        speakText(wordData.word);
+        return;
+    }
+    
+    var overlay = document.createElement('div');
+    overlay.className = 'word-detail-overlay';
+    overlay.innerHTML = '<div class="word-detail-card">' +
+        '<div class="word-detail-header">' +
+        '<button class="close-detail" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>' +
+        '<div class="word-detail-main">' + wordData.word + '</div>' +
+        '<div class="word-detail-phonetic">' + wordData.phonetic + '</div>' +
+        '</div>' +
+        '<div class="word-detail-body">' +
+        '<div class="word-detail-meaning">' + wordData.meaningCn + '</div>' +
+        '<div class="word-detail-example">' + wordData.example + '</div>' +
+        '</div>' +
+        '<div class="word-detail-actions">' +
+        '<button class="detail-btn speak" onclick="speakText(\'' + wordData.word + '\')">发音</button>' +
+        '<button class="detail-btn know" onclick="markWord(' + index + ', \'good\')">认识</button>' +
+        '<button class="detail-btn unknown" onclick="markWord(' + index + ', \'again\')">不认识</button>' +
+        '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+    speakText(wordData.word);
+}
+
+// 标记单词
+function markWord(index, rating) {
+    var wordData = sessionWords[index];
+    var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+    
+    if (rating === 'again') {
+        progress.times = 0;
+    } else {
+        progress.times++;
+    }
+    
+    if (progress.times >= requiredLearningTimes) {
+        progress.completed = true;
+        if (learnedWords.indexOf(wordData.word) === -1) {
+            learnedWords.push(wordData.word);
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+        }
+    }
+    
+    sessionWordProgress[wordData.word] = progress;
+    
+    document.querySelector('.word-detail-overlay').remove();
+    renderWordList();
 }
 
 // 显示单词数量设置
@@ -1178,8 +1460,8 @@ function addVocabSettingsStyles() {
     style.textContent = `
         .vocab-settings-panel {
             padding: 16px 20px;
-            background: linear-gradient(135deg, #f8f7ff 0%, #e0e7ff 100%);
-            border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .settings-row {
@@ -1193,12 +1475,16 @@ function addVocabSettingsStyles() {
             display: flex;
             align-items: center;
             gap: 10px;
+            padding: 8px 14px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .setting-label {
-            color: #374151;
+            color: #1e293b;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             white-space: nowrap;
             display: flex;
             align-items: center;
@@ -1216,57 +1502,58 @@ function addVocabSettingsStyles() {
             border-radius: 6px;
             font-size: 11px;
             font-weight: bold;
-            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 2px 4px rgba(99,102,241,0.2);
         }
         
         .tip-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
-            background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+            width: 16px;
+            height: 16px;
+            background: #f59e0b;
             color: white;
             border-radius: 50%;
-            font-size: 10px;
-            box-shadow: 0 2px 4px rgba(245, 158, 11, 0.3);
+            font-size: 9px;
         }
         
         .setting-select {
-            padding: 8px 14px;
-            border-radius: 10px;
-            border: 2px solid #6366f1;
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
             background: white;
-            color: #1e1b4b;
+            color: #0f172a;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             outline: none;
+            min-width: 75px;
             transition: all 0.2s ease;
-            min-width: 80px;
         }
         
         .setting-select:hover {
-            border-color: #4f46e5;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.25);
+            border-color: #cbd5e1;
         }
         
         .setting-select:focus {
-            border-color: #4f46e5;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
         }
         
         .settings-tip {
-            color: #6b7280;
-            font-size: 13px;
+            color: #64748b;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
         }
         
         .settings-tip strong {
             color: #6366f1;
-            font-weight: 700;
+            font-weight: 600;
         }
         
         /* 学习进度指示器 */
@@ -1274,132 +1561,113 @@ function addVocabSettingsStyles() {
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            margin-top: 12px;
-            padding: 10px 16px;
-            background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(168, 85, 247, 0.1) 100%);
-            border-radius: 12px;
+            gap: 4px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: #f3f4f6;
+            border-radius: 8px;
         }
         
         .progress-dot {
-            width: 12px;
-            height: 12px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
             background: #e5e7eb;
-            transition: all 0.3s ease;
-            position: relative;
         }
         
         .progress-dot.completed {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            box-shadow: 0 2px 8px rgba(16, 185, 129, 0.4);
+            background: #10b981;
         }
         
         .progress-dot.current {
-            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
-            animation: pulse 1.5s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
+            background: #6366f1;
         }
         
         .progress-label {
-            margin-left: 8px;
-            font-size: 13px;
+            margin-left: 6px;
+            font-size: 12px;
             color: #6b7280;
             font-weight: 500;
         }
         
         /* 词卡优化样式 */
         .word-card-enhanced {
-            background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            border: 1px solid rgba(99, 102, 241, 0.1);
+            padding: 32px 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         
         .word-main-enhanced {
             font-size: 42px;
             font-weight: 800;
-            color: #1e1b4b;
+            color: #0f172a;
             text-align: center;
             margin-bottom: 8px;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.02em;
         }
         
         .word-phonetic-enhanced {
-            font-size: 18px;
-            color: #6b7280;
+            font-size: 15px;
+            color: #64748b;
             text-align: center;
             margin-bottom: 20px;
+            font-weight: 500;
         }
         
         /* 评分按钮优化 */
         .rate-btn-enhanced {
             flex: 1;
-            padding: 16px 12px;
+            padding: 12px 10px;
             border: none;
-            border-radius: 14px;
-            font-size: 15px;
-            font-weight: 700;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 6px;
+            gap: 4px;
         }
         
         .rate-btn-enhanced.hard {
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+            background: #fef2f2;
             color: #dc2626;
-            border: 2px solid #fecaca;
         }
         
         .rate-btn-enhanced.hard:hover {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
+            background: #fee2e2;
         }
         
         .rate-btn-enhanced.medium {
-            background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+            background: #fffbeb;
             color: #d97706;
-            border: 2px solid #fde68a;
         }
         
         .rate-btn-enhanced.medium:hover {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(217, 119, 6, 0.2);
+            background: #fef3c7;
         }
         
         .rate-btn-enhanced.easy {
-            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+            background: #ecfdf5;
             color: #059669;
-            border: 2px solid #a7f3d0;
         }
         
         .rate-btn-enhanced.easy:hover {
-            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(5, 150, 105, 0.2);
+            background: #d1fae5;
         }
         
         .rate-emoji {
-            font-size: 24px;
+            font-size: 20px;
         }
         
         .rate-text {
-            font-size: 14px;
+            font-size: 13px;
         }
         
         .rate-hint {
-            font-size: 11px;
+            font-size: 10px;
             opacity: 0.7;
             font-weight: 500;
         }
@@ -1407,91 +1675,68 @@ function addVocabSettingsStyles() {
         /* 右上角学习次数徽章 */
         .learning-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 16px;
+            right: 16px;
             display: flex;
             align-items: center;
-            gap: 2px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            gap: 4px;
+            padding: 8px 14px;
+            border-radius: 24px;
+            font-size: 12px;
             font-weight: 700;
             z-index: 10;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(8px);
         }
         
         .learning-badge.new {
             background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
-            color: #92400e;
-            border: 2px solid #fcd34d;
+            color: #78350f;
+            border: 1px solid #fbbf24;
         }
         
         .learning-badge.new .badge-icon {
-            font-size: 14px;
-            animation: sparkle 1.5s infinite;
-        }
-        
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.2); opacity: 0.8; }
+            font-size: 12px;
         }
         
         .learning-badge.learning {
             background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
-            color: #3730a3;
-            border: 2px solid #a5b4fc;
+            color: #312e81;
+            border: 1px solid #818cf8;
         }
         
         .learning-badge.completed {
             background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
-            color: #065f46;
-            border: 2px solid #6ee7b7;
+            color: #064e3b;
+            border: 1px solid #34d399;
         }
         
         .learning-badge.completed .badge-icon {
-            font-size: 14px;
-            animation: checkBounce 0.5s ease;
-        }
-        
-        @keyframes checkBounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
+            font-size: 12px;
         }
         
         .badge-count {
-            font-size: 16px;
-            font-weight: 800;
+            font-size: 15px;
+            font-weight: 700;
             color: #4f46e5;
         }
         
         .badge-separator {
-            font-size: 12px;
+            font-size: 11px;
             color: #9ca3af;
             margin: 0 1px;
         }
         
         .badge-total {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             color: #6b7280;
         }
         
         .badge-text {
-            font-size: 12px;
+            font-size: 11px;
             margin-left: 2px;
-        }
-        
-        /* Toast 动画 */
-        @keyframes toastIn {
-            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
-            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-        }
-        
-        @keyframes toastOut {
-            from { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-            to { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
         }
     `;
     document.head.appendChild(style);
@@ -1556,6 +1801,9 @@ function initSessionWords() {
     sessionWords = [];
     learningQueue = [];
     sessionWordProgress = {}; // 重置本轮学习进度
+    
+    // 初始化会话统计
+    sessionStats = { again: 0, hard: 0, good: 0, easy: 0, startTime: Date.now() };
     
     if (!window.vocabularyData || window.vocabularyData.length === 0) return;
     
@@ -1862,16 +2110,115 @@ function changeWordsPerSession(value) {
 }
 
 function updateVocabProgress() {
-    var progress = document.getElementById('vocabProgress');
-    if (progress) {
-        // 显示队列进度和单词完成数
-        var completedCount = 0;
-        sessionWords.forEach(function(w) {
-            if (sessionWordProgress[w.word] && sessionWordProgress[w.word].completed) {
-                completedCount++;
-            }
+    // V10: 更新进度环
+    var progressRingFill = document.getElementById('progressRingFill');
+    var progressText = document.getElementById('vocabProgressText');
+    var oldProgress = document.getElementById('vocabProgress');
+    
+    var completedCount = 0;
+    sessionWords.forEach(function(w) {
+        if (sessionWordProgress[w.word] && sessionWordProgress[w.word].completed) {
+            completedCount++;
+        }
+    });
+    
+    // 计算进度百分比
+    var total = sessionWords.length || 1;
+    var progress = completedCount / total;
+    var circumference = 2 * Math.PI * 20; // r=20
+    var offset = circumference * (1 - progress);
+    
+    // 更新进度环
+    if (progressRingFill) {
+        progressRingFill.style.strokeDashoffset = offset;
+    }
+    
+    // 更新数字
+    if (progressText) {
+        progressText.textContent = completedCount;
+    }
+    
+    // 兼容旧版进度显示
+    if (oldProgress) {
+        oldProgress.textContent = (currentQueueIndex + 1) + '/' + learningQueue.length + ' (已掌握: ' + completedCount + '/' + sessionWords.length + ')';
+    }
+    
+    // V8: 更新统计面板
+    updateVocabStats();
+}
+
+// V8: 更新学习统计
+function updateVocabStats() {
+    var stats = loadDailyStats();
+    
+    var statTodayNew = document.getElementById('statTodayNew');
+    var statTodayReview = document.getElementById('statTodayReview');
+    var statMastered = document.getElementById('statMastered');
+    var statStreak = document.getElementById('statStreak');
+    
+    if (statTodayNew) statTodayNew.textContent = stats.newToday || 0;
+    if (statTodayReview) statTodayReview.textContent = stats.reviewToday || 0;
+    if (statMastered) statMastered.textContent = stats.mastered || 0;
+    if (statStreak) statStreak.textContent = stats.streak || 0;
+}
+
+// V8: 加载今日统计数据
+function loadDailyStats() {
+    try {
+        var today = new Date().toDateString();
+        var statsKey = 'vocabStats_' + today;
+        var stats = JSON.parse(localStorage.getItem(statsKey) || '{}');
+        
+        // 获取总掌握数
+        var wordProgress = JSON.parse(localStorage.getItem('wordProgress') || '{}');
+        var masteredCount = 0;
+        Object.keys(wordProgress).forEach(function(word) {
+            if (wordProgress[word].level >= 4) masteredCount++;
         });
-        progress.textContent = (currentQueueIndex + 1) + '/' + learningQueue.length + ' (已掌握: ' + completedCount + '/' + sessionWords.length + ')';
+        stats.mastered = masteredCount;
+        
+        // 计算连续学习天数
+        stats.streak = calculateStreak();
+        
+        return stats;
+    } catch (e) {
+        return { newToday: 0, reviewToday: 0, mastered: 0, streak: 0 };
+    }
+}
+
+// 计算学习连续天数
+function calculateStreak() {
+    try {
+        var streak = 0;
+        var date = new Date();
+        
+        for (var i = 0; i < 365; i++) {
+            var dateStr = date.toDateString();
+            var statsKey = 'vocabStats_' + dateStr;
+            var dayStats = JSON.parse(localStorage.getItem(statsKey) || '{}');
+            
+            if ((dayStats.newToday || 0) + (dayStats.reviewToday || 0) > 0) {
+                streak++;
+                date.setDate(date.getDate() - 1);
+            } else if (i === 0) {
+                // 今天还没学习，继续检查昨天
+                date.setDate(date.getDate() - 1);
+            } else {
+                break;
+            }
+        }
+        return streak;
+    } catch (e) {
+        return 0;
+    }
+}
+
+// V8: 切换统计面板显示
+function toggleVocabStats() {
+    var panel = document.getElementById('vocabStatsPanel');
+    if (panel) {
+        panel.classList.toggle('hidden');
+        updateVocabStats();
     }
 }
 
@@ -1881,6 +2228,9 @@ var learningModeState = {
     isFirstTime: true, // 是否首次学习此词
     consecutiveCorrect: 0 // 连续正确次数
 };
+
+// v4.9.1: 单词卡片折叠状态
+var isWordCardExpanded = false;
 
 function showCurrentWord() {
     if (!learningQueue || learningQueue.length === 0) {
@@ -1904,48 +2254,47 @@ function showCurrentWord() {
     var word = wordData.word;
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
     var isReview = sessionProgress.times > 0;
-    var isHardWord = hardWordsInSession && hardWordsInSession.indexOf(word) > -1;
-    var isImmediateReview = immediateReviewQueue && immediateReviewQueue.some(function(r) { return r.word === word; });
     
-    // 确定学习模式
-    if (isImmediateReview) {
-        learningModeState.mode = 'immediate';
-    } else if (isHardWord) {
-        learningModeState.mode = 'difficult';
-    } else if (isReview) {
-        learningModeState.mode = 'review';
-    } else {
-        learningModeState.mode = 'normal';
-    }
     learningModeState.isFirstTime = !isReview;
     
-    // V6: 显示学习模式提示
-    showLearningModeIndicator(learningModeState.mode);
-    
-    document.getElementById('wordMain').textContent = wordData.word;
-    document.getElementById('wordPhonetic').textContent = wordData.phonetic || '';
-    
-    // V1: 显示掌握度徽章
-    showMasteryBadge(wordData.word);
-    
-    // V13: 显示难度等级标签
-    showDifficultyBadge(wordData.word);
-    
-    // V16: 显示真题标记标签
-    showExamTagsBadge(wordData.word);
-    
-    // v4.9.3: 中文释义默认显示,但详细信息隐藏
+    // V10: 适配新版HTML结构
+    var wordMain = document.getElementById('wordMain');
+    var wordPhonetic = document.getElementById('wordPhonetic');
     var wordMeaning = document.getElementById('wordMeaning');
-    if (wordMeaning) {
-        wordMeaning.classList.remove('hidden');
-        // 只显示中文释义,隐藏详细信息
-        var meaningCn = wordMeaning.querySelector('.meaning-cn');
-        if (meaningCn) {
-            meaningCn.style.display = 'block';
-        }
+    var rateButtons = document.getElementById('rateButtons');
+    
+    if (wordMain) {
+        // V10: 添加单词切换动画
+        wordMain.classList.add('exiting');
+        setTimeout(function() {
+            wordMain.textContent = wordData.word;
+            wordMain.classList.remove('exiting');
+            wordMain.classList.add('entering');
+            setTimeout(function() {
+                wordMain.classList.remove('entering');
+            }, 350);
+        }, 250);
     }
-    document.getElementById('rateButtons').classList.add('hidden');
-    document.getElementById('showMeaningBtn').classList.remove('hidden');
+    
+    if (wordPhonetic) wordPhonetic.textContent = wordData.phonetic || '';
+    
+    // 直接显示中文释义
+    var meaningCn = document.getElementById('meaningCn');
+    if (meaningCn && wordData.meaningCn) {
+        meaningCn.innerHTML = '<div style="font-size:16px;font-weight:600;color:#1f2937;line-height:1.8;">' + wordData.meaningCn + '</div>';
+    }
+    
+    // 显示例句
+    var wordExample = document.getElementById('wordExample');
+    if (wordExample && wordData.example) {
+        wordExample.innerHTML = '<div style="font-style:italic;color:#6b7280;">"' + wordData.example + '"</div>';
+    }
+    
+    // 显示释义区域
+    if (wordMeaning) wordMeaning.classList.remove('hidden');
+    
+    // 直接显示认识/不认识按钮
+    if (rateButtons) rateButtons.classList.remove('hidden');
     
     updateVocabProgress();
     
@@ -1955,11 +2304,99 @@ function showCurrentWord() {
     // 更新学习进度指示器
     updateLearningProgressIndicator();
     
-    // v4.9.3: 更新收藏按钮状态
-    updateBookmarkButton(wordData.word);
+    // V4.8.12: 修复发音问题 - 在动画完成后朗读新单词
+    setTimeout(function() {
+        speakText(wordData.word);
+    }, 300);
+}
+
+// v4.9.2: 修复首次引导按钮 - 添加initVocabulary调用
+function showFirstTimeGuide() {
+    var hasShownGuide = localStorage.getItem('vocabGuideShown');
+    if (hasShownGuide) return;
     
-    // 自动朗读新单词
-    speakWord();
+    var overlay = document.createElement('div');
+    overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.75);z-index:100000;display:flex;align-items:center;justify-content:center;animation:fadeIn 0.3s ease;';
+    
+    var guide = document.createElement('div');
+    guide.style.cssText = 'background:#fff;border-radius:24px;padding:32px 24px;max-width:340px;width:90%;box-shadow:0 20px 40px rgba(0,0,0,0.3);animation:scaleIn 0.4s ease;';
+    guide.innerHTML = '<div style="text-align:center;"><div style="font-size:48px;margin-bottom:16px;">📖</div><h3 style="font-size:22px;font-weight:700;color:#1f2937;margin:0 0 12px;">学习规则说明</h3><div style="text-align:left;background:#f9fafb;padding:16px;border-radius:12px;margin:20px 0;"><div style="margin-bottom:12px;"><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#10b981;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✓</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">连续认识3次即完成学习</div></div><div><span style="display:inline-block;width:28px;height:28px;line-height:28px;text-align:center;background:#ef4444;color:white;border-radius:50%;font-weight:700;margin-right:8px;">✗</span><span style="color:#374151;font-size:15px;font-weight:500;">点击"不认识"</span><div style="color:#6b7280;font-size:13px;margin:4px 0 0 36px;">重新开始学习该单词</div></div></div><div style="background:#fef3c7;padding:12px;border-radius:10px;margin-bottom:20px;"><div style="color:#92400e;font-size:13px;line-height:1.5;">💡 提示：卡片右侧有 <strong>⋮</strong> 按钮<br/>点击可展开查看详细释义和例句</div></div><button id="guideStartBtn" style="width:100%;padding:14px;background:linear-gradient(135deg,#6366f1,#a855f7);color:white;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;">开始学习</button></div>';
+    
+    overlay.appendChild(guide);
+    document.body.appendChild(overlay);
+    
+    // 绑定按钮事件
+    document.getElementById('guideStartBtn').onclick = function() {
+        overlay.remove();
+        localStorage.setItem('vocabGuideShown', 'true');
+        // 开始学习
+        initSessionWords();
+        showCurrentWord();
+    };
+}
+
+// v4.9.1: 添加卡片展开/收起按钮
+function addCardToggleButton() {
+    var wordCard = document.getElementById('wordCard');
+    if (!wordCard) return;
+    
+    var existing = document.getElementById('cardToggleBtn');
+    if (existing) existing.remove();
+    
+    var toggleBtn = document.createElement('button');
+    toggleBtn.id = 'cardToggleBtn';
+    toggleBtn.innerHTML = '⋮';
+    toggleBtn.style.cssText = 'position:absolute;top:50%;right:16px;transform:translateY(-50%);width:36px;height:36px;border-radius:50%;background:#f3f4f6;border:none;font-size:20px;color:#6b7280;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;z-index:10;';
+    toggleBtn.onclick = function() {
+        toggleWordCard();
+    };
+    wordCard.style.position = 'relative';
+    wordCard.appendChild(toggleBtn);
+}
+
+// v4.9.1: 切换单词卡片展开/收起
+function toggleWordCard() {
+    isWordCardExpanded = !isWordCardExpanded;
+    var wordMeaning = document.getElementById('wordMeaning');
+    var toggleBtn = document.getElementById('cardToggleBtn');
+    var rateButtons = document.getElementById('rateButtons');
+    var showMeaningBtn = document.getElementById('showMeaningBtn');
+    
+    if (isWordCardExpanded) {
+        // 展开 - 显示详细信息
+        if (wordMeaning) wordMeaning.classList.remove('hidden');
+        if (toggleBtn) {
+            toggleBtn.innerHTML = '×';
+            toggleBtn.style.fontSize = '28px';
+        }
+        // 自动显示评分按钮
+        if (rateButtons) rateButtons.classList.remove('hidden');
+        if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
+    } else {
+        // 收起 - 仅显示单词
+        if (wordMeaning) wordMeaning.classList.add('hidden');
+        if (toggleBtn) {
+            toggleBtn.innerHTML = '⋮';
+            toggleBtn.style.fontSize = '20px';
+        }
+        if (rateButtons) rateButtons.classList.add('hidden');
+        if (showMeaningBtn) showMeaningBtn.classList.remove('hidden');
+    }
+}
+
+// v4.9.3: 更新收藏按钮状态
+function updateBookmarkButton(word) {
+    var bookmarkBtn = document.getElementById('bookmarkBtn');
+    if (!bookmarkBtn) return;
+    
+    var bookmarks = JSON.parse(localStorage.getItem('wordBookmarks') || '[]');
+    if (bookmarks.indexOf(word) > -1) {
+        bookmarkBtn.classList.add('active');
+        bookmarkBtn.style.color = '#f59e0b';
+    } else {
+        bookmarkBtn.classList.remove('active');
+        bookmarkBtn.style.color = '';
+    }
 }
 
 // V1: 显示掌握度徽章
@@ -1997,8 +2434,8 @@ function showMasteryDetailPopup(word) {
     
     // 标题栏
     var header = '<div style="padding:16px;border-bottom:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;">';
-    header += '<span style="font-size:18px;font-weight:700;">📊 ' + word + ' 掌握度</span>';
-    header += '<button onclick="document.getElementById(\'masteryDetailOverlay\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;">✕</button>';
+    header += '<span style="font-size:18px;font-weight:700;">' + word + ' 掌握度</span>';
+    header += '<button onclick="document.getElementById(\'masteryDetailOverlay\').remove()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#6b7280;">×</button>';
     header += '</div>';
     
     popup.innerHTML = header + renderMasteryCard(word);
@@ -2011,115 +2448,7 @@ function showMasteryDetailPopup(word) {
     document.body.appendChild(overlay);
 }
 
-// v4.9.3: 更新收藏按钮状态
-function updateBookmarkButton(word) {
-    var bookmarkBtn = document.getElementById('bookmarkBtn');
-    if (!bookmarkBtn) return;
-    
-    var bookmarks = JSON.parse(localStorage.getItem('wordBookmarks') || '[]');
-    if (bookmarks.indexOf(word) > -1) {
-        bookmarkBtn.classList.add('active');
-        bookmarkBtn.style.color = '#f59e0b';
-    } else {
-        bookmarkBtn.classList.remove('active');
-        bookmarkBtn.style.color = '';
-    }
-}
-
-// V13: 显示难度等级标签
-function showDifficultyBadge(word) {
-    var difficulty = getWordDifficulty(word);
-    
-    // 查找或创建难度标签容器
-    var badge = document.getElementById('difficultyBadge');
-    var phoneticEl = document.getElementById('wordPhonetic');
-    
-    if (!badge && phoneticEl) {
-        badge = document.createElement('span');
-        badge.id = 'difficultyBadge';
-        badge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:10px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
-        phoneticEl.parentNode.insertBefore(badge, phoneticEl.nextSibling);
-    }
-    
-    if (badge) {
-        if (difficulty) {
-            // 根据难度等级设置不同颜色
-            var levelStyles = {
-                1: { bg: '#dcfce7', color: '#166534', border: '#bbf7d0', icon: '🌱', label: '基础' },
-                2: { bg: '#dbeafe', color: '#1e40af', border: '#bfdbfe', icon: '📘', label: '中等' },
-                3: { bg: '#fef3c7', color: '#92400e', border: '#fde68a', icon: '📙', label: '中高级' },
-                4: { bg: '#fce7f3', color: '#9d174d', border: '#fbcfe8', icon: '📕', label: '高级' },
-                5: { bg: '#ede9fe', color: '#5b21b6', border: '#ddd6fe', icon: '🎓', label: '专业' }
-            };
-            var style = levelStyles[difficulty.level] || levelStyles[3];
-            badge.style.background = style.bg;
-            badge.style.color = style.color;
-            badge.style.border = '1px solid ' + style.border;
-            badge.style.display = 'inline-flex';
-            
-            // 构建标签内容
-            var sourceTags = '';
-            if (difficulty.sources && difficulty.sources.length > 0) {
-                difficulty.sources.slice(0, 2).forEach(function(src) {
-                    var srcStyle = src === 'GRE' ? 'background:#fee2e2;color:#991b1b;' : 
-                                   src === 'TOEFL' ? 'background:#e0e7ff;color:#3730a3;' : 
-                                   'background:#f3f4f6;color:#374151;';
-                    sourceTags += '<span style="' + srcStyle + 'padding:1px 5px;border-radius:4px;font-size:9px;margin-left:4px;">' + src + '</span>';
-                });
-            }
-            
-            badge.innerHTML = '<span>' + style.icon + '</span><span>' + style.label + '</span>' + sourceTags;
-        } else {
-            badge.style.display = 'none';
-        }
-    }
-}
-
-// V16: 显示真题标记标签
-function showExamTagsBadge(word) {
-    var examTags = getWordExamTags(word);
-    
-    // 查找或创建真题标签容器
-    var examBadge = document.getElementById('examTagsBadge');
-    var difficultyBadge = document.getElementById('difficultyBadge');
-    var phoneticEl = document.getElementById('wordPhonetic');
-    
-    if (!examBadge && (difficultyBadge || phoneticEl)) {
-        examBadge = document.createElement('span');
-        examBadge.id = 'examTagsBadge';
-        examBadge.style.cssText = 'display:inline-flex;align-items:center;gap:4px;margin-left:8px;padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;vertical-align:middle;';
-        
-        // 插入到难度标签之后，或音标之后
-        if (difficultyBadge && difficultyBadge.parentNode) {
-            difficultyBadge.parentNode.insertBefore(examBadge, difficultyBadge.nextSibling);
-        } else if (phoneticEl && phoneticEl.parentNode) {
-            phoneticEl.parentNode.insertBefore(examBadge, phoneticEl.nextSibling);
-        }
-    }
-    
-    if (examBadge) {
-        if (examTags) {
-            examBadge.style.display = 'inline-flex';
-            examBadge.style.background = 'linear-gradient(135deg,#fef3c7 0%,#fde68a 100%)';
-            examBadge.style.color = '#92400e';
-            examBadge.style.border = '1px solid #fcd34d';
-            
-            var content = '<span>📚</span>';
-            if (examTags.gre) {
-                var greHeat = examTags.gre.count >= 12 ? '🔥🔥' : examTags.gre.count >= 8 ? '🔥' : '';
-                content += '<span style="background:#7c3aed;color:white;padding:1px 6px;border-radius:4px;font-size:9px;">GRE×' + examTags.gre.count + greHeat + '</span>';
-            }
-            if (examTags.toefl) {
-                var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥' : examTags.toefl.count >= 6 ? '🔥' : '';
-                content += '<span style="background:#2563eb;color:white;padding:1px 6px;border-radius:4px;font-size:9px;margin-left:2px;">TOEFL×' + examTags.toefl.count + toeflHeat + '</span>';
-            }
-            
-            examBadge.innerHTML = content;
-        } else {
-            examBadge.style.display = 'none';
-        }
-    }
-}
+// Simplified - removed difficulty and exam badges
 
 // 更新右上角学习次数徽章
 function updateLearningBadge() {
@@ -2135,9 +2464,7 @@ function updateLearningBadge() {
     if (!badge) {
         var wordCard = document.getElementById('wordCard');
         if (wordCard) {
-            // 确保 wordCard 是相对定位
             wordCard.style.position = 'relative';
-            
             badge = document.createElement('div');
             badge.id = 'learningBadge';
             badge.className = 'learning-badge';
@@ -2150,20 +2477,19 @@ function updateLearningBadge() {
             badge.className = 'learning-badge completed';
             badge.innerHTML = '<span class="badge-icon">✓</span><span class="badge-text">已掌握</span>';
         } else {
-            var remaining = requiredLearningTimes - currentTimes;
             badge.className = 'learning-badge';
             if (currentTimes === 0) {
                 badge.classList.add('new');
-                badge.innerHTML = '<span class="badge-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg></span><span class="badge-text">新词</span>';
+                badge.innerHTML = '<span class="badge-text">新词</span>';
             } else {
                 badge.classList.add('learning');
-                badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span><span class="badge-text" style="margin-left:4px;">复习中</span>';
+                badge.innerHTML = '<span class="badge-count">' + currentTimes + '</span><span class="badge-separator">/</span><span class="badge-total">' + requiredLearningTimes + '</span>';
             }
         }
     }
 }
 
-// 更新学习进度指示器
+// 更新学习进度指示器 (V12: 使用三点指示器)
 function updateLearningProgressIndicator() {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
@@ -2172,38 +2498,18 @@ function updateLearningProgressIndicator() {
     var progress = sessionWordProgress[word] || { times: 0, completed: false };
     var currentTimes = progress.times;
     
-    // 查找或创建进度指示器容器
-    var indicatorContainer = document.getElementById('learningProgressIndicator');
-    if (!indicatorContainer) {
-        var wordCard = document.getElementById('wordCard');
-        if (wordCard) {
-            indicatorContainer = document.createElement('div');
-            indicatorContainer.id = 'learningProgressIndicator';
-            indicatorContainer.className = 'learning-progress-indicator';
-            wordCard.appendChild(indicatorContainer);
-        }
-    }
-    
-    if (indicatorContainer) {
-        var dotsHtml = '';
-        for (var i = 0; i < requiredLearningTimes; i++) {
-            var dotClass = 'progress-dot';
-            if (i < currentTimes) {
-                dotClass += ' completed';
-            } else if (i === currentTimes) {
-                dotClass += ' current';
+    // V12: 使用HTML中的三点指示器
+    var learningDots = document.getElementById('learningDots');
+    if (learningDots) {
+        var dots = learningDots.querySelectorAll('.dot');
+        dots.forEach(function(dot, index) {
+            dot.classList.remove('active', 'completed');
+            if (index < currentTimes) {
+                dot.classList.add('completed');
+            } else if (index === currentTimes) {
+                dot.classList.add('active');
             }
-            dotsHtml += '<div class="' + dotClass + '"></div>';
-        }
-        
-        var statusText = '';
-        if (progress.completed) {
-            statusText = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#10b981" stroke-width="2.5" style="vertical-align:middle;margin-right:4px;"><polyline points="20 6 9 17 4 12"/></svg>已掌握';
-        } else {
-            statusText = '第 ' + (currentTimes + 1) + '/' + requiredLearningTimes + ' 次学习';
-        }
-        
-        indicatorContainer.innerHTML = dotsHtml + '<span class="progress-label">' + statusText + '</span>';
+        });
     }
 }
 
@@ -2211,341 +2517,20 @@ function showMeaning() {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
-    // 查询字典数据
-    var dictData = null;
-    if (typeof queryDictionary === 'function') {
-        dictData = queryDictionary(wordData.word);
-    }
-    
-    // V11: 获取同义词/反义词
-    var relations = getWordRelations(wordData.word);
-    
-    // V12: 获取助记词
-    var mnemonic = getWordMnemonic(wordData.word);
-    
-    // V14: 获取增强版助记信息
-    var enhancedMnemonic = getEnhancedMnemonic(wordData.word);
-    
-    // 构建释义HTML（中英文双语）
+    // 构建释义HTML - 显示中文释义（常见+偏僻）
     var meaningHtml = '';
     
-    // 如果有字典数据，优先显示
-    if (dictData) {
-        meaningHtml += '<div class="dict-container" style="background:linear-gradient(135deg,#f8f7ff 0%,#eef2ff 100%);padding:14px;border-radius:12px;margin-bottom:12px;border:1px solid rgba(99,102,241,0.1);">';
-        if (dictData.definitions && dictData.definitions.length > 0) {
-            meaningHtml += '<div style="font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px;"><span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);border-radius:6px;box-shadow:0 2px 6px rgba(99,102,241,0.3);"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></span><span style="color:#4338ca;">词典释义</span></div>';
-            dictData.definitions.slice(0, 3).forEach(function(def, idx) {
-                meaningHtml += '<div style="margin-bottom:6px;font-size:14px;color:#555;">• ' + def + '</div>';
-            });
-        }
+    // 显示中文释义
+    if (wordData.meaningCn) {
+        meaningHtml += '<div style="padding:16px 0;">';
+        meaningHtml += '<div style="font-size:16px;font-weight:600;color:#1f2937;line-height:1.8;">' + wordData.meaningCn + '</div>';
         meaningHtml += '</div>';
     }
     
-    meaningHtml += '<div class="meaning-cn" style="font-size:22px;color:#1e1b4b;margin-bottom:12px;font-weight:700;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:8px;box-shadow:0 2px 6px rgba(16,185,129,0.3);flex-shrink:0;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span><span>' + (wordData.meaningCn || '暂无中文释义') + '</span></div>';
-    meaningHtml += '<div class="meaning-en" style="color:#4b5563;font-size:15px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#3b82f6 0%,#2563eb 100%);border-radius:7px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span><span>' + (wordData.meaningEn || wordData.meaning || '') + '</span></div>';
-    
-    // V16: 真题词汇标记展示
-    var examTags = getWordExamTags(wordData.word);
-    if (examTags) {
-        meaningHtml += '<div class="exam-tags-section" style="margin-bottom:16px;padding:14px 16px;background:linear-gradient(135deg,#fef3c7 0%,#fde68a 100%);border-radius:16px;border:1px solid #fcd34d;">';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">';
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:8px;box-shadow:0 2px 6px rgba(245,158,11,0.3);">';
-        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>';
-        meaningHtml += '</span>';
-        meaningHtml += '<span style="font-weight:700;font-size:14px;color:#92400e;">📚 真题高频词汇</span>';
-        meaningHtml += '</div>';
-        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:8px;">';
-        
-        if (examTags.gre) {
-            var greHeat = examTags.gre.count >= 12 ? '🔥🔥🔥' : examTags.gre.count >= 8 ? '🔥🔥' : '🔥';
-            meaningHtml += '<div style="background:linear-gradient(135deg,#7c3aed 0%,#6d28d9 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(124,58,237,0.3);">';
-            meaningHtml += '<span style="font-weight:700;font-size:13px;">GRE</span>';
-            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.gre.count + ' 次</span>';
-            meaningHtml += '<span style="font-size:11px;">' + greHeat + '</span>';
-            meaningHtml += '</div>';
-            if (examTags.gre.years && examTags.gre.years.length > 0) {
-                meaningHtml += '<div style="background:rgba(124,58,237,0.1);color:#6d28d9;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>📅</span><span>' + examTags.gre.years.join(', ') + '</span>';
-                meaningHtml += '</div>';
-            }
-        }
-        
-        if (examTags.toefl) {
-            var toeflHeat = examTags.toefl.count >= 10 ? '🔥🔥🔥' : examTags.toefl.count >= 6 ? '🔥🔥' : '🔥';
-            meaningHtml += '<div style="background:linear-gradient(135deg,#2563eb 0%,#1d4ed8 100%);color:white;padding:8px 14px;border-radius:12px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 8px rgba(37,99,235,0.3);">';
-            meaningHtml += '<span style="font-weight:700;font-size:13px;">TOEFL</span>';
-            meaningHtml += '<span style="font-size:12px;opacity:0.9;">出现 ' + examTags.toefl.count + ' 次</span>';
-            meaningHtml += '<span style="font-size:11px;">' + toeflHeat + '</span>';
-            meaningHtml += '</div>';
-            if (examTags.toefl.years && examTags.toefl.years.length > 0) {
-                meaningHtml += '<div style="background:rgba(37,99,235,0.1);color:#1d4ed8;padding:6px 12px;border-radius:10px;font-size:11px;display:flex;align-items:center;gap:4px;">';
-                meaningHtml += '<span>📅</span><span>' + examTags.toefl.years.join(', ') + '</span>';
-                meaningHtml += '</div>';
-            }
-        }
-        
-        meaningHtml += '</div>';
-        meaningHtml += '</div>';
-    }
-    
-    // V14-V19: 科学助记系统 - UI优化增强版
-    if (mnemonic || enhancedMnemonic.hasEnhancements) {
-        meaningHtml += '<div class="word-mnemonic-v14" style="margin-bottom:16px;padding:0;border-radius:20px;overflow:hidden;border:1px solid rgba(192,132,252,0.15);box-shadow:0 8px 24px rgba(168,85,247,0.12),0 2px 8px rgba(0,0,0,0.04);">';
-        
-        // V16: 头部重新设计 - 更现代的渐变和图标
-        meaningHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 35%,#6366f1 70%,#4f46e5 100%);padding:14px 18px;display:flex;align-items:center;justify-content:space-between;position:relative;overflow:hidden;">';
-        // V17: 添加装饰性背景元素
-        meaningHtml += '<div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>';
-        meaningHtml += '<div style="position:absolute;bottom:-30px;left:40%;width:100px;height:100px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:12px;position:relative;z-index:1;">';
-        // V18: 更精美的图标容器
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;background:rgba(255,255,255,0.18);border-radius:12px;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.2);box-shadow:0 2px 8px rgba(0,0,0,0.1);"><span style="font-size:20px;">🧬</span></span>';
-        meaningHtml += '<div><div style="color:white;font-weight:700;font-size:15px;text-shadow:0 1px 2px rgba(0,0,0,0.1);">💡 科学记忆法</div>';
-        meaningHtml += '<div style="color:rgba(255,255,255,0.85);font-size:11px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">🔬</span> 认知心理学 · 记忆增强</div></div>';
-        meaningHtml += '</div>';
-        
-        // V19: 效果评估指示器 - 增强视觉效果
-        var effectivenessScore = enhancedMnemonic.effectiveness ? Math.round(enhancedMnemonic.effectiveness.effectiveness * 100) : null;
-        if (effectivenessScore !== null) {
-            var scoreEmoji = effectivenessScore >= 90 ? '🏆' : effectivenessScore >= 75 ? '⭐' : effectivenessScore >= 50 ? '📈' : '💪';
-            var scoreColor = effectivenessScore >= 80 ? '#4ade80' : effectivenessScore >= 50 ? '#fbbf24' : '#f87171';
-            var scoreBg = effectivenessScore >= 80 ? 'rgba(74,222,128,0.2)' : effectivenessScore >= 50 ? 'rgba(251,191,36,0.2)' : 'rgba(248,113,113,0.2)';
-            meaningHtml += '<div style="display:flex;align-items:center;gap:6px;background:' + scoreBg + ';padding:6px 12px;border-radius:24px;border:1px solid rgba(255,255,255,0.2);position:relative;z-index:1;">';
-            meaningHtml += '<span style="font-size:14px;">' + scoreEmoji + '</span>';
-            meaningHtml += '<span style="font-size:11px;color:white;opacity:0.9;">效果</span>';
-            meaningHtml += '<span style="font-weight:700;color:' + scoreColor + ';text-shadow:0 1px 2px rgba(0,0,0,0.2);">' + effectivenessScore + '%</span>';
-            meaningHtml += '</div>';
-        } else {
-            // 新词显示
-            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.15);padding:5px 10px;border-radius:20px;position:relative;z-index:1;">';
-            meaningHtml += '<span style="font-size:12px;">✨</span>';
-            meaningHtml += '<span style="font-size:11px;color:white;font-weight:500;">新学习</span>';
-            meaningHtml += '</div>';
-        }
-        meaningHtml += '</div>';
-        
-        // 主体内容区
-        meaningHtml += '<div style="background:linear-gradient(135deg,#fdf4ff 0%,#fae8ff 100%);padding:16px;">';
-        
-        // 选择最佳助记来源（用户自定义 > 系统生成）
-        var activeMnemonic = enhancedMnemonic.custom || mnemonic;
-        
-        if (activeMnemonic) {
-            // V16: 助记类型标签 - 重新设计
-            var mnemonicType = activeMnemonic.type || 'etymology';
-            var typeInfo = MNEMONIC_SCIENCE.types[mnemonicType] || MNEMONIC_SCIENCE.types['etymology'];
-            var effEmoji = MNEMONIC_SCIENCE.effectivenessEmoji(typeInfo.effectiveness);
-            
-            meaningHtml += '<div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:14px;">';
-            // 类型图标容器
-            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;padding:6px 14px;background:' + (typeInfo.bgGradient || typeInfo.bg) + ';border-radius:24px;border:1px solid ' + typeInfo.color + '22;box-shadow:0 2px 6px ' + typeInfo.color + '15;">';
-            meaningHtml += '<span style="font-size:18px;filter:drop-shadow(0 1px 1px rgba(0,0,0,0.1));">' + typeInfo.icon + '</span>';
-            meaningHtml += '<span style="font-size:13px;color:' + typeInfo.color + ';font-weight:700;">' + typeInfo.name + '</span>';
-            meaningHtml += '</div>';
-            // 有效性徽章
-            meaningHtml += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:linear-gradient(135deg,#fefce8,#fef9c3);border-radius:16px;border:1px solid #fde04733;">';
-            meaningHtml += '<span style="font-size:12px;">' + effEmoji.emoji + '</span>';
-            meaningHtml += '<span style="font-size:11px;color:#854d0e;font-weight:600;">' + Math.round(typeInfo.effectiveness * 100) + '% 有效</span>';
-            meaningHtml += '</div>';
-            if (enhancedMnemonic.custom) {
-                meaningHtml += '<div style="display:flex;align-items:center;gap:4px;padding:4px 10px;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-radius:16px;border:1px solid #3b82f622;">';
-                meaningHtml += '<span style="font-size:11px;">✨</span>';
-                meaningHtml += '<span style="font-size:11px;color:#1e40af;font-weight:600;">我的创作</span>';
-                meaningHtml += '</div>';
-            }
-            meaningHtml += '</div>';
-            
-            // V17: 主助记内容 - 更精美的卡片设计
-            meaningHtml += '<div style="font-size:16px;color:#581c87;line-height:1.8;font-weight:500;padding:14px 16px;background:linear-gradient(135deg,#ffffff,#fefbff);border-radius:14px;border-left:5px solid;border-image:linear-gradient(180deg,#a855f7,#7c3aed) 1;margin-bottom:14px;box-shadow:inset 0 1px 0 rgba(255,255,255,0.8),0 2px 8px rgba(168,85,247,0.08);position:relative;">';
-            meaningHtml += '<span style="position:absolute;top:8px;right:10px;font-size:16px;opacity:0.15;">💡</span>';
-            meaningHtml += activeMnemonic.mnemonic;
-            meaningHtml += '</div>';
-            
-            // V18: 词根信息 - 更精美的信息卡片
-            if (activeMnemonic.roots) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.08),rgba(139,92,246,0.04));border-radius:12px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.12);">';
-                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#a855f7,#7c3aed);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(168,85,247,0.3);flex-shrink:0;">🌳</span>';
-                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">📜</span> 词根解析 Etymology</div>';
-                meaningHtml += '<div style="font-size:13px;color:#6b21a8;line-height:1.6;">' + activeMnemonic.roots + '</div></div>';
-                meaningHtml += '</div>';
-            }
-            
-            // V18: 联想画面 - 更生动的视觉设计
-            if (activeMnemonic.association) {
-                meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(59,130,246,0.08),rgba(59,130,246,0.03));border-radius:12px;margin-bottom:10px;border:1px solid rgba(59,130,246,0.12);">';
-                meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;background:linear-gradient(135deg,#3b82f6,#2563eb);border-radius:10px;font-size:16px;box-shadow:0 2px 6px rgba(59,130,246,0.3);flex-shrink:0;">🖼️</span>';
-                meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#2563eb;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:10px;">👁️</span> 视觉联想 Dual Coding</div>';
-                meaningHtml += '<div style="font-size:13px;color:#1e40af;font-style:italic;line-height:1.6;padding:8px 10px;background:rgba(255,255,255,0.6);border-radius:8px;border-left:3px solid #3b82f6;">"' + activeMnemonic.association + '"</div></div>';
-                meaningHtml += '</div>';
-            }
-        }
-        
-        // V19: 记忆宫殿位置 - 增强视觉设计
-        if (enhancedMnemonic.memoryPalace) {
-            var location = memoryPalaceData.locations.find(function(l) { return l.id === enhancedMnemonic.memoryPalace.locationId; });
-            var locIcon = location ? location.icon : '🏛️';
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(139,92,246,0.12),rgba(139,92,246,0.05));border-radius:14px;margin-bottom:10px;border:1px solid rgba(139,92,246,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.08;">' + locIcon + '</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#8b5cf6,#6366f1);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(139,92,246,0.35);flex-shrink:0;">🏰</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#7c3aed;font-weight:700;margin-bottom:5px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">📍</span> 记忆宫殿定位</div>';
-            meaningHtml += '<div style="font-size:13px;color:#5b21b6;line-height:1.6;"><span style="display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:rgba(139,92,246,0.15);border-radius:6px;margin-right:6px;"><span style="font-size:14px;">' + locIcon + '</span><strong>' + (location ? location.name : '位置') + '</strong></span>' + enhancedMnemonic.memoryPalace.image + '</div></div>';
-            meaningHtml += '</div>';
-        }
-        
-        // V19: 情感锚定 - 更生动的视觉表达
-        if (enhancedMnemonic.emotionalAnchor) {
-            var emo = enhancedMnemonic.emotionalAnchor;
-            var intensityBars = '';
-            for (var i = 1; i <= 10; i++) {
-                var isActive = i <= emo.intensity;
-                intensityBars += '<span style="display:inline-block;width:8px;height:' + (4 + i * 1.5) + 'px;background:' + (isActive ? emo.data.color : 'rgba(0,0,0,0.1)') + ';border-radius:2px;margin-right:1px;transition:all 0.2s;"></span>';
-            }
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(236,72,153,0.1),rgba(236,72,153,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(236,72,153,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-15px;right:-15px;font-size:50px;opacity:0.06;">' + emo.data.icon + '</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:42px;height:42px;background:linear-gradient(135deg,#ec4899,#db2777);border-radius:50%;font-size:22px;box-shadow:0 3px 10px rgba(236,72,153,0.35);flex-shrink:0;animation:pulse-soft 2s infinite;">' + emo.data.icon + '</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#be185d;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">💫</span> 情感记忆锚点</div>';
-            meaningHtml += '<div style="font-size:14px;color:#9d174d;font-weight:600;margin-bottom:6px;">' + emo.data.name + '</div>';
-            meaningHtml += '<div style="display:flex;align-items:flex-end;gap:2px;">' + intensityBars + '<span style="margin-left:6px;font-size:11px;color:#be185d;font-weight:600;">' + emo.intensity + '/10</span></div></div>';
-            meaningHtml += '</div>';
-        }
-        
-        // V19: 分块记忆组 - 更精美的标签设计
-        if (enhancedMnemonic.chunkGroup) {
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(20,184,166,0.1),rgba(20,184,166,0.04));border-radius:14px;margin-bottom:10px;border:1px solid rgba(20,184,166,0.15);position:relative;overflow:hidden;">';
-            meaningHtml += '<div style="position:absolute;top:-10px;right:-10px;font-size:40px;opacity:0.06;">🧩</div>';
-            meaningHtml += '<span style="display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#14b8a6,#0d9488);border-radius:12px;font-size:18px;box-shadow:0 3px 10px rgba(20,184,166,0.35);flex-shrink:0;">🧩</span>';
-            meaningHtml += '<div style="flex:1;"><div style="font-size:11px;color:#0f766e;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span style="font-size:12px;">🔗</span> 记忆分块: <span style="padding:2px 8px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:10px;font-size:10px;">' + enhancedMnemonic.chunkGroup.name + '</span></div>';
-            meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
-            enhancedMnemonic.chunkGroup.words.slice(0, 6).forEach(function(w, idx) {
-                var isCurrent = w.toLowerCase() === wordData.word.toLowerCase();
-                if (isCurrent) {
-                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#14b8a6,#0d9488);color:white;border-radius:20px;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(20,184,166,0.4);display:flex;align-items:center;gap:4px;"><span>👉</span>' + w + '</span>';
-                } else {
-                    meaningHtml += '<span style="padding:4px 12px;background:linear-gradient(135deg,#f0fdfa,#ccfbf1);color:#0f766e;border-radius:20px;font-size:12px;font-weight:500;border:1px solid rgba(20,184,166,0.2);display:flex;align-items:center;gap:3px;"><span style=\"opacity:0.6;font-size:10px;\">' + (idx + 1) + '</span>' + w + '</span>';
-                }
-            });
-            if (enhancedMnemonic.chunkGroup.words.length > 6) {
-                meaningHtml += '<span style="padding:4px 10px;background:#f0fdfa;color:#0d9488;border-radius:20px;font-size:11px;font-weight:600;border:1px dashed #99f6e4;">+' + (enhancedMnemonic.chunkGroup.words.length - 6) + ' more</span>';
-            }
-            meaningHtml += '</div></div></div>';
-        }
-        
-        // V19: 操作按钮区 - 完全重新设计的圆角胶囊按钮
-        meaningHtml += '<div style="margin-top:16px;padding-top:16px;border-top:2px solid rgba(168,85,247,0.1);position:relative;">';
-        meaningHtml += '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#fdf4ff,#fae8ff);padding:2px 12px;border-radius:10px;border:1px solid rgba(168,85,247,0.15);"><span style="font-size:10px;color:#9333ea;font-weight:600;">✨ 记忆工具箱 ✨</span></div>';
-        
-        // 第一行：反馈按钮
-        meaningHtml += '<div style="display:flex;gap:10px;margin-bottom:10px;margin-top:8px;">';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', true)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#10b981 0%,#059669 50%,#047857 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(16,185,129,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;position:relative;overflow:hidden;"><span style=\"font-size:18px;\">✅</span><span>记住了!</span></button>';
-        meaningHtml += '<button onclick="rateMnemonicEffectiveness(\'' + wordData.word + '\', false)" style="flex:1;padding:12px 16px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 50%,#b45309 100%);border:none;border-radius:28px;color:white;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 14px rgba(245,158,11,0.35),inset 0 1px 0 rgba(255,255,255,0.2);transition:all 0.2s ease;"><span style=\"font-size:18px;\">🔁</span><span>再强化</span></button>';
-        meaningHtml += '</div>';
-        
-        // 第二行：功能按钮
-        meaningHtml += '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;">';
-        
-        // 练习按钮 - 黄色
-        meaningHtml += '<button onclick="startMnemonicPractice(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#fef3c7 0%,#fde68a 100%);border:1px solid #fcd34d;border-radius:14px;color:#92400e;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(251,191,36,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏋️</span><span>练习</span></button>';
-        
-        // 自定义按钮 - 紫色
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#f3e8ff 0%,#e9d5ff 100%);border:1px solid #d8b4fe;border-radius:14px;color:#7c3aed;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(139,92,246,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🎨</span><span>创作</span></button>';
-        
-        // 宫殿按钮 - 靛蓝色
-        meaningHtml += '<button onclick="showMemoryPalaceEditor(\'' + wordData.word + '\')" style="padding:10px 6px;background:linear-gradient(180deg,#e0e7ff 0%,#c7d2fe 100%);border:1px solid #a5b4fc;border-radius:14px;color:#4338ca;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(99,102,241,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">🏰</span><span>宫殿</span></button>';
-        
-        // 统计按钮 - 粉色
-        meaningHtml += '<button onclick="showMnemonicStats()" style="padding:10px 6px;background:linear-gradient(180deg,#fce7f3 0%,#fbcfe8 100%);border:1px solid #f9a8d4;border-radius:14px;color:#be185d;font-size:10px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(236,72,153,0.2);transition:all 0.15s ease;"><span style=\"font-size:20px;\">📈</span><span>统计</span></button>';
-        
-        meaningHtml += '</div>';
-        meaningHtml += '</div>';
-        
-        meaningHtml += '</div>'; // 主体内容区结束
-        meaningHtml += '</div>'; // 整个助记卡片结束
-    } else {
-        // 没有助记时显示添加建议
-        var recommended = MNEMONIC_SCIENCE.recommendType(wordData.word, mnemonicEffectivenessData._typeStats || {});
-        var recType = MNEMONIC_SCIENCE.types[recommended.type];
-        
-        meaningHtml += '<div style="margin-bottom:16px;padding:16px;background:linear-gradient(135deg,#f9fafb 0%,#f3f4f6 100%);border-radius:12px;border:2px dashed #d1d5db;">';
-        meaningHtml += '<div style="text-align:center;">';
-        meaningHtml += '<div style="font-size:32px;margin-bottom:8px;">💡</div>';
-        meaningHtml += '<div style="font-size:14px;color:#6b7280;margin-bottom:12px;">暂无记忆技巧，建议添加</div>';
-        meaningHtml += '<div style="margin-bottom:12px;padding:8px;background:' + recType.bg + ';border-radius:8px;display:inline-block;">';
-        meaningHtml += '<span style="font-size:16px;margin-right:6px;">' + recType.icon + '</span>';
-        meaningHtml += '<span style="color:' + recType.color + ';font-weight:600;font-size:13px;">推荐: ' + recType.name + '</span>';
-        meaningHtml += '<div style="font-size:11px;color:' + recType.color + ';opacity:0.8;margin-top:4px;">' + recType.description + '</div>';
-        meaningHtml += '</div>';
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:10px 20px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border:none;border-radius:10px;color:white;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 4px 12px rgba(139,92,246,0.3);">✨ 创建我的记忆法</button>';
-        meaningHtml += '</div></div>';
-    }
-    
-    // V11: 同义词/反义词显示
-    if (relations) {
-        meaningHtml += '<div class="word-relations" style="margin-bottom:16px;padding:14px;background:linear-gradient(135deg,#fefce8 0%,#fef9c3 100%);border-radius:12px;border:1px solid rgba(234,179,8,0.2);">';
-        
-        // 同义词
-        if (relations.synonyms && relations.synonyms.length > 0) {
-            meaningHtml += '<div style="margin-bottom:10px;display:flex;align-items:flex-start;gap:10px;">';
-            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#22c55e 0%,#16a34a 100%);border-radius:7px;box-shadow:0 2px 6px rgba(34,197,94,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg></span>';
-            meaningHtml += '<div><span style="font-weight:700;color:#15803d;font-size:13px;">同义词 Synonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
-            relations.synonyms.forEach(function(syn) {
-                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#166534;border:1px solid #bbf7d0;font-weight:500;">' + syn + '</span>';
-            });
-            meaningHtml += '</div></div></div>';
-        }
-        
-        // 反义词
-        if (relations.antonyms && relations.antonyms.length > 0) {
-            meaningHtml += '<div style="display:flex;align-items:flex-start;gap:10px;">';
-            meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#ef4444 0%,#dc2626 100%);border-radius:7px;box-shadow:0 2px 6px rgba(239,68,68,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M5 12h14"/></svg></span>';
-            meaningHtml += '<div><span style="font-weight:700;color:#b91c1c;font-size:13px;">反义词 Antonyms</span><div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:6px;">';
-            relations.antonyms.forEach(function(ant) {
-                meaningHtml += '<span style="display:inline-block;padding:4px 10px;background:white;border-radius:6px;font-size:13px;color:#991b1b;border:1px solid #fecaca;font-weight:500;">' + ant + '</span>';
-            });
-            meaningHtml += '</div></div></div>';
-        }
-        
-        meaningHtml += '</div>';
-    }
-    
+    // 显示例句
     if (wordData.example) {
-        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;font-style:italic;padding-top:16px;border-top:1px solid #e5e7eb;display:flex;align-items:flex-start;gap:10px;"><span style="display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;background:linear-gradient(135deg,#f59e0b 0%,#d97706 100%);border-radius:7px;box-shadow:0 2px 6px rgba(245,158,11,0.3);flex-shrink:0;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></span><span>' + wordData.example + '</span></div>';
-    }
-    
-    // V15: 丰富例句展示
-    var wordExamples = getWordExamples(wordData.word);
-    if (wordExamples && wordExamples.examples && wordExamples.examples.length > 0) {
-        meaningHtml += '<div class="rich-examples-section" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border-radius:8px;box-shadow:0 2px 6px rgba(139,92,246,0.3);">';
-        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
-        meaningHtml += '</span>';
-        meaningHtml += '<span style="font-weight:600;font-size:14px;color:#7c3aed;">丰富语境例句</span>';
-        meaningHtml += '<span style="font-size:12px;color:#9ca3af;margin-left:auto;">' + wordExamples.examples.length + ' 个例句</span>';
-        meaningHtml += '</div>';
-        
-        wordExamples.examples.forEach(function(example, index) {
-            var sourceColors = {
-                'GRE真题': { bg: '#fef3c7', text: '#d97706', border: '#fcd34d' },
-                'TOEFL真题': { bg: '#dbeafe', text: '#2563eb', border: '#93c5fd' },
-                '学术期刊': { bg: '#dcfce7', text: '#16a34a', border: '#86efac' },
-                '经济学人': { bg: '#fce7f3', text: '#db2777', border: '#f9a8d4' },
-                '纽约时报': { bg: '#e0e7ff', text: '#4f46e5', border: '#a5b4fc' },
-                '科学美国人': { bg: '#ccfbf1', text: '#0d9488', border: '#5eead4' },
-                '大西洋月刊': { bg: '#fef9c3', text: '#ca8a04', border: '#fde047' },
-                '名著文学': { bg: '#f3e8ff', text: '#9333ea', border: '#d8b4fe' }
-            };
-            var sourceStyle = sourceColors[example.source] || { bg: '#f3f4f6', text: '#6b7280', border: '#d1d5db' };
-            
-            meaningHtml += '<div style="background:linear-gradient(135deg,#fafafa 0%,#f5f5f5 100%);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e5e7eb;">';
-            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">';
-            meaningHtml += '<span style="width:20px;height:20px;background:#8b5cf6;color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">' + (index + 1) + '</span>';
-            meaningHtml += '<span style="font-size:11px;padding:3px 8px;background:' + sourceStyle.bg + ';color:' + sourceStyle.text + ';border:1px solid ' + sourceStyle.border + ';border-radius:12px;font-weight:500;">' + example.source + '</span>';
-            meaningHtml += '</div>';
-            meaningHtml += '<p style="font-size:14px;color:#374151;line-height:1.6;margin:0 0 8px 0;font-style:italic;">"' + example.en + '"</p>';
-            meaningHtml += '<p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;padding-left:12px;border-left:3px solid #8b5cf6;">' + example.cn + '</p>';
-            meaningHtml += '</div>';
-        });
-        
+        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:14px;line-height:1.6;padding:12px 0;border-top:1px solid #e5e7eb;">';
+        meaningHtml += '<div style="font-style:italic;">"' + wordData.example + '"</div>';
         meaningHtml += '</div>';
     }
     
@@ -2553,9 +2538,16 @@ function showMeaning() {
     document.getElementById('meaningEn').innerHTML = '';
     document.getElementById('wordExample').innerHTML = '';
     
-    document.getElementById('wordMeaning').classList.remove('hidden');
-    document.getElementById('showMeaningBtn').classList.add('hidden');
-    document.getElementById('rateButtons').classList.remove('hidden');
+    // V10: 适配新版HTML结构
+    var wordMeaning = document.getElementById('wordMeaning');
+    var showMeaningBtn = document.getElementById('showMeaningBtn');
+    var rateButtons = document.getElementById('rateButtons');
+    var swipeHint = document.getElementById('swipeHint');
+    
+    if (wordMeaning) wordMeaning.classList.remove('hidden');
+    if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
+    if (rateButtons) rateButtons.classList.remove('hidden');
+    if (swipeHint) swipeHint.style.display = 'none';
     
     // V3: 更新复习间隔显示
     updateIntervalDisplay();
@@ -2716,85 +2708,27 @@ function updateIntervalDisplay() {
     if (easyInterval) easyInterval.textContent = intervals.easy.displayText;
 }
 
-// V1 & V2 & V4 & V8: 重写评分函数 - Anki风格智能复习（带自适应难度）
+// V1 & V2 & V4 & V8: 重写评分函数 - 极简版：只有认识/不认识
 function rateWord(rating) {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
     var word = wordData.word;
     
-    // V8: 更新自适应难度
-    updateAdaptiveDifficulty(rating);
-    
-    // V1: 更新掌握度追踪
-    var masteryResult = 'partial';
-    var masteryOptions = { type: 'review' };
-    
-    switch(rating) {
-        case 'again':
-            masteryResult = 'wrong';
-            masteryOptions.meaningScore = 20;
-            break;
-        case 'hard':
-            masteryResult = 'partial';
-            masteryOptions.meaningScore = 50;
-            break;
-        case 'good':
-            masteryResult = 'correct';
-            masteryOptions.meaningScore = 80;
-            break;
-        case 'easy':
-            masteryResult = 'correct';
-            masteryOptions.meaningScore = 100;
-            break;
-    }
-    
-    updateWordMastery(word, masteryResult, masteryOptions);
+    // 更新统计数据
+    updateSessionStats(rating);
     
     // 更新本轮学习进度
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
     
-    // V2: 根据评分处理即时复习队列
-    switch(rating) {
-        case 'again': // 重学 - 立即加入即时复习队列
-            // 不增加学习次数
-            addToImmediateReview(wordData, 1); // 1个单词后立即复习
-            showRatingFeedback('again', '马上再来一次！💪');
-            break;
-            
-        case 'hard': // 困难 - 稍后在本组内复习
-            // 增加学习次数但标记为困难
-            sessionProgress.times++;
-            if (hardWordsInSession.indexOf(word) === -1) {
-                hardWordsInSession.push(word);
-            }
-            addToImmediateReview(wordData, 3); // 3个单词后复习
-            showRatingFeedback('hard', '稍后再复习 📝');
-            break;
-            
-        case 'good': // 良好 - 正常进度
-            sessionProgress.times++;
-            sessionProgress.lastIndex = currentQueueIndex;
-            // 从困难列表移除
-            var hardIndex = hardWordsInSession.indexOf(word);
-            if (hardIndex > -1) hardWordsInSession.splice(hardIndex, 1);
-            showRatingFeedback('good', '继续保持！✓');
-            break;
-            
-        case 'easy': // 简单 - 加速掌握
-            sessionProgress.times += 2; // 简单直接+2次进度
-            sessionProgress.lastIndex = currentQueueIndex;
-            // 从困难列表移除
-            var easyHardIndex = hardWordsInSession.indexOf(word);
-            if (easyHardIndex > -1) hardWordsInSession.splice(easyHardIndex, 1);
-            showRatingFeedback('easy', '太棒了！🎉');
-            break;
-            
-        // 兼容旧版评分
-        case 'medium':
-            rating = 'good';
-            sessionProgress.times++;
-            break;
+    // 极简评分：只有 again(不认识) 和 good(认识)
+    if (rating === 'again') {
+        // 不认识 - 重置进度，稍后再复习
+        sessionProgress.times = 0;
+        addToImmediateReview(wordData, 2);
+    } else {
+        // 认识 (good/easy) - 增加进度
+        sessionProgress.times++;
     }
     
     // 判断本轮是否完成
@@ -2835,25 +2769,22 @@ function rateWord(rating) {
             localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
             localStorage.setItem('learnedCount', learnedWords.length.toString());
             
+            // 记录今日统计数据
+            if (typeof recordDailyStats === 'function') {
+                recordDailyStats('words', 1);
+            }
+            
+            // 更新首页词汇进度
+            if (typeof updateVocabProgress === 'function') {
+                updateVocabProgress();
+            }
+            
             // 更新今日目标进度
             if (typeof updateDailyProgress === 'function') {
                 updateDailyProgress('vocabulary', 1);
             }
             
-            // v4.9.3: 已移除成就鼓励系统,追求严谨客观的学习体验
-            /* 成就系统已禁用
-            if (window.UX && window.UX.Achievements) {
-                window.UX.Achievements.checkWordCount(learnedWords.length);
-                if (learnedWords.length % 10 === 0) {
-                    const msg = window.UX.EncouragementSystem.getRandom('milestone');
-                    window.UX.showSmartToast(msg, 'achievement');
-                } else if (Math.random() < 0.3) {
-                    const msg = window.UX.EncouragementSystem.getRandom('progress');
-                    window.UX.showSmartToast(msg, 'success');
-                }
-                window.UX.LevelSystem.checkLevelUp();
-            }
-            */
+            // v4.9.1: 已移除成就鼓励系统
         }
         
         // 如果评分为简单，标记为已掌握
@@ -2865,42 +2796,38 @@ function rateWord(rating) {
     
     sessionWordProgress[word] = sessionProgress;
     
-    // 保存评分（V4: 包含SM-2数据）
-    var intervalInfo = calculateReviewInterval(word, rating);
+    // 保存评分
     var prevCount = wordRatings[word] ? wordRatings[word].count : 0;
     wordRatings[word] = {
         rating: rating,
         lastReview: new Date().toISOString(),
         count: prevCount + 1,
-        interval: intervalInfo.interval,
-        easeFactor: intervalInfo.easeFactor,
         learningProgress: sessionProgress
     };
     localStorage.setItem('wordRatings', JSON.stringify(wordRatings));
+    
+    // 判断本轮是否完成
+    if (sessionProgress.times >= requiredLearningTimes) {
+        sessionProgress.completed = true;
+        
+        // 记录为已学
+        if (learnedWords.indexOf(word) === -1) {
+            learnedWords.push(word);
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+        }
+    }
+    
+    sessionWordProgress[word] = sessionProgress;
     
     // 刷新UI
     updateVocabProgress();
     updateLearningBadge();
     updateLearningProgressIndicator();
     
-    // V9: 更新学习统计
-    updateSessionStats(rating);
-    
-    // 触发全局学习进度更新事件
-    try {
-        window.dispatchEvent(new CustomEvent('vocabularyProgressUpdated', {
-            detail: {
-                word: word,
-                rating: rating,
-                sessionProgress: sessionProgress,
-                totalLearned: learnedWords.length,
-                interval: intervalInfo.interval
-            }
-        }));
-    } catch(e) {}
-    
-    // 下一个词
-    nextWord();
+    // 自动切换到下一个单词
+    setTimeout(function() {
+        nextWord();
+    }, 300);
 }
 
 // V2: 添加到即时复习队列
@@ -2926,21 +2853,21 @@ function addToImmediateReview(wordData, gap) {
     }
 }
 
-// V5: 显示评分反馈（带状态卡片效果）
+// V5: 显示评分反馈（简化版）
 function showRatingFeedback(rating, message) {
     var colors = {
-        again: { bg: 'linear-gradient(135deg,#fef2f2 0%,#fee2e2 100%)', border: '#fecaca', text: '#dc2626', icon: '🔄' },
-        hard: { bg: 'linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%)', border: '#fed7aa', text: '#ea580c', icon: '💪' },
-        good: { bg: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', border: '#bbf7d0', text: '#16a34a', icon: '✓' },
-        easy: { bg: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', border: '#bfdbfe', text: '#2563eb', icon: '🎉' }
+        again: { bg: '#fef2f2', border: '#fecaca', text: '#dc2626' },
+        hard: { bg: '#fff7ed', border: '#fed7aa', text: '#ea580c' },
+        good: { bg: '#f0fdf4', border: '#bbf7d0', text: '#16a34a' },
+        easy: { bg: '#eff6ff', border: '#bfdbfe', text: '#2563eb' }
     };
     
     var style = colors[rating] || colors.good;
     
     var feedback = document.createElement('div');
     feedback.className = 'rating-feedback-card';
-    feedback.innerHTML = '<span class="feedback-icon">' + style.icon + '</span><span class="feedback-text">' + message + '</span>';
-    feedback.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);background:' + style.bg + ';color:' + style.text + ';padding:16px 28px;border-radius:16px;font-size:16px;font-weight:700;z-index:10001;box-shadow:0 10px 40px rgba(0,0,0,0.15);animation:feedbackBounce 0.4s ease;border:2px solid ' + style.border + ';display:flex;align-items:center;gap:10px;';
+    feedback.innerHTML = '<span class="feedback-text">' + message + '</span>';
+    feedback.style.cssText = 'position:fixed;top:25%;left:50%;transform:translateX(-50%);background:' + style.bg + ';color:' + style.text + ';padding:12px 24px;border-radius:10px;font-size:14px;font-weight:600;z-index:10001;box-shadow:0 4px 16px rgba(0,0,0,0.1);animation:feedbackBounce 0.3s ease;border:1px solid ' + style.border + ';';
     document.body.appendChild(feedback);
     
     setTimeout(function() {
@@ -3001,15 +2928,12 @@ function showDifficultyFeedback(message) {
 // ====== 版本2改进：设置更新提示 ======
 function showSettingsUpdateToast(message) {
     var toast = document.createElement('div');
-    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:10px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg></span><span style="font-weight:600;">' + message + '</span>';
-    toast.style.cssText = 'position:fixed;top:15%;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 100%);color:white;padding:14px 24px;border-radius:14px;font-size:14px;z-index:10001;box-shadow:0 8px 30px rgba(99,102,241,0.35);animation:toastIn 0.3s ease;display:flex;align-items:center;';
+    toast.innerHTML = message;
+    toast.style.cssText = 'position:fixed;top:15%;left:50%;transform:translateX(-50%);background:#6366f1;color:white;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:500;z-index:10001;';
     document.body.appendChild(toast);
     
     setTimeout(function() {
-        toast.style.animation = 'toastOut 0.3s ease';
-        setTimeout(function() {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 300);
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
     }, 1500);
 }
 
@@ -3017,16 +2941,13 @@ function showSettingsUpdateToast(message) {
 function showCompletionToast(word) {
     var toast = document.createElement('div');
     toast.className = 'word-completion-toast';
-    toast.innerHTML = '<span style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:rgba(255,255,255,0.25);border-radius:50%;margin-right:12px;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></span><div><strong style="font-size:18px;">' + word + '</strong><div style="font-size:13px;opacity:0.9;margin-top:2px;">学习完成！继续加油 ✓</div></div>';
-    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#10b981 0%,#059669 100%);color:white;padding:20px 32px;border-radius:20px;font-size:16px;font-weight:600;z-index:10001;box-shadow:0 15px 50px rgba(16,185,129,0.45);animation:toastIn 0.4s ease;display:flex;align-items:center;';
+    toast.innerHTML = '<strong>' + word + '</strong> 已掌握';
+    toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#10b981;color:white;padding:12px 20px;border-radius:8px;font-size:14px;font-weight:500;z-index:10001;';
     document.body.appendChild(toast);
     
     setTimeout(function() {
-        toast.style.animation = 'toastOut 0.3s ease';
-        setTimeout(function() {
-            if (toast.parentNode) toast.parentNode.removeChild(toast);
-        }, 300);
-    }, 1500);
+        if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 1200);
 }
 
 // V6: 显示学习模式指示器
@@ -3036,38 +2957,10 @@ function showLearningModeIndicator(mode) {
     if (oldIndicator) oldIndicator.remove();
     
     var modeConfig = {
-        normal: { 
-            text: '新词学习', 
-            icon: '📖', 
-            color: '#6366f1',
-            bgGradient: 'linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%)',
-            borderColor: '#c7d2fe',
-            hint: '认真记忆'
-        },
-        review: { 
-            text: '复习巩固', 
-            icon: '🔄', 
-            color: '#f59e0b',
-            bgGradient: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
-            borderColor: '#fde68a',
-            hint: '加深印象'
-        },
-        immediate: { 
-            text: '立即复习', 
-            icon: '⚡', 
-            color: '#ef4444',
-            bgGradient: 'linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%)',
-            borderColor: '#fecaca',
-            hint: '再来一次'
-        },
-        difficult: { 
-            text: '攻克难词', 
-            icon: '💪', 
-            color: '#ea580c',
-            bgGradient: 'linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%)',
-            borderColor: '#fed7aa',
-            hint: '专注记忆'
-        }
+        normal: { text: '新词学习', color: '#6366f1', bg: '#eef2ff' },
+        review: { text: '复习巩固', color: '#f59e0b', bg: '#fffbeb' },
+        immediate: { text: '立即复习', color: '#ef4444', bg: '#fef2f2' },
+        difficult: { text: '攻克难词', color: '#ea580c', bg: '#fff7ed' }
     };
     
     var config = modeConfig[mode] || modeConfig.normal;
@@ -3075,8 +2968,8 @@ function showLearningModeIndicator(mode) {
     var indicator = document.createElement('div');
     indicator.id = 'learningModeIndicator';
     indicator.className = 'learning-mode-indicator mode-' + mode;
-    indicator.innerHTML = '<span class="mode-icon">' + config.icon + '</span><span class="mode-text">' + config.text + '</span><span class="mode-hint">' + config.hint + '</span>';
-    indicator.style.cssText = 'position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:' + config.bgGradient + ';color:' + config.color + ';padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;z-index:10;display:flex;align-items:center;gap:6px;border:2px solid ' + config.borderColor + ';box-shadow:0 4px 12px rgba(0,0,0,0.1);animation:modeIndicatorIn 0.3s ease;white-space:nowrap;';
+    indicator.innerHTML = config.text;
+    indicator.style.cssText = 'position:absolute;top:-6px;left:50%;transform:translateX(-50%);background:' + config.bg + ';color:' + config.color + ';padding:3px 10px;border-radius:10px;font-size:11px;font-weight:500;z-index:10;';
     
     var wordCard = document.getElementById('wordCard');
     if (wordCard) {
@@ -3086,41 +2979,38 @@ function showLearningModeIndicator(mode) {
 }
 
 function nextWord() {
+    // 1. 移动指针
     currentQueueIndex++;
     
-    // V6: 从即时复习队列移除已处理的词
-    if (immediateReviewQueue && immediateReviewQueue.length > 0) {
-        var prevWord = learningQueue[currentQueueIndex - 1];
-        if (prevWord) {
-            immediateReviewQueue = immediateReviewQueue.filter(function(r) {
-                return r.word !== prevWord.word;
-            });
-        }
-    }
-    
+    // 2. 检查是否还在当前队列范围内
     if (currentQueueIndex < learningQueue.length) {
         showCurrentWord();
+        return; // 显式结束
+    }
+    
+    // 3. 当前队列已完成，检查整个 Session 是否全部掌握
+    var allCompleted = true;
+    sessionWords.forEach(function(w) {
+        if (!sessionWordProgress[w.word] || !sessionWordProgress[w.word].completed) {
+            allCompleted = false;
+        }
+    });
+    
+    if (allCompleted) {
+        // 全部完成 -> 显示总结
+        showSessionSummary();
+        return;
     } else {
-        // 检查是否所有单词都已完成
-        var allCompleted = true;
-        sessionWords.forEach(function(w) {
-            if (!sessionWordProgress[w.word] || !sessionWordProgress[w.word].completed) {
-                allCompleted = false;
-            }
-        });
+        // 4. 尚未全部完成 -> 重建队列（复习未掌握的词）
+        buildLearningQueue();
+        currentQueueIndex = 0;
         
-        if (allCompleted) {
-            // 学完本组，显示总结页面
-            showSessionSummary();
+        // 5. 安全检查：如果重建后队列里有词，继续学习；否则（异常情况）显示总结
+        if (learningQueue.length > 0) {
+            showCurrentWord();
         } else {
-            // 还有未完成的单词，重新构建队列
-            buildLearningQueue();
-            currentQueueIndex = 0;
-            if (learningQueue.length > 0) {
-                showCurrentWord();
-            } else {
-                showSessionSummary();
-            }
+            console.warn("Queue rebuild resulted in 0 words, forcing summary.");
+            showSessionSummary();
         }
     }
 }
@@ -3149,81 +3039,66 @@ function showSessionSummary() {
     var easyCount = stats.easy || 0;
     var totalRatings = againCount + hardCount + goodCount + easyCount;
     
-    // V7: 构建增强版总结HTML
-    var summaryHtml = '<div style="padding:20px;">';
+    // V7: 构建增强版总结HTML - 简化版
+    var summaryHtml = '<div style="padding:16px;">';
     
-    // 顶部成就徽章
-    summaryHtml += '<div style="text-align:center;margin-bottom:20px;">';
-    summaryHtml += '<div style="width:80px;height:80px;background:linear-gradient(135deg,#10b981 0%,#059669 100%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 10px 40px rgba(16,185,129,0.35);animation:completionBounce 0.6s ease;"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>';
-    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:26px;font-weight:800;">🎉 学习完成！</h2>';
-    summaryHtml += '<p style="color:#6b7280;margin-top:10px;font-size:15px;">共学习 <span style="color:#6366f1;font-weight:700;">' + sessionWords.length + '</span> 个单词</p>';
+    // 顶部标题
+    summaryHtml += '<div style="text-align:center;margin-bottom:16px;">';
+    summaryHtml += '<div style="font-size:40px;margin-bottom:8px;">✓</div>';
+    summaryHtml += '<h2 style="margin:0;color:#1e1b4b;font-size:18px;font-weight:600;">学习完成</h2>';
+    summaryHtml += '<p style="color:#6b7280;margin-top:4px;font-size:13px;">共 ' + sessionWords.length + ' 个单词</p>';
     summaryHtml += '</div>';
     
-    // V9: 学习统计卡片
-    summaryHtml += '<div class="session-stats-card" style="background:linear-gradient(135deg,#f8fafc 0%,#eef2ff 100%);border-radius:16px;padding:16px;margin-bottom:20px;border:1px solid rgba(99,102,241,0.15);display:flex;flex-wrap:wrap;gap:10px;justify-content:space-around;">';
-    
-    // 用时统计
-    summaryHtml += '<div style="text-align:center;min-width:60px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">⏱️ 用时</div><div style="font-size:16px;font-weight:700;color:#1e1b4b;">' + timeStr + '</div></div>';
-    
-    // 准确率
-    summaryHtml += '<div style="text-align:center;min-width:60px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">🎯 准确率</div><div style="font-size:16px;font-weight:700;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
-    
-    // 评分分布 - 简化展示
-    summaryHtml += '<div style="text-align:center;min-width:80px;"><div style="font-size:10px;color:#6b7280;margin-bottom:4px;">📊 评分分布</div><div style="display:flex;gap:4px;justify-content:center;font-size:11px;font-weight:600;">';
-    if (easyCount > 0) summaryHtml += '<span style="color:#2563eb;" title="简单">' + easyCount + '🎉</span>';
-    if (goodCount > 0) summaryHtml += '<span style="color:#16a34a;" title="良好">' + goodCount + '✓</span>';
-    if (hardCount > 0) summaryHtml += '<span style="color:#ea580c;" title="困难">' + hardCount + '💪</span>';
-    if (againCount > 0) summaryHtml += '<span style="color:#dc2626;" title="重学">' + againCount + '🔄</span>';
-    summaryHtml += '</div></div>';
-    
+    // 学习统计卡片 - 简化版
+    summaryHtml += '<div style="background:#f8fafc;border-radius:8px;padding:12px;margin-bottom:12px;display:flex;gap:16px;justify-content:center;">';
+    summaryHtml += '<div style="text-align:center;"><div style="font-size:10px;color:#6b7280;">用时</div><div style="font-size:13px;font-weight:600;color:#1e1b4b;">' + timeStr + '</div></div>';
+    summaryHtml += '<div style="text-align:center;"><div style="font-size:10px;color:#6b7280;">准确率</div><div style="font-size:13px;font-weight:600;color:' + (stats.accuracy >= 80 ? '#10b981' : stats.accuracy >= 60 ? '#f59e0b' : '#ef4444') + ';">' + stats.accuracy + '%</div></div>';
     summaryHtml += '</div>';
     
-    // V7: 进度可视化环形图
+    // 评分分布
+    summaryHtml += '<div style="display:flex;gap:6px;justify-content:center;margin-bottom:12px;font-size:11px;">';
+    if (easyCount > 0) summaryHtml += '<span style="color:#2563eb;">简单' + easyCount + '</span>';
+    if (goodCount > 0) summaryHtml += '<span style="color:#16a34a;">良好' + goodCount + '</span>';
+    if (hardCount > 0) summaryHtml += '<span style="color:#ea580c;">困难' + hardCount + '</span>';
+    if (againCount > 0) summaryHtml += '<span style="color:#dc2626;">重学' + againCount + '</span>';
+    summaryHtml += '</div>';
+    
+    // 简化掌握度显示
     var masteryRate = totalRatings > 0 ? Math.round(((easyCount + goodCount) / totalRatings) * 100) : 0;
-    summaryHtml += '<div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:20px;">';
-    summaryHtml += '<div style="position:relative;width:80px;height:80px;">';
-    summaryHtml += '<svg viewBox="0 0 36 36" style="width:80px;height:80px;transform:rotate(-90deg);">';
-    summaryHtml += '<circle cx="18" cy="18" r="16" fill="none" stroke="#e5e7eb" stroke-width="3"/>';
-    summaryHtml += '<circle cx="18" cy="18" r="16" fill="none" stroke="url(#progressGradient)" stroke-width="3" stroke-linecap="round" stroke-dasharray="' + masteryRate + ' ' + (100 - masteryRate) + '" style="transition:stroke-dasharray 1s ease;"/>';
-    summaryHtml += '<defs><linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#10b981"/></linearGradient></defs>';
-    summaryHtml += '</svg>';
-    summaryHtml += '<div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;"><div style="font-size:18px;font-weight:800;color:#1e1b4b;">' + masteryRate + '%</div><div style="font-size:9px;color:#6b7280;">掌握度</div></div>';
-    summaryHtml += '</div>';
-    summaryHtml += '<div style="text-align:left;"><div style="font-size:12px;color:#6b7280;margin-bottom:6px;">学习建议</div><div style="font-size:13px;color:#374151;font-weight:600;">' + getLearningAdvice(masteryRate, hardCount, againCount) + '</div></div>';
+    summaryHtml += '<div style="text-align:center;margin-bottom:12px;font-size:13px;color:#374151;">';
+    summaryHtml += '掌握度: <span style="font-weight:600;color:#6366f1;">' + masteryRate + '%</span>';
     summaryHtml += '</div>';
     
     // 单词列表
-    summaryHtml += '<div style="max-height:300px;overflow-y:auto;">';
+    summaryHtml += '<div style="max-height:280px;overflow-y:auto;">';
     
     sessionWords.forEach(function(wordData, index) {
         var rating = wordRatings[wordData.word] ? wordRatings[wordData.word].rating : 'good';
         var ratingConfig = {
-            easy: { icon: '🎉', bg: 'linear-gradient(135deg,#eff6ff 0%,#dbeafe 100%)', border: '#bfdbfe' },
-            good: { icon: '✓', bg: 'linear-gradient(135deg,#f0fdf4 0%,#dcfce7 100%)', border: '#bbf7d0' },
-            hard: { icon: '💪', bg: 'linear-gradient(135deg,#fff7ed 0%,#ffedd5 100%)', border: '#fed7aa' },
-            again: { icon: '🔄', bg: 'linear-gradient(135deg,#fef2f2 0%,#fee2e2 100%)', border: '#fecaca' },
-            medium: { icon: '•', bg: 'linear-gradient(135deg,#fffbeb 0%,#fef3c7 100%)', border: '#fde68a' }
+            easy: { label: '简', color: '#2563eb' },
+            good: { label: '良', color: '#16a34a' },
+            hard: { label: '难', color: '#ea580c' },
+            again: { label: '重', color: '#dc2626' },
+            medium: { label: '中', color: '#92400e' }
         };
         var config = ratingConfig[rating] || ratingConfig.good;
         
-        summaryHtml += '<div style="background:' + config.bg + ';border-radius:14px;padding:14px;margin-bottom:10px;border:1px solid ' + config.border + ';">';
-        summaryHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">';
-        summaryHtml += '<div style="display:flex;align-items:center;gap:10px;">';
-        summaryHtml += '<span style="background:linear-gradient(135deg,#6366f1,#a855f7);color:white;width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">' + (index + 1) + '</span>';
-        summaryHtml += '<span style="font-size:17px;font-weight:700;color:#1e1b4b;">' + wordData.word + '</span>';
+        summaryHtml += '<div style="background:#f9fafb;border-radius:6px;padding:8px 12px;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;">';
+        summaryHtml += '<div style="display:flex;align-items:center;gap:8px;">';
+        summaryHtml += '<span style="color:#6b7280;font-size:11px;">' + (index + 1) + '</span>';
+        summaryHtml += '<span style="font-size:14px;font-weight:500;color:#1e1b4b;">' + wordData.word + '</span>';
+        summaryHtml += '<span style="font-size:12px;color:#6b7280;">' + (wordData.meaningCn || '').substring(0, 15) + '</span>';
         summaryHtml += '</div>';
-        summaryHtml += '<span style="font-size:18px;">' + config.icon + '</span>';
-        summaryHtml += '</div>';
-        summaryHtml += '<div style="font-size:14px;color:#374151;font-weight:600;">' + (wordData.meaningCn || '') + '</div>';
+        summaryHtml += '<span style="font-size:10px;color:' + config.color + ';">' + config.label + '</span>';
         summaryHtml += '</div>';
     });
     
     summaryHtml += '</div>';
     
-    // 操作按钮
-    summaryHtml += '<div style="display:flex;gap:12px;margin-top:20px;">';
-    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:16px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);color:white;border:none;border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 30px rgba(99,102,241,0.35);display:flex;align-items:center;justify-content:center;gap:8px;"><span>🚀</span>继续学习</button>';
-    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:16px;background:linear-gradient(135deg,#f8fafc 0%,#f1f5f9 100%);color:#6366f1;border:2px solid rgba(99,102,241,0.3);border-radius:14px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;"><span>✅</span>完成</button>';
+    // 操作按钮 - 简化版
+    summaryHtml += '<div style="display:flex;gap:10px;margin-top:16px;">';
+    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:12px;background:#6366f1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">继续学习</button>';
+    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">完成</button>';
     summaryHtml += '</div>';
     summaryHtml += '</div>';
     
@@ -3242,13 +3117,13 @@ function showSessionSummary() {
 // V7: 获取学习建议
 function getLearningAdvice(masteryRate, hardCount, againCount) {
     if (masteryRate >= 90) {
-        return '🌟 太棒了！继续保持！';
+        return '继续保持';
     } else if (masteryRate >= 70) {
-        return '👍 学得不错，再努力一下！';
+        return '学得不错';
     } else if (hardCount > 0 || againCount > 0) {
-        return '💡 建议复习困难单词';
+        return '建议复习困难单词';
     } else {
-        return '📚 多看几遍，加深记忆';
+        return '多看几遍加深记忆';
     }
 }
 
@@ -3300,6 +3175,17 @@ function prevWord() {
 }
 
 // 预加载语音列表
+// V4.8.12: TTS语音模式配置
+var ttsVoiceConfig = {
+    mode: localStorage.getItem('ttsVoiceMode') || 'system-default',
+    voices: {
+        'us-female': { lang: 'en-US', gender: 'female', names: ['Samantha', 'Victoria', 'Joanna', 'Salli'] },
+        'us-male': { lang: 'en-US', gender: 'male', names: ['Alex', 'Matthew', 'Joey'] },
+        'uk-female': { lang: 'en-GB', gender: 'female', names: ['Kate', 'Serena', 'Amy', 'Emma'] },
+        'uk-male': { lang: 'en-GB', gender: 'male', names: ['Daniel', 'Arthur', 'Brian'] }
+    }
+};
+
 var cachedVoices = [];
 var preferredVoice = null;
 
@@ -3405,6 +3291,25 @@ function setVoiceAndSpeak(utterance, voices) {
     speechSynthesis.speak(utterance);
 }
 
+// V4.8.12: 切换TTS语音模式
+function changeTTSVoice(mode) {
+    ttsVoiceConfig.mode = mode;
+    localStorage.setItem('ttsVoiceMode', mode);
+    
+    // 重新选择语音
+    if (mode === 'system-default') {
+        preferredVoice = selectBestUSVoice(cachedVoices);
+    } else {
+        var config = ttsVoiceConfig.voices[mode];
+        if (config) {
+            preferredVoice = selectVoiceByConfig(cachedVoices, config);
+        }
+    }
+    
+    showToast('已切换语音模式');
+    console.log('语音模式:', mode, '使用:', preferredVoice ? preferredVoice.name : '默认');
+}
+
 // V4.8.12: 根据配置选择语音
 function selectVoiceByConfig(voices, config) {
     if (!voices || voices.length === 0) return null;
@@ -3434,88 +3339,12 @@ function selectVoiceByConfig(voices, config) {
     return null;
 }
 
-// V4.8.12: TTS语音模式配置
-var ttsVoiceConfig = {
-    mode: localStorage.getItem('ttsVoiceMode') || 'system-default',
-    voices: {
-        'us-female': { lang: 'en-US', gender: 'female', names: ['Samantha', 'Victoria', 'Joanna', 'Salli'] },
-        'us-male': { lang: 'en-US', gender: 'male', names: ['Alex', 'Matthew', 'Joey'] },
-        'uk-female': { lang: 'en-GB', gender: 'female', names: ['Kate', 'Serena', 'Amy', 'Emma'] },
-        'uk-male': { lang: 'en-GB', gender: 'male', names: ['Daniel', 'Arthur', 'Brian'] }
+// 关闭词汇模块
+function closeModule() {
+    var modal = document.getElementById('vocabularyModal');
+    if (modal) {
+        modal.classList.remove('active');
     }
-};
-
-var cachedVoices = [];
-var preferredVoice = null;
-
-if ('speechSynthesis' in window) {
-    cachedVoices = speechSynthesis.getVoices();
-    speechSynthesis.onvoiceschanged = function() {
-        cachedVoices = speechSynthesis.getVoices();
-        preferredVoice = selectBestUSVoice(cachedVoices);
-        console.log('可用语音:', cachedVoices.map(v => v.name + ' (' + v.lang + ')'));
-        console.log('已选择语音:', preferredVoice ? preferredVoice.name : '默认');
-    };
-}
-
-// 选择最佳美式英语语音
-function selectBestUSVoice(voices) {
-    if (!voices || voices.length === 0) return null;
-    
-    // macOS 上优质美式英语语音（按优先级排序）
-    var preferredNames = [
-        'Samantha',
-        'Alex',
-        'Allison',
-        'Ava',
-        'Susan',
-        'Tom',
-        'Zoe',
-        'Samantha (Enhanced)',
-        'Alex (Enhanced)',
-        'Google US English',
-        'Microsoft Zira',
-        'Microsoft David',
-    ];
-    
-    // 按优先级查找
-    for (var i = 0; i < preferredNames.length; i++) {
-        var voice = voices.find(function(v) {
-            return v.name.includes(preferredNames[i]) && 
-                   (v.lang === 'en-US' || v.lang.startsWith('en-US'));
-        });
-        if (voice) return voice;
-    }
-    
-    // 如果没找到优先语音，查找任何美式英语语音
-    var usVoice = voices.find(function(v) {
-        return v.lang === 'en-US' || v.lang.startsWith('en-US');
-    });
-    if (usVoice) return usVoice;
-    
-    // 最后降级到任何英语语音
-    return voices.find(function(v) {
-        return v.lang.startsWith('en');
-    });
-}
-
-// V4.8.12: 切换TTS语音模式
-function changeTTSVoice(mode) {
-    ttsVoiceConfig.mode = mode;
-    localStorage.setItem('ttsVoiceMode', mode);
-    
-    // 重新选择语音
-    if (mode === 'system-default') {
-        preferredVoice = selectBestUSVoice(cachedVoices);
-    } else {
-        var config = ttsVoiceConfig.voices[mode];
-        if (config) {
-            preferredVoice = selectVoiceByConfig(cachedVoices, config);
-        }
-    }
-    
-    showToast('已切换语音模式');
-    console.log('语音模式:', mode, '使用:', preferredVoice ? preferredVoice.name : '默认');
 }
 
 window.initVocabulary = initVocabulary;
@@ -3532,6 +3361,7 @@ window.restartSession = restartSession;
 window.showSessionSummary = showSessionSummary;
 window.updateLearningProgressIndicator = updateLearningProgressIndicator;
 window.updateLearningBadge = updateLearningBadge;
+window.closeModule = closeModule;
 
 // ==================== V14: 科学助记交互功能 ====================
 
@@ -3548,7 +3378,7 @@ function rateMnemonicEffectiveness(word, wasEffective) {
         (wasEffective ? 'linear-gradient(135deg,#22c55e,#16a34a)' : 'linear-gradient(135deg,#f97316,#ea580c)') + 
         ';color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;' +
         'box-shadow:0 8px 32px rgba(0,0,0,0.2);animation:mnemonicFeedback 0.5s ease-out;';
-    feedbackEl.innerHTML = wasEffective ? '👍 已记录！继续加油' : '🔄 已标记，会加强复习';
+    feedbackEl.innerHTML = wasEffective ? '已记录，继续加油' : '已标记，会加强复习';
     document.body.appendChild(feedbackEl);
     
     setTimeout(function() { feedbackEl.remove(); }, 1500);
@@ -3578,7 +3408,7 @@ function showCustomMnemonicEditor(word) {
     editorHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 50%,#6366f1 100%);padding:20px;border-radius:20px 20px 0 0;">';
     editorHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
     editorHtml += '<div style="display:flex;align-items:center;gap:12px;">';
-    editorHtml += '<span style="font-size:32px;">✨</span>';
+    editorHtml += '<span style="font-size:24px;color:#8b5cf6;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg></span>';
     editorHtml += '<div><div style="color:white;font-size:18px;font-weight:700;">创建我的记忆法</div>';
     editorHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">' + word + '</div></div>';
     editorHtml += '</div>';
@@ -3723,7 +3553,7 @@ function saveCustomMnemonicFromEditor(word) {
     // 显示保存成功提示
     var toast = document.createElement('div');
     toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#22c55e,#16a34a);color:white;padding:16px 28px;border-radius:16px;font-size:18px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.2);';
-    toast.innerHTML = '✅ 保存成功！';
+    toast.innerHTML = '保存成功';
     document.body.appendChild(toast);
     setTimeout(function() { toast.remove(); }, 1500);
 }
@@ -4200,7 +4030,7 @@ function ratePracticeResult(word, quality) {
     
     // 显示结果反馈
     var feedback = document.createElement('div');
-    var feedbackText = quality >= 4 ? '🎉 太棒了！' : quality >= 3 ? '👍 继续加油！' : '💪 多复习几次！';
+    var feedbackText = quality >= 4 ? '太棒了' : quality >= 3 ? '继续加油' : '多复习几次';
     feedback.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:white;padding:20px 32px;border-radius:16px;font-size:20px;font-weight:700;z-index:10000;box-shadow:0 8px 32px rgba(0,0,0,0.3);';
     feedback.innerHTML = feedbackText;
     document.body.appendChild(feedback);
@@ -4226,7 +4056,7 @@ function showMnemonicStats() {
     statsHtml += '<div style="background:linear-gradient(135deg,#8b5cf6 0%,#6366f1 50%,#3b82f6 100%);padding:24px;border-radius:24px 24px 0 0;">';
     statsHtml += '<div style="display:flex;align-items:center;justify-content:space-between;">';
     statsHtml += '<div style="display:flex;align-items:center;gap:14px;">';
-    statsHtml += '<span style="font-size:36px;">📊</span>';
+    statsHtml += '<span style="font-size:28px;color:#8b5cf6;"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>';
     statsHtml += '<div><div style="color:white;font-size:20px;font-weight:700;">记忆效果统计</div>';
     statsHtml += '<div style="color:rgba(255,255,255,0.8);font-size:13px;">科学追踪你的学习进展</div></div>';
     statsHtml += '</div>';
@@ -4263,7 +4093,7 @@ function showMnemonicStats() {
     
     // 各类型效果分析
     statsHtml += '<div style="margin-bottom:20px;">';
-    statsHtml += '<div style="font-size:14px;font-weight:700;color:#1f2937;margin-bottom:12px;">📈 各记忆法效果</div>';
+    statsHtml += '<div style="font-size:13px;font-weight:600;color:#1f2937;margin-bottom:10px;">各记忆法效果</div>';
     
     if (stats.typeStats && Object.keys(stats.typeStats).length > 0) {
         Object.keys(stats.typeStats).forEach(function(type) {
@@ -4396,3 +4226,83 @@ window.closeMnemonicPractice = closeMnemonicPractice;
 window.showMnemonicStats = showMnemonicStats;
 window.closeMnemonicStats = closeMnemonicStats;
 window.startOverduePractice = startOverduePractice;
+
+// ==================== V9: 键盘快捷键支持 ====================
+document.addEventListener('keydown', function(e) {
+    // 只在词汇模块可见时响应
+    var vocabModal = document.getElementById('vocabularyModal');
+    if (!vocabModal || !vocabModal.classList.contains('active')) return;
+    
+    // 忽略输入框中的键盘事件
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    
+    var key = e.key.toLowerCase();
+    var rateButtons = document.getElementById('rateButtons');
+    var isRatingVisible = rateButtons && !rateButtons.classList.contains('hidden');
+    
+    switch(key) {
+        case ' ': // 空格键
+        case 'enter':
+            e.preventDefault();
+            if (isRatingVisible) {
+                // 评分可见时，空格进入下一个（相当于良好）
+                rateWord('good');
+            } else {
+                // 评分不可见时，显示释义
+                showMeaning();
+            }
+            break;
+            
+        case '1':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('again');
+            }
+            break;
+            
+        case '2':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('hard');
+            }
+            break;
+            
+        case '3':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('good');
+            }
+            break;
+            
+        case '4':
+            if (isRatingVisible) {
+                e.preventDefault();
+                rateWord('easy');
+            }
+            break;
+            
+        case 's':
+            e.preventDefault();
+            speakWord();
+            break;
+            
+        case 'escape':
+            closeModule();
+            break;
+            
+        case '?':
+        case 'h':
+            // 切换键盘提示显示
+            var hints = document.getElementById('keyboardHints');
+            if (hints) {
+                hints.classList.toggle('hidden');
+            }
+            break;
+    }
+});
+
+// V8: 导出统计功能
+window.toggleVocabStats = toggleVocabStats;
+window.updateVocabStats = updateVocabStats;
+window.showFullWordList = showFullWordList;
+window.closeWordList = closeWordList;

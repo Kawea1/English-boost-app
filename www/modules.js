@@ -1501,7 +1501,7 @@ var reviewValidator = {
             completionPercentage: progress.progress,
             accuracy: progress.accuracy,
             message: progress.isComplete 
-                ? '✅ 所有单词已复习完成' 
+                ? '所有单词已复习完成' 
                 : '⏳ 还有 ' + unreviewed + ' 个单词未复习'
         };
     },
@@ -1802,7 +1802,7 @@ function showGlobalReviewModeSelector() {
     
     var html = '<div class="review-mode-selector-overlay" onclick="hideGlobalReviewModeSelector()">';
     html += '<div class="review-mode-selector" onclick="event.stopPropagation()">';
-    html += '<h3>🎯 选择复习模式</h3>';
+    html += '<h3>选择复习模式</h3>';
     html += '<p class="review-summary-text">共有 <strong>' + allWords.length + '</strong> 个已学单词</p>';
     
     // 复习模式选项
@@ -1887,7 +1887,7 @@ function selectReviewMode(mode) {
         'all': '全部单词'
     };
     
-    showToast('✅ 开始复习 ' + modeNames[mode] + '，共 ' + sessionInfo.totalWords + ' 个单词');
+    showToast('开始复习 ' + modeNames[mode] + '，共 ' + sessionInfo.totalWords + ' 个单词');
     
     // 启用全局复习模式
     comprehensiveReviewMode = true;
@@ -2174,7 +2174,7 @@ function updateParagraphInfoEnhanced(paragraphData) {
     var infoEl = document.getElementById('sentenceInfo');
     if (!infoEl) return;
     
-    var modeLabel = comprehensiveReviewMode ? '📝 复习段落' : '📖 段落模式';
+    var modeLabel = comprehensiveReviewMode ? '复习段落' : '段落模式';
     var modeColor = comprehensiveReviewMode ? '#6366f1' : '#8b5cf6';
     
     var html = '<span style="background:' + modeColor + '20;color:' + modeColor + ';padding:3px 8px;border-radius:12px;font-size:12px;">' + modeLabel + '</span>';
@@ -2184,7 +2184,7 @@ function updateParagraphInfoEnhanced(paragraphData) {
     }
     
     if (paragraphData.words && paragraphData.words.length > 0) {
-        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + paragraphData.words.length + ' 核心词</span>';
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' + paragraphData.words.length + ' 核心词</span>';
     }
     
     infoEl.innerHTML = html;
@@ -2225,8 +2225,8 @@ function highlightWordsInText(text, words) {
 function updateSentenceInfoReview(word, meaning, chinese) {
     var infoEl = document.getElementById('sentenceInfo');
     if (infoEl) {
-        var html = '<span style="background:#6366f120;color:#6366f1;padding:3px 8px;border-radius:12px;font-size:12px;">📝 复习模式</span>';
-        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">🎯 ' + word + '</span>';
+        var html = '<span style="background:#6366f120;color:#6366f1;padding:3px 8px;border-radius:12px;font-size:12px;">复习模式</span>';
+        html += '<span style="background:#10b98120;color:#10b981;padding:3px 8px;border-radius:12px;font-size:12px;margin-left:6px;">' + word + '</span>';
         if (chinese) {
             html += '<span style="background:#f59e0b20;color:#f59e0b;padding:3px 8px;border-radius:12px;font-size:11px;margin-left:6px;">' + chinese + '</span>';
         }
@@ -2877,8 +2877,8 @@ function initSpeechRecognition() {
     }
 }
 
-// 按住录音 - 开始 v4.0
-async function startHoldRecording(event) {
+// 按住录音 - 开始 v4.1 (修复异步问题)
+function startHoldRecording(event) {
     if (event && event.preventDefault) {
         event.preventDefault();
         event.stopPropagation();
@@ -2902,7 +2902,12 @@ async function startHoldRecording(event) {
     updateRecordingUI(true);
     // showToast('🎤 正在准备录音...'); // v4.9.3: 禁用彩蛋提示
     
-    // 自动申请麦克风权限
+    // 自动申请麦克风权限并启动
+    checkAndRequestMicPermissionThenStart();
+}
+
+// v4.1: 权限检查和启动的独立函数
+async function checkAndRequestMicPermissionThenStart() {
     if (!micPermissionGranted) {
         var granted = await checkAndRequestMicPermission();
         if (!granted) {
@@ -3390,6 +3395,9 @@ function showSpeakingResult(transcript) {
     var count = parseInt(localStorage.getItem('stat_speaking') || '0');
     localStorage.setItem('stat_speaking', (count + 1).toString());
     
+    // 记录今日统计数据
+    recordDailyStats('speaking', 1);
+    
     // 保存最佳成绩
     saveBestScore(currentSpeakingIndex, score);
     
@@ -3505,7 +3513,7 @@ function generateDetailedFeedback(score, details, spoken, target) {
         multiDimScores.fluency >= 80 ? '表达流畅自然' : multiDimScores.fluency >= 60 ? '稍有停顿' : '需要更流畅');
     
     // 3. 完整度
-    html += createEnhancedScoreBar('📝 内容完整', multiDimScores.completeness, '#8b5cf6',
+    html += createEnhancedScoreBar('内容完整', multiDimScores.completeness, '#8b5cf6',
         multiDimScores.completeness >= 80 ? '内容完整' : multiDimScores.completeness >= 60 ? '略有缺漏' : '请说完整');
     
     // 4. 词汇使用
@@ -3948,7 +3956,7 @@ function highlightReviewWordsInPassage() {
         var badge = document.createElement('span');
         badge.className = 'review-mode-badge';
         badge.style.marginLeft = '10px';
-        badge.innerHTML = '📝 复习模式';
+        badge.innerHTML = '复习模式';
         titleEl.appendChild(badge);
     }
 }
@@ -3980,7 +3988,17 @@ function loadRandomUnreadPassage() {
     var passages = window.READING_PASSAGES;
     if (!passages || passages.length === 0) {
         var el = document.getElementById("readingList");
-        if (el) el.innerHTML = "<p style='color:#f44336;padding:20px;text-align:center;'>阅读数据加载中...</p>";
+        if (el) {
+            el.innerHTML = "<p style='color:#6366f1;padding:20px;text-align:center;'>正在加载阅读数据...</p>";
+            // 尝试延迟重新加载
+            setTimeout(function() {
+                if (window.READING_PASSAGES && window.READING_PASSAGES.length > 0) {
+                    loadRandomUnreadPassage();
+                } else {
+                    el.innerHTML = "<p style='color:#ef4444;padding:20px;text-align:center;'>阅读数据加载失败<br><small style='color:#6b7280;'>请刷新页面重试</small></p>";
+                }
+            }, 1000);
+        }
         return;
     }
     
@@ -4194,6 +4212,15 @@ function checkReadingAnswers() {
     if (readingScores.length > 50) readingScores.shift(); // 只保留最近50次
     localStorage.setItem("readingScores", JSON.stringify(readingScores));
     updateReadingStats();
+    
+    // 记录今日阅读统计
+    if (typeof recordDailyStats === 'function') {
+        recordDailyStats('reading', 1);
+    }
+    
+    // 更新本地阅读计数
+    const readingCount = parseInt(localStorage.getItem('stat_reading') || '0');
+    localStorage.setItem('stat_reading', (readingCount + 1).toString());
     
     // 分数评价
     var grade = "";
@@ -4895,7 +4922,7 @@ function showReviewModeSelector() {
                 </div>
                 
                 <div class="mode-card deep" onclick="selectReviewMode('deep')">
-                    <div class="mode-icon">📝</div>
+                    <div class="mode-icon">R</div>
                     <div class="mode-name">深度复习</div>
                     <div class="mode-desc">看释义 → 拼写单词 → 验证正确性</div>
                     <div class="mode-time">预计 ${Math.ceil(wordCount * 0.5)} 分钟</div>
@@ -5151,7 +5178,7 @@ function showDeepReviewInterface() {
                 <div class="review-progress-fill" style="width: ${(current / total) * 100}%"></div>
             </div>
             <div class="review-progress-text">
-                <span>📝 深度复习</span>
+                <span>深度复习</span>
                 <span class="review-progress-count">${current} / ${total}</span>
             </div>
         </div>
@@ -5671,7 +5698,7 @@ function showReviewComplete() {
     // 生成模式标签
     const modeLabels = {
         'quick': '⚡ 快速复习',
-        'deep': '📝 深度复习',
+        'deep': '深度复习',
         'listen': '🎧 听力复习'
     };
     const modeLabel = modeLabels[currentReviewMode] || '复习';
@@ -8242,6 +8269,21 @@ window.initResourcesModule = initResourcesModule;
 window.showResourceTab = showResourceTab;
 window.updateReviewStats = updateReviewStats;
 window.startReview = startReview;
+
+// 打开词汇复习列表（跳转到词汇模块的单词列表）
+function openVocabularyReviewList() {
+    // 先打开词汇模块
+    if (typeof openModule === 'function') {
+        openModule('vocabulary');
+    }
+    // 延迟显示单词列表，等待模块加载
+    setTimeout(function() {
+        if (typeof showFullWordList === 'function') {
+            showFullWordList();
+        }
+    }, 300);
+}
+window.openVocabularyReviewList = openVocabularyReviewList;
 window.loadAppSettings = loadAppSettings;
 window.saveAppSettings = saveAppSettings;
 window.resetAppSettings = resetAppSettings;

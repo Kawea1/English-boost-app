@@ -16,8 +16,8 @@ var currentModule = null;
     }
     
     // ==================== 版本与更新配置 ====================
-    const APP_VERSION = '3.9.0';
-    const APP_VERSION_CODE = 390;
+    const APP_VERSION = '4.9.2';
+    const APP_VERSION_CODE = 492;
     const APP_BUILD_TIME = '20251202';
     const VERSION_KEY = 'app_version';
     const UPDATE_CHECK_KEY = 'last_update_check';
@@ -1018,6 +1018,25 @@ function openModule(moduleName) {
                     var bottomNav = document.getElementById('bottomNav');
                     if (bottomNav) bottomNav.classList.add('hidden');
                     
+
+// v4.9.1: 首页卡片展开/收起功能
+function toggleHomeCard(btn) {
+    var card = btn.closest('.core-card-v11');
+    var expandedContent = card.querySelector('.card-expanded-content');
+    var isExpanded = !expandedContent.classList.contains('hidden');
+    
+    if (isExpanded) {
+        // 收起
+        expandedContent.classList.add('hidden');
+        btn.innerHTML = '⋮';
+        btn.style.transform = 'translateY(-50%) rotate(0deg)';
+    } else {
+        // 展开
+        expandedContent.classList.remove('hidden');
+        btn.innerHTML = '×';
+        btn.style.transform = 'translateY(-50%) rotate(180deg)';
+    }
+}
                     // V4: 显示写作模块
                     writingModule.classList.remove('hidden');
                     
@@ -1110,17 +1129,6 @@ function showStats() {
     var reading = parseInt(localStorage.getItem('stat_reading') || '0');
     var words = parseInt(localStorage.getItem('learnedCount') || '0');
     
-    // 更新分项统计
-    const listenEl = document.getElementById('stat_listen');
-    const speakingEl = document.getElementById('stat_speaking');
-    const readingEl = document.getElementById('stat_reading');
-    const wordsEl = document.getElementById('stat_words');
-    
-    if (listenEl) listenEl.textContent = listens;
-    if (speakingEl) speakingEl.textContent = speaking;
-    if (readingEl) readingEl.textContent = reading;
-    if (wordsEl) wordsEl.textContent = words;
-    
     // 总览统计
     var totalDays = parseInt(localStorage.getItem('total_learning_days') || '0');
     // learningStreak 可能是 JSON 对象，需要正确解析
@@ -1142,12 +1150,161 @@ function showStats() {
     if (streakDaysEl) streakDaysEl.textContent = streakDays;
     if (totalMinsEl) totalMinsEl.textContent = totalMins;
     
-    // 复习统计
-    var mastered = parseInt(localStorage.getItem('masteredCount') || '0');
-    var reviewing = words - mastered;
-    var pending = parseInt(localStorage.getItem('pendingReview') || '0');
+    // 绘制学习趋势折线图
+    drawLearningChart();
     
-    const masteredEl = document.getElementById('stat_mastered');
+    modal.classList.add('active');
+    
+    // 隐藏底部导航栏
+    var bottomNav = document.getElementById('bottomNav');
+    if (bottomNav) bottomNav.classList.add('hidden');
+}
+
+// 绘制学习趋势折线图
+function drawLearningChart() {
+    const canvas = document.getElementById('learningChart');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width;
+    const height = canvas.height;
+    
+    // 清空画布
+    ctx.clearRect(0, 0, width, height);
+    
+    // 获取历史数据（最近7天）
+    const historyData = getLearningHistory(7);
+    
+    // 配置
+    const padding = { top: 30, right: 20, bottom: 40, left: 45 };
+    const chartWidth = width - padding.left - padding.right;
+    const chartHeight = height - padding.top - padding.bottom;
+    
+    // 找出最大值用于Y轴缩放
+    const maxValue = Math.max(
+        ...historyData.map(d => Math.max(d.words, d.listening, d.speaking, d.reading)),
+        10
+    );
+    const yScale = chartHeight / maxValue;
+    const xStep = chartWidth / (historyData.length - 1);
+    
+    // 绘制网格线
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border-color') || '#e5e7eb';
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= 5; i++) {
+        const y = padding.top + (chartHeight / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(padding.left, y);
+        ctx.lineTo(width - padding.right, y);
+        ctx.stroke();
+    }
+    
+    // 绘制Y轴标签 - 增强锐利度
+    ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--text-secondary') || '#6b7280';
+    ctx.font = '600 12px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'right';
+    for (let i = 0; i <= 5; i++) {
+        const value = Math.round((maxValue / 5) * (5 - i));
+        const y = padding.top + (chartHeight / 5) * i;
+        ctx.fillText(value.toString(), padding.left - 8, y + 4);
+    }
+    
+    // 绘制X轴标签（日期）- 增强锐利度
+    ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+    ctx.textAlign = 'center';
+    historyData.forEach((data, index) => {
+        const x = padding.left + xStep * index;
+        ctx.fillText(data.label, x, height - 10);
+    });
+    
+    // 绘制折线
+    const datasets = [
+        { key: 'words', color: '#6366f1', label: '单词' },
+        { key: 'listening', color: '#3b82f6', label: '听力' },
+        { key: 'speaking', color: '#ec4899', label: '口语' },
+        { key: 'reading', color: '#10b981', label: '阅读' }
+    ];
+    
+    datasets.forEach(dataset => {
+        ctx.strokeStyle = dataset.color;
+        ctx.fillStyle = dataset.color;
+        ctx.lineWidth = 2.5;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        
+        // 绘制线条
+        ctx.beginPath();
+        historyData.forEach((data, index) => {
+            const x = padding.left + xStep * index;
+            const y = padding.top + chartHeight - (data[dataset.key] * yScale);
+            
+            if (index === 0) {
+                ctx.moveTo(x, y);
+            } else {
+                ctx.lineTo(x, y);
+            }
+        });
+        ctx.stroke();
+        
+        // 绘制数据点
+        historyData.forEach((data, index) => {
+            const x = padding.left + xStep * index;
+            const y = padding.top + chartHeight - (data[dataset.key] * yScale);
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // 白色边框
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.strokeStyle = dataset.color;
+        });
+    });
+}
+
+// 获取学习历史数据
+function getLearningHistory(days) {
+    const history = [];
+    const today = new Date();
+    
+    for (let i = days - 1; i >= 0; i--) {
+        const date = new Date(today);
+        date.setDate(date.getDate() - i);
+        const dateKey = date.toISOString().split('T')[0];
+        
+        // 从localStorage获取每日数据
+        const dailyStats = JSON.parse(localStorage.getItem(`daily_stats_${dateKey}`) || '{}');
+        
+        history.push({
+            date: dateKey,
+            label: i === 0 ? '今天' : (i === 1 ? '昨天' : `${date.getMonth() + 1}/${date.getDate()}`),
+            words: dailyStats.words || 0,
+            listening: dailyStats.listening || 0,
+            speaking: dailyStats.speaking || 0,
+            reading: dailyStats.reading || 0
+        });
+    }
+    
+    return history;
+}
+
+// 记录每日统计数据
+function recordDailyStats(type, increment = 1) {
+    const today = new Date().toISOString().split('T')[0];
+    const key = `daily_stats_${today}`;
+    const dailyStats = JSON.parse(localStorage.getItem(key) || '{}');
+    
+    if (!dailyStats[type]) {
+        dailyStats[type] = 0;
+    }
+    dailyStats[type] += increment;
+    
+    localStorage.setItem(key, JSON.stringify(dailyStats));
+}
+
+function showSettings() {
     const reviewingEl = document.getElementById('stat_reviewing');
     const pendingEl = document.getElementById('stat_pending');
     const progressFill = document.getElementById('reviewProgressFill');
@@ -1505,14 +1662,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // V15: 确保登录状态一致
-    if (finalLoginStatus) {
-        localStorage.setItem('isLoggedIn', 'true');
-    }
+    // V16: 移除付费系统 - 直接进入应用
+    finalLoginStatus = true;
+    skipLoginPage = true;
+    localStorage.setItem('isLoggedIn', 'true');
     
-    console.log('📊 最终登录状态:', finalLoginStatus, skipLoginPage ? '(跳过登录页)' : '');
+    console.log('📊 免费版本，直接进入应用');
     
-    if (finalLoginStatus) {
+    if (true) {
         const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
         const savedDeviceId = localStorage.getItem('deviceId');
         
@@ -1537,6 +1694,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 初始化今日目标
         initDailyGoals();
+        
+        // 更新首页词汇进度
+        updateVocabProgress();
         
         // 初始化导航滚动行为
         initNavScrollBehavior();
@@ -1586,13 +1746,134 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(function(err) {
+        navigator.serviceWorker.register('/sw.js').then(function(registration) {
+            console.log('Service Worker注册成功');
+            
+            // ========== 后台自动检查更新 ==========
+            // 延迟2秒后静默检查更新，不打扰用户
+            setTimeout(() => {
+                silentUpdateCheck(registration);
+            }, 2000);
+            
+        }).catch(function(err) {
             console.log('Service Worker注册失败:', err);
         });
     }
     
     console.log('App initialized successfully');
 });
+
+// ========== 静默更新检查系统 ==========
+// 进入应用后自动后台检查更新，发现新版本时提示用户
+function silentUpdateCheck(registration) {
+    console.log('🔄 后台检查更新...');
+    
+    registration.update().then(() => {
+        // 监听新的 Service Worker 安装
+        registration.addEventListener('updatefound', () => {
+            const newWorker = registration.installing;
+            console.log('📦 发现新版本，正在下载...');
+            
+            newWorker.addEventListener('statechange', () => {
+                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    // 新版本已下载完成，提示用户更新
+                    showUpdateNotification();
+                }
+            });
+        });
+        
+        // 如果已经有等待中的 worker，直接提示
+        if (registration.waiting) {
+            showUpdateNotification();
+        }
+    }).catch(err => {
+        console.log('更新检查失败:', err);
+    });
+}
+
+// 显示更新提示通知
+function showUpdateNotification() {
+    // 避免重复显示
+    if (document.getElementById('updateNotification')) return;
+    
+    const notification = document.createElement('div');
+    notification.id = 'updateNotification';
+    notification.className = 'update-notification';
+    notification.innerHTML = `
+        <div class="update-notification-content">
+            <div class="update-icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                    <polyline points="7 10 12 15 17 10"/>
+                    <line x1="12" y1="15" x2="12" y2="3"/>
+                </svg>
+            </div>
+            <div class="update-text">
+                <strong>发现新版本</strong>
+                <span>点击立即更新，获得最新功能</span>
+            </div>
+            <button class="update-btn" onclick="applyUpdate()">立即更新</button>
+            <button class="update-close" onclick="dismissUpdate()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
+        </div>
+    `;
+    
+    document.body.appendChild(notification);
+    
+    // 添加入场动画
+    setTimeout(() => notification.classList.add('show'), 100);
+}
+
+// 应用更新
+function applyUpdate() {
+    const notification = document.getElementById('updateNotification');
+    if (notification) {
+        notification.innerHTML = `
+            <div class="update-notification-content updating">
+                <div class="update-spinner"></div>
+                <span>正在更新...</span>
+            </div>
+        `;
+    }
+    
+    // 通知 Service Worker 跳过等待并激活
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+        navigator.serviceWorker.ready.then(registration => {
+            if (registration.waiting) {
+                registration.waiting.postMessage({ type: 'SKIP_WAITING' });
+            }
+        });
+    }
+    
+    // 监听控制器变化，然后刷新页面
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        window.location.reload();
+    });
+    
+    // 备用：2秒后强制刷新
+    setTimeout(() => {
+        window.location.reload(true);
+    }, 2000);
+}
+
+// 关闭更新提示
+function dismissUpdate() {
+    const notification = document.getElementById('updateNotification');
+    if (notification) {
+        notification.classList.remove('show');
+        setTimeout(() => notification.remove(), 300);
+    }
+}
+
+// 导出更新相关函数
+window.silentUpdateCheck = silentUpdateCheck;
+window.showUpdateNotification = showUpdateNotification;
+window.applyUpdate = applyUpdate;
+window.dismissUpdate = dismissUpdate;
 
 // 导出新函数到全局
 window.confirmResetStats = confirmResetStats;
@@ -1886,6 +2167,36 @@ function updateDailyProgress(module, increment) {
 // ==================== 智能问候系统 V10 ====================
 // V1: 修正时间段划分逻辑（凌晨不再说早上好）
 // V2: 丰富问候语多样性（每个时段5-8种）
+// ==================== 首页词汇进度更新 ====================
+// 更新首页词汇进度条和统计
+function updateVocabProgress() {
+    const learnedCount = parseInt(localStorage.getItem('learnedCount') || '0');
+    const totalWords = 10000; // 总词库数量
+    const percentage = Math.min(Math.round((learnedCount / totalWords) * 100), 100);
+    
+    // 更新进度条
+    const progressBar = document.getElementById('vocabProgressBar');
+    if (progressBar) {
+        // 使用setTimeout确保动画效果
+        setTimeout(() => {
+            progressBar.style.width = percentage + '%';
+        }, 100);
+    }
+    
+    // 更新已学数量
+    const learnedEl = document.getElementById('vocabLearned2');
+    if (learnedEl) {
+        learnedEl.textContent = learnedCount.toLocaleString();
+    }
+    
+    // 更新总数显示
+    const totalEl = document.getElementById('vocabTotal');
+    if (totalEl) {
+        totalEl.textContent = totalWords.toLocaleString() + '+';
+    }
+}
+
+// ==================== 时段问候系统 ====================
 // V3: 太阳/月亮根据实时位置移动
 // V4: 添加天气氛围效果
 // V5: 个性化问候语（基于学习状态）
@@ -2203,8 +2514,11 @@ function updateTimeScene(timePeriod) {
         header.setAttribute('data-time-period', timePeriod);
     }
     
+    // V4.8.13: 只在用户选择"动态场景"时才自动更新图标
+    var avatarType = localStorage.getItem('avatarType') || 'scene';
+    
     // 设置场景图标
-    if (sceneIcon) {
+    if (sceneIcon && avatarType === 'scene') {
         sceneIcon.innerHTML = getSceneIcon(timePeriod);
     }
     
@@ -2952,7 +3266,7 @@ var HeaderInteraction = (function() {
     }
     
     // V7: 摇一摇彩蛋 - v4.9.3: 已禁用
-    /*
+    /* 
     function initShakeEasterEgg() {
         if (typeof DeviceMotionEvent === 'undefined') return;
         
@@ -3763,3 +4077,637 @@ document.addEventListener('DOMContentLoaded', function() {
 // 暴露全局
 window.NetworkStability = NetworkStability;
 
+// V12: 打开订阅页面
+function openSubscriptionPage() {
+    if (typeof showPaymentModal === 'function') {
+        showPaymentModal();
+    } else {
+        console.error('showPaymentModal 函数不存在');
+        alert('订阅功能正在准备中');
+    }
+}
+
+window.openSubscriptionPage = openSubscriptionPage;
+
+// ==================== V4.9.3: 设置即时应用功能 ====================
+// 主题即时切换
+function applyThemeInstantly(theme) {
+    console.log('Applying theme instantly:', theme);
+    
+    // 调用现有的主题应用函数
+    if (typeof applyTheme === 'function') {
+        applyTheme(theme);
+    } else {
+        // 备用方案：直接修改body class
+        document.body.classList.remove(
+            'theme-default', 'theme-light', 'theme-dark',
+            'theme-ocean', 'theme-forest', 'theme-sunset',
+            'theme-rose', 'theme-mint', 'theme-coffee', 'theme-lavender'
+        );
+        document.body.classList.add('theme-' + (theme || 'default'));
+    }
+    
+    // 保存到localStorage
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.theme = theme;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 显示提示
+    showToast('主题已切换');
+}
+
+// 液态玻璃即时切换
+function toggleLiquidGlassInstantly(enabled) {
+    console.log('Toggling liquid glass instantly:', enabled);
+    
+    // 应用效果
+    if (enabled) {
+        document.body.classList.add('liquid-glass-mode');
+    } else {
+        document.body.classList.remove('liquid-glass-mode');
+    }
+    
+    // 保存到localStorage
+    var settings = JSON.parse(localStorage.getItem('appSettings') || '{}');
+    settings.liquidGlassMode = enabled;
+    localStorage.setItem('appSettings', JSON.stringify(settings));
+    
+    // 显示提示
+    showToast(enabled ? '液态玻璃效果已开启' : '液态玻璃效果已关闭');
+}
+
+// ==================== V4.9.3: 帮助与支持功能 ====================
+// 智能客服
+function showAISupport() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>智能客服</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="text-align: center; padding: 40px 20px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🤖</div>
+                <h4 style="margin-bottom: 15px;">AI智能助手</h4>
+                <p style="color: #666; line-height: 1.8; margin-bottom: 25px;">
+                    遇到问题？我们的AI智能客服随时为您服务！<br>
+                    <strong>微信联系：kawealeo</strong><br>
+                    <span style="font-size: 14px;">工作时间：周一至周五 9:00-18:00</span>
+                </p>
+                <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+                    <button class="btn-primary" onclick="window.open('weixin://'); this.closest('.custom-modal').remove();" 
+                            style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                        打开微信
+                    </button>
+                    <button class="btn-secondary" onclick="navigator.clipboard.writeText('kawealeo').then(() => alert('微信号已复制！')); this.closest('.custom-modal').remove();"
+                            style="padding: 12px 30px; background: white; border: 2px solid #667eea; 
+                            color: #667eea; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            transition: all 0.3s;">
+                        复制微信号
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 使用指南
+function showHelp() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>使用指南</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">📚 词汇学习</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        包含GRE/TOEFL/Academic核心词汇，支持发音、例句、中文释义。
+                        点击单词卡片即可查看详情，长按收藏。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">🗣️ 口语训练</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        跟读练习、角色扮演、情景对话。使用麦克风录音，
+                        AI会为您的发音打分并提供改进建议。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">👂 听力训练</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        精选真题音频材料，支持变速播放、字幕显示。
+                        练习听写、填空、选择题多种题型。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">📖 阅读理解</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        学术文章、新闻报道、长难句分析。
+                        生词自动标注，点击查看释义，全面提升阅读能力。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">🔄 复习模块</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        智能复习系统根据艾宾浩斯遗忘曲线提醒您复习。
+                        查看学习统计，巩固薄弱环节。
+                    </p>
+                </div>
+                <div class="help-section">
+                    <h4 style="color: #667eea; margin-bottom: 12px;">⚙️ 设置技巧</h4>
+                    <p style="line-height: 1.8; color: #555; margin-bottom: 20px;">
+                        • 主题切换：6种精美主题随心选择<br>
+                        • 液态玻璃：开启iOS风格毛玻璃效果<br>
+                        • 语音模式：切换美式/英式男女声<br>
+                        • 所有设置即时生效，无需刷新页面
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 退款政策
+function showRefundPolicy() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>退款政策</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px; line-height: 1.8;">
+                <div style="background: linear-gradient(135deg, #667eea20 0%, #764ba220 100%); 
+                            padding: 20px; border-radius: 12px; margin-bottom: 20px;">
+                    <h4 style="color: #667eea; margin-bottom: 10px;">📋 退款说明</h4>
+                    <p style="color: #555; font-size: 15px;">
+                        我们重视每位用户的体验，如果您对产品不满意，
+                        可以在购买后<strong>7天内</strong>申请全额退款。
+                    </p>
+                </div>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">✅ 符合退款条件</h4>
+                <ul style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>购买后7天内提出申请</li>
+                    <li>产品存在重大功能缺陷</li>
+                    <li>与描述严重不符</li>
+                    <li>无法正常使用且客服无法解决</li>
+                </ul>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">❌ 不予退款情况</h4>
+                <ul style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>超过7天退款期限</li>
+                    <li>已大量使用产品功能（学习记录>100次）</li>
+                    <li>因个人原因不再需要</li>
+                    <li>恶意退款行为</li>
+                </ul>
+                
+                <h4 style="color: #333; margin: 20px 0 10px;">📞 退款流程</h4>
+                <ol style="color: #555; padding-left: 20px; margin-bottom: 20px;">
+                    <li>添加客服微信：<strong>kawealeo</strong></li>
+                    <li>说明退款原因并提供订单号</li>
+                    <li>客服审核通过后3-5个工作日原路退回</li>
+                </ol>
+                
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid #667eea; margin-top: 20px;">
+                    <p style="color: #555; margin: 0; font-size: 14px;">
+                        💡 <strong>温馨提示：</strong>退款前请先联系客服，
+                        我们会尽力解决您遇到的问题，避免不必要的退款。
+                    </p>
+                </div>
+                
+                <div style="text-align: center; margin-top: 25px;">
+                    <button onclick="showAISupport(); this.closest('.custom-modal').remove();"
+                            style="padding: 12px 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 15px; cursor: pointer; 
+                            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;">
+                        联系客服
+                    </button>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 反馈建议
+function showFeedback() {
+    var modal = document.createElement('div');
+    modal.className = 'custom-modal';
+    modal.innerHTML = `
+        <div class="modal-backdrop" onclick="this.parentElement.remove()"></div>
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3>反馈建议</h3>
+                <button class="modal-close" onclick="this.closest('.custom-modal').remove()">×</button>
+            </div>
+            <div class="modal-body" style="padding: 20px;">
+                <div style="text-align: center; margin-bottom: 25px;">
+                    <div style="font-size: 48px; margin-bottom: 15px;">💬</div>
+                    <h4 style="margin-bottom: 10px;">我们重视您的每一条建议</h4>
+                    <p style="color: #666; font-size: 14px;">
+                        您的反馈将帮助我们不断改进产品
+                    </p>
+                </div>
+                
+                <form id="feedbackForm" style="display: flex; flex-direction: column; gap: 15px;">
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            反馈类型
+                        </label>
+                        <select id="feedbackType" style="width: 100%; padding: 10px; border: 2px solid #e1e4e8; 
+                                border-radius: 8px; font-size: 14px; outline: none; transition: border 0.3s;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';">
+                            <option value="bug">🐛 Bug反馈</option>
+                            <option value="feature">✨ 功能建议</option>
+                            <option value="improvement">🚀 体验改进</option>
+                            <option value="other">💡 其他建议</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            详细描述
+                        </label>
+                        <textarea id="feedbackContent" rows="5" placeholder="请详细描述您的问题或建议..."
+                                style="width: 100%; padding: 12px; border: 2px solid #e1e4e8; border-radius: 8px; 
+                                font-size: 14px; resize: vertical; outline: none; transition: border 0.3s; font-family: inherit;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';"></textarea>
+                    </div>
+                    
+                    <div>
+                        <label style="display: block; margin-bottom: 8px; color: #333; font-weight: 500;">
+                            联系方式（选填）
+                        </label>
+                        <input type="text" id="feedbackContact" placeholder="微信号/邮箱，方便我们跟进"
+                                style="width: 100%; padding: 10px; border: 2px solid #e1e4e8; border-radius: 8px; 
+                                font-size: 14px; outline: none; transition: border 0.3s;"
+                                onfocus="this.style.borderColor='#667eea';" onblur="this.style.borderColor='#e1e4e8';">
+                    </div>
+                    
+                    <button type="button" onclick="submitFeedback()" 
+                            style="padding: 14px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+                            border: none; color: white; border-radius: 12px; font-size: 16px; font-weight: 600; 
+                            cursor: pointer; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); transition: all 0.3s;
+                            margin-top: 10px;">
+                        提交反馈
+                    </button>
+                </form>
+                
+                <div style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                    <p style="margin: 0; color: #666; font-size: 13px; line-height: 1.6;">
+                        💡 <strong>快速联系：</strong>如需即时沟通，可添加客服微信 <strong>kawealeo</strong>
+                    </p>
+                </div>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    setTimeout(() => modal.classList.add('active'), 10);
+}
+
+// 提交反馈
+function submitFeedback() {
+    var type = document.getElementById('feedbackType').value;
+    var content = document.getElementById('feedbackContent').value.trim();
+    var contact = document.getElementById('feedbackContact').value.trim();
+    
+    if (!content) {
+        alert('请填写反馈内容');
+        return;
+    }
+    
+    // 构建反馈数据
+    var feedbackData = {
+        type: type,
+        content: content,
+        contact: contact,
+        timestamp: new Date().toISOString(),
+        version: '4.9.3',
+        userAgent: navigator.userAgent
+    };
+    
+    // 保存到本地
+    var feedbacks = JSON.parse(localStorage.getItem('userFeedbacks') || '[]');
+    feedbacks.push(feedbackData);
+    localStorage.setItem('userFeedbacks', JSON.stringify(feedbacks));
+    
+    // 关闭弹窗并显示成功提示
+    document.querySelector('.custom-modal').remove();
+    showToast('感谢您的反馈！我们会认真阅读每一条建议');
+    
+    
+    // 这里可以添加实际的提交逻辑（发送到服务器）
+    console.log('Feedback submitted:', feedbackData);
+}
+
+// v4.9.3: 单词收藏功能
+function toggleWordBookmark() {
+    const wordMain = document.getElementById('wordMain');
+    if (!wordMain) return;
+    
+    const currentWord = wordMain.textContent.trim();
+    if (!currentWord) return;
+    
+    // 获取收藏列表
+    let bookmarks = JSON.parse(localStorage.getItem('wordBookmarks') || '[]');
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    
+    // 切换收藏状态
+    const index = bookmarks.indexOf(currentWord);
+    if (index > -1) {
+        // 取消收藏
+        bookmarks.splice(index, 1);
+        bookmarkBtn.classList.remove('active');
+        bookmarkBtn.style.color = '';
+        showToast('已取消收藏', 'info');
+    } else {
+        // 添加收藏
+        bookmarks.push(currentWord);
+        bookmarkBtn.classList.add('active');
+        bookmarkBtn.style.color = '#f59e0b';
+        showToast('已添加到收藏', 'success');
+    }
+    
+    // 保存
+    localStorage.setItem('wordBookmarks', JSON.stringify(bookmarks));
+}
+
+// v4.9.3: 音量控制功能
+let currentVolume = 1.0;
+function toggleVolume() {
+    const volumeBtn = document.getElementById('volumeBtn');
+    if (!volumeBtn) return;
+    
+    // 循环切换音量: 100% -> 50% -> 静音 -> 100%
+    if (currentVolume === 1.0) {
+        currentVolume = 0.5;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        volumeBtn.style.opacity = '0.7';
+        showToast('音量: 50%', 'info');
+    } else if (currentVolume === 0.5) {
+        currentVolume = 0;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/></svg>';
+        volumeBtn.style.opacity = '0.4';
+        showToast('已静音', 'warning');
+    } else {
+        currentVolume = 1.0;
+        volumeBtn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+        volumeBtn.style.opacity = '1';
+        showToast('音量: 100%', 'success');
+    }
+    
+    // 保存设置
+    localStorage.setItem('ttsVolume', currentVolume.toString());
+}
+
+// v4.9.3: 学习计时器功能
+let studyTimerInterval = null;
+let studyStartTime = null;
+function toggleStudyTimer() {
+    const timerBtn = document.getElementById('timerBtn');
+    if (!timerBtn) return;
+    
+    if (studyTimerInterval) {
+        // 停止计时
+        clearInterval(studyTimerInterval);
+        studyTimerInterval = null;
+        studyStartTime = null;
+        timerBtn.classList.remove('active');
+        timerBtn.style.color = '';
+        
+        // 移除计时显示
+        const timerDisplay = document.getElementById('studyTimerDisplay');
+        if (timerDisplay) timerDisplay.remove();
+        
+        showToast('计时已停止', 'info');
+    } else {
+        // 开始计时
+        studyStartTime = Date.now();
+        timerBtn.classList.add('active');
+        timerBtn.style.color = '#10b981';
+        
+        // 创建计时显示
+        let timerDisplay = document.getElementById('studyTimerDisplay');
+        if (!timerDisplay) {
+            timerDisplay = document.createElement('div');
+            timerDisplay.id = 'studyTimerDisplay';
+            timerDisplay.style.cssText = 'position:fixed;top:80px;right:20px;background:rgba(16,185,129,0.9);color:white;padding:8px 16px;border-radius:20px;font-size:14px;font-weight:600;z-index:1000;box-shadow:0 4px 12px rgba(0,0,0,0.15);';
+            document.body.appendChild(timerDisplay);
+        }
+        
+        // 更新计时
+        studyTimerInterval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - studyStartTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            timerDisplay.textContent = `⏱ ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
+        
+        showToast('开始计时', 'success');
+    }
+}
+
+// 暴露到全局
+window.applyThemeInstantly = applyThemeInstantly;
+window.toggleLiquidGlassInstantly = toggleLiquidGlassInstantly;
+window.showAISupport = showAISupport;
+window.showHelp = showHelp;
+window.showRefundPolicy = showRefundPolicy;
+window.showFeedback = showFeedback;
+window.submitFeedback = submitFeedback;
+window.toggleWordBookmark = toggleWordBookmark;
+window.toggleVolume = toggleVolume;
+window.toggleStudyTimer = toggleStudyTimer;
+
+// ==================== PWA 安装功能 ====================
+(function() {
+    'use strict';
+
+    let deferredPrompt = null;
+    let isInstalled = false;
+
+    // 检测是否已安装为 PWA
+    function checkIfInstalled() {
+        // 检测 standalone 模式
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            return true;
+        }
+        // iOS Safari standalone
+        if (window.navigator.standalone === true) {
+            return true;
+        }
+        return false;
+    }
+
+    isInstalled = checkIfInstalled();
+
+    // 监听安装提示事件
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        updateInstallButton();
+        console.log('PWA 安装提示已就绪');
+    });
+
+    // 监听安装完成事件
+    window.addEventListener('appinstalled', () => {
+        isInstalled = true;
+        deferredPrompt = null;
+        updateInstallButton();
+        showToast('应用已安装到本地', 'success');
+        console.log('PWA 已安装');
+    });
+
+    // 更新安装按钮状态
+    function updateInstallButton() {
+        const installBtn = document.getElementById('pwaInstallBtn');
+        const installStatus = document.getElementById('pwaInstallStatus');
+
+        if (installBtn) {
+            if (isInstalled) {
+                installBtn.innerHTML = '<span style="color:#10b981;">✓ 已安装</span>';
+                installBtn.disabled = true;
+                installBtn.style.opacity = '0.6';
+            } else if (deferredPrompt) {
+                installBtn.innerHTML = '立即安装';
+                installBtn.disabled = false;
+                installBtn.style.opacity = '1';
+            } else {
+                // 检测平台给出提示
+                const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+                if (isIOS) {
+                    installBtn.innerHTML = '查看安装教程';
+                    installBtn.disabled = false;
+                } else {
+                    installBtn.innerHTML = '浏览器不支持';
+                    installBtn.disabled = true;
+                    installBtn.style.opacity = '0.6';
+                }
+            }
+        }
+
+        if (installStatus) {
+            if (isInstalled) {
+                installStatus.textContent = '已安装到本地';
+                installStatus.style.color = '#10b981';
+            } else {
+                installStatus.textContent = '点击安装到桌面，离线可用';
+                installStatus.style.color = '';
+            }
+        }
+    }
+
+    // 触发安装
+    async function installPWA() {
+        const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+
+        if (isInstalled) {
+            showToast('应用已安装', 'info');
+            return;
+        }
+
+        if (deferredPrompt) {
+            // Chrome/Edge/Android 等支持的浏览器
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+
+            if (outcome === 'accepted') {
+                console.log('用户接受安装');
+            } else {
+                console.log('用户取消安装');
+            }
+            deferredPrompt = null;
+        } else if (isIOS) {
+            // iOS 显示安装教程
+            showIOSInstallGuide();
+        } else {
+            showToast('当前浏览器不支持安装，请使用 Chrome 或 Safari', 'warning');
+        }
+    }
+
+    // iOS 安装教程弹窗
+    function showIOSInstallGuide() {
+        const overlay = document.createElement('div');
+        overlay.className = 'pwa-install-overlay';
+        overlay.innerHTML = `
+            <div class="pwa-install-modal">
+                <div class="pwa-install-header">
+                    <h3>📲 安装到主屏幕</h3>
+                    <button class="pwa-install-close" onclick="this.closest('.pwa-install-overlay').remove()">✕</button>
+                </div>
+                <div class="pwa-install-body">
+                    <div class="pwa-install-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p>点击 Safari 底部的 <strong>分享按钮</strong></p>
+                            <div class="step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                    <polyline points="16 6 12 2 8 6"/>
+                                    <line x1="12" y1="2" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pwa-install-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <p>向下滑动，点击 <strong>"添加到主屏幕"</strong></p>
+                            <div class="step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="12" y1="8" x2="12" y2="16"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pwa-install-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <p>点击右上角 <strong>"添加"</strong> 完成安装</p>
+                        </div>
+                    </div>
+                    <div class="pwa-install-benefits">
+                        <p>✓ 全屏体验，无浏览器地址栏</p>
+                        <p>✓ 离线可用，随时学习</p>
+                        <p>✓ 快速启动，如原生应用</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+    }
+
+    // 暴露到全局
+    window.installPWA = installPWA;
+    window.updateInstallButton = updateInstallButton;
+
+    // 页面加载后更新按钮状态
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(updateInstallButton, 500);
+    });
+})();

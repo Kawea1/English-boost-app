@@ -4535,3 +4535,179 @@ window.submitFeedback = submitFeedback;
 window.toggleWordBookmark = toggleWordBookmark;
 window.toggleVolume = toggleVolume;
 window.toggleStudyTimer = toggleStudyTimer;
+
+// ==================== PWA 安装功能 ====================
+(function() {
+    'use strict';
+
+    let deferredPrompt = null;
+    let isInstalled = false;
+
+    // 检测是否已安装为 PWA
+    function checkIfInstalled() {
+        // 检测 standalone 模式
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            return true;
+        }
+        // iOS Safari standalone
+        if (window.navigator.standalone === true) {
+            return true;
+        }
+        return false;
+    }
+
+    isInstalled = checkIfInstalled();
+
+    // 监听安装提示事件
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        updateInstallButton();
+        console.log('PWA 安装提示已就绪');
+    });
+
+    // 监听安装完成事件
+    window.addEventListener('appinstalled', () => {
+        isInstalled = true;
+        deferredPrompt = null;
+        updateInstallButton();
+        showToast('应用已安装到本地', 'success');
+        console.log('PWA 已安装');
+    });
+
+    // 更新安装按钮状态
+    function updateInstallButton() {
+        const installBtn = document.getElementById('pwaInstallBtn');
+        const installStatus = document.getElementById('pwaInstallStatus');
+
+        if (installBtn) {
+            if (isInstalled) {
+                installBtn.innerHTML = '<span style="color:#10b981;">✓ 已安装</span>';
+                installBtn.disabled = true;
+                installBtn.style.opacity = '0.6';
+            } else if (deferredPrompt) {
+                installBtn.innerHTML = '立即安装';
+                installBtn.disabled = false;
+                installBtn.style.opacity = '1';
+            } else {
+                // 检测平台给出提示
+                const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+                if (isIOS) {
+                    installBtn.innerHTML = '查看安装教程';
+                    installBtn.disabled = false;
+                } else {
+                    installBtn.innerHTML = '浏览器不支持';
+                    installBtn.disabled = true;
+                    installBtn.style.opacity = '0.6';
+                }
+            }
+        }
+
+        if (installStatus) {
+            if (isInstalled) {
+                installStatus.textContent = '已安装到本地';
+                installStatus.style.color = '#10b981';
+            } else {
+                installStatus.textContent = '点击安装到桌面，离线可用';
+                installStatus.style.color = '';
+            }
+        }
+    }
+
+    // 触发安装
+    async function installPWA() {
+        const isIOS = /iphone|ipad|ipod/.test(navigator.userAgent.toLowerCase());
+
+        if (isInstalled) {
+            showToast('应用已安装', 'info');
+            return;
+        }
+
+        if (deferredPrompt) {
+            // Chrome/Edge/Android 等支持的浏览器
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+
+            if (outcome === 'accepted') {
+                console.log('用户接受安装');
+            } else {
+                console.log('用户取消安装');
+            }
+            deferredPrompt = null;
+        } else if (isIOS) {
+            // iOS 显示安装教程
+            showIOSInstallGuide();
+        } else {
+            showToast('当前浏览器不支持安装，请使用 Chrome 或 Safari', 'warning');
+        }
+    }
+
+    // iOS 安装教程弹窗
+    function showIOSInstallGuide() {
+        const overlay = document.createElement('div');
+        overlay.className = 'pwa-install-overlay';
+        overlay.innerHTML = `
+            <div class="pwa-install-modal">
+                <div class="pwa-install-header">
+                    <h3>📲 安装到主屏幕</h3>
+                    <button class="pwa-install-close" onclick="this.closest('.pwa-install-overlay').remove()">✕</button>
+                </div>
+                <div class="pwa-install-body">
+                    <div class="pwa-install-step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <p>点击 Safari 底部的 <strong>分享按钮</strong></p>
+                            <div class="step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/>
+                                    <polyline points="16 6 12 2 8 6"/>
+                                    <line x1="12" y1="2" x2="12" y2="15"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pwa-install-step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <p>向下滑动，点击 <strong>"添加到主屏幕"</strong></p>
+                            <div class="step-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                                    <line x1="12" y1="8" x2="12" y2="16"/>
+                                    <line x1="8" y1="12" x2="16" y2="12"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pwa-install-step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <p>点击右上角 <strong>"添加"</strong> 完成安装</p>
+                        </div>
+                    </div>
+                    <div class="pwa-install-benefits">
+                        <p>✓ 全屏体验，无浏览器地址栏</p>
+                        <p>✓ 离线可用，随时学习</p>
+                        <p>✓ 快速启动，如原生应用</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(overlay);
+
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+    }
+
+    // 暴露到全局
+    window.installPWA = installPWA;
+    window.updateInstallButton = updateInstallButton;
+
+    // 页面加载后更新按钮状态
+    document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(updateInstallButton, 500);
+    });
+})();
