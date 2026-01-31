@@ -537,6 +537,9 @@
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
                 <h2>核心词汇</h2>
+                <button class="vocab-list-btn" onclick="showFullWordList()" title="单词列表">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                </button>
                 <div class="vocab-progress-ring">
                     <svg width="44" height="44" viewBox="0 0 44 44">
                         <circle cx="22" cy="22" r="18" fill="none" stroke="#e5e7eb" stroke-width="4"/>
@@ -568,6 +571,9 @@
                     <div class="word-example" id="wordExample"></div>
                 </div>
             </div>
+            
+            <!-- V16: 列表视图 -->
+            <div id="wordListView" style="display:none;"></div>
             
             <!-- 操作按钮 -->
             <div class="vocab-actions">

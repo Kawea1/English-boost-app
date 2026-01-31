@@ -1118,9 +1118,9 @@ function renderWordList() {
         var statusClass = progress.completed ? 'completed' : (progress.times > 0 ? 'learning' : 'new');
         
         html += '<div class="word-item ' + statusClass + '" onclick="toggleWordDetail(' + index + ')" data-index="' + index + '">';
-        html += '<div class="word-item-main">';
-        html += '<div class="word-en">' + wordData.word + '</div>';
-        html += '<div class="word-cn">' + wordData.meaningCn + '</div>';
+        html += '<div class="word-item-main" style="display:flex;gap:12px;align-items:center;">';
+        html += '<div class="word-en" style="flex:0 0 120px;font-weight:600;">' + wordData.word + '</div>';
+        html += '<div class="word-cn" style="flex:1;">' + wordData.meaningCn.split('|')[0].trim() + '</div>';
         html += '</div>';
         html += '<div class="word-status">';
         if (progress.completed) {
@@ -1134,6 +1134,113 @@ function renderWordList() {
     
     container.innerHTML = html;
     updateVocabProgress();
+}
+
+// V16: 视图模式状态
+var viewMode = 'card'; // 'card' or 'list'
+
+// 切换视图模式
+function toggleViewMode() {
+    viewMode = viewMode === 'card' ? 'list' : 'card';
+    
+    var wordCard = document.getElementById('wordCard');
+    var wordListView = document.getElementById('wordListView');
+    var vocabActions = document.querySelector('.vocab-actions');
+    var learningDots = document.getElementById('learningDots');
+    var listBtn = document.querySelector('.vocab-list-btn');
+    
+    if (viewMode === 'list') {
+        // 切换到列表视图
+        if (wordCard) wordCard.style.display = 'none';
+        if (vocabActions) vocabActions.style.display = 'none';
+        if (learningDots) learningDots.style.display = 'none';
+        if (wordListView) {
+            wordListView.style.display = 'block';
+            renderInlineWordList();
+        }
+        if (listBtn) listBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/></svg>';
+    } else {
+        // 切换回卡片视图
+        if (wordCard) wordCard.style.display = 'block';
+        if (vocabActions) vocabActions.style.display = 'flex';
+        if (learningDots) learningDots.style.display = 'flex';
+        if (wordListView) wordListView.style.display = 'none';
+        if (listBtn) listBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>';
+    }
+}
+
+// V16: 渲染内联单词列表
+function renderInlineWordList() {
+    var container = document.getElementById('wordListView');
+    if (!container) return;
+    
+    var html = '<div style="padding:16px;">';
+    
+    // 搜索框
+    html += '<div style="margin-bottom:16px;">';
+    html += '<input type="text" id="inlineSearchInput" placeholder="搜索单词..." onkeyup="filterInlineList(this.value)" style="width:100%;padding:10px 12px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;box-sizing:border-box;">';
+    html += '</div>';
+    
+    // 单词列表
+    html += '<div style="max-height:calc(100vh - 280px);overflow-y:auto;">';
+    
+    sessionWords.forEach(function(wordData, index) {
+        var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+        var isLearned = learnedWords.indexOf(wordData.word) > -1;
+        
+        html += '<div class="inline-word-item" data-word="' + wordData.word.toLowerCase() + '" onclick="jumpToWord(' + index + ')" style="padding:12px;margin-bottom:8px;background:' + (progress.completed ? '#f0fdf4' : '#f9fafb') + ';border-radius:8px;cursor:pointer;transition:all 0.2s;border:1px solid ' + (progress.completed ? '#bbf7d0' : '#e5e7eb') + ';">';
+        html += '<div style="display:flex;justify-content:space-between;align-items:center;">';
+        html += '<div style="flex:1;">';
+        html += '<div style="font-size:16px;font-weight:600;color:#1f2937;margin-bottom:4px;">' + wordData.word + '</div>';
+        html += '<div style="font-size:13px;color:#6b7280;">' + wordData.meaningCn.split('|')[0].trim() + '</div>';
+        html += '</div>';
+        
+        if (progress.completed) {
+            html += '<span style="color:#10b981;font-size:20px;">✓</span>';
+        } else if (progress.times > 0) {
+            html += '<span style="font-size:12px;color:#6366f1;font-weight:600;">' + progress.times + '/' + requiredLearningTimes + '</span>';
+        }
+        
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    html += '</div>';
+    html += '</div>';
+    
+    container.innerHTML = html;
+}
+
+// V16: 过滤内联列表
+function filterInlineList(query) {
+    var items = document.querySelectorAll('.inline-word-item');
+    var lowerQuery = query.toLowerCase();
+    
+    items.forEach(function(item) {
+        var word = item.getAttribute('data-word');
+        if (word.includes(lowerQuery)) {
+            item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
+        }
+    });
+}
+
+// V16: 跳转到指定单词
+function jumpToWord(index) {
+    viewMode = 'card';
+    toggleViewMode();
+    
+    // 找到该单词在队列中的位置
+    var targetWord = sessionWords[index];
+    for (var i = 0; i < learningQueue.length; i++) {
+        if (learningQueue[i].word === targetWord.word) {
+            currentQueueIndex = i;
+            break;
+        }
+    }
+    
+    showCurrentWord();
 }
 
 // 显示完整单词列表
