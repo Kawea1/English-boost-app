@@ -530,49 +530,19 @@
             </div>
         </main>
 
-        <!-- 词汇模块 V14 - 极简背单词（类似不背单词） -->
+        <!-- 词汇模块 V15 - 列表式背单词 -->
         <div class="modal" id="vocabularyModal">
-            <!-- V14: 极简头部 - 只有返回和进度 -->
-            <div class="vocab-header-v14">
-                <button class="vocab-back-btn-v14" onclick="closeModule()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+            <div class="vocab-header-v15">
+                <button class="vocab-back-btn" onclick="closeModule()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
                 </button>
-                <span class="vocab-progress-v14" id="vocabProgressSimple">1/50</span>
+                <h2>核心词汇</h2>
+                <span class="vocab-progress" id="vocabProgressSimple">0/50</span>
             </div>
             
-            <!-- V14: 全屏单词卡片区域 - 垂直居中布局 -->
-            <div class="vocab-main-v14">
-                <!-- 单词展示区 - 居中 -->
-                <div class="word-card-v14" id="wordCard" onclick="speakWord()">
-                    <div class="word-text-v14" id="wordMain">aberrant</div>
-                    <div class="word-phonetic-v14" id="wordPhonetic">/əˈberənt/</div>
-                </div>
-                
-                <!-- 释义区域（隐藏，点击不认识时可查看） -->
-                <div class="word-meaning-v14 hidden" id="wordMeaning">
-                    <div class="meaning-cn-v14" id="meaningCn">偏离常规的；异常的</div>
-                    <div class="meaning-en-v14" id="meaningEn"></div>
-                    <div class="example-v14" id="wordExample"></div>
-                </div>
+            <div class="vocab-list-container" id="vocabListContainer">
+                <!-- 单词列表动态生成 -->
             </div>
-            
-            <!-- V14: 底部按钮区 - 固定在底部，无需滚动 -->
-            <div class="vocab-bottom-v14">
-                <button class="show-meaning-btn-v14 hidden" id="showMeaningBtn" onclick="showMeaning()">
-                    点击显示释义
-                </button>
-                
-                <!-- 认识/不认识按钮 - 始终显示 -->
-                <div class="rate-buttons-v14" id="rateButtons">
-                    <button class="rate-btn-v14 again" onclick="rateWord('again')">
-                        <span>不认识</span>
-                    </button>
-                    <button class="rate-btn-v14 good" onclick="rateWord('good')">
-                        <span>认识</span>
-                    </button>
-                </div>
-            </div>
-        </div>
         </div>
 
         <!-- 听力模块 -->

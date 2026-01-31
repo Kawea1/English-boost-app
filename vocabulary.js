@@ -1096,25 +1096,100 @@ try {
 
 // 初始化词汇模块
 function initVocabulary() {
-    // V8: 加载自适应难度数据
     loadAdaptiveDifficulty();
-    // V11: 加载同义词/反义词数据
     loadWordRelations();
-    // V12: 加载智能助记词数据
     loadWordMnemonics();
-    // V13: 加载词汇难度分级数据
     loadWordDifficulty();
-    // V15: 加载丰富例句数据
     loadWordExamples();
-    // V16: 加载真题词汇标记数据
     loadWordExamTags();
-    // 显示设置面板
-    showVocabSettings();
-    // 初始化本次学习的单词
     initSessionWords();
+    renderWordList();
+}
+
+// 渲染单词列表
+function renderWordList() {
+    var container = document.getElementById('vocabListContainer');
+    if (!container) return;
+    
+    var html = '';
+    sessionWords.forEach(function(wordData, index) {
+        var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+        var statusClass = progress.completed ? 'completed' : (progress.times > 0 ? 'learning' : 'new');
+        
+        html += '<div class="word-item ' + statusClass + '" onclick="toggleWordDetail(' + index + ')" data-index="' + index + '">';
+        html += '<div class="word-item-main">';
+        html += '<div class="word-en">' + wordData.word + '</div>';
+        html += '<div class="word-cn">' + wordData.meaningCn + '</div>';
+        html += '</div>';
+        html += '<div class="word-status">';
+        if (progress.completed) {
+            html += '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';
+        } else {
+            html += '<span class="progress-count">' + progress.times + '/' + requiredLearningTimes + '</span>';
+        }
+        html += '</div>';
+        html += '</div>';
+    });
+    
+    container.innerHTML = html;
     updateVocabProgress();
-    showCurrentWord();
-    // speakWord已在showCurrentWord中调用，无需重复
+}
+
+// 切换单词详情
+function toggleWordDetail(index) {
+    var wordData = sessionWords[index];
+    var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+    
+    if (progress.completed) {
+        speakText(wordData.word);
+        return;
+    }
+    
+    var overlay = document.createElement('div');
+    overlay.className = 'word-detail-overlay';
+    overlay.innerHTML = '<div class="word-detail-card">' +
+        '<div class="word-detail-header">' +
+        '<button class="close-detail" onclick="this.parentElement.parentElement.parentElement.remove()">×</button>' +
+        '<div class="word-detail-main">' + wordData.word + '</div>' +
+        '<div class="word-detail-phonetic">' + wordData.phonetic + '</div>' +
+        '</div>' +
+        '<div class="word-detail-body">' +
+        '<div class="word-detail-meaning">' + wordData.meaningCn + '</div>' +
+        '<div class="word-detail-example">' + wordData.example + '</div>' +
+        '</div>' +
+        '<div class="word-detail-actions">' +
+        '<button class="detail-btn speak" onclick="speakText(\'' + wordData.word + '\')">发音</button>' +
+        '<button class="detail-btn know" onclick="markWord(' + index + ', \'good\')">认识</button>' +
+        '<button class="detail-btn unknown" onclick="markWord(' + index + ', \'again\')">不认识</button>' +
+        '</div>' +
+        '</div>';
+    document.body.appendChild(overlay);
+    speakText(wordData.word);
+}
+
+// 标记单词
+function markWord(index, rating) {
+    var wordData = sessionWords[index];
+    var progress = sessionWordProgress[wordData.word] || { times: 0, completed: false };
+    
+    if (rating === 'again') {
+        progress.times = 0;
+    } else {
+        progress.times++;
+    }
+    
+    if (progress.times >= requiredLearningTimes) {
+        progress.completed = true;
+        if (learnedWords.indexOf(wordData.word) === -1) {
+            learnedWords.push(wordData.word);
+            localStorage.setItem('learnedWords', JSON.stringify(learnedWords));
+        }
+    }
+    
+    sessionWordProgress[wordData.word] = progress;
+    
+    document.querySelector('.word-detail-overlay').remove();
+    renderWordList();
 }
 
 // 显示单词数量设置
