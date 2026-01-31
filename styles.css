@@ -4002,7 +4002,8 @@ body.theme-dark .word-card:hover .word-main {
     position: relative;
 }
 
-/* 标签下划线动画 */
+/* 标签下划线动画 - 已禁用 */
+/*
 .nav-label::after {
     content: '';
     position: absolute;
@@ -4019,6 +4020,7 @@ body.theme-dark .word-card:hover .word-main {
 .nav-item.active .nav-label::after {
     width: 100%;
 }
+*/
 
 .nav-item.active {
     color: var(--primary);
