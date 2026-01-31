@@ -1662,14 +1662,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // V15: 确保登录状态一致
-    if (finalLoginStatus) {
-        localStorage.setItem('isLoggedIn', 'true');
-    }
+    // V16: 移除付费系统 - 直接进入应用
+    finalLoginStatus = true;
+    skipLoginPage = true;
+    localStorage.setItem('isLoggedIn', 'true');
     
-    console.log('📊 最终登录状态:', finalLoginStatus, skipLoginPage ? '(跳过登录页)' : '');
+    console.log('📊 免费版本，直接进入应用');
     
-    if (finalLoginStatus) {
+    if (true) {
         const authUser = JSON.parse(localStorage.getItem('authUser') || '{}');
         const savedDeviceId = localStorage.getItem('deviceId');
         
@@ -4535,5 +4535,3 @@ window.submitFeedback = submitFeedback;
 window.toggleWordBookmark = toggleWordBookmark;
 window.toggleVolume = toggleVolume;
 window.toggleStudyTimer = toggleStudyTimer;
-
-
