@@ -1925,9 +1925,6 @@ function showCurrentWord() {
     // 确保掌握度样式已加载
     addMasteryTrackingStyles();
     
-    // v4.9.1: 重置卡片为简版
-    isWordCardExpanded = false;
-    
     // 检查是否完成所有学习
     if (currentQueueIndex >= learningQueue.length) {
         showSessionSummary();
@@ -1941,23 +1938,8 @@ function showCurrentWord() {
     var word = wordData.word;
     var sessionProgress = sessionWordProgress[word] || { times: 0, completed: false };
     var isReview = sessionProgress.times > 0;
-    var isHardWord = hardWordsInSession && hardWordsInSession.indexOf(word) > -1;
-    var isImmediateReview = immediateReviewQueue && immediateReviewQueue.some(function(r) { return r.word === word; });
     
-    // 确定学习模式
-    if (isImmediateReview) {
-        learningModeState.mode = 'immediate';
-    } else if (isHardWord) {
-        learningModeState.mode = 'difficult';
-    } else if (isReview) {
-        learningModeState.mode = 'review';
-    } else {
-        learningModeState.mode = 'normal';
-    }
     learningModeState.isFirstTime = !isReview;
-    
-    // V6: 显示学习模式提示
-    showLearningModeIndicator(learningModeState.mode);
     
     // V10: 适配新版HTML结构
     var wordMain = document.getElementById('wordMain');
@@ -1965,7 +1947,6 @@ function showCurrentWord() {
     var wordMeaning = document.getElementById('wordMeaning');
     var rateButtons = document.getElementById('rateButtons');
     var showMeaningBtn = document.getElementById('showMeaningBtn');
-    var swipeHint = document.getElementById('swipeHint');
     
     if (wordMain) {
         // V10: 添加单词切换动画
@@ -1982,27 +1963,12 @@ function showCurrentWord() {
     
     if (wordPhonetic) wordPhonetic.textContent = wordData.phonetic || '';
     
-    // V1: 显示掌握度徽章
-    showMasteryBadge(wordData.word);
+    // 隐藏释义区域，只显示单词
+    if (wordMeaning) wordMeaning.classList.add('hidden');
     
-    // V13: 显示难度等级标签
-    showDifficultyBadge(wordData.word);
-    
-    // V16: 显示真题标记标签
-    showExamTagsBadge(wordData.word);
-    
-    // v4.9.3: 中文释义默认显示,但详细信息隐藏
-    if (wordMeaning) {
-        wordMeaning.classList.remove('hidden');
-        // 只显示中文释义,隐藏详细信息
-        var meaningCn = wordMeaning.querySelector('.meaning-cn');
-        if (meaningCn) {
-            meaningCn.style.display = 'block';
-        }
-    }
-    if (rateButtons) rateButtons.classList.add('hidden');
-    if (showMeaningBtn) showMeaningBtn.classList.remove('hidden');
-    if (swipeHint) swipeHint.style.display = '';
+    // 直接显示认识/不认识按钮，隐藏"显示释义"按钮
+    if (rateButtons) rateButtons.classList.remove('hidden');
+    if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
     
     updateVocabProgress();
     
@@ -2011,15 +1977,6 @@ function showCurrentWord() {
     
     // 更新学习进度指示器
     updateLearningProgressIndicator();
-    
-    // v4.9.3: 更新收藏按钮状态
-    updateBookmarkButton(wordData.word);
-    
-    // v4.9.1: 显示首次使用说明
-    showFirstTimeGuide();
-    
-    // v4.9.1: 添加卡片展开/收起按钮
-    addCardToggleButton();
     
     // V4.8.12: 修复发音问题 - 在动画完成后朗读新单词
     setTimeout(function() {
@@ -2327,216 +2284,13 @@ function showMeaning() {
     var wordData = learningQueue[currentQueueIndex];
     if (!wordData) return;
     
-    // 查询字典数据
-    var dictData = null;
-    if (typeof queryDictionary === 'function') {
-        dictData = queryDictionary(wordData.word);
-    }
-    
-    // V11: 获取同义词/反义词
-    var relations = getWordRelations(wordData.word);
-    
-    // V12: 获取助记词
-    var mnemonic = getWordMnemonic(wordData.word);
-    
-    // V14: 获取增强版助记信息
-    var enhancedMnemonic = getEnhancedMnemonic(wordData.word);
-    
-    // 构建释义HTML（中英文双语）
+    // 构建释义HTML - 极简版：只显示一个例句
     var meaningHtml = '';
     
-    // 如果有字典数据，优先显示 - 极简版
-    if (dictData) {
-        meaningHtml += '<div class="dict-container" style="background:#f8f7ff;padding:12px;border-radius:10px;margin-bottom:10px;border:1px solid #e5e7eb;">';
-        if (dictData.definitions && dictData.definitions.length > 0) {
-            meaningHtml += '<div style="font-weight:600;margin-bottom:8px;font-size:13px;color:#4338ca;">词典释义</div>';
-            dictData.definitions.slice(0, 3).forEach(function(def, idx) {
-                meaningHtml += '<div style="margin-bottom:4px;font-size:13px;color:#555;">• ' + def + '</div>';
-            });
-        }
-        meaningHtml += '</div>';
-    }
-    
-    // 中英文释义 - 极简版,v4.9.3增大字号更突出
-    meaningHtml += '<div class="meaning-cn" style="font-size:22px;color:#1e1b4b;margin-bottom:12px;font-weight:700;line-height:1.4;">' + (wordData.meaningCn || '暂无中文释义') + '</div>';
-    meaningHtml += '<div class="meaning-en" style="color:#6b7280;font-size:14px;margin-bottom:14px;line-height:1.6;">' + (wordData.meaningEn || wordData.meaning || '') + '</div>';
-    
-    // V16: 真题词汇标记展示
-    var examTags = getWordExamTags(wordData.word);
-    if (examTags) {
-        // 真题标签 - 极简版
-        meaningHtml += '<div class="exam-tags-section" style="margin-bottom:12px;padding:10px 12px;background:#fef3c7;border-radius:8px;border:1px solid #fde68a;">';
-        meaningHtml += '<div style="font-size:12px;font-weight:600;color:#92400e;margin-bottom:6px;">真题词汇</div>';
-        meaningHtml += '<div style="display:flex;flex-wrap:wrap;gap:6px;">';
-        
-        if (examTags.gre) {
-            meaningHtml += '<span style="background:#7c3aed;color:white;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;">GRE ×' + examTags.gre.count + '</span>';
-        }
-        
-        if (examTags.toefl) {
-            meaningHtml += '<span style="background:#2563eb;color:white;padding:3px 8px;border-radius:6px;font-size:11px;font-weight:500;">TOEFL ×' + examTags.toefl.count + '</span>';
-        }
-        
-        meaningHtml += '</div>';
-        meaningHtml += '</div>';
-    }
-    
-    // V14-V19: 科学助记系统 - 极简版
-    if (mnemonic || enhancedMnemonic.hasEnhancements) {
-        meaningHtml += '<div style="margin-bottom:12px;padding:12px;background:#faf5ff;border-radius:8px;border:1px solid #e9d5ff;">';
-        
-        // 简化头部
-        meaningHtml += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">';
-        meaningHtml += '<span style="font-size:13px;font-weight:600;color:#7c3aed;">记忆技巧</span>';
-        
-        // 效果评估 - 简化版
-        var effectivenessScore = enhancedMnemonic.effectiveness ? Math.round(enhancedMnemonic.effectiveness.effectiveness * 100) : null;
-        if (effectivenessScore !== null) {
-            var scoreColor = effectivenessScore >= 80 ? '#10b981' : effectivenessScore >= 50 ? '#f59e0b' : '#ef4444';
-            meaningHtml += '<span style="font-size:11px;color:' + scoreColor + ';">' + effectivenessScore + '%</span>';
-        }
-        meaningHtml += '</div>';
-        
-        // 选择最佳助记来源（用户自定义 > 系统生成）
-        var activeMnemonic = enhancedMnemonic.custom || mnemonic;
-        
-        if (activeMnemonic) {
-            // 类型标签 - 简化版
-            var mnemonicType = activeMnemonic.type || 'etymology';
-            var typeInfo = MNEMONIC_SCIENCE.types[mnemonicType] || MNEMONIC_SCIENCE.types['etymology'];
-            
-            meaningHtml += '<div style="margin-bottom:8px;">';
-            meaningHtml += '<span style="display:inline-block;padding:2px 8px;background:' + typeInfo.bg + ';color:' + typeInfo.color + ';border-radius:4px;font-size:11px;font-weight:500;">' + typeInfo.name + '</span>';
-            if (enhancedMnemonic.custom) {
-                meaningHtml += '<span style="display:inline-block;margin-left:4px;padding:2px 6px;background:#eff6ff;color:#2563eb;border-radius:4px;font-size:10px;">自定义</span>';
-            }
-            meaningHtml += '</div>';
-            
-            // 主助记内容
-            meaningHtml += '<div style="font-size:14px;color:#581c87;line-height:1.6;padding:8px 10px;background:white;border-radius:6px;margin-bottom:8px;">';
-            meaningHtml += activeMnemonic.mnemonic;
-            meaningHtml += '</div>';
-            
-            // 词根信息 - 简化
-            if (activeMnemonic.roots) {
-                meaningHtml += '<div style="font-size:12px;color:#6b21a8;margin-bottom:6px;">';
-                meaningHtml += '<span style="color:#9ca3af;">词根:</span> ' + activeMnemonic.roots;
-                meaningHtml += '</div>';
-            }
-            
-            // 联想画面 - 简化
-            if (activeMnemonic.association) {
-                meaningHtml += '<div style="font-size:12px;color:#1e40af;font-style:italic;margin-bottom:6px;">';
-                meaningHtml += '<span style="color:#9ca3af;">联想:</span> ' + activeMnemonic.association;
-                meaningHtml += '</div>';
-            }
-        }
-        
-        // 记忆宫殿位置 - 简化版
-        if (enhancedMnemonic.memoryPalace) {
-            var location = memoryPalaceData.locations.find(function(l) { return l.id === enhancedMnemonic.memoryPalace.locationId; });
-            meaningHtml += '<div style="font-size:12px;color:#5b21b6;margin-bottom:6px;">';
-            meaningHtml += '<span style="color:#9ca3af;">宫殿:</span> ' + (location ? location.name : '位置') + ' - ' + enhancedMnemonic.memoryPalace.image;
-            meaningHtml += '</div>';
-        }
-        
-        // 情感锚定 - 简化版
-        if (enhancedMnemonic.emotionalAnchor) {
-            var emo = enhancedMnemonic.emotionalAnchor;
-            meaningHtml += '<div style="font-size:12px;color:#be185d;margin-bottom:6px;">';
-            meaningHtml += '<span style="color:#9ca3af;">情感:</span> ' + emo.data.name + ' (' + emo.intensity + '/10)';
-            meaningHtml += '</div>';
-        }
-        
-        // 分块记忆组 - 简化版
-        if (enhancedMnemonic.chunkGroup) {
-            meaningHtml += '<div style="font-size:12px;color:#0f766e;margin-bottom:6px;">';
-            meaningHtml += '<span style="color:#9ca3af;">分块:</span> ' + enhancedMnemonic.chunkGroup.name + ' (';
-            var chunkPreview = enhancedMnemonic.chunkGroup.words.slice(0, 3).join(', ');
-            if (enhancedMnemonic.chunkGroup.words.length > 3) chunkPreview += '...';
-            meaningHtml += chunkPreview + ')';
-            meaningHtml += '</div>';
-        }
-        
-        // V5: 操作按钮已移除，保持极简
-        
-        meaningHtml += '</div>'; // 整个助记卡片结束
-    } else {
-        // 没有助记时显示添加建议 - 简化版
-        var recommended = MNEMONIC_SCIENCE.recommendType(wordData.word, mnemonicEffectivenessData._typeStats || {});
-        var recType = MNEMONIC_SCIENCE.types[recommended.type];
-        
-        meaningHtml += '<div style="margin-bottom:12px;padding:10px;background:#f9fafb;border-radius:6px;border:1px dashed #d1d5db;text-align:center;">';
-        meaningHtml += '<div style="font-size:12px;color:#6b7280;margin-bottom:8px;">暂无记忆技巧</div>';
-        meaningHtml += '<button onclick="showCustomMnemonicEditor(\'' + wordData.word + '\')" style="padding:6px 12px;background:#8b5cf6;border:none;border-radius:4px;color:white;font-size:12px;cursor:pointer;">+ 添加</button>';
-        meaningHtml += '</div>';
-    }
-    
-    // 同义词/反义词显示 - 极简版
-    if (relations) {
-        meaningHtml += '<div class="word-relations" style="margin-bottom:12px;padding:10px;background:#fefce8;border-radius:8px;border:1px solid #fde68a;">';
-        
-        // 同义词
-        if (relations.synonyms && relations.synonyms.length > 0) {
-            meaningHtml += '<div style="margin-bottom:8px;"><span style="font-weight:600;color:#15803d;font-size:11px;">同义词</span><div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;">';
-            relations.synonyms.forEach(function(syn) {
-                meaningHtml += '<span style="padding:2px 8px;background:#dcfce7;border-radius:4px;font-size:12px;color:#166534;">' + syn + '</span>';
-            });
-            meaningHtml += '</div></div>';
-        }
-        
-        // 反义词
-        if (relations.antonyms && relations.antonyms.length > 0) {
-            meaningHtml += '<div><span style="font-weight:600;color:#b91c1c;font-size:11px;">反义词</span><div style="margin-top:4px;display:flex;flex-wrap:wrap;gap:4px;">';
-            relations.antonyms.forEach(function(ant) {
-                meaningHtml += '<span style="padding:2px 8px;background:#fee2e2;border-radius:4px;font-size:12px;color:#991b1b;">' + ant + '</span>';
-            });
-            meaningHtml += '</div></div>';
-        }
-        
-        meaningHtml += '</div>';
-    }
-    
-    // 例句 - 极简版
+    // 只显示一个例句
     if (wordData.example) {
-        meaningHtml += '<div class="word-example" style="color:#6b7280;font-size:13px;font-style:italic;padding-top:12px;border-top:1px solid #e5e7eb;">' + wordData.example + '</div>';
-    }
-    
-    // V15: 丰富例句展示
-    var wordExamples = getWordExamples(wordData.word);
-    if (wordExamples && wordExamples.examples && wordExamples.examples.length > 0) {
-        meaningHtml += '<div class="rich-examples-section" style="margin-top:16px;padding-top:16px;border-top:1px solid #e5e7eb;">';
-        meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">';
-        meaningHtml += '<span style="display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;background:linear-gradient(135deg,#8b5cf6 0%,#7c3aed 100%);border-radius:8px;box-shadow:0 2px 6px rgba(139,92,246,0.3);">';
-        meaningHtml += '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>';
-        meaningHtml += '</span>';
-        meaningHtml += '<span style="font-weight:600;font-size:14px;color:#7c3aed;">丰富语境例句</span>';
-        meaningHtml += '<span style="font-size:12px;color:#9ca3af;margin-left:auto;">' + wordExamples.examples.length + ' 个例句</span>';
-        meaningHtml += '</div>';
-        
-        wordExamples.examples.forEach(function(example, index) {
-            var sourceColors = {
-                'GRE真题': { bg: '#fef3c7', text: '#d97706', border: '#fcd34d' },
-                'TOEFL真题': { bg: '#dbeafe', text: '#2563eb', border: '#93c5fd' },
-                '学术期刊': { bg: '#dcfce7', text: '#16a34a', border: '#86efac' },
-                '经济学人': { bg: '#fce7f3', text: '#db2777', border: '#f9a8d4' },
-                '纽约时报': { bg: '#e0e7ff', text: '#4f46e5', border: '#a5b4fc' },
-                '科学美国人': { bg: '#ccfbf1', text: '#0d9488', border: '#5eead4' },
-                '大西洋月刊': { bg: '#fef9c3', text: '#ca8a04', border: '#fde047' },
-                '名著文学': { bg: '#f3e8ff', text: '#9333ea', border: '#d8b4fe' }
-            };
-            var sourceStyle = sourceColors[example.source] || { bg: '#f3f4f6', text: '#6b7280', border: '#d1d5db' };
-            
-            meaningHtml += '<div style="background:linear-gradient(135deg,#fafafa 0%,#f5f5f5 100%);border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid #e5e7eb;">';
-            meaningHtml += '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">';
-            meaningHtml += '<span style="width:20px;height:20px;background:#8b5cf6;color:white;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;">' + (index + 1) + '</span>';
-            meaningHtml += '<span style="font-size:11px;padding:3px 8px;background:' + sourceStyle.bg + ';color:' + sourceStyle.text + ';border:1px solid ' + sourceStyle.border + ';border-radius:12px;font-weight:500;">' + example.source + '</span>';
-            meaningHtml += '</div>';
-            meaningHtml += '<p style="font-size:14px;color:#374151;line-height:1.6;margin:0 0 8px 0;font-style:italic;">"' + example.en + '"</p>';
-            meaningHtml += '<p style="font-size:13px;color:#6b7280;line-height:1.5;margin:0;padding-left:12px;border-left:3px solid #8b5cf6;">' + example.cn + '</p>';
-            meaningHtml += '</div>';
-        });
-        
+        meaningHtml += '<div class="word-example" style="color:#374151;font-size:15px;line-height:1.6;padding:16px 0;">';
+        meaningHtml += '<div style="font-style:italic;margin-bottom:8px;">"' + wordData.example + '"</div>';
         meaningHtml += '</div>';
     }
     
