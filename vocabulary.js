@@ -1102,8 +1102,9 @@ function initVocabulary() {
     loadWordDifficulty();
     loadWordExamples();
     loadWordExamTags();
+    showVocabSettings(); // 显示设置面板
     initSessionWords();
-    renderWordList();
+    showCurrentWord(); // 直接显示第一个单词
 }
 
 // 渲染单词列表
