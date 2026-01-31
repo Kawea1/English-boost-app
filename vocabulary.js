@@ -1459,45 +1459,50 @@ function addVocabSettingsStyles() {
     style.id = 'vocabSettingsStyles';
     style.textContent = `
         .vocab-settings-panel {
-            padding: 12px 16px;
-            background: #f8fafc;
-            border-bottom: 1px solid #e5e7eb;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            border-bottom: 1px solid #e2e8f0;
         }
         
         .settings-row {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             flex-wrap: wrap;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         
         .setting-item {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            padding: 8px 14px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
         
         .setting-label {
-            color: #374151;
-            font-weight: 500;
+            color: #1e293b;
+            font-weight: 600;
             font-size: 13px;
             white-space: nowrap;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
         }
         
         .setting-icon {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 18px;
-            height: 18px;
-            background: #6366f1;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
             color: white;
-            border-radius: 4px;
-            font-size: 10px;
+            border-radius: 6px;
+            font-size: 11px;
             font-weight: bold;
+            box-shadow: 0 2px 4px rgba(99,102,241,0.2);
         }
         
         .tip-icon {
@@ -1513,28 +1518,37 @@ function addVocabSettingsStyles() {
         }
         
         .setting-select {
-            padding: 6px 10px;
-            border-radius: 6px;
-            border: 1px solid #d1d5db;
+            padding: 7px 12px;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
             background: white;
-            color: #1e1b4b;
-            font-weight: 500;
+            color: #0f172a;
+            font-weight: 600;
             font-size: 13px;
             cursor: pointer;
             outline: none;
-            min-width: 70px;
+            min-width: 75px;
+            transition: all 0.2s ease;
+        }
+        
+        .setting-select:hover {
+            border-color: #cbd5e1;
         }
         
         .setting-select:focus {
             border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
         }
         
         .settings-tip {
-            color: #6b7280;
-            font-size: 13px;
+            color: #64748b;
+            font-size: 12px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 8px;
         }
         
         .settings-tip strong {
@@ -1578,25 +1592,28 @@ function addVocabSettingsStyles() {
         
         /* 词卡优化样式 */
         .word-card-enhanced {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            border: 1px solid #e5e7eb;
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 20px;
+            padding: 32px 24px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
         }
         
         .word-main-enhanced {
-            font-size: 36px;
-            font-weight: 700;
-            color: #1e1b4b;
+            font-size: 42px;
+            font-weight: 800;
+            color: #0f172a;
             text-align: center;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
         }
         
         .word-phonetic-enhanced {
-            font-size: 16px;
-            color: #6b7280;
+            font-size: 15px;
+            color: #64748b;
             text-align: center;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            font-weight: 500;
         }
         
         /* 评分按钮优化 */
@@ -1658,23 +1675,25 @@ function addVocabSettingsStyles() {
         /* 右上角学习次数徽章 */
         .learning-badge {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 16px;
+            right: 16px;
             display: flex;
             align-items: center;
-            gap: 2px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+            gap: 4px;
+            padding: 8px 14px;
+            border-radius: 24px;
+            font-size: 12px;
             font-weight: 700;
             z-index: 10;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(8px);
         }
         
         .learning-badge.new {
-            background: #fef3c7;
-            color: #92400e;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #78350f;
+            border: 1px solid #fbbf24;
         }
         
         .learning-badge.new .badge-icon {
@@ -1682,13 +1701,15 @@ function addVocabSettingsStyles() {
         }
         
         .learning-badge.learning {
-            background: #e0e7ff;
-            color: #3730a3;
+            background: linear-gradient(135deg, #e0e7ff 0%, #c7d2fe 100%);
+            color: #312e81;
+            border: 1px solid #818cf8;
         }
         
         .learning-badge.completed {
-            background: #d1fae5;
-            color: #065f46;
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #064e3b;
+            border: 1px solid #34d399;
         }
         
         .learning-badge.completed .badge-icon {
@@ -2238,7 +2259,6 @@ function showCurrentWord() {
     var wordPhonetic = document.getElementById('wordPhonetic');
     var wordMeaning = document.getElementById('wordMeaning');
     var rateButtons = document.getElementById('rateButtons');
-    var showMeaningBtn = document.getElementById('showMeaningBtn');
     
     if (wordMain) {
         // V10: 添加单词切换动画
@@ -2255,12 +2275,23 @@ function showCurrentWord() {
     
     if (wordPhonetic) wordPhonetic.textContent = wordData.phonetic || '';
     
-    // 隐藏释义区域，只显示单词
-    if (wordMeaning) wordMeaning.classList.add('hidden');
+    // 直接显示中文释义
+    var meaningCn = document.getElementById('meaningCn');
+    if (meaningCn && wordData.meaningCn) {
+        meaningCn.innerHTML = '<div style="font-size:16px;font-weight:600;color:#1f2937;line-height:1.8;">' + wordData.meaningCn + '</div>';
+    }
     
-    // 直接显示认识/不认识按钮，隐藏"显示释义"按钮
+    // 显示例句
+    var wordExample = document.getElementById('wordExample');
+    if (wordExample && wordData.example) {
+        wordExample.innerHTML = '<div style="font-style:italic;color:#6b7280;">"' + wordData.example + '"</div>';
+    }
+    
+    // 显示释义区域
+    if (wordMeaning) wordMeaning.classList.remove('hidden');
+    
+    // 直接显示认识/不认识按钮
     if (rateButtons) rateButtons.classList.remove('hidden');
-    if (showMeaningBtn) showMeaningBtn.classList.add('hidden');
     
     updateVocabProgress();
     
