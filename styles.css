@@ -2881,8 +2881,22 @@ svg {
     gap: 15px;
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: 1000;
     box-shadow: var(--shadow-md);
+}
+
+/* PWA standalone模式 - 增加顶部安全区域 */
+@media all and (display-mode: standalone) {
+    .modal-header {
+        padding-top: calc(24px + env(safe-area-inset-top, 44px));
+    }
+}
+
+/* iOS Safari standalone模式特殊处理 */
+@supports (-webkit-touch-callout: none) {
+    .modal-header {
+        padding-top: calc(24px + env(safe-area-inset-top, 44px));
+    }
 }
 
 .back-btn {
@@ -2898,12 +2912,13 @@ svg {
     transition: all 0.2s;
     /* 确保返回按钮始终可点击 */
     position: relative;
-    z-index: 20;
+    z-index: 1001;
     min-width: 44px;
     min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 }
 }
 
