@@ -2866,9 +2866,47 @@ svg {
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     overflow-y: auto;
+    /* PWA standalone模式修复 */
+    max-height: 100vh;
+    max-height: 100dvh;
 }
 
 .modal.active { transform: translateX(0); }
+
+/* PWA standalone模式下的模态框修复 */
+@media all and (display-mode: standalone) {
+    .modal {
+        height: 100%;
+        max-height: 100%;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .modal-header {
+        padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    }
+
+    .modal.active {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+}
+
+/* iOS Safari standalone模式修复 */
+@supports (-webkit-touch-callout: none) {
+    html.pwa-mode .modal {
+        height: 100%;
+        max-height: 100%;
+        min-height: -webkit-fill-available;
+    }
+
+    html.pwa-mode .modal-header {
+        padding-top: calc(18px + env(safe-area-inset-top, 20px));
+    }
+}
 
 .modal-header {
     background: var(--gradient-primary);
@@ -7250,7 +7288,7 @@ body.liquid-glass-mode .liquid-glass-settings {
     gap: 14px;
     padding: 18px 20px;
     padding-top: calc(18px + env(safe-area-inset-top, 0px));
-    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    background: var(--gradient-primary);
     position: sticky;
     top: 0;
     z-index: 100;
@@ -7957,7 +7995,24 @@ body.liquid-glass-mode .liquid-glass-settings {
 
 /* 深色模式适配 */
 body.theme-dark .settings-header-v10 {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    background: var(--gradient-primary);
+}
+
+/* 各主题设置页眉颜色 */
+body.theme-ocean .settings-header-v10 {
+    background: var(--gradient-primary);
+}
+
+body.theme-forest .settings-header-v10 {
+    background: var(--gradient-primary);
+}
+
+body.theme-sunset .settings-header-v10 {
+    background: var(--gradient-primary);
+}
+
+body.theme-rose .settings-header-v10 {
+    background: var(--gradient-primary);
 }
 
 body.theme-dark .settings-content-v10 {
