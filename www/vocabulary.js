@@ -3095,15 +3095,45 @@ function showSessionSummary() {
     
     summaryHtml += '</div>';
     
-    // 操作按钮 - 简化版
+    // 操作按钮 - 简化版 (iOS 兼容性修复)
     summaryHtml += '<div style="display:flex;gap:10px;margin-top:16px;">';
-    summaryHtml += '<button onclick="restartSession()" style="flex:1;padding:12px;background:#6366f1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">继续学习</button>';
-    summaryHtml += '<button onclick="closeModule()" style="flex:1;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;">完成</button>';
+    summaryHtml += '<button id="continueLearnBtn" style="flex:1;padding:12px;background:#6366f1;color:white;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.1);touch-action:manipulation;">继续学习</button>';
+    summaryHtml += '<button id="finishLearnBtn" style="flex:1;padding:12px;background:#f3f4f6;color:#374151;border:none;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.1);touch-action:manipulation;">完成</button>';
     summaryHtml += '</div>';
     summaryHtml += '</div>';
-    
+
     if (wordCard) {
         wordCard.innerHTML = summaryHtml;
+
+        // iOS 兼容性：使用 addEventListener 绑定事件
+        var continueBtn = document.getElementById('continueLearnBtn');
+        var finishBtn = document.getElementById('finishLearnBtn');
+
+        if (continueBtn) {
+            continueBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                restartSession();
+            });
+            // 添加触摸事件支持
+            continueBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                restartSession();
+            });
+        }
+
+        if (finishBtn) {
+            finishBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                closeModule();
+            });
+            // 添加触摸事件支持
+            finishBtn.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                closeModule();
+            });
+        }
     }
     
     // 重置会话统计
