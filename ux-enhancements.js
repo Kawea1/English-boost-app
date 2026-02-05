@@ -681,13 +681,7 @@
         
         // 检查学习目标
         checkGoalReminder() {
-            const todayWords = parseInt(localStorage.getItem('todayWords') || '0');
-            const dailyGoal = parseInt(localStorage.getItem('dailyWordGoal') || '20');
-            const progress = (todayWords / dailyGoal) * 100;
-            
-            if (progress < 50 && new Date().getHours() >= 18) {
-                this.showReminder('goal', `今日目标完成${Math.round(progress)}%，加油完成剩余任务！ 💪`);
-            }
+            return;
         },
         
         showReminder(type, message) {
