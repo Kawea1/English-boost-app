@@ -2897,7 +2897,18 @@ svg {
 /* iOS Safari standalone模式特殊处理 */
 @supports (-webkit-touch-callout: none) {
     .modal-header {
-        padding-top: calc(16px + env(safe-area-inset-top, 0px));
+        padding-top: calc(12px + env(safe-area-inset-top, 0px));
+        padding-bottom: 12px;
+    }
+
+    .modal-header .modal-icon-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+    }
+
+    .modal-header h2 {
+        font-size: 17px;
     }
 }
 
