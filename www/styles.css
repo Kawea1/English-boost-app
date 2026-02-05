@@ -26125,8 +26125,19 @@ body.theme-dark .para-score-badge.score-error {
     align-items: center;
     gap: 12px;
     padding: 16px 20px;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
     background: white;
     border-bottom: 1px solid var(--gray-100);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+/* PWA standalone 模式 - 增加顶部安全区域 */
+@media all and (display-mode: standalone) {
+    .writing-header-v11 {
+        padding-top: calc(16px + env(safe-area-inset-top, 50px));
+    }
 }
 
 .writing-back-v11 {
@@ -27393,4 +27404,3 @@ body.theme-dark .pwa-install-benefits {
 body.theme-dark .pwa-install-benefits p {
     color: #6ee7b7;
 }
-
