@@ -2876,6 +2876,8 @@ svg {
     color: white;
     padding: 18px 20px;
     padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    padding-left: calc(20px + env(safe-area-inset-left, 0px));
+    padding-right: calc(20px + env(safe-area-inset-right, 0px));
     display: flex;
     align-items: center;
     gap: 15px;
@@ -7267,6 +7269,8 @@ body.liquid-glass-mode .liquid-glass-settings {
     gap: 14px;
     padding: 18px 20px;
     padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    padding-left: calc(20px + env(safe-area-inset-left, 0px));
+    padding-right: calc(20px + env(safe-area-inset-right, 0px));
     background: var(--gradient-primary);
     position: sticky;
     top: 0;
@@ -22268,6 +22272,8 @@ body.theme-dark .rich-examples-section {
     align-items: center;
     gap: 16px;
     padding: 20px;
+    padding-left: calc(20px + env(safe-area-inset-left, 0px));
+    padding-right: calc(20px + env(safe-area-inset-right, 0px));
     background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
     border-radius: 0 0 28px 28px;
     margin: -16px -16px 20px -16px;
@@ -26117,6 +26123,8 @@ body.theme-dark .para-score-badge.score-error {
     gap: 12px;
     padding: 16px 20px;
     padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    padding-left: calc(20px + env(safe-area-inset-left, 0px));
+    padding-right: calc(20px + env(safe-area-inset-right, 0px));
     background: white;
     border-bottom: 1px solid var(--gray-100);
     position: sticky;
