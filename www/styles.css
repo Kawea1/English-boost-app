@@ -26232,6 +26232,91 @@ body.liquid-glass-mode .modal-header-stats .back-btn:hover {
     height: 20px;
 }
 
+/* 核心功能页眉 - 对齐学术写作页眉的视觉与层级 */
+.modal-header-vocab,
+.modal-header-listen,
+.modal-header-speak,
+.modal-header-read,
+.modal-header-review,
+.modal-header-resource,
+.modal-header-stats {
+    background: white !important;
+    border-bottom: 1px solid var(--gray-100);
+    box-shadow: none;
+}
+
+.modal-header-vocab h2,
+.modal-header-listen h2,
+.modal-header-speak h2,
+.modal-header-read h2,
+.modal-header-review h2,
+.modal-header-resource h2,
+.modal-header-stats h2 {
+    color: var(--gray-800);
+    font-weight: 600;
+}
+
+.modal-header-vocab .modal-icon-badge,
+.modal-header-listen .modal-icon-badge,
+.modal-header-speak .modal-icon-badge,
+.modal-header-read .modal-icon-badge,
+.modal-header-review .modal-icon-badge,
+.modal-header-resource .modal-icon-badge,
+.modal-header-stats .modal-icon-badge {
+    background: var(--gray-50);
+}
+
+.modal-header-vocab .modal-icon-badge svg,
+.modal-header-listen .modal-icon-badge svg,
+.modal-header-speak .modal-icon-badge svg,
+.modal-header-read .modal-icon-badge svg,
+.modal-header-review .modal-icon-badge svg,
+.modal-header-resource .modal-icon-badge svg,
+.modal-header-stats .modal-icon-badge svg {
+    stroke: var(--gray-600);
+}
+
+body.theme-dark .modal-header-vocab,
+body.theme-dark .modal-header-listen,
+body.theme-dark .modal-header-speak,
+body.theme-dark .modal-header-read,
+body.theme-dark .modal-header-review,
+body.theme-dark .modal-header-resource,
+body.theme-dark .modal-header-stats {
+    background: #1e1e1e !important;
+    border-bottom-color: #333;
+}
+
+body.theme-dark .modal-header-vocab h2,
+body.theme-dark .modal-header-listen h2,
+body.theme-dark .modal-header-speak h2,
+body.theme-dark .modal-header-read h2,
+body.theme-dark .modal-header-review h2,
+body.theme-dark .modal-header-resource h2,
+body.theme-dark .modal-header-stats h2 {
+    color: var(--gray-100);
+}
+
+body.theme-dark .modal-header-vocab .modal-icon-badge,
+body.theme-dark .modal-header-listen .modal-icon-badge,
+body.theme-dark .modal-header-speak .modal-icon-badge,
+body.theme-dark .modal-header-read .modal-icon-badge,
+body.theme-dark .modal-header-review .modal-icon-badge,
+body.theme-dark .modal-header-resource .modal-icon-badge,
+body.theme-dark .modal-header-stats .modal-icon-badge {
+    background: #2a2a2a;
+}
+
+body.theme-dark .modal-header-vocab .modal-icon-badge svg,
+body.theme-dark .modal-header-listen .modal-icon-badge svg,
+body.theme-dark .modal-header-speak .modal-icon-badge svg,
+body.theme-dark .modal-header-read .modal-icon-badge svg,
+body.theme-dark .modal-header-review .modal-icon-badge svg,
+body.theme-dark .modal-header-resource .modal-icon-badge svg,
+body.theme-dark .modal-header-stats .modal-icon-badge svg {
+    stroke: var(--gray-400);
+}
+
 /* 写作类型选项卡 */
 .writing-types-v11 {
     display: flex;
