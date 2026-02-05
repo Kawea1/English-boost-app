@@ -2874,8 +2874,8 @@ svg {
 .modal-header {
     background: var(--gradient-primary);
     color: white;
-    padding: 18px 20px;
-    padding-top: calc(18px + env(safe-area-inset-top, 0px));
+    padding: 16px 20px;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
     padding-left: calc(20px + env(safe-area-inset-left, 0px));
     padding-right: calc(20px + env(safe-area-inset-right, 0px));
     display: flex;
@@ -2890,14 +2890,14 @@ svg {
 /* PWA standalone模式 - 增加顶部安全区域 */
 @media all and (display-mode: standalone) {
     .modal-header {
-        padding-top: calc(24px + env(safe-area-inset-top, 44px));
+        padding-top: calc(16px + env(safe-area-inset-top, 50px));
     }
 }
 
 /* iOS Safari standalone模式特殊处理 */
 @supports (-webkit-touch-callout: none) {
     .modal-header {
-        padding-top: calc(24px + env(safe-area-inset-top, 44px));
+        padding-top: calc(16px + env(safe-area-inset-top, 0px));
     }
 }
 
@@ -8888,6 +8888,9 @@ body.liquid-glass-mode .settings-action-btn.save {
     
     .modal-header {
         padding: 15px 20px;
+        padding-top: calc(15px + env(safe-area-inset-top, 0px));
+        padding-left: calc(20px + env(safe-area-inset-left, 0px));
+        padding-right: calc(20px + env(safe-area-inset-right, 0px));
     }
 }
 
