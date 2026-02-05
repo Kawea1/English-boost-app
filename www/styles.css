@@ -2892,26 +2892,8 @@ svg {
     .modal-header {
         padding-top: calc(16px + env(safe-area-inset-top, 50px));
     }
-}
 
-/* iOS Safari standalone模式特殊处理 */
-@supports (-webkit-touch-callout: none) {
-    .modal-header {
-        padding-top: calc(12px + env(safe-area-inset-top, 0px));
-        padding-bottom: 12px;
-    }
-
-    .modal-header .modal-icon-badge {
-        width: 32px;
-        height: 32px;
-        border-radius: 8px;
-    }
-
-    .modal-header h2 {
-        font-size: 17px;
-    }
-
-    /* iOS Safari: 核心模块页眉再压缩（仅这四个模块） */
+    /* 核心模块页眉压缩（仅分享到主屏幕） */
     .modal-header-vocab,
     .modal-header-listen,
     .modal-header-speak,
@@ -2947,6 +2929,13 @@ svg {
     .modal-header-speak h2,
     .modal-header-read h2 {
         font-size: 16px;
+    }
+}
+
+/* iOS Safari standalone模式特殊处理 */
+@supports (-webkit-touch-callout: none) {
+    .modal-header {
+        padding-top: calc(16px + env(safe-area-inset-top, 0px));
     }
 }
 
