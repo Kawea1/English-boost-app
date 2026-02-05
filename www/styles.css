@@ -2887,17 +2887,57 @@ svg {
     box-shadow: var(--shadow-md);
 }
 
-/* PWA standalone模式 - 增加顶部安全区域 */
-@media all and (display-mode: standalone) {
+/* iOS Safari standalone模式特殊处理 */
+@supports (-webkit-touch-callout: none) {
     .modal-header {
         padding-top: calc(16px + env(safe-area-inset-top, 0px));
     }
 }
 
-/* iOS Safari standalone模式特殊处理 */
-@supports (-webkit-touch-callout: none) {
-    .modal-header {
-        padding-top: calc(16px + env(safe-area-inset-top, 0px));
+/* PWA standalone：核心模块页眉高度对齐学术写作并下移压缩 */
+@media all and (display-mode: standalone) {
+    .modal-header,
+    body.liquid-glass-mode .modal-header {
+        padding: 12px 16px;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+        padding-left: calc(16px + env(safe-area-inset-left, 0px));
+        padding-right: calc(16px + env(safe-area-inset-right, 0px));
+        gap: 10px;
+    }
+
+    .modal-header .back-btn {
+        width: 32px;
+        height: 32px;
+        min-width: 32px;
+        min-height: 32px;
+    }
+
+    .modal-header .modal-icon-badge {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+    }
+
+    .modal-header h2 {
+        font-size: 16px;
+    }
+
+    .writing-header-v11 {
+        padding: 12px 16px;
+        padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+        padding-left: calc(16px + env(safe-area-inset-left, 0px));
+        padding-right: calc(16px + env(safe-area-inset-right, 0px));
+        gap: 10px;
+    }
+
+    .writing-back-v11 {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+    }
+
+    .writing-title-v11 {
+        font-size: 16px;
     }
 }
 
