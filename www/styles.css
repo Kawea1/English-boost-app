@@ -26182,10 +26182,16 @@ body.theme-dark .para-score-badge.score-error {
 .modal-header-listen .back-btn,
 .modal-header-speak .back-btn,
 .modal-header-read .back-btn,
+.modal-header-review .back-btn,
+.modal-header-resource .back-btn,
+.modal-header-stats .back-btn,
 body.liquid-glass-mode .modal-header-vocab .back-btn,
 body.liquid-glass-mode .modal-header-listen .back-btn,
 body.liquid-glass-mode .modal-header-speak .back-btn,
-body.liquid-glass-mode .modal-header-read .back-btn {
+body.liquid-glass-mode .modal-header-read .back-btn,
+body.liquid-glass-mode .modal-header-review .back-btn,
+body.liquid-glass-mode .modal-header-resource .back-btn,
+body.liquid-glass-mode .modal-header-stats .back-btn {
     width: 36px;
     height: 36px;
     min-width: 36px;
@@ -26204,17 +26210,26 @@ body.liquid-glass-mode .modal-header-read .back-btn {
 .modal-header-listen .back-btn:hover,
 .modal-header-speak .back-btn:hover,
 .modal-header-read .back-btn:hover,
+ .modal-header-review .back-btn:hover,
+ .modal-header-resource .back-btn:hover,
+ .modal-header-stats .back-btn:hover,
 body.liquid-glass-mode .modal-header-vocab .back-btn:hover,
 body.liquid-glass-mode .modal-header-listen .back-btn:hover,
 body.liquid-glass-mode .modal-header-speak .back-btn:hover,
-body.liquid-glass-mode .modal-header-read .back-btn:hover {
+body.liquid-glass-mode .modal-header-read .back-btn:hover,
+body.liquid-glass-mode .modal-header-review .back-btn:hover,
+body.liquid-glass-mode .modal-header-resource .back-btn:hover,
+body.liquid-glass-mode .modal-header-stats .back-btn:hover {
     background: var(--gray-100) !important;
 }
 
 .modal-header-vocab .back-btn svg,
 .modal-header-listen .back-btn svg,
 .modal-header-speak .back-btn svg,
-.modal-header-read .back-btn svg {
+.modal-header-read .back-btn svg,
+.modal-header-review .back-btn svg,
+.modal-header-resource .back-btn svg,
+.modal-header-stats .back-btn svg {
     width: 20px;
     height: 20px;
 }
