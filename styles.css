@@ -2894,6 +2894,11 @@ svg {
     }
 }
 
+/* iOS 书签/主屏幕模式兜底 - 避免返回按钮贴顶 */
+html.ios.pwa-mode .modal-header {
+    padding-top: calc(18px + env(safe-area-inset-top, 50px));
+}
+
 .back-btn {
     background: rgba(255,255,255,0.15);
     backdrop-filter: blur(10px);
