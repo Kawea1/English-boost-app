@@ -3607,6 +3607,7 @@ html.ios.pwa-mode body.liquid-glass-mode .modal-header {
     background: linear-gradient(135deg, rgba(99, 102, 241, 0.03) 0%, rgba(139, 92, 246, 0.03) 100%);
     opacity: 0;
     transition: opacity 0.3s ease;
+    pointer-events: none;
 }
 
 .word-card:hover::before {
