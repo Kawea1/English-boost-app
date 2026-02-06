@@ -7277,10 +7277,17 @@ body.liquid-glass-mode .liquid-glass-settings {
     z-index: 100;
 }
 
+/* PWA standalone 模式 - 增加顶部安全区域 */
+@media all and (display-mode: standalone) {
+    .settings-header-v10 {
+        padding-top: calc(18px + env(safe-area-inset-top, 50px));
+    }
+}
+
 .settings-back-v10 {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
     background: rgba(255,255,255,0.2);
     border: none;
     color: white;

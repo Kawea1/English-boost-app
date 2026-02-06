@@ -7325,6 +7325,13 @@ body.liquid-glass-mode .liquid-glass-settings {
     z-index: 100;
 }
 
+/* PWA standalone 模式 - 增加顶部安全区域 */
+@media all and (display-mode: standalone) {
+    .settings-header-v10 {
+        padding-top: calc(18px + env(safe-area-inset-top, 50px));
+    }
+}
+
 .settings-back-v10 {
     width: 36px;
     height: 36px;
